@@ -34,7 +34,7 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 
 ## Downloads
 
-Downloads for any of the platforms are available on the releases page on the repository or on the Downloads page on my website. Help for installation regarding any of the platforms is provided below.
+Downloads for any of the platforms are available on the [releases page](https://github.com/ShadyThGod/altus/releases/) on the [repository](https://github.com/ShadyThGod/altus). Help for installation regarding any of the platforms is provided below.
 
 #### Windows
 
