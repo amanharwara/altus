@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>About</title>
+    <link rel="stylesheet" href="../css/fontawesome.all.css">
+    <link rel="stylesheet" href="../css/about.css">
+</head>
+
+<body>
+    <div class="header-container">
+        <div class="exit-container">
+            <a href="#" id="exit"><i class="fas fa-times"></i></a>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="altus-icon">
+            <img src="../build/altus-icon.png" alt="altus-icon" width="163" height="163">
+        </div>
+        <div class="altus-desc">
+            <div class="altus-title">
+                <h1>ALTUS</h1>
+            </div>
+            <div class="altus-subtitle">
+                <p>Made with <i class="fas fa-heart"></i> by ShadyThGod.</p>
+            </div>
+            <div class="altus-version">
+                <p>version 1.0.0</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-container">
+        <div class="website-text">
+            <a class="website-link" href="https://shadythgod.github.io">website</a>
+        </div>
+        <div class="twitter-text">
+            <a class="website-link" href="https://twitter.com/shadythgod">twitter</a>
+        </div>
+        <div class="github-text">
+            <a class="website-link" href="https://github.com/ShadyThGod">github</a>
+        </div>
+    </div>
+
+    <script src="../js/fontawesome.all.js"></script>
+    <script>
+        const {
+            remote,
+            ipcRenderer
+        } = require('electron');
+
+        document.getElementById('exit').addEventListener('click', function(e) {
+            e.preventDefault();
+            remote.getCurrentWindow().close();
+        });
+
+        document.querySelectorAll('.website-link').forEach(function(item) {
+
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                ipcRenderer.send('linkOpen', item.href);
+            });
+        });
+    </script>
+</body>
+
+</html>

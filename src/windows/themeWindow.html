@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Custom Theme</title>
+    <link rel="stylesheet" href="../css/themeWindow.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="header-wrapper">
+            <div class="header">
+                <h1>Custom Theme</h1>
+            </div>
+            <div class="sub-header">
+                <p>Write your own CSS theme</p>
+            </div>
+        </div>
+        <div class="css-code-container">
+            <div class="theme-name-container">
+                <p class="theme-name-label" title="Spaces and special characters will be converted to dashes.">Name of the theme: </p>
+                <input type="text" id="theme-name">
+            </div>
+            <textarea id="css-theme" class="css-code-textbox" placeholder="Code goes here."></textarea>
+        </div>
+        <div class="submit-button-container">
+            <button id="submit" class="button">Apply</button>
+        </div>
+    </div>
+
+    <script>
+        const {
+            ipcRenderer
+        } = require('electron');
+        var submitThemeButton = document.getElementById('submit');
+        submitThemeButton.addEventListener('click', function(e) {
+            var cssCode = document.querySelector('#css-theme').value;
+            var name = document.querySelector('#theme-name').value;
+            e.preventDefault();
+            ipcRenderer.send('theme:change', {
+                name: name || `theme-${Math.round(Math.random() * 2)}`,
+                css: cssCode
+            });
+        });
+    </script>
+</body>
+
+</html>

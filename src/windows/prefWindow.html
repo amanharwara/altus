@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Preferences</title>
+    <link rel="stylesheet" href="../css/prefWindow.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header-wrapper">
+            <div class="header">
+                <h1>Preferences</h1>
+            </div>
+            <div class="sub-header">
+                <p>Make changes and then press "Save" to save the preferences.</p>
+            </div>
+        </div>
+        <div class="preferences-wrapper">
+            <div class="preference">
+                <p class="preference-header">Persist Theme</p>
+                <label class="preference-switch">
+                    <input type="checkbox" id="persist-theme-preference">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="preference-group">
+                <p class="preference-header">Notifications</p>
+                <ul class="sub-preferences">
+                    <li class="sub-preference">
+                        <p class="sub-preference-label">Toggle notifications on/off</p>
+                        <label class="sub-preference-switch">
+                            <input type="checkbox" id="toggle-notifications-preference">
+                            <span class="slider"></span>
+                        </label>
+                    </li>
+                    <li class="sub-preference">
+                        <p class="sub-preference-label">Show message preview</p>
+                        <label class="sub-preference-switch">
+                            <input type="checkbox" id="toggle-message-preview-preference">
+                            <span class="slider"></span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="preference">
+                <p class="preference-header">Toggle sound on/off</p>
+                <label class="preference-switch">
+                    <input type="checkbox" id="toggle-sound-preference">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="footer-wrapper">
+            <div class="save-button">
+                <button class="button" id="save" type="button">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const {
+            ipcRenderer
+        } = require('electron');
+
+        var persistTheme, toggleNotifications, toggleMessagePreview, toggleSound;
+        persistTheme = localStorage.getItem('persist-theme-preference');
+        toggleNotifications = localStorage.getItem('toggle-notifications-preference');
+        toggleMessagePreview = localStorage.getItem('toggle-message-preview-preference');
+        toggleSound = localStorage.getItem('toggle-sound-preference');
+
+        function loadSettings() {
+            if (document.querySelector('#persist-theme-preference')) {
+                let checked = persistTheme == "true" ? true : false;
+                document.querySelector('#persist-theme-preference').checked = checked;
+            }
+            if (document.querySelector('#toggle-notifications-preference')) {
+                let checked = toggleNotifications == "true" ? true : false;
+                document.querySelector('#toggle-notifications-preference').checked = checked;
+            }
+            if (document.querySelector('#toggle-message-preview-preference')) {
+                let checked = toggleMessagePreview == "true" ? true : false;
+                document.querySelector('#toggle-message-preview-preference').checked = checked;
+            }
+            if (document.querySelector('#toggle-sound-preference')) {
+                let checked = toggleSound == "true" ? true : false;
+                document.querySelector('#toggle-sound-preference').checked = checked;
+            }
+        }
+
+        loadSettings();
+
+        document.querySelector('#save').addEventListener('click', function(e) {
+            if (document.querySelector('#persist-theme-preference').checked) {
+                localStorage.setItem('persist-theme-preference', true);
+            } else {
+                localStorage.setItem('persist-theme-preference', false);
+            }
+            if (document.querySelector('#toggle-notifications-preference').checked) {
+                localStorage.setItem('toggle-notifications-preference', true);
+            } else {
+                localStorage.setItem('toggle-notifications-preference', false);
+            }
+            if (document.querySelector('#toggle-message-preview-preference').checked) {
+                localStorage.setItem('toggle-message-preview-preference', true);
+            } else {
+                localStorage.setItem('toggle-message-preview-preference', false);
+            }
+            if (document.querySelector('#toggle-sound-preference').checked) {
+                localStorage.setItem('toggle-sound-preference', true);
+            } else {
+                localStorage.setItem('toggle-sound-preference', false);
+            }
+
+            ipcRenderer.send('settingsChanged', true);
+        });
+    </script>
+</body>
+
+</html>

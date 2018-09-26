@@ -1,0 +1,63 @@
+{
+    "name": "altus",
+    "version": "1.0.0",
+    "description": "Electron-based desktop wrapper for Whatsapp Web",
+    "homepage": "https://github.com/ShadyThGod/altus",
+    "bugs": {
+        "url": "https://github.com/ShadyThGod/altus/issues"
+    },
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "build": {
+        "appId": "harwara.aman.altus",
+        "productName": "Altus",
+        "nsis": {
+            "oneClick": "false",
+            "artifactName": "${productName}-Setup-${version}"
+        },
+        "win": {
+            "target": [{
+                "target": "nsis",
+                "arch": [
+                    "x64",
+                    "ia32"
+                ]
+            }],
+            "icon": "build/icon.ico"
+        },
+        "linux": {
+            "category": "Chat",
+            "target": [
+                "AppImage",
+                "deb"
+            ]
+        },
+        "mac": {
+            "category": "public.app-category.social-networking",
+            "target": [
+                "dmg"
+            ]
+        },
+        "dmg": {
+            "background": "build/background.png",
+            "window": {
+                "width": 540,
+                "height": 380
+            },
+            "icon": "build/icon.icns"
+        }
+    },
+    "author": {
+        "name": "ShadyThGod",
+        "email": "amanharwara@gmail.com"
+    },
+    "license": "GNU GPLv3",
+    "devDependencies": {
+        "electron": "^2.0.3"
+    },
+    "dependencies": {
+        "node-fetch": "^2.2.0"
+    }
+}
