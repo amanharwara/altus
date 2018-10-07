@@ -42,11 +42,24 @@
         },
         "dmg": {
             "background": "build/background.png",
+            "icon": "build/icon.icns",
+            "iconSize": 100,
+            "contents": [{
+                    "x": 380,
+                    "y": 280,
+                    "type": "link",
+                    "path": "/Applications"
+                },
+                {
+                    "x": 110,
+                    "y": 280,
+                    "type": "file"
+                }
+            ],
             "window": {
-                "width": 540,
-                "height": 380
-            },
-            "icon": "build/icon.icns"
+                "width": 500,
+                "height": 500
+            }
         }
     },
     "author": {
