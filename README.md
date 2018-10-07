@@ -51,7 +51,7 @@ If you have a Debian-based distribution like Ubuntu, you can use Debian-specific
 
 #### Mac
 
-Mac packages will take more time to get released because I do not own a proper Mac and have to use a virtual machine to package the app. Installation for Mac is simple. All you have to do is install the provided `.dmg` file.
+Mac packages will take more time to get released because I do not own a proper Mac and have to use a virtual machine to package the app. Installation for Mac is simple. All you have to do is open the provided `.dmg` file and once it is opened, drag the Altus icon into the "Applications" folder.
 
 ### For Developers
 
