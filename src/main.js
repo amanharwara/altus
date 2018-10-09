@@ -215,7 +215,7 @@ function createThemeWindow() { //Creates the theme window
         themeWindow = new BrowserWindow({ //Creates new instance of themewindow if not already opened
             parent: mainWindow,
             modal: true,
-            icon: "./build/icon.ico",
+            icon: "./img/icon.ico",
             title: "Custom Theme"
         });
         themeWindow.loadURL(url.format({ //loads the theme window html file
