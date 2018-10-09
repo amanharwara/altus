@@ -188,7 +188,7 @@ function createAboutWindow() {
     } else {
         aboutWindow = new BrowserWindow({
             parent: mainWindow,
-            icon: "./build/icon.ico",
+            icon: "./img/icon.ico",
             title: "About",
             width: 500,
             height: 300,
