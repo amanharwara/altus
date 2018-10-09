@@ -14,6 +14,7 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 - **Dark mode** for when you need to chill out your eyes in the night (or even in the day)
 - **Custom Theme Support** If you know how to write CSS themes, you can create and use your own theme for WhatsApp.
 - **Available for most desktop platforms** including Windows (7 or above), Linux and MacOS.
+- **Tray icon** so you can minimize the app completely and still receive notifications.
 
 ### Planned Features
 
@@ -21,7 +22,7 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 - [ ] **Import/Export Settings** to import/export settings as JSON files
 - [ ] **Inbuilt YouTube Video Preview** to view YouTube videos without having to open your browser
 - [ ] **Multiple Account Support** to use multiple WhatsApp accounts simultaneously.
-- [ ] **Tray Icon** so the app runs without you having to keep the window open
+- [x] **Tray Icon** so the app runs without you having to keep the window open
 
 ## Screenshots
 
