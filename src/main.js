@@ -4,15 +4,34 @@ const url = require('url');
 const path = require('path');
 const fs = require('fs');
 
-const { app, BrowserWindow, Menu, ipcMain, shell, Notification, globalShortcut } = electron;
+const { app, BrowserWindow, Menu, ipcMain, shell, Notification, globalShortcut, Tray, dialog } = electron;
 
 //Defining the window variables
 let mainWindow;
 let themeWindow;
 let prefWindow;
+let trayIcon;
+
+//Make application single-instance only
+var shouldQuit = app.makeSingleInstance(function(argv, dir) {
+    if (mainWindow) {
+        if (mainWindow.isMinimized()) {
+            mainWindow.restore();
+        }
+        mainWindow.focus();
+    }
+});
+
+if (shouldQuit) {
+    app.quit();
+    return;
+}
 
 //App.on ready function
 app.on('ready', function() {
+
+
+
     mainWindow = new BrowserWindow({
         title: 'Altus',
         icon: "./build/icon.ico"
@@ -54,9 +73,15 @@ app.on('ready', function() {
     });
 
     function init() {
-        var theme, persistTheme, toggleNotifications, toggleMessagePreview, toggleSound;
+        var theme, persistTheme, toggleNotifications, toggleMessagePreview, toggleSound, toggleTray;
         ipcMain.on('preferences', function(e, pref) {
             theme = pref.theme || { name: 'default-theme', css: '' };
+
+            if (typeof pref.toggleTray !== "undefined") {
+                toggleTray = pref.toggleTray;
+            } else {
+                toggleTray = true;
+            }
 
             if (typeof pref.persistTheme !== "undefined") {
                 persistTheme = pref.persistTheme;
@@ -91,7 +116,51 @@ app.on('ready', function() {
             }
             if (persistTheme) setTheme();
             setSound(toggleSound);
+
+            if (toggleTray) {
+                setTray();
+            } else {
+                trayIcon.destroy();
+                trayIcon = null;
+                trayIcon = undefined;
+            }
         });
+
+        function setTray() {
+            //Tray icon
+            trayIcon = new Tray('./build/icon.ico');
+            const trayContextMenu = Menu.buildFromTemplate([{
+                label: 'Maximize',
+                click() {
+                    if (mainWindow) {
+                        mainWindow.show();
+                        mainWindow.focus();
+                    }
+                }
+            }, {
+                label: 'Minimize to Tray',
+                click() {
+                    mainWindow.hide();
+                }
+            }, {
+                label: 'Exit',
+                click() {
+                    dialog.showMessageBox({
+                        type: 'question',
+                        buttons: ["OK", "Cancel"],
+                        title: "Exit",
+                        message: "Are you sure you want to exit?"
+                    }, function(res) {
+                        if (res == 0) {
+                            app.quit();
+                            return;
+                        }
+                    });
+                }
+            }]);
+            trayIcon.setToolTip('Altus');
+            trayIcon.setContextMenu(trayContextMenu);
+        }
 
         function setTheme() {
             if (theme.name == 'default-theme') {

@@ -50,6 +50,13 @@
                     <span class="slider"></span>
                 </label>
             </div>
+            <div class="preference">
+                <p class="preference-header">Toggle tray icon on/off</p>
+                <label class="preference-switch">
+                    <input type="checkbox" id="toggle-tray-preference">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
         <div class="footer-wrapper">
             <div class="save-button">
@@ -68,6 +75,7 @@
         toggleNotifications = localStorage.getItem('toggle-notifications-preference');
         toggleMessagePreview = localStorage.getItem('toggle-message-preview-preference');
         toggleSound = localStorage.getItem('toggle-sound-preference');
+        toggleTray = localStorage.getItem('toggle-tray-preference');
 
         function loadSettings() {
             if (document.querySelector('#persist-theme-preference')) {
@@ -85,6 +93,10 @@
             if (document.querySelector('#toggle-sound-preference')) {
                 let checked = toggleSound == "true" ? true : false;
                 document.querySelector('#toggle-sound-preference').checked = checked;
+            }
+            if (document.querySelector('#toggle-tray-preference')) {
+                let checked = toggleTray == "true" ? true : false;
+                document.querySelector('#toggle-tray-preference').checked = checked;
             }
         }
 
@@ -110,6 +122,11 @@
                 localStorage.setItem('toggle-sound-preference', true);
             } else {
                 localStorage.setItem('toggle-sound-preference', false);
+            }
+            if (document.querySelector('#toggle-tray-preference').checked) {
+                localStorage.setItem('toggle-tray-preference', true);
+            } else {
+                localStorage.setItem('toggle-tray-preference', false);
             }
 
             ipcRenderer.send('settingsChanged', true);

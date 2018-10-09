@@ -37,7 +37,7 @@
         const url = require("url");
         const path = require('path');
 
-        var themePref, persistThemePref, notificationPref, messagePreviewPref, soundPref;
+        var themePref, persistThemePref, notificationPref, messagePreviewPref, soundPref, trayPref;
 
         function getSetPrefs() {
             if (localStorage.getItem('theme-preference')) {
@@ -47,6 +47,12 @@
                     name: 'default-theme',
                     css: ''
                 }));
+            }
+
+            if (localStorage.getItem('toggle-tray-preference')) {
+                trayPref = localStorage.getItem('toggle-tray-preference');
+            } else {
+                localStorage.setItem('toggle-tray-preference', true);
             }
 
             if (localStorage.getItem('persist-theme-preference')) {
@@ -83,7 +89,8 @@
                     persistTheme: JSON.parse(localStorage.getItem('persist-theme-preference')),
                     toggleNotifications: JSON.parse(localStorage.getItem('toggle-notifications-preference')),
                     toggleMessagePreview: JSON.parse(localStorage.getItem('toggle-message-preview-preference')),
-                    toggleSound: JSON.parse(localStorage.getItem('toggle-sound-preference'))
+                    toggleSound: JSON.parse(localStorage.getItem('toggle-sound-preference')),
+                    toggleTray: JSON.parse(localStorage.getItem('toggle-tray-preference'))
                 });
             }
         });
