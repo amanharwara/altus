@@ -34,7 +34,7 @@ app.on('ready', function() {
 
     mainWindow = new BrowserWindow({
         title: 'Altus',
-        icon: "./img/icon.ico"
+        icon: "./img/icon.png"
     }); //Creates the main window
     mainWindow.maximize(); //Maximizing the main window always
     mainWindow.loadURL(url.format({ //Loads the mainwindow html file
@@ -128,7 +128,8 @@ app.on('ready', function() {
 
         function setTray() {
             //Tray icon
-            trayIcon = new Tray('./img/icon.ico');
+            var trayIconPath = path.join(__dirname, 'img/icon.png');
+            trayIcon = new Tray(trayIconPath);
             const trayContextMenu = Menu.buildFromTemplate([{
                 label: 'Maximize',
                 click() {
@@ -188,7 +189,7 @@ function createAboutWindow() {
     } else {
         aboutWindow = new BrowserWindow({
             parent: mainWindow,
-            icon: "./img/icon.ico",
+            icon: "./img/icon.png",
             title: "About",
             width: 500,
             height: 300,
@@ -215,7 +216,7 @@ function createThemeWindow() { //Creates the theme window
         themeWindow = new BrowserWindow({ //Creates new instance of themewindow if not already opened
             parent: mainWindow,
             modal: true,
-            icon: "./img/icon.ico",
+            icon: "./img/icon.png",
             title: "Custom Theme"
         });
         themeWindow.loadURL(url.format({ //loads the theme window html file
@@ -238,7 +239,7 @@ function createPrefWindow() { //Creates the preferences window
         prefWindow = new BrowserWindow({ //Creates new instance of themewindow if not already opened
             parent: mainWindow,
             modal: true,
-            icon: "./img/icon.ico",
+            icon: "./img/icon.png",
             title: "Preferences"
         });
         prefWindow.loadURL(url.format({ //loads the theme window html file
