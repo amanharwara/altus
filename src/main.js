@@ -129,7 +129,6 @@ app.on('ready', function() {
         function setTray() {
             //Tray icon
             var trayIconPath = path.join(__dirname, 'img/icon.png');
-            trayIcon = new Tray(trayIconPath);
             const trayContextMenu = Menu.buildFromTemplate([{
                 label: 'Maximize',
                 click() {
@@ -159,8 +158,13 @@ app.on('ready', function() {
                     });
                 }
             }]);
-            trayIcon.setToolTip('Altus');
-            trayIcon.setContextMenu(trayContextMenu);
+            if (process.platform !== "darwin") {
+                trayIcon = new Tray(trayIconPath);
+                trayIcon.setToolTip('Altus');
+                trayIcon.setContextMenu(trayContextMenu);
+            } else {
+                app.dock.setMenu(trayContextMenu);
+            }
         }
 
         function setTheme() {
