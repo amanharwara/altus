@@ -44,7 +44,8 @@ app.on('ready', function() {
     }));
     const mainMenu = Menu.buildFromTemplate(mainMenuTemp); //Applies the main menu template
     Menu.setApplicationMenu(mainMenu); //Sets the main menu
-    mainWindow.on('close', function() { //Quits app when main window is closed
+    mainWindow.on('closed', function() { //Quits app when main window is closed
+        mainWindow = null
         app.quit();
     });
 
@@ -206,9 +207,9 @@ function createAboutWindow() {
             slashes: true
         }));
     }
-    aboutWindow.on('close', function() {
-        aboutWindow = null;
-        aboutWindow = undefined;
+    aboutWindow.on('close', function(e) {
+        e.preventDefault();
+        aboutWindow.hide();
     });
     aboutWindow.setResizable(false);
 }
@@ -219,7 +220,6 @@ function createThemeWindow() { //Creates the theme window
     } else {
         themeWindow = new BrowserWindow({ //Creates new instance of themewindow if not already opened
             parent: mainWindow,
-            modal: true,
             icon: "./img/icon.png",
             title: "Custom Theme"
         });
@@ -229,9 +229,9 @@ function createThemeWindow() { //Creates the theme window
             slashes: true
         }));
     }
-    themeWindow.on('close', function() { //Deletes all instances of themeWindow when it is closed.
-        themeWindow = null;
-        themeWindow = undefined;
+    themeWindow.on('close', function(e) { //Deletes all instances of themeWindow when it is closed.
+        e.preventDefault();
+        themeWindow.hide();
     });
     themeWindow.setResizable(false); //Makes theme window non-resizable
 }
@@ -242,7 +242,6 @@ function createPrefWindow() { //Creates the preferences window
     } else {
         prefWindow = new BrowserWindow({ //Creates new instance of themewindow if not already opened
             parent: mainWindow,
-            modal: true,
             icon: "./img/icon.png",
             title: "Preferences"
         });
@@ -252,9 +251,9 @@ function createPrefWindow() { //Creates the preferences window
             slashes: true
         }));
     }
-    prefWindow.on('close', function() { //Deletes all instances of themeWindow when it is closed.
-        prefWindow = null;
-        prefWindow = undefined;
+    prefWindow.on('close', function(e) { //Deletes all instances of themeWindow when it is closed.
+        e.preventDefault();
+        prefWindow.hide();
     });
     prefWindow.setResizable(false); //Makes theme window non-resizable
 }
@@ -307,7 +306,13 @@ const mainMenuTemp = [{ //The main menu template
     label: "About",
     click() {
         createAboutWindow()
-    }
+    },
+    submenu: [{
+        label: "About",
+        click() {
+            createAboutWindow()
+        }
+    }]
 }];
 
 if (process.platform == 'darwin') { //Fixes main menu issue for Mac
