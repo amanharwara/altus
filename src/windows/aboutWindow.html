@@ -28,7 +28,7 @@
                 <p>Made with <i class="fas fa-heart"></i> by ShadyThGod.</p>
             </div>
             <div class="altus-version">
-                <p>version 1.0.0</p>
+                <p>version <span id="altus-version"></span></p>
             </div>
         </div>
     </div>
@@ -50,6 +50,8 @@
             remote,
             ipcRenderer
         } = require('electron');
+
+        document.getElementById('altus-version').innerHTML = remote.app.getVersion();
 
         document.getElementById('exit').addEventListener('click', function(e) {
             e.preventDefault();
