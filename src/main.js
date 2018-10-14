@@ -29,9 +29,6 @@ if (shouldQuit) {
 
 //App.on ready function
 app.on('ready', function() {
-
-
-
     mainWindow = new BrowserWindow({
         title: 'Altus',
         icon: "./img/icon.png"
@@ -64,7 +61,13 @@ app.on('ready', function() {
     });
 
     globalShortcut.register('CmdOrCtrl+Shift+F12', function() {
-        mainWindow.webContents.openDevTools();
+        var focusedWindow = BrowserWindow.getFocusedWindow();
+        focusedWindow.webContents.openDevTools();
+    });
+
+    globalShortcut.register('CmdOrCtrl+Shift+R', function() {
+        var focusedWindow = BrowserWindow.getFocusedWindow();
+        focusedWindow.webContents.reload();
     });
 
     init();

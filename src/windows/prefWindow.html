@@ -59,6 +59,12 @@
             </div>
         </div>
         <div class="footer-wrapper">
+            <div class="import-button">
+                <button class="button" id="import" type="button">Import</button>
+            </div>
+            <div class="export-button">
+                <button class="button" id="export" type="button">Export</button>
+            </div>
             <div class="save-button">
                 <button class="button" id="save" type="button">Save</button>
             </div>
@@ -67,8 +73,13 @@
 
     <script>
         const {
-            ipcRenderer
+            ipcRenderer,
+            remote
         } = require('electron');
+        const {
+            dialog
+        } = remote;
+        const fs = require('fs');
 
         var persistTheme, toggleNotifications, toggleMessagePreview, toggleSound;
         persistTheme = localStorage.getItem('persist-theme-preference');
@@ -101,6 +112,77 @@
         }
 
         loadSettings();
+
+        document.querySelector('#export').addEventListener('click', function(e) {
+            dialog.showSaveDialog({
+                title: 'Export Settings As JSON',
+                filters: [{
+                    name: 'JSON',
+                    extensions: ['json']
+                }]
+            }, function(fileName) {
+                if (fileName === undefined) {
+                    console.log("You didn't save the file");
+                    return;
+                }
+
+                var content = JSON.stringify({
+                    persistTheme: persistTheme,
+                    toggleNotifications: toggleNotifications,
+                    toggleMessagePreview: toggleMessagePreview,
+                    toggleSound: toggleSound,
+                    toggleTray: toggleTray
+                });
+
+                // fileName is a string that contains the path and filename created in the save file dialog.
+                fs.writeFile(fileName, content, (err) => {
+                    if (err) {
+                        alert("An error ocurred creating the file " + err.message)
+                    }
+
+                    alert("The file has been succesfully saved");
+                });
+            });
+        });
+
+        document.querySelector('#import').addEventListener('click', function(e) {
+            dialog.showOpenDialog({
+                title: 'Import Settings',
+                filters: [{
+                    name: 'JSON',
+                    extensions: ['json']
+                }]
+            }, function(filenames) {
+                var JSONsettings = JSON.parse(fs.readFileSync(filenames[0], 'utf-8'));
+
+                JSONpersistTheme = JSONsettings.persistTheme;
+                JSONtoggleNotifications = JSONsettings.toggleNotifications;
+                JSONtoggleMessagePreview = JSONsettings.toggleMessagePreview;
+                JSONtoggleSound = JSONsettings.toggleSound;
+                JSONtoggleTray = JSONsettings.toggleTray;
+
+                if (document.querySelector('#persist-theme-preference')) {
+                    let checked = JSONpersistTheme == "true" ? true : false;
+                    document.querySelector('#persist-theme-preference').checked = checked;
+                }
+                if (document.querySelector('#toggle-notifications-preference')) {
+                    let checked = JSONtoggleNotifications == "true" ? true : false;
+                    document.querySelector('#toggle-notifications-preference').checked = checked;
+                }
+                if (document.querySelector('#toggle-message-preview-preference')) {
+                    let checked = JSONtoggleMessagePreview == "true" ? true : false;
+                    document.querySelector('#toggle-message-preview-preference').checked = checked;
+                }
+                if (document.querySelector('#toggle-sound-preference')) {
+                    let checked = JSONtoggleSound == "true" ? true : false;
+                    document.querySelector('#toggle-sound-preference').checked = checked;
+                }
+                if (document.querySelector('#toggle-tray-preference')) {
+                    let checked = JSONtoggleTray == "true" ? true : false;
+                    document.querySelector('#toggle-tray-preference').checked = checked;
+                }
+            });
+        });
 
         document.querySelector('#save').addEventListener('click', function(e) {
             if (document.querySelector('#persist-theme-preference').checked) {

@@ -19,7 +19,7 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 ### Planned Features
 
 - [ ] **Theme Customizer** so you don't have to learn CSS to create themes
-- [ ] **Import/Export Settings** to import/export settings as JSON files
+- [x] ~~**Import/Export Settings** to import/export settings as JSON files~~
 - [ ] **Inbuilt YouTube Video Preview** to view YouTube videos without having to open your browser
 - [ ] **Multiple Account Support** to use multiple WhatsApp accounts simultaneously.
 - [x] ~~**Tray Icon** so the app runs without you having to keep the window open~~
