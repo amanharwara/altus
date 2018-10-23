@@ -7,7 +7,7 @@ const {
 const url = require("url");
 const path = require('path');
 
-var themePref, persistThemePref, notificationPref, messagePreviewPref, soundPref, trayPref;
+var themePref, persistThemePref, notificationPref, soundPref, trayPref;
 
 function getSetPrefs() {
     if (localStorage.getItem('theme-preference')) {
@@ -37,12 +37,6 @@ function getSetPrefs() {
         localStorage.setItem('toggle-notifications-preference', true);
     }
 
-    if (localStorage.getItem('toggle-message-preview-preference')) {
-        messagePreviewPref = localStorage.getItem('toggle-message-preview-preference');
-    } else {
-        localStorage.setItem('toggle-message-preview-preference', true);
-    }
-
     if (localStorage.getItem('toggle-sound-preference')) {
         soundPref = localStorage.getItem('toggle-sound-preference');
     } else {
@@ -58,21 +52,8 @@ ipcRenderer.on('sendPreferencesBool', function(e, bool) {
             theme: JSON.parse(localStorage.getItem('theme-preference')),
             persistTheme: JSON.parse(localStorage.getItem('persist-theme-preference')),
             toggleNotifications: JSON.parse(localStorage.getItem('toggle-notifications-preference')),
-            toggleMessagePreview: JSON.parse(localStorage.getItem('toggle-message-preview-preference')),
             toggleSound: JSON.parse(localStorage.getItem('toggle-sound-preference')),
             toggleTray: JSON.parse(localStorage.getItem('toggle-tray-preference'))
-        });
-    }
-});
-
-ipcRenderer.on('notification-process-1', function(e, notification) {
-    var notifications = localStorage.getItem('toggle-notifications-preference');
-    var messagePreview = localStorage.getItem('toggle-message-preview-preference');
-    if (notifications == "true") {
-        ipcRenderer.send('notification', {
-            title: notification.title,
-            body: messagePreview == "true" ? notification.body : "New Message",
-            icon: notification.icon
         });
     }
 });
@@ -138,7 +119,6 @@ ipcRenderer.on('theme:change', function(event, data) {
 });
 
 webview.addEventListener('dom-ready', function() {
-    console.log(notificationPref);
     var notify;
     if (notificationPref == true || notificationPref == "true") {
         notify = 'new _Notification(title, options)';

@@ -10,7 +10,6 @@ const fs = require('fs');
 var persistTheme, toggleNotifications, toggleMessagePreview, toggleSound;
 persistTheme = localStorage.getItem('persist-theme-preference');
 toggleNotifications = localStorage.getItem('toggle-notifications-preference');
-toggleMessagePreview = localStorage.getItem('toggle-message-preview-preference');
 toggleSound = localStorage.getItem('toggle-sound-preference');
 toggleTray = localStorage.getItem('toggle-tray-preference');
 
@@ -22,10 +21,6 @@ function loadSettings() {
     if (document.querySelector('#toggle-notifications-preference')) {
         let checked = toggleNotifications == "true" ? true : false;
         document.querySelector('#toggle-notifications-preference').checked = checked;
-    }
-    if (document.querySelector('#toggle-message-preview-preference')) {
-        let checked = toggleMessagePreview == "true" ? true : false;
-        document.querySelector('#toggle-message-preview-preference').checked = checked;
     }
     if (document.querySelector('#toggle-sound-preference')) {
         let checked = toggleSound == "true" ? true : false;
@@ -55,7 +50,6 @@ document.querySelector('#export').addEventListener('click', function(e) {
         var content = JSON.stringify({
             persistTheme: persistTheme,
             toggleNotifications: toggleNotifications,
-            toggleMessagePreview: toggleMessagePreview,
             toggleSound: toggleSound,
             toggleTray: toggleTray
         });
@@ -65,8 +59,6 @@ document.querySelector('#export').addEventListener('click', function(e) {
             if (err) {
                 alert("An error ocurred creating the file " + err.message)
             }
-
-            alert("The file has been succesfully saved");
         });
     });
 });
@@ -83,7 +75,6 @@ document.querySelector('#import').addEventListener('click', function(e) {
 
         JSONpersistTheme = JSONsettings.persistTheme;
         JSONtoggleNotifications = JSONsettings.toggleNotifications;
-        JSONtoggleMessagePreview = JSONsettings.toggleMessagePreview;
         JSONtoggleSound = JSONsettings.toggleSound;
         JSONtoggleTray = JSONsettings.toggleTray;
 
@@ -94,10 +85,6 @@ document.querySelector('#import').addEventListener('click', function(e) {
         if (document.querySelector('#toggle-notifications-preference')) {
             let checked = JSONtoggleNotifications == "true" ? true : false;
             document.querySelector('#toggle-notifications-preference').checked = checked;
-        }
-        if (document.querySelector('#toggle-message-preview-preference')) {
-            let checked = JSONtoggleMessagePreview == "true" ? true : false;
-            document.querySelector('#toggle-message-preview-preference').checked = checked;
         }
         if (document.querySelector('#toggle-sound-preference')) {
             let checked = JSONtoggleSound == "true" ? true : false;
@@ -120,11 +107,6 @@ document.querySelector('#save').addEventListener('click', function(e) {
         localStorage.setItem('toggle-notifications-preference', true);
     } else {
         localStorage.setItem('toggle-notifications-preference', false);
-    }
-    if (document.querySelector('#toggle-message-preview-preference').checked) {
-        localStorage.setItem('toggle-message-preview-preference', true);
-    } else {
-        localStorage.setItem('toggle-message-preview-preference', false);
     }
     if (document.querySelector('#toggle-sound-preference').checked) {
         localStorage.setItem('toggle-sound-preference', true);

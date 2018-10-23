@@ -77,7 +77,7 @@ app.on('ready', function() {
     });
 
     function init() {
-        var theme, persistTheme, toggleNotifications, toggleMessagePreview, toggleSound, toggleTray;
+        var theme, persistTheme, toggleNotifications, toggleSound, toggleTray;
         ipcMain.on('preferences', function(e, pref) {
             theme = pref.theme || { name: 'default-theme', css: '' };
 
@@ -97,12 +97,6 @@ app.on('ready', function() {
                 toggleNotifications = pref.toggleNotifications;
             } else {
                 toggleNotifications = true;
-            }
-
-            if (typeof pref.toggleMessagePreview !== "undefined") {
-                toggleMessagePreview = pref.toggleMessagePreview;
-            } else {
-                toggleMessagePreview = true;
             }
 
             if (typeof pref.toggleSound !== "undefined") {
