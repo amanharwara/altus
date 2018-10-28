@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron');
+const { Mousetrap } = require('mousetrap');
 
 window.onclick = function(e) {
     if (e.target.tagName == "A") {
@@ -7,15 +8,15 @@ window.onclick = function(e) {
 }
 
 /* Mac Copy/Paste Fix */
-var isCtrl = false;
-var isCmd = false;
-window.onkeyup = function(e) {
-    if (e.which == 17) isCtrl = false;
-    if (e.which == 91) isCmd = false;
-}
-window.onkeydown = function(e) {
-    if (e.which == 17) isCtrl = true;
-    if (e.which == 91) isCmd = false;
-    if (e.which == 67 && (isCtrl || isCmd)) document.execCommand('copy');
-    if (e.which == 86 && (isCtrl || isCmd)) document.execCommand('paste');
-}
+Mousetrap.bind(['command+c', 'ctrl+c'], function(e) {
+    document.execCommand('copy');
+});
+Mousetrap.bind(['command+v', 'ctrl+v'], function(e) {
+    document.execCommand('paste');
+});
+Mousetrap.bind(['command+x', 'ctrl+x'], function(e) {
+    document.execCommand('cut');
+});
+Mousetrap.bind(['command+a', 'ctrl+a'], function(e) {
+    document.execCommand('selectAll');
+});
