@@ -71,6 +71,7 @@
         "electron": "^2.0.8"
     },
     "dependencies": {
+        "mousetrap": "^1.6.2",
         "node-fetch": "^2.2.0"
     }
 }
