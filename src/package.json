@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "altus",
   "version": "1.2.1",
   "description": "Electron-based desktop wrapper for Whatsapp Web",
@@ -16,6 +17,21 @@
     "nsis": {
       "oneClick": "false",
       "artifactName": "${productName}-Setup-${version}.${ext}"
+||||||| merged common ancestors
+    "name": "altus",
+    "version": "1.2.1",
+    "description": "Electron-based desktop wrapper for Whatsapp Web",
+    "homepage": "https://github.com/ShadyThGod/altus",
+    "bugs": {
+        "url": "https://github.com/ShadyThGod/altus/issues"
+=======
+    "name": "altus",
+    "version": "1.2.2",
+    "description": "Electron-based desktop wrapper for Whatsapp Web",
+    "homepage": "https://github.com/ShadyThGod/altus",
+    "bugs": {
+        "url": "https://github.com/ShadyThGod/altus/issues"
+>>>>>>> 8181d7d8c912852f38ab5893fd422cdaf54579e5
     },
     "win": {
       "target": [
@@ -42,6 +58,7 @@
         "dmg"
       ]
     },
+<<<<<<< HEAD
     "dmg": {
       "background": "build/background.png",
       "icon": "build/icon.icns",
@@ -63,7 +80,16 @@
         "width": 500,
         "height": 400
       }
+||||||| merged common ancestors
+    "dependencies": {
+        "node-fetch": "^2.2.0"
+=======
+    "dependencies": {
+        "mousetrap": "^1.6.2",
+        "node-fetch": "^2.2.0"
+>>>>>>> 8181d7d8c912852f38ab5893fd422cdaf54579e5
     }
+<<<<<<< HEAD
   },
   "author": {
     "name": "ShadyThGod",
@@ -78,3 +104,8 @@
     "node-fetch": "^2.2.0"
   }
 }
+||||||| merged common ancestors
+}
+=======
+}
+>>>>>>> 8181d7d8c912852f38ab5893fd422cdaf54579e5
