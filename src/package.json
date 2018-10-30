@@ -1,7 +1,7 @@
 {
 <<<<<<< HEAD
   "name": "altus",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Electron-based desktop wrapper for Whatsapp Web",
   "homepage": "https://github.com/ShadyThGod/altus",
   "bugs": {
