@@ -60,18 +60,18 @@
                 "width": 500,
                 "height": 400
             }
-        },
-        "author": {
-            "name": "ShadyThGod",
-            "email": "amanharwara@gmail.com"
-        },
-        "license": "GNU GPLv3",
-        "devDependencies": {
-            "electron": "^2.0.8"
-        },
-        "dependencies": {
-            "mousetrap": "^1.6.2",
-            "node-fetch": "^2.2.0"
         }
+    },
+    "author": {
+        "name": "ShadyThGod",
+        "email": "amanharwara@gmail.com"
+    },
+    "license": "GNU GPLv3",
+    "devDependencies": {
+        "electron": "^2.0.8"
+    },
+    "dependencies": {
+        "mousetrap": "^1.6.2",
+        "node-fetch": "^2.2.0"
     }
 }
