@@ -1,6 +1,5 @@
 const { ipcRenderer } = require('electron');
-const { Mousetrap } = require('mousetrap');
-
+const Mousetrap = require('mousetrap');
 window.onclick = function(e) {
     if (e.target.tagName == "A") {
         ipcRenderer.send('linkOpen', e.target.href);
