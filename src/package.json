@@ -18,15 +18,13 @@
             "artifactName": "${productName}-Setup-${version}.${ext}"
         },
         "win": {
-            "target": [
-                {
-                    "target": "nsis",
-                    "arch": [
-                        "x64",
-                        "ia32"
-                    ]
-                }
-            ],
+            "target": [{
+                "target": "nsis",
+                "arch": [
+                    "x64",
+                    "ia32"
+                ]
+            }],
             "icon": "build/icon.ico"
         },
         "linux": {
@@ -46,8 +44,7 @@
             "background": "build/background.png",
             "icon": "build/icon.icns",
             "iconSize": 100,
-            "contents": [
-                {
+            "contents": [{
                     "x": 380,
                     "y": 280,
                     "type": "link",
@@ -70,9 +67,10 @@
         "email": "amanharwara@gmail.com"
     },
     "license": "GNU GPLv3",
-    "devDependencies": {},
+    "devDependencies": {
+        "electron": "^4.0.0-beta.9"
+    },
     "dependencies": {
-        "electron": "^4.0.0-beta.9",
         "mousetrap": "^1.6.2",
         "node-fetch": "^2.2.0"
     }
