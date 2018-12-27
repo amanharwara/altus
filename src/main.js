@@ -15,6 +15,7 @@ const {
     Tray,
     dialog
 } = electron;
+app.showExitPrompt = true;
 
 //Defining the window variables
 let mainWindow;
@@ -49,8 +50,15 @@ if (!singleInstanceLock) {
         }));
         const mainMenu = Menu.buildFromTemplate(mainMenuTemp); //Applies the main menu template
         Menu.setApplicationMenu(mainMenu); //Sets the main menu
+
+        mainWindow.on('close', function (e) { // Confirm dialog when user closes window
+            if (app.showExitPrompt) {
+                e.preventDefault();
+                confirmExit();
+            }
+        });
         mainWindow.on('closed', function() { //Quits app when main window is closed
-            mainWindow = null
+            mainWindow = null;
             app.quit();
         });
 
@@ -154,17 +162,7 @@ if (!singleInstanceLock) {
                 }, {
                     label: 'Exit',
                     click() {
-                        dialog.showMessageBox({
-                            type: 'question',
-                            buttons: ["OK", "Cancel"],
-                            title: "Exit",
-                            message: "Are you sure you want to exit?"
-                        }, function(res) {
-                            if (res == 0) {
-                                app.quit();
-                                return;
-                            }
-                        });
+                        app.quit();
                     }
                 }]);
                 if (process.platform !== "darwin") {
@@ -200,6 +198,21 @@ if (!singleInstanceLock) {
             mainWindow.webContents.on('did-finish-load', function() {
                 mainWindow.webContents.send('sendPreferencesBool', true);
             });
+        }
+    });
+}
+
+function confirmExit() {
+    dialog.showMessageBox({
+        type: 'question',
+        buttons: ["OK", "Cancel"],
+        title: "Exit",
+        message: "Are you sure you want to exit?"
+    }, function(res) {
+        if (res == 0) {
+            app.showExitPrompt = false;
+            app.quit();
+            return;
         }
     });
 }
