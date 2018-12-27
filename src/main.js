@@ -15,7 +15,6 @@ const {
     Tray,
     dialog
 } = electron;
-app.showExitPrompt = true;
 
 //Defining the window variables
 let mainWindow;
@@ -93,7 +92,7 @@ if (!singleInstanceLock) {
         });
 
         function init() {
-            var theme, persistTheme, toggleNotifications, toggleSound, toggleTray;
+            var theme, persistTheme, toggleNotifications, toggleSound, toggleTray, showExitPrompt;
             ipcMain.on('preferences', function(e, pref) {
                 theme = pref.theme || {
                     name: 'default-theme',
@@ -104,6 +103,12 @@ if (!singleInstanceLock) {
                     toggleTray = pref.toggleTray;
                 } else {
                     toggleTray = true;
+                }
+
+                if (typeof pref.showExitPrompt !== "undefined") {
+                    app.showExitPrompt = pref.showExitPrompt;
+                } else {
+                    app.showExitPrompt = true;
                 }
 
                 if (typeof pref.persistTheme !== "undefined") {

@@ -42,6 +42,12 @@ function getSetPrefs() {
     } else {
         localStorage.setItem('toggle-sound-preference', true);
     }
+
+    if (localStorage.getItem('exit-prompt-preference')) {
+        soundPref = localStorage.getItem('exit-prompt-preference');
+    } else {
+        localStorage.setItem('exit-prompt-preference', true);
+    }
 }
 
 getSetPrefs();
@@ -53,7 +59,8 @@ ipcRenderer.on('sendPreferencesBool', function(e, bool) {
             persistTheme: JSON.parse(localStorage.getItem('persist-theme-preference')),
             toggleNotifications: JSON.parse(localStorage.getItem('toggle-notifications-preference')),
             toggleSound: JSON.parse(localStorage.getItem('toggle-sound-preference')),
-            toggleTray: JSON.parse(localStorage.getItem('toggle-tray-preference'))
+            toggleTray: JSON.parse(localStorage.getItem('toggle-tray-preference')),
+            showExitPrompt: JSON.parse(localStorage.getItem('exit-prompt-preference'))
         });
     }
 });
