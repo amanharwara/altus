@@ -49,8 +49,15 @@ if (!singleInstanceLock) {
         }));
         const mainMenu = Menu.buildFromTemplate(mainMenuTemp); //Applies the main menu template
         Menu.setApplicationMenu(mainMenu); //Sets the main menu
+
+        mainWindow.on('close', function (e) { // Confirm dialog when user closes window
+            if (app.showExitPrompt) {
+                e.preventDefault();
+                confirmExit();
+            }
+        });
         mainWindow.on('closed', function() { //Quits app when main window is closed
-            mainWindow = null
+            mainWindow = null;
             app.quit();
         });
 
@@ -85,7 +92,7 @@ if (!singleInstanceLock) {
         });
 
         function init() {
-            var theme, persistTheme, toggleNotifications, toggleSound, toggleTray;
+            var theme, persistTheme, toggleNotifications, toggleSound, toggleTray, showExitPrompt;
             ipcMain.on('preferences', function(e, pref) {
                 theme = pref.theme || {
                     name: 'default-theme',
@@ -96,6 +103,12 @@ if (!singleInstanceLock) {
                     toggleTray = pref.toggleTray;
                 } else {
                     toggleTray = true;
+                }
+
+                if (typeof pref.showExitPrompt !== "undefined") {
+                    app.showExitPrompt = pref.showExitPrompt;
+                } else {
+                    app.showExitPrompt = true;
                 }
 
                 if (typeof pref.persistTheme !== "undefined") {
@@ -156,17 +169,7 @@ if (!singleInstanceLock) {
                 }, {
                     label: 'Exit',
                     click() {
-                        dialog.showMessageBox({
-                            type: 'question',
-                            buttons: ["OK", "Cancel"],
-                            title: "Exit",
-                            message: "Are you sure you want to exit?"
-                        }, function(res) {
-                            if (res == 0) {
-                                app.quit();
-                                return;
-                            }
-                        });
+                        app.quit();
                     }
                 }]);
                 if (process.platform !== "darwin") {
@@ -202,6 +205,21 @@ if (!singleInstanceLock) {
             mainWindow.webContents.on('did-finish-load', function() {
                 mainWindow.webContents.send('sendPreferencesBool', true);
             });
+        }
+    });
+}
+
+function confirmExit() {
+    dialog.showMessageBox({
+        type: 'question',
+        buttons: ["OK", "Cancel"],
+        title: "Exit",
+        message: "Are you sure you want to exit?"
+    }, function(res) {
+        if (res == 0) {
+            app.showExitPrompt = false;
+            app.quit();
+            return;
         }
     });
 }

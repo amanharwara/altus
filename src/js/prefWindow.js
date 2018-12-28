@@ -7,11 +7,12 @@ const {
 } = remote;
 const fs = require('fs');
 
-var persistTheme, toggleNotifications, toggleMessagePreview, toggleSound;
+var persistTheme, toggleNotifications, toggleMessagePreview, toggleSound, showExitPrompt;
 persistTheme = localStorage.getItem('persist-theme-preference');
 toggleNotifications = localStorage.getItem('toggle-notifications-preference');
 toggleSound = localStorage.getItem('toggle-sound-preference');
 toggleTray = localStorage.getItem('toggle-tray-preference');
+showExitPrompt = localStorage.getItem('exit-prompt-preference');
 
 function loadSettings() {
     if (document.querySelector('#persist-theme-preference')) {
@@ -29,6 +30,10 @@ function loadSettings() {
     if (document.querySelector('#toggle-tray-preference')) {
         let checked = toggleTray == "true" ? true : false;
         document.querySelector('#toggle-tray-preference').checked = checked;
+    }
+    if (document.querySelector('#exit-prompt-preference')) {
+        let checked = showExitPrompt == "true" ? true : false;
+        document.querySelector('#exit-prompt-preference').checked = checked;
     }
 }
 
@@ -51,7 +56,8 @@ document.querySelector('#export').addEventListener('click', function(e) {
             persistTheme: persistTheme,
             toggleNotifications: toggleNotifications,
             toggleSound: toggleSound,
-            toggleTray: toggleTray
+            toggleTray: toggleTray,
+            showExitPrompt: showExitPrompt
         });
 
         // fileName is a string that contains the path and filename created in the save file dialog.
@@ -77,6 +83,7 @@ document.querySelector('#import').addEventListener('click', function(e) {
         JSONtoggleNotifications = JSONsettings.toggleNotifications;
         JSONtoggleSound = JSONsettings.toggleSound;
         JSONtoggleTray = JSONsettings.toggleTray;
+        JSONshowExitPrompt = JSONsettings.showExitPrompt;
 
         if (document.querySelector('#persist-theme-preference')) {
             let checked = JSONpersistTheme == "true" ? true : false;
@@ -93,6 +100,10 @@ document.querySelector('#import').addEventListener('click', function(e) {
         if (document.querySelector('#toggle-tray-preference')) {
             let checked = JSONtoggleTray == "true" ? true : false;
             document.querySelector('#toggle-tray-preference').checked = checked;
+        }
+        if (document.querySelector('#exit-prompt-preference')) {
+            let checked = JSONshowExitPrompt == "true" ? true : false;
+            document.querySelector('#exit-prompt-preference').checked = checked;
         }
     });
 });
@@ -117,6 +128,11 @@ document.querySelector('#save').addEventListener('click', function(e) {
         localStorage.setItem('toggle-tray-preference', true);
     } else {
         localStorage.setItem('toggle-tray-preference', false);
+    }
+    if (document.querySelector('#exit-prompt-preference').checked) {
+        localStorage.setItem('exit-prompt-preference', true);
+    } else {
+        localStorage.setItem('exit-prompt-preference', false);
     }
 
     ipcRenderer.send('settingsChanged', true);
