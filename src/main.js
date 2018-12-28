@@ -129,7 +129,9 @@ if (!singleInstanceLock) {
                 if (toggleTray) {
                     setTray();
                 } else {
-                    trayIcon.destroy();
+                    if (trayIcon) {
+                        trayIcon.destroy();
+                    }
                     trayIcon = null;
                     trayIcon = undefined;
                 }
