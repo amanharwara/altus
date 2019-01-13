@@ -1,10 +1,26 @@
 const {
-    BrowserWindow
+    BrowserWindow,
+    app
 } = require('electron');
+const createWindow = require('./createWindow')
 
 const template = [{
     label: 'File',
     submenu: [{
+        label: 'Open DevTools',
+        accelerator: 'CommandOrControl+Shift+I',
+        click() {
+            var window = BrowserWindow.getFocusedWindow();
+            window.webContents.openDevTools();
+        }
+    }, {
+        label: 'Force Reload',
+        accelerator: 'CommandOrControl+Shift+R',
+        click() {
+            var window = BrowserWindow.getFocusedWindow();
+            window.webContents.reload();
+        }
+    }, {
         label: 'Quit',
         accelerator: 'CommandOrControl+Q',
         click() {
@@ -12,7 +28,7 @@ const template = [{
         }
     }]
 }, {
-    label: 'View',
+    label: 'Theme',
     submenu: [{
         label: 'Change Theme',
         submenu: [{
@@ -31,19 +47,25 @@ const template = [{
             }
         ]
     }, {
-        label: 'Custom Theme',
+        label: 'Custom CSS Theme',
         accelerator: 'CommandOrControl+Shift+T',
         click() {
-            console.log("Custom Theme Window")
+            createWindow('customCSS')
+        }
+    }, {
+        label: 'Theme Customizer',
+        accelerator: 'CommandOrControl+Alt+T',
+        click() {
+            createWindow('themeCustomizer')
         }
     }]
 }, {
     label: 'Settings',
     submenu: [{
-        label: 'Preferences',
-        accelerator: 'CommandOrControl+P',
+        label: 'Settings',
+        accelerator: 'CommandOrControl+,',
         click() {
-            console.log("Preferences Window")
+            createWindow('settings')
         }
     }]
 }, {
@@ -51,7 +73,7 @@ const template = [{
     submenu: [{
         label: "About",
         click() {
-            console.log("About Window")
+            createWindow('about')
         }
     }]
 }]
