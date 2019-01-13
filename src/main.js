@@ -1,7 +1,8 @@
 const {
     app,
     BrowserWindow,
-    Menu
+    Menu,
+    ipcMain
 } = require('electron');
 const url = require('url');
 const path = require('path');
@@ -31,13 +32,14 @@ if (!singleInstanceLock) {
 
     app.on('ready', () => {
         mainWindow = new BrowserWindow({
-            title: 'Altus',
+            title: `Altus ${app.getVersion()}`,
             frame: false,
-            titleBarStyle: 'hidden'
+            titleBarStyle: 'hidden',
+            backgroundColor: '#282C34'
         });
         mainWindow.maximize(); //Maximizing the main window always
         mainWindow.loadURL(url.format({ //Loads the mainwindow html file
-            pathname: path.join(__dirname, 'windows', 'main', 'mainWindow.html'),
+            pathname: path.join(__dirname, 'windows', 'main', 'window.html'),
             protocol: 'file:',
             slashes: true
         }));
