@@ -35,7 +35,8 @@ if (!singleInstanceLock) {
             title: `Altus ${app.getVersion()}`,
             frame: false,
             titleBarStyle: 'hidden',
-            backgroundColor: '#282C34'
+            backgroundColor: '#282C34',
+            icon: './build/icon.ico'
         });
         mainWindow.maximize(); //Maximizing the main window always
         mainWindow.loadURL(url.format({ //Loads the mainwindow html file
