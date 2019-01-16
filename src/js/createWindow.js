@@ -12,13 +12,14 @@ function createWindow(id) {
                 aboutWindow.show()
             } else {
                 aboutWindow = new BrowserWindow({
-                    title: `About Altus`
+                    title: `About Altus`,
+                    frame: false,
+                    titleBarStyle: 'hidden',
+                    width: 320,
+                    height: 400,
+                    resizable: false
                 })
-                aboutWindow.loadURL(url.format({ //Loads the about window html file
-                    pathname: path.join(__dirname, 'windows', 'about', 'window.html'),
-                    protocol: 'file:',
-                    slashes: true
-                }));
+                aboutWindow.loadURL(path.resolve('./windows/about/window.html'));
                 aboutWindow.show();
                 aboutWindow.on('close', e => {
                     e.preventDefault();
@@ -31,13 +32,11 @@ function createWindow(id) {
                 settingsWindow.show()
             } else {
                 settingsWindow = new BrowserWindow({
-                    title: `Settings`
+                    title: `Settings`,
+                    frame: false,
+                    titleBarStyle: 'hidden'
                 })
-                settingsWindow.loadURL(url.format({ //Loads the settings window html file
-                    pathname: path.join(__dirname, 'windows', 'settings', 'window.html'),
-                    protocol: 'file:',
-                    slashes: true
-                }));
+                settingsWindow.loadURL(path.resolve('./windows/settings/window.html'));
                 settingsWindow.show();
                 settingsWindow.on('close', e => {
                     e.preventDefault();
@@ -50,13 +49,11 @@ function createWindow(id) {
                 customCSSWindow.show()
             } else {
                 customCSSWindow = new BrowserWindow({
-                    title: `Custom CSS for WhatsApp`
+                    title: `Custom CSS for WhatsApp`,
+                    frame: false,
+                    titleBarStyle: 'hidden'
                 })
-                customCSSWindow.loadURL(url.format({ //Loads the settings window html file
-                    pathname: path.join(__dirname, 'windows', 'customCSS', 'window.html'),
-                    protocol: 'file:',
-                    slashes: true
-                }));
+                customCSSWindow.loadURL(path.resolve('./windows/customCSS/window.html'));
                 customCSSWindow.show();
                 customCSSWindow.on('close', e => {
                     e.preventDefault();
@@ -69,13 +66,11 @@ function createWindow(id) {
                 themeCustomizerWindow.show()
             } else {
                 themeCustomizerWindow = new BrowserWindow({
-                    title: `Customize Theme`
+                    title: `Customize Theme`,
+                    frame: false,
+                    titleBarStyle: 'hidden'
                 })
-                themeCustomizerWindow.loadURL(url.format({ //Loads the settings window html file
-                    pathname: path.join(__dirname, 'windows', 'themeCustomizer', 'window.html'),
-                    protocol: 'file:',
-                    slashes: true
-                }));
+                themeCustomizerWindow.loadURL(path.resolve('./windows/themeCustomizer/window.html'));
                 themeCustomizerWindow.show();
                 themeCustomizerWindow.on('close', e => {
                     e.preventDefault();
