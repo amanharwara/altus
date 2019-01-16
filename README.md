@@ -1,3 +1,5 @@
+## You are viewing the Rewrite branch of Altus. This branch contains unstable and possibly non-working code for the 2.0 rewrite of Altus. The code provided here is NOT guaranteed to work.
+
 # Altus
 
 **Altus** is an Electron-based WhatsApp client that works on almost all of the desktop platforms, i.e., Windows, Mac and Linux.
@@ -40,7 +42,7 @@ Downloads for any of the platforms are available on the [releases page](https://
 
 #### Windows
 
-To install the app for Windows, simply run the setup which will probably be named as `Altus-Setup-x.x.x.exe` where *x.x.x* is the version number. The setup will guide you through your installation. Currently, the setup will add a shortcut to the desktop and the start menu and install to `C:\Program Files\Altus` or `C:\Users\(User)\AppData\Local\Programs\Altus` depending on what you select during the installation.
+To install the app for Windows, simply run the setup which will probably be named as `Altus-Setup-x.x.x.exe` where _x.x.x_ is the version number. The setup will guide you through your installation. Currently, the setup will add a shortcut to the desktop and the start menu and install to `C:\Program Files\Altus` or `C:\Users\(User)\AppData\Local\Programs\Altus` depending on what you select during the installation.
 
 #### Linux
 
