@@ -17,7 +17,10 @@ function createWindow(id) {
                     titleBarStyle: 'hidden',
                     width: 320,
                     height: 400,
-                    resizable: false
+                    resizable: false,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
                 })
                 aboutWindow.loadURL(path.resolve('./windows/about/window.html'));
                 aboutWindow.show();
@@ -34,7 +37,10 @@ function createWindow(id) {
                 settingsWindow = new BrowserWindow({
                     title: `Settings`,
                     frame: false,
-                    titleBarStyle: 'hidden'
+                    titleBarStyle: 'hidden',
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
                 })
                 settingsWindow.loadURL(path.resolve('./windows/settings/window.html'));
                 settingsWindow.show();
@@ -51,7 +57,10 @@ function createWindow(id) {
                 customCSSWindow = new BrowserWindow({
                     title: `Custom CSS for WhatsApp`,
                     frame: false,
-                    titleBarStyle: 'hidden'
+                    titleBarStyle: 'hidden',
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
                 })
                 customCSSWindow.loadURL(path.resolve('./windows/customCSS/window.html'));
                 customCSSWindow.show();
@@ -68,7 +77,10 @@ function createWindow(id) {
                 themeCustomizerWindow = new BrowserWindow({
                     title: `Customize Theme`,
                     frame: false,
-                    titleBarStyle: 'hidden'
+                    titleBarStyle: 'hidden',
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
                 })
                 themeCustomizerWindow.loadURL(path.resolve('./windows/themeCustomizer/window.html'));
                 themeCustomizerWindow.show();
