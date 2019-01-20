@@ -1,12 +1,12 @@
 const {
     app,
     BrowserWindow,
-    Menu,
-    ipcMain
+    Menu
 } = require('electron');
 const url = require('url');
 const path = require('path');
 const mainMenuTemplate = require('./js/mainMenuTemplate');
+const Store = require('electron-store');
 
 //Declare window variables
 let mainWindow,
@@ -19,8 +19,10 @@ let mainWindow,
 const singleInstanceLock = app.requestSingleInstanceLock();
 
 if (!singleInstanceLock) {
+    //Quits the second instance
     app.quit();
 } else {
+    //Focuses the already-open instance
     app.on('second-instance', () => {
         if (mainWindow) {
             if (mainWindow.isMinimized()) {
@@ -30,13 +32,30 @@ if (!singleInstanceLock) {
         }
     });
 
+    //Create default settings
+    var mainSettings = new Store({
+        name: 'settings',
+        defaults: {
+            persistTheme: true,
+            notifications: true,
+            sound: true,
+            trayIcon: true,
+            showExitPrompt: true
+        }
+    });
+
+    //Create main window, main menu
     app.on('ready', () => {
         mainWindow = new BrowserWindow({
             title: `Altus ${app.getVersion()}`,
             frame: false,
             titleBarStyle: 'hidden',
             backgroundColor: '#282C34',
-            icon: './build/icon.ico'
+            icon: './build/icon.ico',
+            webPreferences: {
+                webviewTag: true,
+                nodeIntegration: true
+            }
         });
         mainWindow.maximize(); //Maximizing the main window always
         mainWindow.loadURL(url.format({ //Loads the mainwindow html file
