@@ -5,5 +5,80 @@ html {
 }
 
 body {
+    border: 1px solid #00000033;
+}
+
+body * {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.ui.segment.basic.inverted {
+    background: #212222 !important;
+    color: #effff6 !important;
+    margin: 0 !important;
+}
+
+.ui.header,
+.ui.header .sub.header {
+    color: #effff6 !important;
+}
+
+.colorpicker-class {
+    display: none
+}
+
+.item {
+    margin: auto 20px;
+}
+
+.item .content {
+    display: flex !important;
+    justify-content: space-between;
+}
+
+.item .content .header {
+    display: flex !important;
+    align-items: center;
+}
+
+::-webkit-scrollbar {
+    width: 5px !important;
+    background-color: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #707070 !important;
+    border-radius: 0px !important;
+}
+
+.ui.footer .button {
+    text-transform: uppercase;
+}
+
+.ui.footer .container {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.ui.divided.list {
+    padding: 10px !important;
+    margin: auto 5px;
+    overflow-x: hidden;
+}
+
+.colorlist {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 68.1vh;
+    margin: 0 !important;
+}
+
+.generatedcss textarea {
+    font-family: 'Consolas', 'Source Code Pro', 'Anonymous Pro', 'Space Mono', 'Inconsolata', 'Monaco', 'Courier New', Courier, monospace;
+    height: 60vh !important;
+    margin: 10px;
+}
+
+#copy-css-button {
+    transition: 150ms;
 }
