@@ -6,11 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Settings</title>
+    <link rel="stylesheet" href="../assets/css/semantic.min.css">
     <link rel="stylesheet" href="./css/settings.css">
 </head>
 
 <body>
-
+    <div class="main">
+        <h2 class="ui grey inverted center aligned icon header">
+            <i class="circular settings icon"></i>
+            <div class="content">
+                Settings
+            </div>
+        </h2>
+        <div class="ui settings-container container">
+            <div class="ui divided list">
+            </div>
+        </div>
+        <div class="footer ui black inverted segment">
+            <div class="ui save-button button primary" id="save-button">Save</div>
+            <div class="ui import-button button teal" id="import-button">Import</div>
+            <div class="ui export-button button teal" id="export-button">Export</div>
+            <div class="ui inverted cancel-button button" id="cancel-button">Cancel</div>
+        </div>
+    </div>
     <script src="./js/settings.js"></script>
 </body>
 
