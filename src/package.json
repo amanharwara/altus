@@ -77,7 +77,8 @@
         "electron": "^4.0.0-beta.9"
     },
     "dependencies": {
-        "custom-electron-titlebar": "^2.1.0",
+        "clipboard": "^2.0.4",
+        "custom-electron-titlebar": "^3.0.0",
         "electron-store": "^2.0.0",
         "mousetrap": "^1.6.2"
     }
