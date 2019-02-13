@@ -1,11 +1,15 @@
+const customTitlebar = require('custom-electron-titlebar');
 const {
-    Titlebar
-} = require('custom-electron-titlebar');
-
+    Menu
+} = require('electron').remote;
 // Create main window titlebar
-const mainTitlebar = new Titlebar('#21252B', {
+const mainTitlebar = new customTitlebar.Titlebar({
+    backgroundColor: customTitlebar.Color.fromHex('#21252B'),
     icon: '../assets/icons/icon.ico',
-    menu: null
+    menu: new Menu(),
+    minimizable: false,
+    maximizable: false,
+    closeable: true
 });
 
 // Setting title explicitly
