@@ -1,7 +1,9 @@
 const {
     app,
     BrowserWindow,
-    Menu
+    Menu,
+    ipcMain,
+    shell
 } = require('electron');
 const url = require('url');
 const path = require('path');
@@ -35,11 +37,31 @@ if (!singleInstanceLock) {
     var mainSettings = new Store({
         name: 'settings',
         defaults: {
-            persistTheme: true,
-            notifications: true,
-            sound: true,
-            trayIcon: true,
-            showExitPrompt: true
+            persistTheme: {
+                value: true,
+                name: 'Persist Theme',
+                description: 'If this setting is enabled, the app will automatically load the theme which was previously applied.'
+            },
+            notifications: {
+                value: true,
+                name: 'Notifications',
+                description: 'If this setting is enabled, the app will show notifications whenever a new message arrives. Disabling this will disable all the notifications.'
+            },
+            sound: {
+                value: true,
+                name: 'Sound',
+                description: 'If this setting is enabled, all sounds will be enabled in WhatsApp. Disabling this will disable all the sounds in WhatsApp.'
+            },
+            trayIcon: {
+                value: true,
+                name: 'Tray Icon',
+                description: 'If this setting is enabled, the tray icon will be enabled allowing you to receive messages even after completely minimizing Altus. Disabling this will disable the tray icon.'
+            },
+            showExitPrompt: {
+                value: true,
+                name: 'Exit Prompt',
+                description: 'If this setting is enabled, the app will prompt you everytime you close the app. Disabling this will disable the prompt.'
+            }
         }
     });
 
@@ -66,6 +88,9 @@ if (!singleInstanceLock) {
         //Setting main menu
         const mainMenu = Menu.buildFromTemplate(template);
         Menu.setApplicationMenu(mainMenu);
+
+        ipcMain.on('link-open', (e, link) => shell.openExternal(link));
+        ipcMain.on('settings-changed', e => mainWindow.webContents.send('settings-changed', true));
     });
 
     //Quit app if all windows are closed
@@ -158,6 +183,7 @@ function createWindow(id) {
                 aboutWindow = new BrowserWindow({
                     title: `About Altus`,
                     frame: false,
+                    backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     width: 320,
                     height: 400,
@@ -183,9 +209,13 @@ function createWindow(id) {
                 settingsWindow = new BrowserWindow({
                     title: `Settings`,
                     frame: false,
+                    backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
-                    width: 600,
-                    height: 500,
+                    width: 650,
+                    height: 599,
+                    resizable: false,
+                    maximizable: false,
+                    minimizable: false,
                     parent: mainWindow,
                     modal: true,
                     webPreferences: {
@@ -207,6 +237,7 @@ function createWindow(id) {
                 customCSSWindow = new BrowserWindow({
                     title: `Custom CSS for WhatsApp`,
                     frame: false,
+                    backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
                     modal: true,
@@ -229,9 +260,13 @@ function createWindow(id) {
                 themeCustomizerWindow = new BrowserWindow({
                     title: `Customize Theme`,
                     frame: false,
+                    backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
                     modal: true,
+                    resizable: false,
+                    width: 600,
+                    height: 547,
                     webPreferences: {
                         nodeIntegration: true
                     }
