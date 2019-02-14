@@ -241,6 +241,9 @@ function createWindow(id) {
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
                     modal: true,
+                    resizable: false,
+                    width: 600,
+                    height: 547,
                     webPreferences: {
                         nodeIntegration: true
                     }
