@@ -74,10 +74,6 @@ document.querySelectorAll('.setting-button').forEach(function(e) {
 document.querySelector('#save-button').addEventListener('click', () => {
     settings.set('persistTheme.value', document.querySelector('#persistThemeButton').innerText == "Enabled" ? true : false);
 
-    settings.set('notifications.value', document.querySelector('#notificationsButton').innerText == "Enabled" ? true : false);
-
-    settings.set('sound.value', document.querySelector('#soundButton').innerText == "Enabled" ? true : false);
-
     settings.set('trayIcon.value', document.querySelector('#trayIconButton').innerText == "Enabled" ? true : false);
 
     settings.set('showExitPrompt.value', document.querySelector('#showExitPromptButton').innerText == "Enabled" ? true : false);

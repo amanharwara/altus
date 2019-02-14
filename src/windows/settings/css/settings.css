@@ -14,10 +14,15 @@ body {
     overflow: hidden !important;
 }
 
-.ui.header {
-    background: #2b2b2b;
-    padding: 10px;
+.ui.segment.basic.inverted {
+    background: #212222 !important;
+    color: #fafafa !important;
     margin: 0 !important;
+}
+
+.ui.header,
+.ui.header .sub.header {
+    color: #fafafa !important;
 }
 
 .content>.header {
@@ -27,8 +32,8 @@ body {
 .settings-container,
 .ui.settings-container {
     overflow-y: scroll;
-    height: 61.5vh;
-    padding: 20px 5px !important;
+    height: 68.1vh;
+    padding: 12px 5px !important;
     margin: 0 !important;
 }
 
@@ -40,32 +45,22 @@ body {
     padding: 10px 5px;
 }
 
-.footer {
-    border-radius: 0 !important;
-    padding: 6px !important;
-    margin: 0 !important;
-    display: flex;
-    flex-direction: row-reverse;
-}
-
-.footer>* {
-    margin: 0 2px !important;
-}
-
-.save-button {
-    padding: 0.785714em 4em !important;
-}
-
-.button {
-    border-radius: 0 !important;
-}
-
 ::-webkit-scrollbar {
-    width: 8px !important;
-    background-color: #f5f5f58e !important;
+    width: 7px !important;
+    background-color: transparent !important;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: #707070 !important;
     border-radius: 0px !important;
+}
+
+.ui.footer .button {
+    border-radius: 0 !important;
+    text-transform: uppercase;
+}
+
+.ui.footer .container {
+    display: flex;
+    flex-direction: row-reverse;
 }

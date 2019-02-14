@@ -12,21 +12,32 @@
 
 <body>
     <div class="main">
-        <h2 class="ui grey inverted center aligned icon header">
-            <i class="circular settings icon"></i>
-            <div class="content">
-                Settings
-            </div>
-        </h2>
+        <div class="ui inverted basic segment">
+            <h1 class="ui header">
+                <i class="settings icon"></i>
+                <div class="content">
+                    Settings
+                    <div class="sub header">Global Settings for Altus</div>
+                </div>
+            </h1>
+        </div>
         <div class="ui settings-container container">
             <div class="ui divided list">
             </div>
         </div>
-        <div class="footer ui black inverted segment">
-            <div class="ui save-button button primary" id="save-button">Save</div>
-            <div class="ui import-button button teal" id="import-button">Import</div>
-            <div class="ui export-button button teal" id="export-button">Export</div>
-            <div class="ui inverted cancel-button button" id="cancel-button">Cancel</div>
+        <div class="ui footer black inverted vertical segment">
+            <div class="ui container">
+                <div class="ui save-button button primary" id="save-button">
+                    <i class="icon save"></i> Save
+                </div>
+                <div class="ui import-button button teal" id="import-button">
+                    <i class="icon download"></i> Import
+                </div>
+                <div class="ui export-button button teal" id="export-button">
+                    <i class="icon upload"></i> Export
+                </div>
+                <div class="ui inverted cancel-button button" id="cancel-button">Cancel</div>
+            </div>
         </div>
     </div>
     <script src="./js/settings.js"></script>
