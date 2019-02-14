@@ -42,16 +42,6 @@ if (!singleInstanceLock) {
                 name: 'Persist Theme',
                 description: 'If this setting is enabled, the app will automatically load the theme which was previously applied.'
             },
-            notifications: {
-                value: true,
-                name: 'Notifications',
-                description: 'If this setting is enabled, the app will show notifications whenever a new message arrives. Disabling this will disable all the notifications.'
-            },
-            sound: {
-                value: true,
-                name: 'Sound',
-                description: 'If this setting is enabled, all sounds will be enabled in WhatsApp. Disabling this will disable all the sounds in WhatsApp.'
-            },
             trayIcon: {
                 value: true,
                 name: 'Tray Icon',
@@ -212,7 +202,7 @@ function createWindow(id) {
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     width: 650,
-                    height: 599,
+                    height: 526,
                     resizable: false,
                     maximizable: false,
                     minimizable: false,
