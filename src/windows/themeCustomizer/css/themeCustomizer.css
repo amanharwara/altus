@@ -14,13 +14,13 @@ body * {
 
 .ui.segment.basic.inverted {
     background: #212222 !important;
-    color: #effff6 !important;
+    color: #fafafa !important;
     margin: 0 !important;
 }
 
 .ui.header,
 .ui.header .sub.header {
-    color: #effff6 !important;
+    color: #fafafa !important;
 }
 
 .colorpicker-class {
