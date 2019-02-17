@@ -80,6 +80,8 @@
         "clipboard": "^2.0.4",
         "custom-electron-titlebar": "^3.0.0",
         "electron-store": "^2.0.0",
-        "mousetrap": "^1.6.2"
+        "jquery": "^3.3.1",
+        "mousetrap": "^1.6.2",
+        "uuid": "^3.3.2"
     }
 }
