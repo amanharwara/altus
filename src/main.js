@@ -3,18 +3,22 @@ const {
     BrowserWindow,
     Menu,
     ipcMain,
-    shell
+    dialog,
+    shell,
+    Tray
 } = require('electron');
 const url = require('url');
 const path = require('path');
 const Store = require('electron-store');
+const fs = require('fs');
 
 //Declare window variables
 let mainWindow,
     aboutWindow,
     settingsWindow,
     customCSSWindow,
-    themeCustomizerWindow;
+    themeCustomizerWindow,
+    trayIcon;
 
 //Use singleInstanceLock for making app single instance
 const singleInstanceLock = app.requestSingleInstanceLock();
@@ -34,14 +38,9 @@ if (!singleInstanceLock) {
     });
 
     //Create default settings
-    var mainSettings = new Store({
+    var settings = new Store({
         name: 'settings',
         defaults: {
-            persistTheme: {
-                value: true,
-                name: 'Persist Theme',
-                description: 'If this setting is enabled, the app will automatically load the theme which was previously applied.'
-            },
             trayIcon: {
                 value: true,
                 name: 'Tray Icon',
@@ -52,6 +51,19 @@ if (!singleInstanceLock) {
                 name: 'Exit Prompt',
                 description: 'If this setting is enabled, the app will prompt you everytime you close the app. Disabling this will disable the prompt.'
             }
+        }
+    });
+
+    let themesList = new Store({
+        name: 'themes',
+        defaults: {
+            themes: [{
+                name: 'Default',
+                css: ''
+            }, {
+                name: 'Dark',
+                css: getDarkTheme()
+            }]
         }
     });
 
@@ -74,13 +86,70 @@ if (!singleInstanceLock) {
             protocol: 'file:',
             slashes: true
         }));
+        mainWindow.on('close', e => {
+            if (app.showExitPrompt) {
+                e.preventDefault();
+                confirmExit();
+            }
+        });
+        mainWindow.on('closed', () => {
+            mainWindow = null;
+            app.quit();
+        });
 
         //Setting main menu
         const mainMenu = Menu.buildFromTemplate(template);
         Menu.setApplicationMenu(mainMenu);
 
         ipcMain.on('link-open', (e, link) => shell.openExternal(link));
-        ipcMain.on('settings-changed', e => mainWindow.webContents.send('settings-changed', true));
+        ipcMain.on('settings-changed', e => initializeGlobalSettings());
+        ipcMain.on('new-themes-added', e => mainWindow.webContents.send('new-themes-added', true));
+
+        function initializeGlobalSettings() {
+            if (settings.get('trayIcon.value') === true) {
+                let trayIconPath = path.join(__dirname, '/windows/assets/icons/icon.ico');
+                const trayContextMenu = Menu.buildFromTemplate([{
+                    label: 'Maximize',
+                    click() {
+                        if (mainWindow) {
+                            mainWindow.show();
+                            mainWindow.focus();
+                        }
+                    }
+                }, {
+                    label: 'Minimize to Tray',
+                    click() {
+                        mainWindow.hide();
+                    }
+                }, {
+                    label: 'Exit',
+                    click() {
+                        app.quit();
+                    }
+                }]);
+                if (process.platform !== "darwin") {
+                    trayIcon = new Tray(trayIconPath);
+                    trayIcon.setToolTip('Altus');
+                    trayIcon.setContextMenu(trayContextMenu);
+                } else {
+                    app.dock.setMenu(trayContextMenu);
+                }
+            } else {
+                if (trayIcon) {
+                    trayIcon.destroy();
+                }
+                trayIcon = null;
+                trayIcon = undefined;
+            }
+
+            if (settings.get('showExitPrompt.value') === true) {
+                app.showExitPrompt = true;
+            } else {
+                app.showExitPrompt = false;
+            }
+        }
+
+        initializeGlobalSettings();
     });
 
     //Quit app if all windows are closed
@@ -115,23 +184,6 @@ const template = [{
 }, {
     label: 'Theme',
     submenu: [{
-        label: 'Change Theme',
-        submenu: [{
-                label: 'Default Theme',
-                accelerator: 'CmdOrCtrl+Shift+D',
-                click() {
-                    console.log("Default Theme")
-                }
-            },
-            {
-                label: 'Dark/Night Theme',
-                accelerator: 'CmdOrCtrl+Shift+N',
-                click() {
-                    console.log("Dark Theme")
-                }
-            }
-        ]
-    }, {
         label: 'Custom CSS Theme',
         accelerator: 'CmdOrCtrl+Shift+T',
         click() {
@@ -259,7 +311,7 @@ function createWindow(id) {
                     modal: true,
                     resizable: false,
                     width: 600,
-                    height: 547,
+                    height: 545,
                     webPreferences: {
                         nodeIntegration: true
                     }
@@ -275,4 +327,27 @@ function createWindow(id) {
         default:
             break;
     }
+}
+
+function getDarkTheme() {
+    let darkTheme;
+
+    darkTheme = fs.readFileSync('./windows/assets/css/darktheme.css', 'utf-8');
+
+    return darkTheme;
+}
+
+function confirmExit() {
+    dialog.showMessageBox({
+        type: 'question',
+        buttons: ["OK", "Cancel"],
+        title: "Exit",
+        message: "Are you sure you want to exit?"
+    }, function(res) {
+        if (res == 0) {
+            app.showExitPrompt = false;
+            app.quit();
+            return;
+        }
+    });
 }
