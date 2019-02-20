@@ -18,6 +18,7 @@ let mainWindow,
     settingsWindow,
     customCSSWindow,
     themeCustomizerWindow,
+    themeManagerWindow,
     trayIcon;
 
 //Use singleInstanceLock for making app single instance
@@ -195,6 +196,12 @@ const template = [{
         click() {
             createWindow('themeCustomizer')
         }
+    }, {
+        label: 'Manage Themes',
+        accelerator: 'CmdOrCtrl+T',
+        click() {
+            createWindow('themeManager')
+        }
     }]
 }, {
     label: 'Settings',
@@ -321,6 +328,32 @@ function createWindow(id) {
                 themeCustomizerWindow.on('close', e => {
                     e.preventDefault();
                     themeCustomizerWindow.hide();
+                });
+            }
+            break;
+        case 'themeManager':
+            if (typeof themeManagerWindow === 'object') {
+                themeManagerWindow.show()
+            } else {
+                themeManagerWindow = new BrowserWindow({
+                    title: `Manage Themes`,
+                    frame: false,
+                    backgroundColor: '#282C34',
+                    titleBarStyle: 'hidden',
+                    parent: mainWindow,
+                    modal: true,
+                    resizable: false,
+                    width: 500,
+                    height: 420,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
+                })
+                themeManagerWindow.loadURL(path.resolve('./windows/themeManager/window.html'));
+                themeManagerWindow.show();
+                themeManagerWindow.on('close', e => {
+                    e.preventDefault();
+                    themeManagerWindow.hide();
                 });
             }
             break;
