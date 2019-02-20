@@ -2,31 +2,51 @@ const customTitlebar = require('custom-electron-titlebar');
 const {
     app,
     process,
-    Menu
+    Menu,
+    MenuItem
 } = require('electron').remote;
 const {
     ipcRenderer
 } = require('electron');
 
+const linksMenu = new Menu();
+
+linksMenu.append(new MenuItem({
+    label: 'Links',
+    submenu: [{
+        label: 'Website',
+        click: () => {
+            ipcRenderer.send('link-open', 'https://shadythgod.github.io');
+        }
+    }, {
+        label: 'GitHub',
+        click: () => {
+            ipcRenderer.send('link-open', 'https://www.github.com/shadythgod');
+        }
+    }, {
+        label: 'Repository',
+        click: () => {
+            ipcRenderer.send('link-open', 'https://www.github.com/shadythgod/altus');
+        }
+    }, {
+        label: 'My Instagram',
+        click: () => {
+            ipcRenderer.send('link-open', 'https://www.instagram.com/aman_harwara');
+        }
+    }]
+}));
+
 // Create main window titlebar
 const mainTitlebar = new customTitlebar.Titlebar({
     backgroundColor: customTitlebar.Color.fromHex('#21252B'),
     icon: '../assets/icons/icon.ico',
-    menu: new Menu(),
+    menu: linksMenu,
     minimizable: false,
     maximizable: false,
     closeable: true
 });
 
-document.getElementById('version').innerText = app.getVersion();
-document.getElementById('electron-version').innerText = 'v' + process.versions.electron;
-document.getElementById('chrome-version').innerText = 'v' + process.versions.chrome;
-document.getElementById('node-version').innerText = 'v' + process.versions.node;
-
-window.onclick = e => {
-    e.preventDefault();
-    if (e.target.tagName == "A") ipcRenderer.send('link-open', e.target.href)
-};
+document.querySelector('.altus-version').innerText = app.getVersion();
 
 // Setting title explicitly
 mainTitlebar.updateTitle(`About Altus`)
