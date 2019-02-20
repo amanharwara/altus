@@ -1,6 +1,9 @@
 const {
     remote
 } = require('electron');
+const {
+    ipcRenderer
+} = require('electron');
 const Mousetrap = require('mousetrap');
 
 // Fix for "WhatsApp works with Chrome 36+" issue . DO NOT REMOVE
@@ -23,6 +26,12 @@ window.onload = () => {
         window.location.reload();
     }
 }
+
+document.addEventListener('click', e => {
+    if (e.target.tagName == "A") {
+        ipcRenderer.send('link-open', e.target.href);
+    }
+});
 
 /* Mac Copy/Paste Fix */
 Mousetrap.bind(['command+c', 'ctrl+c'], function(e) {
