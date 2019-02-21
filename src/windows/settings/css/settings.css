@@ -32,9 +32,10 @@ body {
 .settings-container,
 .ui.settings-container {
     overflow-y: scroll;
-    height: 68.1vh;
+    height: 51vh;
     padding: 12px 5px !important;
     margin: 0 !important;
+    border-radius: 0 !important;
 }
 
 .container {
