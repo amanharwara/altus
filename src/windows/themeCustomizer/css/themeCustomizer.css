@@ -6,6 +6,7 @@ html {
 
 body {
     border: 1px solid #00000033;
+    background: #212222 !important;
 }
 
 body * {
@@ -71,6 +72,7 @@ body * {
     overflow-y: scroll;
     height: 68.1vh;
     margin: 0 !important;
+    border-radius: 0 !important;
 }
 
 .generatedcss textarea {
