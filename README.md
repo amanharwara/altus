@@ -1,5 +1,3 @@
-## You are viewing the Rewrite branch of Altus. This branch contains unstable and possibly non-working code for the 2.0 rewrite of Altus. The code provided here is NOT guaranteed to work.
-
 # Altus
 
 **Altus** is an Electron-based WhatsApp client that works on almost all of the desktop platforms, i.e., Windows, Mac and Linux.
@@ -17,14 +15,14 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 - **Custom Theme Support** If you know how to write CSS themes, you can create and use your own theme for WhatsApp.
 - **Available for most desktop platforms** including Windows (7 or above), Linux and MacOS.
 - **Tray icon** so you can minimize the app completely and still receive notifications.
+- **Multiple Account Support** As of v2.0, you can now use multiple WhatsApp accounts simultaneously!
 
 ### Planned Features
 
-- [ ] **Theme Customizer** so you don't have to learn CSS to create themes
-- [ ] ~~**Import/Export Settings** to import/export settings as JSON files~~
-- [ ] **Inbuilt YouTube Video Preview** to view YouTube videos without having to open your browser
-- [ ] **Multiple Account Support** to use multiple WhatsApp accounts simultaneously.
-- [ ] ~~**Tray Icon** so the app runs without you having to keep the window open~~
+- [x] ~~**Theme Customizer** so you don't have to learn CSS to create themes~~
+- [x] **Inbuilt YouTube Video Preview** to view YouTube videos without having to open your browser
+- [ ] ~~**Multiple Account Support** to use multiple WhatsApp accounts simultaneously.~~
+- [x] ~~**Tray Icon** so the app runs without you having to keep the window open~~
 
 ## Screenshots
 
