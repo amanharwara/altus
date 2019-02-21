@@ -26,7 +26,17 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 
 ## Screenshots
 
-![Altus](/img/altus.png)
+### First Start
+![Altus First Start](/img/Altus-First-Start.png)
+### Add New WhatsApp Instance
+![Altus Add Instance](/img/Altus-Add-Instance.png)
+### Default WhatsApp Theme
+![Altus Default Theme](/img/Altus-Default-Theme.png)
+### Dark WhatsApp Theme
+![Altus Dark Theme](/img/Altus-Dark-Theme.png)
+### Custom WhatsApp Theme Example
+![Altus Custom Theme](/img/Altus-Custom-Theme.png)
+
 
 ## Downloads
 
