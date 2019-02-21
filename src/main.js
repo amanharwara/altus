@@ -5,7 +5,8 @@ const {
     ipcMain,
     dialog,
     shell,
-    Tray
+    Tray,
+    nativeImage
 } = require('electron');
 const url = require('url');
 const path = require('path');
@@ -108,7 +109,7 @@ if (!singleInstanceLock) {
 
         function initializeGlobalSettings() {
             if (settings.get('trayIcon.value') === true) {
-                let trayIconPath = path.join(__dirname, '/windows/assets/icons/icon.ico');
+                let trayIconImage = nativeImage.createFromPath(path.join(__dirname, '/windows/assets/icons/icon.ico'));
                 const trayContextMenu = Menu.buildFromTemplate([{
                     label: 'Maximize',
                     click() {
@@ -129,7 +130,7 @@ if (!singleInstanceLock) {
                     }
                 }]);
                 if (process.platform !== "darwin") {
-                    trayIcon = new Tray(trayIconPath);
+                    trayIcon = new Tray(trayIconImage);
                     trayIcon.setToolTip('Altus');
                     trayIcon.setContextMenu(trayContextMenu);
                 } else {
@@ -243,7 +244,11 @@ function createWindow(id) {
                         nodeIntegration: true
                     }
                 })
-                aboutWindow.loadURL(path.resolve('./windows/about/window.html'));
+                aboutWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'about', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
                 aboutWindow.show();
                 aboutWindow.on('close', e => {
                     e.preventDefault();
@@ -271,7 +276,11 @@ function createWindow(id) {
                         nodeIntegration: true
                     }
                 })
-                settingsWindow.loadURL(path.resolve('./windows/settings/window.html'));
+                settingsWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'settings', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
                 settingsWindow.show();
                 settingsWindow.on('close', e => {
                     e.preventDefault();
@@ -297,7 +306,11 @@ function createWindow(id) {
                         nodeIntegration: true
                     }
                 })
-                customCSSWindow.loadURL(path.resolve('./windows/customCSS/window.html'));
+                customCSSWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'customCSS', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
                 customCSSWindow.show();
                 customCSSWindow.on('close', e => {
                     e.preventDefault();
@@ -323,7 +336,11 @@ function createWindow(id) {
                         nodeIntegration: true
                     }
                 })
-                themeCustomizerWindow.loadURL(path.resolve('./windows/themeCustomizer/window.html'));
+                themeCustomizerWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'themeCustomizer', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
                 themeCustomizerWindow.show();
                 themeCustomizerWindow.on('close', e => {
                     e.preventDefault();
@@ -349,7 +366,11 @@ function createWindow(id) {
                         nodeIntegration: true
                     }
                 })
-                themeManagerWindow.loadURL(path.resolve('./windows/themeManager/window.html'));
+                themeManagerWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'themeManager', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
                 themeManagerWindow.show();
                 themeManagerWindow.on('close', e => {
                     e.preventDefault();
