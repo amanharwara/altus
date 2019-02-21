@@ -136,7 +136,10 @@ function loadTabsFromStorage() {
 
                 tabs.set('instances', newTabs);
 
-                window.location.reload();
+                document.getElementById(`tab-content-${id}`).remove();
+                e.parentElement.remove();
+
+                checkForInstances();
             });
         });
     }
@@ -150,22 +153,27 @@ $('.ui.modal')
             let instanceSoundValue = $('.soundcheck').checkbox('is checked');
             let instanceThemeValue = $('.themecheck').dropdown('get value');
 
-            let newInstance = {
-                name: instanceNameValue,
-                id: generateId(),
-                settings: {
-                    notifications: instanceNotificationsValue,
-                    sound: instanceSoundValue,
-                    theme: instanceThemeValue
-                }
-            };
+            if (instanceNameValue == '') {
+                document.querySelector('#new-instance-name').parentElement.classList.add('error');
+                return false;
+            } else {
+                let newInstance = {
+                    name: instanceNameValue,
+                    id: generateId(),
+                    settings: {
+                        notifications: instanceNotificationsValue,
+                        sound: instanceSoundValue,
+                        theme: instanceThemeValue
+                    }
+                };
 
-            let tabsStore = tabs.get('instances');
-            tabsStore.push(newInstance);
+                let tabsStore = tabs.get('instances');
+                tabsStore.push(newInstance);
 
-            tabs.set('instances', tabsStore);
+                tabs.set('instances', tabsStore);
+                window.location.reload();
+            }
 
-            window.location.reload();
         }
     })
     .modal('attach events', '.add-tab-icon', 'show');
@@ -282,6 +290,16 @@ document.querySelectorAll('.tab').forEach(tabElement => {
 
     setWebViewSettings(webviewElement, tabJSON);
 });
+
+function checkForInstances() {
+    let instances = tabs.get('instances');
+
+    if (instances.length == 0 || instances == null || instances == undefined) {
+        document.querySelector('.no-tabs').style.display = 'flex';
+    } else {
+        document.querySelector('.no-tabs').style.display = 'none';
+    }
+}
 
 ipcRenderer.on('new-themes-added', e => window.location.reload(true));
 
