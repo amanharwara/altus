@@ -58,15 +58,25 @@ To download the latest releases, you can [click here](https://github.com/ShadyTh
 
 #### Linux
 
-Installation will be different depending on your Linux distribution. You can download either of the Linux file available i.e. `altus-x.x.x-x86_64.AppImage` or `altus_x.x.x_amd64.deb` according to your distribution.
+I recommend using the `.AppImage` format since it allows you to use that single executable on the majority of Linux distributions. I am also not going to create `.deb` executables anymore since they aren't universal and are proprietary to Debian distributions unlike `.AppImage` executables which work on almost all of the distributions.
 
-It is recommended you use the file with `.AppImage` extension as it an almost-universal file distribution format for linux which is very convenient. If you use the `AppImage` file you will not have to worry about what distribution you are using; you can just run the `AppImage` file and it will run the program.
+Installing Altus on Linux using AppImage is really easy. Follow these steps:
 
-If you have a Debian-based distribution like Ubuntu, you can use Debian-specific `.deb` file. On some distros like Ubuntu, you can just double-click to install the file or you can use `dpkg` to install it. E.g.: `sudo dpkg -i path\to\deb`
+- Download and move the AppImage file to wherever you want to. E.g: `~/Downloads/Altus 2.0.0.AppImage`
+- You might need to make the file executable using chmod. Use: `chmod a+x ~/Downloads/Altus 2.0.0.AppImage`
+- Then simply run it. Use: `~/Downloads/Altus 2.0.0.AppImage`
 
 #### Mac
 
-Mac packages will take more time to get released because I do not own a proper Mac and have to use a virtual machine to package the app. Installation for Mac is simple. All you have to do is open the provided `.dmg` file and once it is opened, drag the Altus icon into the "Applications" folder.
+One thing to note is that Mac releases most probably will be late than the Windows and Linux releases as I do not own a Mac and my PC runs really slow when I use macOS on a VM.
+
+To install Altus on a Mac, follow these steps:
+
+- Download the `.dmg` file
+- Double-click it i.e. run it
+- Drag the **Altus icon** onto the **Applications folder**
+- Let it copy
+- Done!
 
 ---
 
