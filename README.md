@@ -42,8 +42,10 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 
 Releases for any of the platforms are available on the [releases page](https://github.com/ShadyThGod/altus/releases/) on the repository or on the [project page](https://shadythgod.github.io/altus/) on my website.
 
-#### Installation :-
 ---
+
+### Installation :-
+
 #### Windows
 
 - Run the `.exe` file provided in the release. E.g.: `Altus-Setup-2.0.0.exe`
@@ -65,6 +67,16 @@ If you have a Debian-based distribution like Ubuntu, you can use Debian-specific
 #### Mac
 
 Mac packages will take more time to get released because I do not own a proper Mac and have to use a virtual machine to package the app. Installation for Mac is simple. All you have to do is open the provided `.dmg` file and once it is opened, drag the Altus icon into the "Applications" folder.
+
+---
+
+### Latest Releases:
+
+#### Windows - v2.0.0 - Not available yet
+
+#### Linux - v2.0.0 - Not available yet
+
+#### MacOS - v2.0.0 - Not available yet
 
 ## For Developers
 
