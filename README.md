@@ -40,7 +40,7 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 
 ## Releases
 
-Releases for any of the platforms are available on the [releases page](https://github.com/ShadyThGod/altus/releases/) on the repository or on the [project page](https://shadythgod.github.io/altus/) on my website.
+To download the latest releases, you can [click here](https://github.com/ShadyThGod/altus/tree/rewrite-2.0/#latest-releases). Alternatively, you can visit the [releases page](https://github.com/ShadyThGod/altus/releases) on the repository or the [downloads page](https://shadythgod.github.io/downloads/) on my website for all the releases available.
 
 ---
 
