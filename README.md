@@ -82,16 +82,16 @@ However, please make sure you follow a few rules listed below to ensure that you
 
 Below is the list of the dependencies that helped me greatly to create this app.
 
-##### clipboard.js [(zenorocha/clipboard.js)](https://github.com/zenorocha/clipboard.js) - used for copying generated CSS to the clipboard
+#### clipboard.js [(zenorocha/clipboard.js)](https://github.com/zenorocha/clipboard.js) - used for copying generated CSS to the clipboard
 
 ---
 
-##### custom-electron-titlebar [(AlexTorresSk/custom-electron-titlebar)](https://github.com/AlexTorresSk/custom-electron-titlebar) - used to create a custom titlebar instead of the plain titlebar that Electron has by default
+#### custom-electron-titlebar [(AlexTorresSk/custom-electron-titlebar)](https://github.com/AlexTorresSk/custom-electron-titlebar) - used to create a custom titlebar instead of the plain titlebar that Electron has by default
 
 ---
 
-##### electron-store [(sindresorhus/electron-store)](https://github.com/sindresorhus/electron-store) - used to store information of settings, tabs and themes
+#### electron-store [(sindresorhus/electron-store)](https://github.com/sindresorhus/electron-store) - used to store information of settings, tabs and themes
 
 ---
 
-##### Mousetrap [(ccampbell/mousetrap)](https://github.com/ccampbell/mousetrap) - used for creating local shortcuts without registering accelerators
+#### Mousetrap [(ccampbell/mousetrap)](https://github.com/ccampbell/mousetrap) - used for creating local shortcuts without registering accelerators
