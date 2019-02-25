@@ -38,13 +38,21 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 ![Altus Custom Theme](/img/Altus-Custom-Theme.png)
 
 
-## Downloads
+## Releases
 
-Downloads for any of the platforms are available on the [releases page](https://github.com/ShadyThGod/altus/releases/) on the [repository](https://github.com/ShadyThGod/altus). Help for installation regarding any of the platforms is provided below.
+Releases for any of the platforms are available on the [releases page](https://github.com/ShadyThGod/altus/releases/) on the repository or on the [project page](https://shadythgod.github.io/altus/) on my website.
 
+#### Installation :-
+---
 #### Windows
 
-To install the app for Windows, simply run the setup which will probably be named as `Altus-Setup-x.x.x.exe` where _x.x.x_ is the version number. The setup will guide you through your installation. Currently, the setup will add a shortcut to the desktop and the start menu and install to `C:\Program Files\Altus` or `C:\Users\(User)\AppData\Local\Programs\Altus` depending on what you select during the installation.
+- Run the `.exe` file provided in the release. E.g.: `Altus-Setup-2.0.0.exe`
+- If Windows displays a warning saying **'Windows protected your PC'**, click on **More info** and then click **Run Anyway**
+- Once the Altus Setup starts, you will be asked to select from two choices which are **Anyone who uses this computer (all users)** and **Only for me (username)**
+  - If you select **Anyone who uses this computer (all users)**, Altus will be installed to `C:\Program Files\Altus` and will be available for all the users on that machine.
+  - If you select **Only for me (username)**, Altus will be installed to `C:\Users\(username)\AppData\Local\Programs\Altus` and will only be available for that user (username).
+- Click **Install**. If it asks for admin privileges (UAC), click **Yes**
+- The installation will Altus will be installed to the path according to what you selected. You can select **Run Altus** if you want to start Altus after closing the setup.
 
 #### Linux
 
@@ -58,6 +66,32 @@ If you have a Debian-based distribution like Ubuntu, you can use Debian-specific
 
 Mac packages will take more time to get released because I do not own a proper Mac and have to use a virtual machine to package the app. Installation for Mac is simple. All you have to do is open the provided `.dmg` file and once it is opened, drag the Altus icon into the "Applications" folder.
 
-### For Developers
+## For Developers
 
-I use electron-builder to build and distribute my app. However, it is not included as a dependency in the source code. Once you maybe clone this repo and make whatever changes you want to the app, you will need to either install electron-builder as a dependency using `npm install electron-builder --save-dev` or globally using `npm install -g electron-builder`. If you install electron-builder globally, you can just use `build -wml` or `build --dir` to package the app.
+Altus is an open-source app and I really appreciate other developers adding new features and/or helping fix bugs. If you want to contribute to Altus, you can fork this repository, make the changes and create a pull request. You can check out [this tutorial](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork) to learn how to create a pull request.
+
+However, please make sure you follow a few rules listed below to ensure that your changes get merged into the main repo. The rules listed below are enforced to make sure the changes made are well-documented and can be easily kept track of.
+
+- Make sure your pull request has a informative title. You should use prefixes like `ADD:`, `FIX:`, etc at the start of the title which describe the changes followed by a one-line description of the changes. Example: `ADD: Added a new feature to Altus`
+
+- Your pull request's description should be in-depth. Make sure you document all the changes you made as in-depth and informative as possible. Dependency changes and major code changes must be thoroughly described and given priority in your description.
+
+- Commits in your fork should be informative, as well. Make sure you don't combine too many changes into a single commit.
+
+## Acknowledgements
+
+Below is the list of the dependencies that helped me greatly to create this app.
+
+##### clipboard.js [(zenorocha/clipboard.js)](https://github.com/zenorocha/clipboard.js) - used for copying generated CSS to the clipboard
+
+---
+
+##### custom-electron-titlebar [(AlexTorresSk/custom-electron-titlebar)](https://github.com/AlexTorresSk/custom-electron-titlebar) - used to create a custom titlebar instead of the plain titlebar that Electron has by default
+
+---
+
+##### electron-store [(sindresorhus/electron-store)](https://github.com/sindresorhus/electron-store) - used to store information of settings, tabs and themes
+
+---
+
+##### Mousetrap [(ccampbell/mousetrap)](https://github.com/ccampbell/mousetrap) - used for creating local shortcuts without registering accelerators
