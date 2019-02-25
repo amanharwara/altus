@@ -186,17 +186,21 @@ loadTabsFromStorage();
 function generateThemeNames() {
     let nameList = [];
 
-    themes.get('themes').forEach(theme => {
-        let name = theme.name;
-        let value = theme.name;
+    if (themes.get('themes') && themes.get('themes').length > 0) {
+        themes.get('themes').forEach(theme => {
+            let name = theme.name;
+            let value = theme.name;
 
-        let themeJSON = {
-            name: name,
-            value: value
-        }
+            let themeJSON = {
+                name: name,
+                value: value
+            }
 
-        nameList.push(themeJSON);
-    });
+            nameList.push(themeJSON);
+        });
+    } else {
+        window.location.reload();
+    }
 
     return nameList;
 }

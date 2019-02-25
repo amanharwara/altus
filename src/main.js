@@ -12,6 +12,7 @@ const url = require('url');
 const path = require('path');
 const Store = require('electron-store');
 const fs = require('fs');
+const fetch = require('node-fetch');
 
 //Declare window variables
 let mainWindow,
@@ -24,6 +25,31 @@ let mainWindow,
 
 //Use singleInstanceLock for making app single instance
 const singleInstanceLock = app.requestSingleInstanceLock();
+
+let themesList;
+
+function createThemesList(css) {
+    themesList = new Store({
+        name: 'themes',
+        defaults: {
+            themes: [{
+                name: 'Default',
+                css: ''
+            }, {
+                name: 'Dark',
+                css: css
+            }]
+        }
+    });
+}
+
+function getDarkTheme(createThemesList) {
+    fetch('https://raw.githubusercontent.com/ShadyThGod/shadythgod.github.io/master/css/altus-dark-theme.css')
+        .then(res => res.text())
+        .then(css => createThemesList(css));
+};
+
+getDarkTheme(createThemesList);
 
 if (!singleInstanceLock) {
     //Quits the second instance
@@ -53,19 +79,6 @@ if (!singleInstanceLock) {
                 name: 'Exit Prompt',
                 description: 'If this setting is enabled, the app will prompt you everytime you close the app. Disabling this will disable the prompt.'
             }
-        }
-    });
-
-    let themesList = new Store({
-        name: 'themes',
-        defaults: {
-            themes: [{
-                name: 'Default',
-                css: ''
-            }, {
-                name: 'Dark',
-                css: getDarkTheme()
-            }]
         }
     });
 
@@ -160,9 +173,10 @@ if (!singleInstanceLock) {
     });
 }
 
-const template = [{
-    label: 'File',
-    submenu: [{
+let fileMenuTemplate;
+
+if (!app.isPackaged) {
+    fileMenuTemplate = [{
         label: 'Open DevTools',
         accelerator: 'CmdOrCtrl+Shift+I',
         click() {
@@ -182,7 +196,28 @@ const template = [{
         click() {
             app.quit();
         }
-    }]
+    }];
+} else {
+    fileMenuTemplate = [{
+        label: 'Force Reload',
+        accelerator: 'CmdOrCtrl+Shift+R',
+        click() {
+            var window = BrowserWindow.getFocusedWindow();
+            window.webContents.reload();
+        }
+    }, {
+        label: 'Quit',
+        accelerator: 'CmdOrCtrl+Q',
+        click() {
+            app.quit();
+        }
+    }];
+}
+
+
+const template = [{
+    label: 'File',
+    submenu: fileMenuTemplate
 }, {
     label: 'Theme',
     submenu: [{
@@ -381,14 +416,6 @@ function createWindow(id) {
         default:
             break;
     }
-}
-
-function getDarkTheme() {
-    let darkTheme;
-
-    darkTheme = fs.readFileSync('./windows/assets/css/darktheme.css', 'utf-8');
-
-    return darkTheme;
 }
 
 function confirmExit() {
