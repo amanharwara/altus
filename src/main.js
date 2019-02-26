@@ -274,7 +274,7 @@ function createWindow(id) {
                     height: 320,
                     resizable: false,
                     parent: mainWindow,
-                    modal: true,
+                    modal: process.platform === 'darwin' ? false : true,
                     webPreferences: {
                         nodeIntegration: true
                     }
@@ -306,7 +306,7 @@ function createWindow(id) {
                     maximizable: false,
                     minimizable: false,
                     parent: mainWindow,
-                    modal: true,
+                    modal: process.platform === 'darwin' ? false : true,
                     webPreferences: {
                         nodeIntegration: true
                     }
@@ -333,7 +333,7 @@ function createWindow(id) {
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
-                    modal: true,
+                    modal: process.platform === 'darwin' ? false : true,
                     resizable: false,
                     width: 600,
                     height: 547,
@@ -363,7 +363,7 @@ function createWindow(id) {
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
-                    modal: true,
+                    modal: process.platform === 'darwin' ? false : true,
                     resizable: false,
                     width: 600,
                     height: 545,
@@ -393,7 +393,7 @@ function createWindow(id) {
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
-                    modal: true,
+                    modal: process.platform === 'darwin' ? false : true,
                     resizable: false,
                     width: 500,
                     height: 420,
