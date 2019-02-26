@@ -33,8 +33,7 @@
         "linux": {
             "category": "Chat",
             "target": [
-                "AppImage",
-                "deb"
+                "AppImage"
             ]
         },
         "mac": {
