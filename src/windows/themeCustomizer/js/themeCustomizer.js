@@ -9,7 +9,7 @@ let cssClipboard = new ClipboardJS('#copy-css-button');
 const mainTitlebar = new customTitlebar.Titlebar({
     backgroundColor: customTitlebar.Color.fromHex('#21252B'),
     icon: '../assets/icons/icon.ico',
-    menu: new Menu(),
+    menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
     minimizable: false,
     maximizable: false,
     closeable: true
