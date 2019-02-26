@@ -15,45 +15,105 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 - **Custom Theme Support** If you know how to write CSS themes, you can create and use your own theme for WhatsApp.
 - **Available for most desktop platforms** including Windows (7 or above), Linux and MacOS.
 - **Tray icon** so you can minimize the app completely and still receive notifications.
+- **Multiple Account Support** As of v2.0, you can now use multiple WhatsApp accounts simultaneously!
 
 ### Planned Features
 
-- [ ] **Theme Customizer** so you don't have to learn CSS to create themes
-- [x] ~~**Import/Export Settings** to import/export settings as JSON files~~
+- [x] ~~**Theme Customizer** so you don't have to learn CSS to create themes~~
 - [ ] **Inbuilt YouTube Video Preview** to view YouTube videos without having to open your browser
-- [ ] **Multiple Account Support** to use multiple WhatsApp accounts simultaneously.
+- [x] ~~**Multiple Account Support** to use multiple WhatsApp accounts simultaneously.~~
 - [x] ~~**Tray Icon** so the app runs without you having to keep the window open~~
 
 ## Screenshots
 
-![Altus](/img/altus.png)
+### First Start
+![Altus First Start](/img/Altus-First-Start.png)
+### Add New WhatsApp Instance
+![Altus Add Instance](/img/Altus-Add-Instance.png)
+### Default WhatsApp Theme
+![Altus Default Theme](/img/Altus-Default-Theme.png)
+### Dark WhatsApp Theme
+![Altus Dark Theme](/img/Altus-Dark-Theme.png)
+### Custom WhatsApp Theme Example
+![Altus Custom Theme](/img/Altus-Custom-Theme.png)
 
-![altus-dark-mode](/img/altus-dark-mode.png)
 
-![altus-custom-theme-window](/img/altus-custom-theme.png)
+## Releases
 
-![altus-preferences](/img/altus-preferences.png)
+To download the latest releases, you can [click here](https://github.com/ShadyThGod/altus/tree/rewrite-2.0/#latest-releases). Alternatively, you can visit the [releases page](https://github.com/ShadyThGod/altus/releases) on the repository or the [downloads page](https://shadythgod.github.io/downloads/) on my website for all the releases available.
 
-## Downloads
+---
 
-Downloads for any of the platforms are available on the [releases page](https://github.com/ShadyThGod/altus/releases/) on the [repository](https://github.com/ShadyThGod/altus). Help for installation regarding any of the platforms is provided below.
+### Installation :-
 
 #### Windows
 
-To install the app for Windows, simply run the setup which will probably be named as `Altus-Setup-x.x.x.exe` where *x.x.x* is the version number. The setup will guide you through your installation. Currently, the setup will add a shortcut to the desktop and the start menu and install to `C:\Program Files\Altus` or `C:\Users\(User)\AppData\Local\Programs\Altus` depending on what you select during the installation.
+- Run the `.exe` file provided in the release. E.g.: `Altus-Setup-2.0.0.exe`
+- If Windows displays a warning saying **'Windows protected your PC'**, click on **More info** and then click **Run Anyway**
+- Once the Altus Setup starts, you will be asked to select from two choices which are **Anyone who uses this computer (all users)** and **Only for me (username)**
+  - If you select **Anyone who uses this computer (all users)**, Altus will be installed to `C:\Program Files\Altus` and will be available for all the users on that machine.
+  - If you select **Only for me (username)**, Altus will be installed to `C:\Users\(username)\AppData\Local\Programs\Altus` and will only be available for that user (username).
+- Click **Install**. If it asks for admin privileges (UAC), click **Yes**
+- The installation will Altus will be installed to the path according to what you selected. You can select **Run Altus** if you want to start Altus after closing the setup.
 
 #### Linux
 
-Installation will be different depending on your Linux distribution. You can download either of the Linux file available i.e. `altus-x.x.x-x86_64.AppImage` or `altus_x.x.x_amd64.deb` according to your distribution.
+I recommend using the `.AppImage` format since it allows you to use that single executable on the majority of Linux distributions. I am also not going to create `.deb` executables anymore since they aren't universal and are proprietary to Debian distributions unlike `.AppImage` executables which work on almost all of the distributions.
 
-It is recommended you use the file with `.AppImage` extension as it an almost-universal file distribution format for linux which is very convenient. If you use the `AppImage` file you will not have to worry about what distribution you are using; you can just run the `AppImage` file and it will run the program.
+Installing Altus on Linux using AppImage is really easy. Follow these steps:
 
-If you have a Debian-based distribution like Ubuntu, you can use Debian-specific `.deb` file. On some distros like Ubuntu, you can just double-click to install the file or you can use `dpkg` to install it. E.g.: `sudo dpkg -i path\to\deb`
+- Download and move the AppImage file to wherever you want to. E.g: `~/Downloads/Altus 2.0.0.AppImage`
+- You might need to make the file executable using chmod. Use: `chmod a+x ~/Downloads/Altus 2.0.0.AppImage`
+- Then simply run it. Use: `~/Downloads/Altus 2.0.0.AppImage`
 
 #### Mac
 
-Mac packages will take more time to get released because I do not own a proper Mac and have to use a virtual machine to package the app. Installation for Mac is simple. All you have to do is open the provided `.dmg` file and once it is opened, drag the Altus icon into the "Applications" folder.
+One thing to note is that Mac releases most probably will be late than the Windows and Linux releases as I do not own a Mac and my PC runs really slow when I use macOS on a VM.
 
-### For Developers
+To install Altus on a Mac, follow these steps:
 
-I use electron-builder to build and distribute my app. However, it is not included as a dependency in the source code. Once you maybe clone this repo and make whatever changes you want to the app, you will need to either install electron-builder as a dependency using `npm install electron-builder --save-dev` or globally using `npm install -g electron-builder`. If you install electron-builder globally, you can just use `build -wml` or `build --dir` to package the app.
+- Download the `.dmg` file
+- Double-click it i.e. run it
+- Drag the **Altus icon** onto the **Applications folder**
+- Let it copy
+- Done!
+
+---
+
+### Latest Releases:
+
+#### Windows - v2.0.0 - Not available yet
+
+#### Linux - v2.0.0 - Not available yet
+
+#### MacOS - v2.0.0 - Not available yet
+
+## For Developers
+
+Altus is an open-source app and I really appreciate other developers adding new features and/or helping fix bugs. If you want to contribute to Altus, you can fork this repository, make the changes and create a pull request. You can check out [this tutorial](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork) to learn how to create a pull request.
+
+However, please make sure you follow a few rules listed below to ensure that your changes get merged into the main repo. The rules listed below are enforced to make sure the changes made are well-documented and can be easily kept track of.
+
+- Make sure your pull request has a informative title. You should use prefixes like `ADD:`, `FIX:`, etc at the start of the title which describe the changes followed by a one-line description of the changes. Example: `ADD: Added a new feature to Altus`
+
+- Your pull request's description should be in-depth. Make sure you document all the changes you made as in-depth and informative as possible. Dependency changes and major code changes must be thoroughly described and given priority in your description.
+
+- Commits in your fork should be informative, as well. Make sure you don't combine too many changes into a single commit.
+
+## Acknowledgements
+
+Below is the list of the dependencies that helped me greatly to create this app.
+
+#### clipboard.js [(zenorocha/clipboard.js)](https://github.com/zenorocha/clipboard.js) - used for copying generated CSS to the clipboard
+
+---
+
+#### custom-electron-titlebar [(AlexTorresSk/custom-electron-titlebar)](https://github.com/AlexTorresSk/custom-electron-titlebar) - used to create a custom titlebar instead of the plain titlebar that Electron has by default
+
+---
+
+#### electron-store [(sindresorhus/electron-store)](https://github.com/sindresorhus/electron-store) - used to store information of settings, tabs and themes
+
+---
+
+#### Mousetrap [(ccampbell/mousetrap)](https://github.com/ccampbell/mousetrap) - used for creating local shortcuts without registering accelerators

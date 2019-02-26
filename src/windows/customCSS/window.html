@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Custom Theme To WhatsApp</title>
+    <link rel="stylesheet" href="./css/customCSS.css">
+    <link rel="stylesheet" href="../assets/css/semantic.min.css">
+</head>
+
+<body>
+    <div class="main">
+        <div class="ui inverted basic segment">
+            <h1 class="ui header">
+                <i class="css3 alternate icon"></i>
+                <div class="content">
+                    Custom CSS
+                    <div class="sub header">Paste your custom CSS code to apply here. <br> You can use the Theme Customizer to generate CSS easily.</div>
+                </div>
+            </h1>
+        </div>
+        <div class="ui basic inverted segment cssarea">
+            <div class="ui inverted form">
+                <div class="field">
+                    <label>Name of theme (required):</label>
+                    <input type="text" id="themenameinput">
+                </div>
+                <div class="field">
+                    <label>Paste your CSS here (required):</label>
+                    <textarea id="customcssarea"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="ui footer black inverted vertical segment">
+            <div class="ui container">
+                <button type="button" class="ui button green" id="add-theme-button">
+                    <i class="check icon"></i> Add
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./js/customCSS.js"></script>
+</body>
+
+</html>

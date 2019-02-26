@@ -1,158 +1,128 @@
-// Loading all the libraries
-const electron = require('electron');
-const url = require('url');
-const path = require('path');
-const fs = require('fs');
-
 const {
     app,
     BrowserWindow,
     Menu,
     ipcMain,
+    dialog,
     shell,
-    Notification,
-    globalShortcut,
     Tray,
-    dialog
-} = electron;
+    nativeImage
+} = require('electron');
+const url = require('url');
+const path = require('path');
+const Store = require('electron-store');
+const fs = require('fs');
+const fetch = require('node-fetch');
 
-//Defining the window variables
-let mainWindow;
-let themeWindow;
-let prefWindow;
-let trayIcon;
+//Declare window variables
+let mainWindow,
+    aboutWindow,
+    settingsWindow,
+    customCSSWindow,
+    themeCustomizerWindow,
+    themeManagerWindow,
+    trayIcon;
 
-//Make application single-instance only
+//Use singleInstanceLock for making app single instance
 const singleInstanceLock = app.requestSingleInstanceLock();
 
+let themesList;
+
+function createThemesList(css) {
+    themesList = new Store({
+        name: 'themes',
+        defaults: {
+            themes: [{
+                name: 'Default',
+                css: ''
+            }, {
+                name: 'Dark',
+                css: css
+            }]
+        }
+    });
+}
+
+function getDarkTheme(createThemesList) {
+    fetch('https://raw.githubusercontent.com/ShadyThGod/shadythgod.github.io/master/css/altus-dark-theme.css')
+        .then(res => res.text())
+        .then(css => createThemesList(css));
+};
+
+getDarkTheme(createThemesList);
+
 if (!singleInstanceLock) {
-    app.quit()
+    //Quits the second instance
+    app.quit();
 } else {
-    app.on('second-instance', (e, cmd, pwd) => {
+    //Focuses the already-open instance
+    app.on('second-instance', () => {
         if (mainWindow) {
-            if (mainWindow.isMinimized()) mainWindow.restore()
-            mainWindow.focus()
+            if (mainWindow.isMinimized()) {
+                mainWindow.restore();
+            }
+            mainWindow.focus();
         }
     });
 
-    //App.on ready function
-    app.on('ready', function() {
+    //Create default settings
+    var settings = new Store({
+        name: 'settings',
+        defaults: {
+            trayIcon: {
+                value: true,
+                name: 'Tray Icon',
+                description: 'If this setting is enabled, the tray icon will be enabled allowing you to receive messages even after completely minimizing Altus. Disabling this will disable the tray icon.'
+            },
+            showExitPrompt: {
+                value: true,
+                name: 'Exit Prompt',
+                description: 'If this setting is enabled, the app will prompt you everytime you close the app. Disabling this will disable the prompt.'
+            }
+        }
+    });
+
+    //Create main window, main menu
+    app.on('ready', () => {
         mainWindow = new BrowserWindow({
-            title: 'Altus',
-            icon: "./img/icon.png"
-        }); //Creates the main window
+            title: `Altus ${app.getVersion()}`,
+            frame: false,
+            titleBarStyle: 'hidden',
+            backgroundColor: '#282C34',
+            icon: './build/icon.ico',
+            webPreferences: {
+                webviewTag: true,
+                nodeIntegration: true
+            }
+        });
         mainWindow.maximize(); //Maximizing the main window always
         mainWindow.loadURL(url.format({ //Loads the mainwindow html file
-            pathname: path.join(__dirname, 'windows', 'mainWindow.html'),
+            pathname: path.join(__dirname, 'windows', 'main', 'window.html'),
             protocol: 'file:',
             slashes: true
         }));
-        const mainMenu = Menu.buildFromTemplate(mainMenuTemp); //Applies the main menu template
-        Menu.setApplicationMenu(mainMenu); //Sets the main menu
-
-        mainWindow.on('close', function (e) { // Confirm dialog when user closes window
+        mainWindow.on('close', e => {
             if (app.showExitPrompt) {
                 e.preventDefault();
                 confirmExit();
             }
         });
-        mainWindow.on('closed', function() { //Quits app when main window is closed
+        mainWindow.on('closed', () => {
             mainWindow = null;
             app.quit();
         });
 
-        ipcMain.on('theme:change', function(e, data) { //Runs when the user wants to change the theme
-            mainWindow.webContents.send('theme:change', data);
-            themeWindow.close(); //Closes the theme window if open
-        });
+        //Setting main menu
+        const mainMenu = Menu.buildFromTemplate(template);
+        Menu.setApplicationMenu(mainMenu);
 
-        ipcMain.on('linkOpen', function(e, data) {
-            shell.openExternal(data);
-        });
+        ipcMain.on('link-open', (e, link) => shell.openExternal(link));
+        ipcMain.on('settings-changed', e => initializeGlobalSettings());
+        ipcMain.on('new-themes-added', e => mainWindow.webContents.send('new-themes-added', true));
 
-        ipcMain.on('settingsChanged', function(e, f) {
-            mainWindow.webContents.send('settingsChanged', true);
-            prefWindow.close();
-        });
-
-        globalShortcut.register('CmdOrCtrl+Shift+F12', function() {
-            var focusedWindow = BrowserWindow.getFocusedWindow();
-            focusedWindow.webContents.openDevTools();
-        });
-
-        globalShortcut.register('CmdOrCtrl+Shift+R', function() {
-            var focusedWindow = BrowserWindow.getFocusedWindow();
-            focusedWindow.webContents.reload();
-        });
-
-        init();
-
-        ipcMain.on('notification-process-1', function(e, i) {
-            mainWindow.webContents.send('notification-process-1', i);
-        });
-
-        function init() {
-            var theme, persistTheme, toggleNotifications, toggleSound, toggleTray, showExitPrompt;
-            ipcMain.on('preferences', function(e, pref) {
-                theme = pref.theme || {
-                    name: 'default-theme',
-                    css: ''
-                };
-
-                if (typeof pref.toggleTray !== "undefined") {
-                    toggleTray = pref.toggleTray;
-                } else {
-                    toggleTray = true;
-                }
-
-                if (typeof pref.showExitPrompt !== "undefined") {
-                    app.showExitPrompt = pref.showExitPrompt;
-                } else {
-                    app.showExitPrompt = true;
-                }
-
-                if (typeof pref.persistTheme !== "undefined") {
-                    persistTheme = pref.persistTheme;
-                } else {
-                    persistTheme = true;
-                }
-
-                if (typeof pref.toggleNotifications !== "undefined") {
-                    toggleNotifications = pref.toggleNotifications;
-                } else {
-                    toggleNotifications = true;
-                }
-
-                if (typeof pref.toggleSound !== "undefined") {
-                    toggleSound = pref.toggleSound;
-                } else {
-                    toggleSound = true;
-                }
-
-                if (theme.name == undefined || theme.css == undefined) {
-                    theme.name = 'default-theme';
-                    theme.css = '';
-                }
-                if (persistTheme == undefined) {
-                    persistTheme = true;
-                }
-                if (persistTheme) setTheme();
-                setSound(toggleSound);
-
-                if (toggleTray) {
-                    setTray();
-                } else {
-                    if (trayIcon) {
-                        trayIcon.destroy();
-                    }
-                    trayIcon = null;
-                    trayIcon = undefined;
-                }
-            });
-
-            function setTray() {
-                //Tray icon
-                var trayIconPath = path.join(__dirname, 'img/icon.png');
+        function initializeGlobalSettings() {
+            if (settings.get('trayIcon.value') === true) {
+                let trayIconImage = nativeImage.createFromPath(path.join(__dirname, '/windows/assets/icons/icon.ico'));
                 const trayContextMenu = Menu.buildFromTemplate([{
                     label: 'Maximize',
                     click() {
@@ -173,40 +143,302 @@ if (!singleInstanceLock) {
                     }
                 }]);
                 if (process.platform !== "darwin") {
-                    trayIcon = new Tray(trayIconPath);
+                    trayIcon = new Tray(trayIconImage);
                     trayIcon.setToolTip('Altus');
                     trayIcon.setContextMenu(trayContextMenu);
                 } else {
                     app.dock.setMenu(trayContextMenu);
                 }
-            }
-
-            function setTheme() {
-                if (theme.name == 'default-theme') {
-                    mainWindow.webContents.send('theme:change', {
-                        name: 'default-theme'
-                    });
-                } else if (theme.name == 'dark-theme') {
-                    mainWindow.webContents.send('theme:change', {
-                        name: 'dark-theme'
-                    });
-                } else {
-                    mainWindow.webContents.send('theme:change', {
-                        name: theme.name,
-                        css: theme.css
-                    });
+            } else {
+                if (trayIcon) {
+                    trayIcon.destroy();
                 }
+                trayIcon = null;
+                trayIcon = undefined;
             }
 
-            function setSound(toggleSound) {
-                mainWindow.webContents.send('muteSound', toggleSound);
+            if (settings.get('showExitPrompt.value') === true) {
+                app.showExitPrompt = true;
+            } else {
+                app.showExitPrompt = false;
             }
-
-            mainWindow.webContents.on('did-finish-load', function() {
-                mainWindow.webContents.send('sendPreferencesBool', true);
-            });
         }
+
+        initializeGlobalSettings();
     });
+
+    //Quit app if all windows are closed
+    app.on('window-all-closed', () => {
+        app.quit()
+    });
+}
+
+let fileMenuTemplate;
+
+if (!app.isPackaged) {
+    fileMenuTemplate = [{
+        label: 'Open DevTools',
+        accelerator: 'CmdOrCtrl+Shift+I',
+        click() {
+            var window = BrowserWindow.getFocusedWindow();
+            window.webContents.openDevTools();
+        }
+    }, {
+        label: 'Force Reload',
+        accelerator: 'CmdOrCtrl+Shift+R',
+        click() {
+            var window = BrowserWindow.getFocusedWindow();
+            window.webContents.reload();
+        }
+    }, {
+        label: 'Quit',
+        accelerator: 'CmdOrCtrl+Q',
+        click() {
+            app.quit();
+        }
+    }];
+} else {
+    fileMenuTemplate = [{
+        label: 'Force Reload',
+        accelerator: 'CmdOrCtrl+Shift+R',
+        click() {
+            var window = BrowserWindow.getFocusedWindow();
+            window.webContents.reload();
+        }
+    }, {
+        label: 'Quit',
+        accelerator: 'CmdOrCtrl+Q',
+        click() {
+            app.quit();
+        }
+    }];
+}
+
+
+const template = [{
+    label: 'File',
+    submenu: fileMenuTemplate
+}, {
+    label: 'Theme',
+    submenu: [{
+        label: 'Custom CSS Theme',
+        accelerator: 'CmdOrCtrl+Shift+T',
+        click() {
+            createWindow('customCSS')
+        }
+    }, {
+        label: 'Theme Customizer',
+        accelerator: 'CmdOrCtrl+Alt+T',
+        click() {
+            createWindow('themeCustomizer')
+        }
+    }, {
+        label: 'Manage Themes',
+        accelerator: 'CmdOrCtrl+T',
+        click() {
+            createWindow('themeManager')
+        }
+    }]
+}, {
+    label: 'Settings',
+    submenu: [{
+        label: 'Settings',
+        accelerator: 'CmdOrCtrl+,',
+        click() {
+            createWindow('settings')
+        }
+    }]
+}, {
+    label: "About",
+    submenu: [{
+        label: "About",
+        click() {
+            createWindow('about')
+        }
+    }, {
+        label: "Links",
+        submenu: [{
+            label: 'Website',
+            click: () => {
+                shell.openExternal('https://shadythgod.github.io');
+            }
+        }, {
+            label: 'GitHub',
+            click: () => {
+                shell.openExternal('https://www.github.com/shadythgod');
+            }
+        }, {
+            label: 'Repository',
+            click: () => {
+                shell.openExternal('https://www.github.com/shadythgod/altus');
+            }
+        }, {
+            label: 'My Instagram',
+            click: () => {
+                shell.openExternal('https://www.instagram.com/aman_harwara');
+            }
+        }]
+    }]
+}]
+
+function createWindow(id) {
+    switch (id) {
+        // Creates about window
+        case 'about':
+            if (typeof aboutWindow === 'object') {
+                aboutWindow.show()
+            } else {
+                aboutWindow = new BrowserWindow({
+                    title: `About Altus`,
+                    frame: false,
+                    backgroundColor: '#282C34',
+                    titleBarStyle: 'hidden',
+                    width: 500,
+                    height: 320,
+                    resizable: false,
+                    parent: mainWindow,
+                    modal: process.platform === 'darwin' ? false : true,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
+                })
+                aboutWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'about', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+                aboutWindow.show();
+                aboutWindow.on('close', e => {
+                    e.preventDefault();
+                    aboutWindow.hide();
+                });
+            }
+            break;
+        case 'settings':
+            if (typeof settingsWindow === 'object') {
+                settingsWindow.show()
+            } else {
+                settingsWindow = new BrowserWindow({
+                    title: `Settings`,
+                    frame: false,
+                    backgroundColor: '#282C34',
+                    titleBarStyle: 'hidden',
+                    width: 400,
+                    height: 349,
+                    resizable: false,
+                    maximizable: false,
+                    minimizable: false,
+                    parent: mainWindow,
+                    modal: process.platform === 'darwin' ? false : true,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
+                })
+                settingsWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'settings', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+                settingsWindow.show();
+                settingsWindow.on('close', e => {
+                    e.preventDefault();
+                    settingsWindow.hide();
+                });
+            }
+            break;
+        case 'customCSS':
+            if (typeof customCSSWindow === 'object') {
+                customCSSWindow.show()
+            } else {
+                customCSSWindow = new BrowserWindow({
+                    title: `Custom CSS for WhatsApp`,
+                    frame: false,
+                    backgroundColor: '#282C34',
+                    titleBarStyle: 'hidden',
+                    parent: mainWindow,
+                    modal: process.platform === 'darwin' ? false : true,
+                    resizable: false,
+                    width: 600,
+                    height: 547,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
+                })
+                customCSSWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'customCSS', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+                customCSSWindow.show();
+                customCSSWindow.on('close', e => {
+                    e.preventDefault();
+                    customCSSWindow.hide();
+                });
+            }
+            break;
+        case 'themeCustomizer':
+            if (typeof themeCustomizerWindow === 'object') {
+                themeCustomizerWindow.show()
+            } else {
+                themeCustomizerWindow = new BrowserWindow({
+                    title: `Customize Theme`,
+                    frame: false,
+                    backgroundColor: '#282C34',
+                    titleBarStyle: 'hidden',
+                    parent: mainWindow,
+                    modal: process.platform === 'darwin' ? false : true,
+                    resizable: false,
+                    width: 600,
+                    height: 545,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
+                })
+                themeCustomizerWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'themeCustomizer', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+                themeCustomizerWindow.show();
+                themeCustomizerWindow.on('close', e => {
+                    e.preventDefault();
+                    themeCustomizerWindow.hide();
+                });
+            }
+            break;
+        case 'themeManager':
+            if (typeof themeManagerWindow === 'object') {
+                themeManagerWindow.show()
+            } else {
+                themeManagerWindow = new BrowserWindow({
+                    title: `Manage Themes`,
+                    frame: false,
+                    backgroundColor: '#282C34',
+                    titleBarStyle: 'hidden',
+                    parent: mainWindow,
+                    modal: process.platform === 'darwin' ? false : true,
+                    resizable: false,
+                    width: 500,
+                    height: 420,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
+                })
+                themeManagerWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'themeManager', 'window.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+                themeManagerWindow.show();
+                themeManagerWindow.on('close', e => {
+                    e.preventDefault();
+                    themeManagerWindow.hide();
+                });
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 function confirmExit() {
@@ -222,139 +454,4 @@ function confirmExit() {
             return;
         }
     });
-}
-
-function createAboutWindow() {
-    if (typeof aboutWindow == 'object') {
-        aboutWindow.show();
-    } else {
-        aboutWindow = new BrowserWindow({
-            parent: mainWindow,
-            icon: "./img/icon.png",
-            title: "About",
-            width: 500,
-            height: 300,
-            resizable: false,
-            frame: false
-        });
-        aboutWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'windows', 'aboutWindow.html'),
-            protocol: 'file:',
-            slashes: true
-        }));
-    }
-    aboutWindow.on('close', function(e) {
-        e.preventDefault();
-        aboutWindow.hide();
-    });
-    aboutWindow.setResizable(false);
-}
-
-function createThemeWindow() { //Creates the theme window
-    if (typeof themeWindow == 'object') { //Checks if theme window is already set
-        themeWindow.show(); //Shows the theme window
-    } else {
-        themeWindow = new BrowserWindow({ //Creates new instance of themewindow if not already opened
-            parent: mainWindow,
-            icon: "./img/icon.png",
-            title: "Custom Theme"
-        });
-        themeWindow.loadURL(url.format({ //loads the theme window html file
-            pathname: path.join(__dirname, 'windows', 'themeWindow.html'),
-            protocol: 'file:',
-            slashes: true
-        }));
-    }
-    themeWindow.on('close', function(e) { //Deletes all instances of themeWindow when it is closed.
-        e.preventDefault();
-        themeWindow.hide();
-    });
-    themeWindow.setResizable(false); //Makes theme window non-resizable
-}
-
-function createPrefWindow() { //Creates the preferences window
-    if (typeof prefWindow == 'object') { //Checks if theme window is already set
-        prefWindow.show(); //Shows the theme window
-    } else {
-        prefWindow = new BrowserWindow({ //Creates new instance of themewindow if not already opened
-            parent: mainWindow,
-            icon: "./img/icon.png",
-            title: "Preferences"
-        });
-        prefWindow.loadURL(url.format({ //loads the theme window html file
-            pathname: path.join(__dirname, 'windows', 'prefWindow.html'),
-            protocol: 'file:',
-            slashes: true
-        }));
-    }
-    prefWindow.on('close', function(e) { //Deletes all instances of themeWindow when it is closed.
-        e.preventDefault();
-        prefWindow.hide();
-    });
-    prefWindow.setResizable(false); //Makes theme window non-resizable
-}
-
-const mainMenuTemp = [{ //The main menu template
-    label: 'File',
-    submenu: [{
-        label: 'Quit',
-        accelerator: 'CommandOrControl+Q',
-        click() {
-            app.quit();
-        }
-    }]
-}, {
-    label: 'View',
-    submenu: [{
-        label: 'Change Theme',
-        submenu: [{
-                label: 'Default Theme',
-                accelerator: 'CommandOrControl+Shift+D',
-                click() {
-                    mainWindow.webContents.send('theme:change', {
-                        name: 'default-theme'
-                    });
-                }
-            },
-            {
-                label: 'Dark/Night Theme',
-                accelerator: 'CommandOrControl+Shift+N',
-                click() {
-                    mainWindow.webContents.send('theme:change', {
-                        name: 'dark-theme'
-                    });
-                }
-            }
-        ]
-    }, {
-        label: 'Custom Theme',
-        accelerator: 'CommandOrControl+Shift+T',
-        click() {
-            createThemeWindow()
-        }
-    }]
-}, {
-    label: 'Settings',
-    submenu: [{
-        label: 'Preferences',
-        accelerator: 'CommandOrControl+P',
-        click() {
-            createPrefWindow()
-        }
-    }]
-}, {
-    label: "About",
-    click() {
-        createAboutWindow()
-    },
-    submenu: [{
-        label: "About",
-        click() {
-            createAboutWindow()
-        }
-    }]
-}];
-
-if (process.platform == 'darwin') { //Fixes main menu issue for Mac
-    mainMenuTemp.unshift({});
 }

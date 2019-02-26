@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Theme Customizer</title>
+    <link rel="stylesheet" href="./css/themeCustomizer.css">
+    <link rel="stylesheet" href="../assets/css/semantic.min.css">
+</head>
+
+<body>
+    <div class="main">
+        <div class="ui inverted basic segment">
+            <h1 class="ui header">
+                <i class="tint icon"></i>
+                <div class="content">
+                    Theme Customizer
+                    <div class="sub header">Customize the WhatsApp theme according to your preferences!</div>
+                </div>
+            </h1>
+        </div>
+        <div class="ui inverted segment colorlist">
+            <div class="ui inverted divided list">
+                <div class="ui item">
+                    <div class="content">
+                        <h3 class="header">
+                            Main Background Color:
+                        </h3>
+                        <div class="color-input">
+                            <div class="ui input">
+                                <input type="text" id="input0" class="colorinput" placeholder="Color">
+                            </div>
+                            <button class="ui icon button toggle-picker">
+                                <i class="eye dropper icon"></i>
+                            </button>
+                            <div class="ui">
+                                <canvas id="colorpicker0" class="colorpicker-class"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui item">
+                    <div class="content">
+                        <h3 class="header">
+                            Secondary Background Color:
+                        </h3>
+                        <div class="color-input">
+                            <div class="ui input">
+                                <input type="text" id="input1" class="colorinput" placeholder="Color">
+                            </div>
+                            <button class="ui icon button toggle-picker">
+                                <i class="eye dropper icon"></i>
+                            </button>
+                            <div class="ui">
+                                <canvas id="colorpicker1" class="colorpicker-class"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui item">
+                    <div class="content">
+                        <h3 class="header">
+                            Main Text Color:
+                        </h3>
+                        <div class="color-input">
+                            <div class="ui input">
+                                <input type="text" id="input2" class="colorinput" placeholder="Color">
+                            </div>
+                            <button class="ui icon button toggle-picker">
+                                <i class="eye dropper icon"></i>
+                            </button>
+                            <div class="ui">
+                                <canvas id="colorpicker2" class="colorpicker-class"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui item">
+                    <div class="content">
+                        <h3 class="header">
+                            Secondary Text Color:
+                        </h3>
+                        <div class="color-input">
+                            <div class="ui input">
+                                <input type="text" id="input3" class="colorinput" placeholder="Color">
+                            </div>
+                            <button class="ui icon button toggle-picker">
+                                <i class="eye dropper icon"></i>
+                            </button>
+                            <div class="ui">
+                                <canvas id="colorpicker3" class="colorpicker-class"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui item">
+                    <div class="content">
+                        <h3 class="header">
+                            Accent Color:
+                        </h3>
+                        <div class="color-input">
+                            <div class="ui input">
+                                <input type="text" id="input4" class="colorinput" placeholder="Color">
+                            </div>
+                            <button class="ui icon button toggle-picker">
+                                <i class="eye dropper icon"></i>
+                            </button>
+                            <div class="ui">
+                                <canvas id="colorpicker4" class="colorpicker-class"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui item">
+                    <div class="content">
+                        <h3 class="header">
+                            Icon Color:
+                        </h3>
+                        <div class="color-input">
+                            <div class="ui input">
+                                <input type="text" id="input5" class="colorinput" placeholder="Color">
+                            </div>
+                            <button class="ui icon button toggle-picker">
+                                <i class="eye dropper icon"></i>
+                            </button>
+                            <div class="ui">
+                                <canvas id="colorpicker5" class="colorpicker-class"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui item">
+                    <div class="content">
+                        <h3 class="header">
+                            Shadow Color:
+                        </h3>
+                        <div class="color-input">
+                            <div class="ui input">
+                                <input type="text" id="input6" class="colorinput" placeholder="Color">
+                            </div>
+                            <button class="ui icon button toggle-picker">
+                                <i class="eye dropper icon"></i>
+                            </button>
+                            <div class="ui">
+                                <canvas id="colorpicker6" class="colorpicker-class"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui item">
+                    <div class="content">
+                        <h3 class="header">
+                            Emoji Opacity:
+                        </h3>
+                        <div class="opacity-input">
+                            <div class="ui input">
+                                <input type="number" id="inputOpacity" value="0.75">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui inverted basic segment generatedcss">
+                <div class="ui inverted form">
+                    <div class="field">
+                        <label>Generated CSS:</label>
+                        <textarea id="generatedcssarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui footer black inverted vertical segment">
+            <div class="ui container">
+                <button type="button" class="ui button green" id="generate-css-button">
+                    <i class="check icon"></i> Generate CSS
+                </button>
+                <button type="button" id="copy-css-button" class="ui button green" data-clipboard-target="#generatedcssarea">
+                    <i class="copy icon"></i> Copy CSS
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/js/colorpicker.js"></script>
+    <script src="./js/themeCustomizer.js"></script>
+</body>
+
+</html>

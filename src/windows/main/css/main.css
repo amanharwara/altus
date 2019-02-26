@@ -1,0 +1,60 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.main,
+.container-after-titlebar {
+    overflow: hidden !important;
+}
+
+.ui.tab.segment,
+.no-tabs {
+    height: 90vh !important;
+    padding: 0;
+}
+
+.ui.tab.segment>* {
+    height: inherit;
+}
+
+.ui.top.attached.tabular.menu {
+    background: #21252B;
+    border: 0 !important;
+    border-radius: 0;
+    height: 6vh;
+}
+
+.ui.top.attached.tabular.menu .item {
+    color: white;
+    border: none;
+}
+
+.ui.top.attached.tabular.menu .item.active {
+    background: #3d444e;
+    color: white;
+}
+
+.ui.cog.icon {
+    color: white !important;
+    margin-left: 15px !important;
+}
+
+.ui.close.icon {
+    margin-right: -5px !important;
+}
+
+.no-tabs {
+    background: #21252B;
+    display: none;
+    align-items: center;
+}
+
+.no-tabs>* {
+    background: inherit;
+}
