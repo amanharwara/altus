@@ -10,12 +10,13 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 
 **Altus** uses the GitHub-produced Electron framework to wrap around WhatsApp Web and add extra features to it.
 
+- **Multiple Account Support** As of v2.0, you can use multiple Whatsapp accounts simultaneously!
 - **Native notification support** for all of the platforms.
 - **Dark mode** for when you need to chill out your eyes in the night (or even in the day)
 - **Custom Theme Support** If you know how to write CSS themes, you can create and use your own theme for WhatsApp.
 - **Available for most desktop platforms** including Windows (7 or above), Linux and MacOS.
 - **Tray icon** so you can minimize the app completely and still receive notifications.
-- **Multiple Account Support** As of v2.0, you can now use multiple WhatsApp accounts simultaneously!
+
 
 ### Planned Features
 
