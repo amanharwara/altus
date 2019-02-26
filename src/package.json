@@ -35,8 +35,7 @@
             "target": [
                 "AppImage",
                 "deb"
-            ],
-            "icon": "build/icon.ico"
+            ]
         },
         "mac": {
             "category": "public.app-category.social-networking",
