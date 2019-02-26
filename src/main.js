@@ -255,6 +255,29 @@ const template = [{
         click() {
             createWindow('about')
         }
+    }, {
+        label: "Links",
+        submenu: [{
+            label: 'Website',
+            click: () => {
+                shell.openExternal('https://shadythgod.github.io');
+            }
+        }, {
+            label: 'GitHub',
+            click: () => {
+                shell.openExternal('https://www.github.com/shadythgod');
+            }
+        }, {
+            label: 'Repository',
+            click: () => {
+                shell.openExternal('https://www.github.com/shadythgod/altus');
+            }
+        }, {
+            label: 'My Instagram',
+            click: () => {
+                shell.openExternal('https://www.instagram.com/aman_harwara');
+            }
+        }]
     }]
 }]
 
