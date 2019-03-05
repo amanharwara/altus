@@ -8,6 +8,7 @@ const {
 } = require('electron');
 const Store = require('electron-store');
 const generateId = require('uuid/v4');
+const HTML = require('../assets/js/elementCodes.js');
 
 // Create main window titlebar
 const mainTitlebar = new customTitlebar.Titlebar({
@@ -28,100 +29,13 @@ let themes = new Store({
 });
 
 function loadTabsFromStorage() {
+
     let storedTabs = tabs.get('instances');
     if (storedTabs.length == 0) {
         document.querySelector('.no-tabs').style.display = 'flex';
     } else {
         storedTabs.forEach(tab => {
-            let tabElementCode = `<a class="item tab-element" id="tab-${tab.id}" data-tab="${tab.id}">
-                <i class="whatsapp icon"></i> ${tab.name} <i class="cog icon ui"></i> <i class="close icon ui"></i>
-            </a>`;
-            let instanceElementCode = `<div class="ui bottom attached tab segment" id="tab-content-${tab.id}" data-tab="${tab.id}">
-    <webview preload="./js/whatsapp.js" id="whatsapp-${tab.id}" src="https://web.whatsapp.com/" useragent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" partition="persist:${tab.id}"></webview>
-</div>`;
-            let settingsModalCode = `<div class="ui mini modal settings-modal-${tab.id}">
-                <i class="close icon"></i>
-                <div class="header">
-                    Edit Settings for "${tab.name}"
-                </div>
-                <div class="content">
-                    <div class="ui form">
-                        <div class="ui field">
-                            <label>Name</label>
-                            <input type="text" placeholder="Name of instance" id="${tab.id}-name" value="${tab.name}">
-                        </div>
-                        <div class="ui inline field">
-                            <div class="ui toggle checkbox ${tab.id}-notifications-value">
-                                <label>Enable Notifications</label>
-                                <input type="checkbox" tabindex="0" class="hidden">
-                            </div>
-                        </div>
-                        <div class="ui inline field">
-                            <div class="ui toggle checkbox ${tab.id}-sound-value">
-                                <label>Enable Sound</label>
-                                <input type="checkbox" tabindex="0" class="hidden">
-                            </div>
-                        </div>
-                        <div class="ui field">
-                            <label>Theme</label>
-                            <div class="ui selection dropdown ${tab.id}-theme-value">
-                                <input type="hidden" name="theme">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Theme</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="actions">
-                    <div class="ui positive button">EDIT</div>
-                </div>
-            </div>`;
-
-            let range = document.createRange();
-            let tabElement = range.createContextualFragment(tabElementCode);
-            let instanceElement = range.createContextualFragment(instanceElementCode);
-            let settingsModal = range.createContextualFragment(settingsModalCode);
-
-            document.querySelector('.tabs').insertBefore(tabElement, document.querySelector('.add-tab-icon'));
-            document.querySelector('.tab-contents').appendChild(instanceElement);
-            document.querySelector('.modals-div').appendChild(settingsModal);
-
-            $(`#tab-${tab.id}`).tab();
-
-            $(`.settings-modal-${tab.id}`)
-                .modal({
-                    onApprove: () => {
-                        let editedInstance = {
-                            name: $(`#${tab.id}-name`).val(),
-                            id: `${tab.id}`,
-                            settings: {
-                                notifications: $(`.${tab.id}-notifications-value`).checkbox('is checked'),
-                                sound: $(`.${tab.id}-sound-value`).checkbox('is checked'),
-                                theme: $(`.${tab.id}-theme-value`).dropdown('get value')
-                            }
-                        }
-                        let tabsStore = tabs.get('instances');
-                        let findTab = tabsStore.find(x => x.id === tab.id);
-                        let newTabIndex = tabsStore.indexOf(findTab);
-                        tabsStore[newTabIndex] = editedInstance;
-                        tabs.set('instances', tabsStore);
-                        window.location.reload();
-                    }
-                })
-                .modal('attach events', `#tab-${tab.id} .cog.icon`, 'show');
-
-            if (tab.settings.notifications == true) {
-                $(`.${tab.id}-notifications-value`).checkbox('check');
-            } else {
-                $(`.${tab.id}-notifications-value`).checkbox('uncheck');
-            }
-
-            if (tab.settings.sound == true) {
-                $(`.${tab.id}-sound-value`).checkbox('check');
-            } else {
-                $(`.${tab.id}-sound-value`).checkbox('uncheck');
-            }
-
+            addNewInstance(tab);
         });
 
         document.querySelector('.menu').firstElementChild.classList.add('active');
@@ -143,6 +57,8 @@ function loadTabsFromStorage() {
             });
         });
     }
+
+    setWebViewSettingsLoop();
 }
 
 $('.ui.modal')
@@ -171,7 +87,11 @@ $('.ui.modal')
                 tabsStore.push(newInstance);
 
                 tabs.set('instances', tabsStore);
-                window.location.reload();
+
+                addNewInstance(newInstance);
+                $('.tab-element.active').removeClass('active');
+                $(`#tab-${newInstance.id}`).addClass('active');
+                $(`#tab-${newInstance.id}`).click();
             }
 
         }
@@ -284,16 +204,18 @@ window.Notification = ProxyNotification;
     });
 }
 
-document.querySelectorAll('.tab').forEach(tabElement => {
-    let tabID = tabElement.id.replace('tab-content-', '');
-    let tabJSON = tabs.get('instances').find(x => x.id === tabID);
-    let webviewElement = document.querySelector(`#${tabElement.id}`).querySelector('webview');
+function setWebViewSettingsLoop() {
+    document.querySelectorAll('.tab').forEach(tabElement => {
+        let tabID = tabElement.id.replace('tab-content-', '');
+        let tabJSON = tabs.get('instances').find(x => x.id === tabID);
+        let webviewElement = document.querySelector(`#${tabElement.id}`).querySelector('webview');
 
-    $(`.${tabID}-theme-value`).dropdown('set selected', tabJSON.settings.theme);
-    $(`.${tabID}-theme-value`).dropdown();
+        $(`.${tabID}-theme-value`).dropdown('set selected', tabJSON.settings.theme);
+        $(`.${tabID}-theme-value`).dropdown();
 
-    setWebViewSettings(webviewElement, tabJSON);
-});
+        setWebViewSettings(webviewElement, tabJSON);
+    });
+}
 
 function checkForInstances() {
     let instances = tabs.get('instances');
@@ -302,7 +224,82 @@ function checkForInstances() {
         document.querySelector('.no-tabs').style.display = 'flex';
     } else {
         document.querySelector('.no-tabs').style.display = 'none';
+        document.querySelector('.menu').firstElementChild.classList.add('active');
+        document.querySelector('.menu').firstElementChild.click();
     }
+}
+
+function addNewInstance(instance) {
+    let tab = instance;
+    let tabElementCode = HTML.tabElement(tab);
+    let instanceElementCode = HTML.instanceElement(tab);
+    let settingsModalCode = HTML.settingsModalElement(tab);
+    let range = document.createRange();
+    let tabElement = range.createContextualFragment(tabElementCode);
+    let instanceElement = range.createContextualFragment(instanceElementCode);
+    let settingsModal = range.createContextualFragment(settingsModalCode);
+    document.querySelector('.tabs').insertBefore(tabElement, document.querySelector('.add-tab-icon'));
+    document.querySelector('.tab-contents').appendChild(instanceElement);
+    document.querySelector('.modals-div').appendChild(settingsModal);
+
+    $(`#tab-${tab.id}`).tab();
+
+    $(`.settings-modal-${tab.id}`)
+        .modal({
+            onApprove: () => {
+                let editedInstance = {
+                    name: $(`#${tab.id}-name`).val(),
+                    id: `${tab.id}`,
+                    settings: {
+                        notifications: $(`.${tab.id}-notifications-value`).checkbox('is checked'),
+                        sound: $(`.${tab.id}-sound-value`).checkbox('is checked'),
+                        theme: $(`.${tab.id}-theme-value`).dropdown('get value')
+                    }
+                }
+                let tabsStore = tabs.get('instances');
+                let findTab = tabsStore.find(x => x.id === tab.id);
+                let newTabIndex = tabsStore.indexOf(findTab);
+                tabsStore[newTabIndex] = editedInstance;
+                tabs.set('instances', tabsStore);
+                window.location.reload();
+            }
+        })
+        .modal('attach events', `#tab-${tab.id} .cog.icon`, 'show');
+
+    if (tab.settings.notifications == true) {
+        $(`.${tab.id}-notifications-value`).checkbox('check');
+    } else {
+        $(`.${tab.id}-notifications-value`).checkbox('uncheck');
+    }
+
+    if (tab.settings.sound == true) {
+        $(`.${tab.id}-sound-value`).checkbox('check');
+    } else {
+        $(`.${tab.id}-sound-value`).checkbox('uncheck');
+    }
+
+    document.querySelectorAll('.menu .item > .close.icon.ui').forEach(e => {
+        e.addEventListener('click', () => {
+            let id = e.parentElement.getAttribute('data-tab');
+
+            let tabsStore = tabs.get('instances');
+            let newTabs = tabsStore.filter(tab => tab.id !== id);
+
+            tabs.set('instances', newTabs);
+
+            document.getElementById(`tab-content-${id}`).remove();
+            e.parentElement.remove();
+
+            checkForInstances();
+        });
+    });
+
+    $('.dropdown').dropdown();
+    $('.dropdown').dropdown({
+        values: generateThemeNames()
+    });
+
+    setWebViewSettingsLoop();
 }
 
 ipcRenderer.on('new-themes-added', e => window.location.reload(true));
