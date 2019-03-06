@@ -28,6 +28,11 @@ let themes = new Store({
     name: 'themes'
 });
 
+$('.dropdown').dropdown();
+$('.dropdown').dropdown({
+    values: generateThemeNames()
+});
+
 function loadTabsFromStorage() {
 
     let storedTabs = tabs.get('instances');
@@ -89,6 +94,7 @@ $('.ui.modal')
                 tabs.set('instances', tabsStore);
 
                 addNewInstance(newInstance);
+                checkForInstances();
                 $('.tab-element.active').removeClass('active');
                 $(`#tab-${newInstance.id}`).addClass('active');
                 $(`#tab-${newInstance.id}`).click();
@@ -124,11 +130,6 @@ function generateThemeNames() {
 
     return nameList;
 }
-
-$('.dropdown').dropdown();
-$('.dropdown').dropdown({
-    values: generateThemeNames()
-});
 
 function generateThemeCSS(name) {
     let themesList = themes.get('themes');
@@ -298,6 +299,9 @@ function addNewInstance(instance) {
     $('.dropdown').dropdown({
         values: generateThemeNames()
     });
+
+    $(`.${tab.id}-theme-value`).dropdown('set selected', tab.settings.theme);
+    $(`.${tab.id}-theme-value`).dropdown();
 
     setWebViewSettingsLoop();
 }
