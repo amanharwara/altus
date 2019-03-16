@@ -10,12 +10,19 @@ const Store = require('electron-store');
 const generateId = require('uuid/v4');
 const HTML = require('../assets/js/elementCodes.js');
 
-// Create main window titlebar
-const mainTitlebar = new customTitlebar.Titlebar({
-    backgroundColor: customTitlebar.Color.fromHex('#21252B'),
-    icon: '../assets/icons/icon.ico',
-    itemBackgroundColor: customTitlebar.Color.fromHex('#3d444e'),
-});
+let settings = new Store({name: 'settings'});
+
+if (settings.get('customTitlebar.value') === true) {
+    // Create main window titlebar
+    const mainTitlebar = new customTitlebar.Titlebar({
+        backgroundColor: customTitlebar.Color.fromHex('#21252B'),
+        icon: '../assets/icons/icon.ico',
+        itemBackgroundColor: customTitlebar.Color.fromHex('#3d444e'),
+    });
+    
+    // Setting title explicitly
+    mainTitlebar.updateTitle(`Altus ${app.getVersion()}`);
+}
 
 let tabs = new Store({
     name: 'tabs',
@@ -307,6 +314,3 @@ function addNewInstance(instance) {
 }
 
 ipcRenderer.on('new-themes-added', e => window.location.reload(true));
-
-// Setting title explicitly
-mainTitlebar.updateTitle(`Altus ${app.getVersion()}`);

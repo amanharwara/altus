@@ -78,6 +78,11 @@ if (!singleInstanceLock) {
                 value: true,
                 name: 'Exit Prompt',
                 description: 'If this setting is enabled, the app will prompt you everytime you close the app. Disabling this will disable the prompt.'
+            },
+            customTitlebar: {
+            value: true,
+            name: 'Custom Titlebar',
+            description: 'If you are having any issues with the custom titlebar, you can disable it using this setting. NOTE: This setting requires you to restart the whole app for changes to apply.'
             }
         }
     });
@@ -86,7 +91,7 @@ if (!singleInstanceLock) {
     app.on('ready', () => {
         mainWindow = new BrowserWindow({
             title: `Altus ${app.getVersion()}`,
-            frame: false,
+            frame: !settings.get('customTitlebar.value'),
             titleBarStyle: 'hidden',
             backgroundColor: '#282C34',
             icon: './build/icon.ico',
@@ -290,7 +295,7 @@ function createWindow(id) {
             } else {
                 aboutWindow = new BrowserWindow({
                     title: `About Altus`,
-                    frame: false,
+                    frame: !settings.get('customTitlebar.value'),
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     width: 500,
@@ -320,7 +325,7 @@ function createWindow(id) {
             } else {
                 settingsWindow = new BrowserWindow({
                     title: `Settings`,
-                    frame: false,
+                    frame: !settings.get('customTitlebar.value'),
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     width: 400,
@@ -352,7 +357,7 @@ function createWindow(id) {
             } else {
                 customCSSWindow = new BrowserWindow({
                     title: `Custom CSS for WhatsApp`,
-                    frame: false,
+                    frame: !settings.get('customTitlebar.value'),
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
@@ -382,7 +387,7 @@ function createWindow(id) {
             } else {
                 themeCustomizerWindow = new BrowserWindow({
                     title: `Customize Theme`,
-                    frame: false,
+                    frame: !settings.get('customTitlebar.value'),
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
@@ -412,7 +417,7 @@ function createWindow(id) {
             } else {
                 themeManagerWindow = new BrowserWindow({
                     title: `Manage Themes`,
-                    frame: false,
+                    frame: !settings.get('customTitlebar.value'),
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,

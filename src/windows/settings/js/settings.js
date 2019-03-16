@@ -14,18 +14,20 @@ const settings = new Store({
     name: 'settings'
 });
 
-// Create main window titlebar
-const mainTitlebar = new customTitlebar.Titlebar({
-    backgroundColor: customTitlebar.Color.fromHex('#21252B'),
-    icon: '../assets/icons/icon.ico',
-    menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
-    minimizable: false,
-    maximizable: false,
-    closeable: true
-});
+if (settings.get('customTitlebar.value') === true) {
+    // Create main window titlebar
+    const mainTitlebar = new customTitlebar.Titlebar({
+        backgroundColor: customTitlebar.Color.fromHex('#21252B'),
+        icon: '../assets/icons/icon.ico',
+        menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
+        minimizable: false,
+        maximizable: false,
+        closeable: true
+    });
 
-// Setting title explicitly
-mainTitlebar.updateTitle(`Settings`);
+    // Setting title explicitly
+    mainTitlebar.updateTitle(`Settings`);
+}
 
 // Load Settings
 for (setting of settings) {
@@ -75,6 +77,8 @@ document.querySelector('#save-button').addEventListener('click', () => {
     settings.set('trayIcon.value', document.querySelector('#trayIconButton').innerText == "Enabled" ? true : false);
 
     settings.set('showExitPrompt.value', document.querySelector('#showExitPromptButton').innerText == "Enabled" ? true : false);
+    
+    settings.set('customTitlebar.value', document.querySelector('#customTitlebarButton').innerText == "Enabled" ? true : false);
 
     ipcRenderer.send('settings-changed', true);
     BrowserWindow.getFocusedWindow().close();

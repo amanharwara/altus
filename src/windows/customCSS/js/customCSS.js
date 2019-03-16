@@ -7,15 +7,24 @@ const {
     ipcRenderer
 } = require('electron');
 
-// Create main window titlebar
-const mainTitlebar = new customTitlebar.Titlebar({
-    backgroundColor: customTitlebar.Color.fromHex('#21252B'),
-    icon: '../assets/icons/icon.ico',
-    menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
-    minimizable: false,
-    maximizable: false,
-    closeable: true
+let settings = new Store({
+    name: 'settings'
 });
+
+if (settings.get('customTitlebar.value') ===  true){
+    // Create main window titlebar
+    const mainTitlebar = new customTitlebar.Titlebar({
+        backgroundColor: customTitlebar.Color.fromHex('#21252B'),
+        icon: '../assets/icons/icon.ico',
+        menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
+        minimizable: false,
+        maximizable: false,
+        closeable: true
+    });
+
+    // Setting title explicitly
+    mainTitlebar.updateTitle(`Custom CSS for WhatsApp`);
+}
 
 let themes = new Store({
     name: 'themes'
@@ -57,6 +66,3 @@ document.getElementById('themenameinput').addEventListener('focus', () => {
 document.getElementById('customcssarea').addEventListener('focus', () => {
     document.getElementById('customcssarea').parentElement.classList.remove('error');
 });
-
-// Setting title explicitly
-mainTitlebar.updateTitle(`Custom CSS for WhatsApp`);

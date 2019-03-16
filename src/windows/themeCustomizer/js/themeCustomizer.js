@@ -4,19 +4,26 @@ const {
 } = require('electron').remote;
 const ClipboardJS = require('clipboard');
 let cssClipboard = new ClipboardJS('#copy-css-button');
+const Store = require('electron-store');
 
-// Create main window titlebar
-const mainTitlebar = new customTitlebar.Titlebar({
-    backgroundColor: customTitlebar.Color.fromHex('#21252B'),
-    icon: '../assets/icons/icon.ico',
-    menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
-    minimizable: false,
-    maximizable: false,
-    closeable: true
+const settings = new Store({
+    name: 'settings'
 });
 
-// Setting title explicitly
-mainTitlebar.updateTitle(`Theme Customizer`);
+if (settings.get('customTitlebar.value') === true) {
+    // Create main window titlebar
+    const mainTitlebar = new customTitlebar.Titlebar({
+        backgroundColor: customTitlebar.Color.fromHex('#21252B'),
+        icon: '../assets/icons/icon.ico',
+        menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
+        minimizable: false,
+        maximizable: false,
+        closeable: true
+    });
+
+    // Setting title explicitly
+    mainTitlebar.updateTitle(`Theme Customizer`);
+}
 
 document.querySelectorAll('.color-input').forEach((e, i) => {
     switch (i) {
