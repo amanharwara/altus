@@ -86,3 +86,19 @@ body {
 .no-tabs>* {
     background: inherit;
 }
+
+.checking-for-updates-toast {
+    background: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4) !important;
+}
+
+.new-update-available-toast {
+    background: linear-gradient(to right, #4e54c8, #8f94fb) !important;
+}
+
+.update-not-available-toast {
+    background: linear-gradient(to right, #11998e, #2aaa5b) !important;
+}
+
+.error-toast {
+    background: linear-gradient(to right, #f12711, #a37510) !important;
+}
