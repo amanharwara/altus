@@ -328,8 +328,8 @@ function createWindow(id) {
                     frame: !settings.get('customTitlebar.value'),
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
-                    width: settings.get('customTitlebar.value') ? 400 : 450,
-                    height: settings.get('customTitlebar.value') ? 349 : 400,
+                    width: 450,
+                    height: 400,
                     resizable: false,
                     maximizable: false,
                     minimizable: false,
@@ -362,9 +362,12 @@ function createWindow(id) {
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
                     modal: process.platform === 'darwin' ? false : true,
-                    resizable: false,
+                    resizable: true,
                     width: 600,
-                    height: 547,
+                    minWidth: 515,
+                    height: 535,
+                    minHeight: 535,
+                    maxHeight: 535,
                     webPreferences: {
                         nodeIntegration: true
                     }
@@ -392,9 +395,11 @@ function createWindow(id) {
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
                     modal: process.platform === 'darwin' ? false : true,
-                    resizable: false,
+                    resizable: true,
                     width: 600,
+                    minWidth: 600,
                     height: 545,
+                    minHeight: 420,
                     webPreferences: {
                         nodeIntegration: true
                     }
