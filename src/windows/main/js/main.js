@@ -9,8 +9,12 @@ const {
 const Store = require('electron-store');
 const generateId = require('uuid/v4');
 const HTML = require('../assets/js/elementCodes.js');
+const getAltusReleases = require('../assets/js/getReleases.js');
+const Toast = require('izitoast');
 
-let settings = new Store({name: 'settings'});
+let settings = new Store({
+    name: 'settings'
+});
 
 if (settings.get('customTitlebar.value') === true) {
     // Create main window titlebar
@@ -19,7 +23,7 @@ if (settings.get('customTitlebar.value') === true) {
         icon: '../assets/icons/icon.ico',
         itemBackgroundColor: customTitlebar.Color.fromHex('#3d444e'),
     });
-    
+
     // Setting title explicitly
     mainTitlebar.updateTitle(`Altus ${app.getVersion()}`);
 }
@@ -314,3 +318,100 @@ function addNewInstance(instance) {
 }
 
 ipcRenderer.on('new-themes-added', e => window.location.reload(true));
+
+ipcRenderer.on('check-for-updates', e => {
+    Toast.show({
+        title: 'Checking for updates',
+        theme: 'light',
+        timeout: false,
+        close: true,
+        pauseOnHover: false,
+        class: 'checking-for-updates-toast',
+        progressBar: false,
+    });
+    let releases;
+
+    async function checkUpdatesAndShowToast() {
+        let latestRelease = await getAltusReleases.get('latest');
+        let latestVersion = latestRelease !== undefined ? latestRelease['tag_name'] : undefined;
+        let currentVersion = app.getVersion();
+        let operatingSystem = process.platform;
+        let downloadURL;
+
+        switch (operatingSystem) {
+            case 'win32':
+                downloadURL = `https://github.com/ShadyThGod/altus/releases/download/${latestVersion}/Altus-Setup-${latestVersion}.exe`;
+                break;
+            case 'darwin':
+                downloadURL = `https://github.com/ShadyThGod/altus/releases/download/${latestVersion}/Altus-${latestVersion}.dmg`;
+                break;
+            case 'linux':
+                downloadURL = `https://github.com/ShadyThGod/altus/releases/download/${latestVersion}/Altus.${latestVersion}.AppImage`;
+                break;
+        }
+
+        if (!(latestRelease == undefined || latestRelease == null)) {
+            if (currentVersion !== latestVersion) {
+                Toast.show({
+                    class: 'new-update-available-toast',
+                    title: 'New Version Available!',
+                    message: `A new version of Altus is available!`,
+                    pauseOnHover: false,
+                    progressBar: false,
+                    timeout: false,
+                    close: true,
+                    theme: 'dark',
+                    color: 'yellow',
+                    onOpening: (i, t, c) => {
+                        Toast.hide({
+                            transition: 'FadeOutLeft'
+                        }, document.querySelector('.checking-for-updates-toast'));
+                    },
+                    buttons: [
+                        [`<button>Download v${latestVersion}</button>`, (i, t) => {
+                            ipcRenderer.send('link-open', downloadURL);
+                        }, true]
+                    ],
+                })
+            } else {
+                Toast.show({
+                    class: 'update-not-available-toast',
+                    title: 'You Have The Latest Version!',
+                    message: 'There are no new versions available.',
+                    pauseOnHover: false,
+                    progressBar: false,
+                    timeout: 7500,
+                    close: true,
+                    closeOnClick: true,
+                    theme: 'dark',
+                    color: 'green',
+                    onOpening: (i, t, c) => {
+                        Toast.hide({
+                            transition: 'FadeOutLeft',
+                        }, document.querySelector('.checking-for-updates-toast'));
+                    }
+                })
+            }
+        } else {
+            Toast.show({
+                class: 'error-toast',
+                title: 'Could not check for updates',
+                message: 'Make sure you have internet access.',
+                pauseOnHover: false,
+                progressBar: false,
+                timeout: 5000,
+                close: true,
+                closeOnClick: true,
+                theme: 'dark',
+                color: 'red',
+                onOpening: (i, t, c) => {
+                    Toast.hide({
+                        transition: 'FadeOutLeft',
+                    }, document.querySelector('.checking-for-updates-toast'));
+                }
+            })
+        }
+    }
+
+    checkUpdatesAndShowToast();
+});
