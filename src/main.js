@@ -80,9 +80,9 @@ if (!singleInstanceLock) {
                 description: 'If this setting is enabled, the app will prompt you everytime you close the app. Disabling this will disable the prompt.'
             },
             customTitlebar: {
-            value: true,
-            name: 'Custom Titlebar',
-            description: 'If you are having any issues with the custom titlebar, you can disable it using this setting. NOTE: This setting requires you to restart the whole app for changes to apply.'
+                value: true,
+                name: 'Custom Titlebar',
+                description: 'If you are having any issues with the custom titlebar, you can disable it using this setting. NOTE: This setting requires you to restart the whole app for changes to apply.'
             }
         }
     });
@@ -328,8 +328,8 @@ function createWindow(id) {
                     frame: !settings.get('customTitlebar.value'),
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
-                    width: 400,
-                    height: 349,
+                    width: settings.get('customTitlebar.value') ? 400 : 450,
+                    height: settings.get('customTitlebar.value') ? 349 : 400,
                     resizable: false,
                     maximizable: false,
                     minimizable: false,
