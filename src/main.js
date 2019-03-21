@@ -261,6 +261,12 @@ const template = [{
             createWindow('about')
         }
     }, {
+        label: "Check For Updates",
+        accelerator: 'CmdOrCtrl+Shift+U',
+        click() {
+            mainWindow.webContents.send('check-for-updates', true);
+        }
+    }, {
         label: "Links",
         submenu: [{
             label: 'Website',
