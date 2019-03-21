@@ -120,3 +120,7 @@ Below is the list of the dependencies that helped me greatly to create this app.
 ---
 
 #### Mousetrap [(ccampbell/mousetrap)](https://github.com/ccampbell/mousetrap) - used for creating local shortcuts without registering accelerators
+
+---
+
+#### iziToast [(marcelodolza/iziToast)](https://github.com/marcelodolza/iziToast) - used for toast notifications when checking for updates
