@@ -7,6 +7,8 @@ html {
 body {
     border: 1px solid #00000033;
     background: #212222 !important;
+    display: flex;
+    flex-direction: column;
 }
 
 body * {
