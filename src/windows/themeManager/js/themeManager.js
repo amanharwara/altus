@@ -15,14 +15,14 @@ const settings = new Store({
 
 if (settings.get('customTitlebar.value') === true) {
     mainTitlebar = new customTitlebar.Titlebar({
-        backgroundColor: customTitlebar.Color.fromHex('#21252B'),
-        icon: '../assets/icons/icon.ico',
-        menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
-        minimizable: false,
-        maximizable: false,
-        closeable: true
-    })
-    // Setting title explicitly
+            backgroundColor: customTitlebar.Color.fromHex('#21252B'),
+            icon: '../assets/icons/icon.ico',
+            menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
+            minimizable: false,
+            maximizable: false,
+            closeable: true
+        })
+        // Setting title explicitly
     mainTitlebar.updateTitle(`Theme Manager`);
 }
 
@@ -57,6 +57,31 @@ for (theme of themesList) {
     let themeElement = range.createContextualFragment(HTML);
     document.querySelector('.ui.divided.list').appendChild(themeElement);
 }
+
+document.querySelector('#update-dark-theme').addEventListener('click', e => {
+    window.fetch('https://raw.githubusercontent.com/ShadyThGod/shadythgod.github.io/master/css/altus-dark-theme.css', {
+            cache: 'no-store',
+            headers: {
+                'cache-control': 'no-store'
+            }
+        })
+        .then(res => res.text())
+        .then(css => {
+            let currentThemes = themes.get('themes');
+            let darkTheme = currentThemes.find(x => x.name === 'Dark');
+            let themeIndex = currentThemes.indexOf(darkTheme);
+            currentThemes[themeIndex] = {
+                name: 'Dark',
+                css: css
+            };
+            themes.set('themes', currentThemes);
+            window.close();
+            ipcRenderer.send('new-themes-added', true);
+        })
+        .catch(e => {
+            console.log(e);
+        });
+});
 
 document.querySelectorAll('.removetheme').forEach(e => {
     e.addEventListener('click', () => {
