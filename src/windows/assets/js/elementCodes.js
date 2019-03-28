@@ -5,9 +5,6 @@ function tabElement(tab) {
 }
 
 function instanceElement(tab) {
-    /* return `<div class="ui bottom attached tab segment" id="tab-content-${tab.id}" data-tab="${tab.id}">
-    <webview preload="./js/whatsapp.js" id="whatsapp-${tab.id}" src="https://web.whatsapp.com/" useragent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" partition="persist:${tab.id}"></webview>
-</div>`; */
     return `<div class="ui bottom attached tab segment" id="tab-content-${tab.id}" data-tab="${tab.id}">
     <webview preload="./js/whatsapp.js" id="whatsapp-${tab.id}" src="https://web.whatsapp.com/" useragent="${window.navigator.userAgent.replace(/(altus|Electron)([^\s]+\s)/g, '')}" partition="persist:${tab.id}"></webview>
 </div>`;
