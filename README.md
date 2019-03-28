@@ -1,6 +1,6 @@
 # Altus
 
-**Altus** is an Electron-based WhatsApp client that works on almost all of the desktop platforms, i.e., Windows, Mac and Linux.
+**Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
 ![Altus Banner](/img/altus-banner.png)
 
@@ -124,3 +124,10 @@ Below is the list of the dependencies that helped me greatly to create this app.
 ---
 
 #### iziToast [(marcelodolza/iziToast)](https://github.com/marcelodolza/iziToast) - used for toast notifications when checking for updates
+
+## Contributors
+
+Below is the list of contributors who have contributed to Altus by creating a feature or helping fix an issue.
+
+#### [dylanmcdougall](https://github.com/dylanmcdougall) - PR #10 (Added feature - Confirmation Dialog on close)
+#### [Dafnik](https://github.com/Dafnik) - PR #5 (Helped fix issue #4)
