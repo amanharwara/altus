@@ -1,6 +1,6 @@
 {
     "name": "altus",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "description": "Electron-based desktop wrapper for Whatsapp Web",
     "homepage": "https://github.com/ShadyThGod/altus",
     "repository": {
@@ -73,7 +73,7 @@
     },
     "license": "GPL-3.0",
     "devDependencies": {
-        "electron": "^4.0.0-beta.9"
+        "electron": "^4.1.1"
     },
     "dependencies": {
         "clipboard": "^2.0.4",
