@@ -283,11 +283,6 @@ const template = [{
             click: () => {
                 shell.openExternal('https://www.github.com/shadythgod/altus');
             }
-        }, {
-            label: 'My Instagram',
-            click: () => {
-                shell.openExternal('https://www.instagram.com/aman_harwara');
-            }
         }]
     }]
 }]
