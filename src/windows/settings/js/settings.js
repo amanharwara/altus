@@ -14,7 +14,7 @@ const settings = new Store({
     name: 'settings'
 });
 
-if (settings.get('customTitlebar.value') === true) {
+if (settings.get('customTitlebar.value') === true && process.platform !== 'darwin') {
     // Create main window titlebar
     const mainTitlebar = new customTitlebar.Titlebar({
         backgroundColor: customTitlebar.Color.fromHex('#21252B'),
@@ -77,7 +77,7 @@ document.querySelector('#save-button').addEventListener('click', () => {
     settings.set('trayIcon.value', document.querySelector('#trayIconButton').innerText == "Enabled" ? true : false);
 
     settings.set('showExitPrompt.value', document.querySelector('#showExitPromptButton').innerText == "Enabled" ? true : false);
-    
+
     settings.set('customTitlebar.value', document.querySelector('#customTitlebarButton').innerText == "Enabled" ? true : false);
 
     ipcRenderer.send('settings-changed', true);

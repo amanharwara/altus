@@ -13,7 +13,7 @@ const settings = new Store({
     name: 'settings'
 });
 
-if (settings.get('customTitlebar.value') === true) {
+if (settings.get('customTitlebar.value') === true && process.platform !== 'darwin') {
     mainTitlebar = new customTitlebar.Titlebar({
             backgroundColor: customTitlebar.Color.fromHex('#21252B'),
             icon: '../assets/icons/icon.ico',

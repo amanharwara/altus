@@ -16,7 +16,7 @@ let settings = new Store({
     name: 'settings'
 });
 
-if (settings.get('customTitlebar.value') === true) {
+if (settings.get('customTitlebar.value') === true && process.platform !== 'darwin') {
     // Create main window titlebar
     const mainTitlebar = new customTitlebar.Titlebar({
         backgroundColor: customTitlebar.Color.fromHex('#21252B'),
