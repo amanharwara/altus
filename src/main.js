@@ -91,7 +91,7 @@ if (!singleInstanceLock) {
     app.on('ready', () => {
         mainWindow = new BrowserWindow({
             title: `Altus ${app.getVersion()}`,
-            frame: !settings.get('customTitlebar.value'),
+            frame: process.platform !== 'darwin' ? !settings.get('customTitlebar.value') : true,
             titleBarStyle: 'hidden',
             backgroundColor: '#282C34',
             icon: './build/icon.ico',
@@ -326,7 +326,7 @@ function createWindow(id) {
             } else {
                 settingsWindow = new BrowserWindow({
                     title: `Settings`,
-                    frame: !settings.get('customTitlebar.value'),
+                    frame: process.platform !== 'darwin' ? !settings.get('customTitlebar.value') : true,
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     width: 450,
@@ -358,7 +358,7 @@ function createWindow(id) {
             } else {
                 customCSSWindow = new BrowserWindow({
                     title: `Custom CSS for WhatsApp`,
-                    frame: !settings.get('customTitlebar.value'),
+                    frame: process.platform !== 'darwin' ? !settings.get('customTitlebar.value') : true,
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
@@ -391,7 +391,7 @@ function createWindow(id) {
             } else {
                 themeCustomizerWindow = new BrowserWindow({
                     title: `Customize Theme`,
-                    frame: !settings.get('customTitlebar.value'),
+                    frame: process.platform !== 'darwin' ? !settings.get('customTitlebar.value') : true,
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
@@ -423,7 +423,7 @@ function createWindow(id) {
             } else {
                 themeManagerWindow = new BrowserWindow({
                     title: `Manage Themes`,
-                    frame: !settings.get('customTitlebar.value'),
+                    frame: process.platform !== 'darwin' ? !settings.get('customTitlebar.value') : true,
                     backgroundColor: '#282C34',
                     titleBarStyle: 'hidden',
                     parent: mainWindow,
