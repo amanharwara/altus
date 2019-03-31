@@ -1,5 +1,7 @@
 # Altus
 
+![GitHub All Releases](https://img.shields.io/github/downloads/shadythgod/altus/total.svg?label=Downloads)
+
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
 ![Altus Banner](/img/altus-banner.png)
