@@ -1,6 +1,6 @@
 # Altus
 
-![GitHub All Releases](https://img.shields.io/github/downloads/shadythgod/altus/total.svg?label=Downloads)
+![GitHub All Releases](https://img.shields.io/github/downloads/shadythgod/altus/total.svg?logo=github&logoColor=lime) ![Discord](https://img.shields.io/discord/561853868061753355.svg?logo=discord) ![GitHub issues](https://img.shields.io/github/issues/shadythgod/altus.svg?logo=github) ![License](https://img.shields.io/github/license/shadythgod/altus.svg) ![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/shadythgod/altus/master/src.svg?label=Latest%20Version)
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
