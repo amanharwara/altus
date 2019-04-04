@@ -130,10 +130,12 @@ if (!singleInstanceLock) {
         ipcMain.on('message-indicator', (e, data) => {
             mainWindow.webContents.send('message-indicator', data);
             let number = data.number;
-            if (number !== null && number !== undefined && number !== 0) {
-                app.dock.setBadge(`${number}`);
-            } else {
-                app.dock.setBadge('');
+            if (process.platform === 'darwin') {
+                if (number !== null && number !== undefined && number !== 0) {
+                    app.dock.setBadge(`${number}`);
+                } else {
+                    app.dock.setBadge('');
+                }
             }
         });
 
