@@ -281,6 +281,11 @@ const template = [{
     }, {
         label: "Links",
         submenu: [{
+            label: 'Report Bugs/Issues',
+            click: () => {
+                shell.openExternal('https://github.com/shadythgod/altus/issues');
+            }
+        }, {
             label: 'Website',
             click: () => {
                 shell.openExternal('https://shadythgod.github.io');
