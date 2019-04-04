@@ -13,6 +13,8 @@ const path = require('path');
 const Store = require('electron-store');
 const fs = require('fs');
 const fetch = require('node-fetch');
+let Badge;
+if (process.platform === 'win32') Badge = require('electron-windows-badge');
 
 //Declare window variables
 let mainWindow,
@@ -116,6 +118,7 @@ if (!singleInstanceLock) {
             mainWindow = null;
             app.quit();
         });
+        new Badge(mainWindow, {});
 
         //Setting main menu
         const mainMenu = Menu.buildFromTemplate(template);
@@ -124,6 +127,15 @@ if (!singleInstanceLock) {
         ipcMain.on('link-open', (e, link) => shell.openExternal(link));
         ipcMain.on('settings-changed', e => initializeGlobalSettings());
         ipcMain.on('new-themes-added', e => mainWindow.webContents.send('new-themes-added', true));
+        ipcMain.on('message-indicator', (e, data) => {
+            mainWindow.webContents.send('message-indicator', data);
+            let number = data.number;
+            if (number !== null && number !== undefined && number !== 0) {
+                app.dock.setBadge(number);
+            } else {
+                app.dock.setBadge('');
+            }
+        });
 
         function initializeGlobalSettings() {
             if (settings.get('trayIcon.value') === true) {

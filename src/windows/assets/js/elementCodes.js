@@ -1,6 +1,6 @@
 function tabElement(tab) {
     return `<a class="item tab-element" id="tab-${tab.id}" data-tab="${tab.id}">
-                <i class="whatsapp icon"></i> ${tab.name} <i class="cog icon ui"></i> <i class="close icon ui"></i>
+                <i class="whatsapp icon"></i> <span>${tab.name}</span> <i class="cog icon ui"></i> <i class="close icon ui"></i>
             </a>`;
 }
 

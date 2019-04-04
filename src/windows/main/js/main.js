@@ -157,12 +157,12 @@ function setWebViewSettings(webviewElement, tab) {
         }
 
         webviewElement.executeJavaScript(`
-                        var styleElem = document.querySelector('#whatsapp-style');
+                        var styleElem = document.querySelector('#whatsapp-style-${tab.id}');
                         if (styleElem) {
                             styleElem.innerHTML = \`${generateThemeCSS(tab.settings.theme)}\`;
                         } else if (!styleElem) {
                             var styleElement = document.createElement('style');
-                            styleElement.id = 'whatsapp-style';
+                            styleElement.id = 'whatsapp-style-${tab.id}';
                             styleElement.innerHTML = \`${generateThemeCSS(tab.settings.theme)}\`;
                             document.head.appendChild(styleElement);
                         }`);
@@ -318,6 +318,21 @@ function addNewInstance(instance) {
 }
 
 ipcRenderer.on('new-themes-added', e => window.location.reload(true));
+
+ipcRenderer.on('message-indicator', (e, data) => {
+    let tabID = data.tabID;
+    let number = data.number;
+    let tabText = tabs.get('instances').filter(x => x.id === tabID)[0].name;
+
+    document.querySelector(`#tab-${tabID} span`).innerHTML = `${tabText}`;
+    if (number !== null && number !== undefined && number !== 0) {
+        document.querySelector(`#tab-${tabID} span`).innerHTML = `${tabText} (${number})`;
+        ipcRenderer.sendSync('update-badge', number);
+    } else {
+        document.querySelector(`#tab-${tabID} span`).innerHTML = `${tabText}`;
+        ipcRenderer.sendSync('update-badge', null);
+    }
+});
 
 ipcRenderer.on('check-for-updates', e => {
     Toast.show({

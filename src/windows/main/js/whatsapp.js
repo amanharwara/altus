@@ -25,6 +25,24 @@ window.onload = () => {
     if (titleEl && titleEl.innerHTML.includes('Google Chrome 36+')) {
         window.location.reload();
     }
+
+    new MutationObserver(function(mutations) {
+        let title = mutations[0].target.innerText;
+        let tabID = document.querySelector('*[id*="whatsapp-style"]').id.replace('whatsapp-style-', '');
+        let titleRegEx = /([0-9]+)/;
+        let number = titleRegEx.exec(title) ? (parseInt(titleRegEx.exec(title)[0]) !== 0 && parseInt(titleRegEx.exec(title)[0]) !== undefined && parseInt(titleRegEx.exec(title)[0]) !== null) ? parseInt(titleRegEx.exec(title)[0]) : null : null;
+        ipcRenderer.send('message-indicator', {
+            title,
+            tabID,
+            number
+        });
+    }).observe(
+        document.querySelector('title'), {
+            subtree: true,
+            childList: true,
+            characterData: true
+        }
+    );
 }
 
 document.addEventListener('click', e => {
