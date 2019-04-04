@@ -354,6 +354,7 @@ ipcRenderer.on('zoom', (e, data) => {
                         document.querySelector(`#tab-content-${tabID} webview`).executeJavaScript(`
                             document.documentElement.style.zoom = "100%";
                         `);
+                        i.hide({}, t)
                     }, false]
                 ],
                 onOpening: () => {
@@ -380,6 +381,7 @@ ipcRenderer.on('zoom', (e, data) => {
                         document.querySelector(`#tab-content-${tabID} webview`).executeJavaScript(`
                             document.documentElement.style.zoom = "100%";
                         `);
+                        i.hide({}, t)
                     }, false]
                 ],
                 onOpening: () => {
