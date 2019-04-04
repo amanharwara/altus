@@ -43,6 +43,30 @@ window.onload = () => {
             characterData: true
         }
     );
+
+    /* Zoom Functionality */
+    // Default page zoom level to 100%;
+    document.documentElement.style.zoom = "100%";
+    Mousetrap.bind(['command+plus', 'ctrl+plus'], e => {
+        let currentZoomLevel = parseInt(document.documentElement.style.zoom.replace("%", ''));
+        document.documentElement.style.zoom = `${currentZoomLevel+10}%`;
+        let tabID = document.querySelector('*[id*="whatsapp-style"]').id.replace('whatsapp-style-', '');
+        ipcRenderer.send('zoom', {
+            type: 'in',
+            level: parseInt(currentZoomLevel + 10),
+            tabID: tabID
+        });
+    });
+    Mousetrap.bind(['command+-', 'ctrl+-'], e => {
+        let currentZoomLevel = parseInt(document.documentElement.style.zoom.replace("%", ''));
+        document.documentElement.style.zoom = `${currentZoomLevel-10}%`;
+        let tabID = document.querySelector('*[id*="whatsapp-style"]').id.replace('whatsapp-style-', '');
+        ipcRenderer.send('zoom', {
+            type: 'out',
+            level: parseInt(currentZoomLevel - 10),
+            tabID: tabID
+        });
+    });
 }
 
 document.addEventListener('click', e => {

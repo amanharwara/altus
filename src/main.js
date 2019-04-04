@@ -138,6 +138,7 @@ if (!singleInstanceLock) {
                 }
             }
         });
+        ipcMain.on('zoom', (e, data) => mainWindow.webContents.send('zoom', data));
 
         function initializeGlobalSettings() {
             if (settings.get('trayIcon.value') === true) {

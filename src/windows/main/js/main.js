@@ -334,6 +334,71 @@ ipcRenderer.on('message-indicator', (e, data) => {
     }
 });
 
+ipcRenderer.on('zoom', (e, data) => {
+    let type = data.type;
+    let level = data.level;
+    let tabID = data.tabID;
+
+    switch (type) {
+        case 'in':
+            Toast.show({
+                title: 'Zoomed In',
+                message: `${level}%`,
+                position: 'topRight',
+                progressBar: false,
+                timeout: 2000,
+                class: `zoom-toast`,
+                id: `zoom-toast-${level}`,
+                buttons: [
+                    ['<button>Reset</button>', (i, t) => {
+                        document.querySelector(`#tab-content-${tabID} webview`).executeJavaScript(`
+                            document.documentElement.style.zoom = "100%";
+                        `);
+                    }, false]
+                ],
+                onOpening: () => {
+                    let tArray = [];
+                    document.querySelectorAll('.zoom-toast').forEach(e => tArray.push(e));
+                    let prevTs = tArray.filter(i => i.id !== `zoom-toast-${level}`);
+                    prevTs.forEach(el => {
+                        Toast.hide({}, el);
+                    });
+                }
+            });
+            break;
+        case 'out':
+            Toast.show({
+                title: 'Zoomed Out',
+                message: `${level}%`,
+                position: 'topRight',
+                progressBar: false,
+                class: `zoom-toast`,
+                id: `zoom-toast-${level}`,
+                timeout: 2000,
+                buttons: [
+                    ['<button>Reset</button>', (i, t) => {
+                        document.querySelector(`#tab-content-${tabID} webview`).executeJavaScript(`
+                            document.documentElement.style.zoom = "100%";
+                        `);
+                    }, false]
+                ],
+                onOpening: () => {
+                    let tArray = [];
+                    document.querySelectorAll('.zoom-toast').forEach(e => tArray.push(e));
+                    let prevTs = tArray.filter(i => i.id !== `zoom-toast-${level}`);
+                    prevTs.forEach(el => {
+                        Toast.hide({
+                            transitionOut: 'flipOutX'
+                        }, el);
+                    });
+                }
+            });
+            break;
+        default:
+            break;
+    }
+});
+
 ipcRenderer.on('check-for-updates', e => {
     Toast.show({
         title: 'Checking for updates',
