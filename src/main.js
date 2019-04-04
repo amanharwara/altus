@@ -118,7 +118,7 @@ if (!singleInstanceLock) {
             mainWindow = null;
             app.quit();
         });
-        new Badge(mainWindow, {});
+        if (Badge) new Badge(mainWindow, {});
 
         //Setting main menu
         const mainMenu = Menu.buildFromTemplate(template);
@@ -131,7 +131,7 @@ if (!singleInstanceLock) {
             mainWindow.webContents.send('message-indicator', data);
             let number = data.number;
             if (number !== null && number !== undefined && number !== 0) {
-                app.dock.setBadge(number);
+                app.dock.setBadge(`${number}`);
             } else {
                 app.dock.setBadge('');
             }
