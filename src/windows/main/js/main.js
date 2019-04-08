@@ -147,10 +147,8 @@ function generateThemeNames() {
                 }, false]
             ],
             onOpening: (elem) => {
-                console.log(elem)
                 let tArray = [];
                 document.querySelectorAll('.themes-not-loaded-toast').forEach(e => tArray.push(e));
-                console.log(tArray);
                 let prevTs = tArray.filter(i => i.id !== elem.id);
                 prevTs.forEach(el => {
                     Toast.hide({}, el);
