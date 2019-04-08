@@ -5,6 +5,9 @@ const {
     ipcRenderer
 } = require('electron');
 const Mousetrap = require('mousetrap');
+const dialog = require('../../assets/js/generateSaveDialog.js');
+const blobToBase64 = require('../../assets/js/blobToBase64.js');
+const HTML = require('../../assets/js/elementCodes.js')
 
 // Fix for "WhatsApp works with Chrome 36+" issue . DO NOT REMOVE
 var ses = remote.session.defaultSession;
@@ -67,6 +70,75 @@ window.onload = () => {
             tabID: tabID
         });
     });
+
+    //Downloads Issue Fix
+    //Define Mutation Observer for Context Menu
+    let contextMenuObserver = new MutationObserver(function(mutationsList, observer) {
+        for (let mutation of mutationsList) {
+            if (mutation.type == 'childList') {
+                if (mutation.addedNodes[0] !== undefined) {
+                    //Checks if the context menu has been changed.
+                    if (mutation.addedNodes[0].classList.contains('_1RQfk')) {
+                        //Checks if download button exists
+                        if (document.querySelector('.Pm0Ov._34D8D._1dl8f[title="Download"]')) {
+                            //Defining src variable which will be later assigned
+                            let src;
+                            //Checks if the hover menu selector icon exists
+                            if (document.querySelector('._1UyGF')) {
+                                //Goes two levels up from the hover menu selector icon
+                                let parent = document.querySelector('._1UyGF').parentElement.parentElement;
+                                //Define audioElement and imageElement variables
+                                let audioElement, imageElement;
+                                // Check if image and get source
+                                if (parent.querySelector('img._1JVSX')) {
+                                    //Gets the image element and assign it to imageElement variable
+                                    imageElement = parent.querySelector('img._1JVSX');
+                                    //Gets the image objectURL from the image element
+                                    src = imageElement.src;
+                                } else if (parent.querySelector('._1sLSi audio')) {
+                                    //Check if audio and get source
+                                    audioElement = parent.querySelector('._1sLSi audio');
+                                    src = audioElement.src;
+                                }
+                            }
+                            //Remove the original Download button
+                            document.querySelector('.Pm0Ov._34D8D._1dl8f[title="Download"]').remove();
+                            //Create custom Download button
+                            let downloadButtonHTML = HTML.downloadButtonElement(src);
+                            let range = document.createRange();
+                            let downloadButton = range.createContextualFragment(downloadButtonHTML);
+                            document.querySelector('._2imug').appendChild(downloadButton);
+                            //Listen to click events on the Download button
+                            document.querySelector('.Pm0Ov._34D8D._1dl8f[title="Download"]').addEventListener('click', async e => {
+                                //Defining blob variable which will be assigned later
+                                let blob;
+                                //Create a Blob() object from objectURL i.e src and then assign it to blob variable
+                                await fetch(document.querySelector('.Pm0Ov._34D8D._1dl8f[title="Download"]').getAttribute('data-src')).then(r => r.blob()).then(b => blob = b);
+                                //Convert blob to base64 and assign it to blobBase64 variable
+                                let blobBase64 = blobToBase64.convert(blob, (blob, blobBase64) => {
+                                    //Show save dialog
+                                    dialog.show(blob, blobBase64);
+                                });
+                            });
+                            //Hover listeners (non-functional, only for looks)
+                            document.querySelector('.download-button').addEventListener('mouseenter', e => {
+                                document.querySelector('.download-button').classList.add('_1exov');
+                            });
+                            document.querySelector('.download-button').addEventListener('mouseleave', e => {
+                                document.querySelector('.download-button').classList.remove('_1exov');
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    //Start observing the '.app-wrapper-web' for changes
+    contextMenuObserver.observe(document.querySelector('.app-wrapper-web'), {
+        childList: true,
+        subtree: true
+    })
 }
 
 document.addEventListener('click', e => {
