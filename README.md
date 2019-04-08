@@ -87,11 +87,11 @@ To install Altus on a Mac, follow these steps:
 
 ### Latest Releases:
 
-#### Windows - v2.0.5 - [Download](https://github.com/ShadyThGod/altus/releases/download/2.0.5/Altus-Setup-2.0.5.exe)
+#### Windows - v2.1.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/2.1.0/Altus-Setup-2.1.0.exe)
 
-#### Linux - v2.0.5 - [Download](https://github.com/ShadyThGod/altus/releases/download/2.0.5/Altus.2.0.5.AppImage)
+#### Linux - v2.1.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/2.1.0/Altus.2.1.0.AppImage)
 
-#### MacOS - v2.0.5 - [Download](https://github.com/ShadyThGod/altus/releases/download/2.0.5/Altus-2.0.5.dmg)
+#### MacOS - v2.1.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/2.1.0/Altus-2.1.0.dmg)
 
 ## For Developers
 
