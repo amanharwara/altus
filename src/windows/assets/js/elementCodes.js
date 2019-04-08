@@ -50,13 +50,8 @@ function settingsModalElement(tab) {
             </div>`;
 }
 
-function downloadButtonElement(src) {
-    return `<li tabindex="-1" class="_3L0q3 _167q _36Zz0 download-button" data-animate-dropdown-item="true" style="opacity: 1;"><div data-src="${src}" class="Pm0Ov _34D8D _1dl8f" role="button" title="Download">Download</div></li>`
-}
-
 module.exports = {
     tabElement,
     instanceElement,
-    settingsModalElement,
-    downloadButtonElement
+    settingsModalElement
 }
