@@ -39,11 +39,6 @@ let themes = new Store({
     name: 'themes'
 });
 
-$('.dropdown').dropdown();
-$('.dropdown').dropdown({
-    values: generateThemeNames()
-});
-
 function loadTabsFromStorage() {
 
     let storedTabs = tabs.get('instances');
@@ -136,7 +131,33 @@ function generateThemeNames() {
             nameList.push(themeJSON);
         });
     } else {
-        window.location.reload();
+        Toast.show({
+            position: 'center',
+            class: `themes-not-loaded-toast`,
+            id: `toast-${generateId()}`,
+            title: 'Themes Not Loaded!',
+            message: 'You may not be able to use any themes as they are not loaded. Click the Reload button to reload the window or click the button to close this notification.',
+            timeout: false,
+            progressBar: false,
+            theme: 'dark',
+            buttons: [
+                ['<button>Reload</button>', (i, t) => {
+                    window.location.reload();
+                    i.hide({}, t)
+                }, false]
+            ],
+            onOpening: (elem) => {
+                console.log(elem)
+                let tArray = [];
+                document.querySelectorAll('.themes-not-loaded-toast').forEach(e => tArray.push(e));
+                console.log(tArray);
+                let prevTs = tArray.filter(i => i.id !== elem.id);
+                prevTs.forEach(el => {
+                    Toast.hide({}, el);
+                });
+            },
+            overlay: true,
+        });
     }
 
     return nameList;

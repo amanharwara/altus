@@ -99,6 +99,7 @@ body {
     background: linear-gradient(to right, #11998e, #2aaa5b) !important;
 }
 
-.error-toast {
+.error-toast,
+.themes-not-loaded-toast {
     background: linear-gradient(to right, #f12711, #a37510) !important;
 }
