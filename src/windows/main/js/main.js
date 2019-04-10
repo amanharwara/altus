@@ -39,6 +39,11 @@ let themes = new Store({
     name: 'themes'
 });
 
+$('.dropdown').dropdown();
+$('.dropdown').dropdown({
+    values: generateThemeNames()
+});
+
 function loadTabsFromStorage() {
 
     let storedTabs = tabs.get('instances');
