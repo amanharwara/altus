@@ -91,11 +91,6 @@ if (!singleInstanceLock) {
                 value: true,
                 name: 'Load Altus on system startup',
                 description: 'If this setting is enabled, Altus will start everytime the system starts. NOTE: This setting requires you to restart the whole app for changes to apply.'
-            },
-            startHidden: {
-                value: false,
-                name: 'Start Altus Hidden',
-                description: 'If this setting is enabled and the "Load on system startup" setting is enabled, Altus will start hidden in the background on system startup, else it will load in the foreground. NOTE: This setting requires you to restart the whole app for changes to apply.'
             }
         }
     });
@@ -195,8 +190,7 @@ if (!singleInstanceLock) {
             }
 
             let systemStartupLauncher = new autoLaunch({
-                name: "Altus",
-                isHidden: settings.get('startHidden.value')
+                name: "Altus"
             });
             if (settings.get('systemStartup.value') === true) {
                 systemStartupLauncher.enable();
