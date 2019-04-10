@@ -13,6 +13,7 @@ const path = require('path');
 const Store = require('electron-store');
 const fs = require('fs');
 const fetch = require('node-fetch');
+const autoLaunch = require('auto-launch');
 let Badge;
 if (process.platform === 'win32') Badge = require('electron-windows-badge');
 
@@ -85,6 +86,16 @@ if (!singleInstanceLock) {
                 value: true,
                 name: 'Custom Titlebar',
                 description: 'If you are having any issues with the custom titlebar, you can disable it using this setting. NOTE: This setting requires you to restart the whole app for changes to apply.'
+            },
+            systemStartup: {
+                value: true,
+                name: 'Load Altus on system startup',
+                description: 'If this setting is enabled, Altus will start everytime the system starts. NOTE: This setting requires you to restart the whole app for changes to apply.'
+            },
+            startHidden: {
+                value: false,
+                name: 'Start Altus Hidden',
+                description: 'If this setting is enabled and the "Load on system startup" setting is enabled, Altus will start hidden in the background on system startup, else it will load in the foreground. NOTE: This setting requires you to restart the whole app for changes to apply.'
             }
         }
     });
@@ -181,6 +192,16 @@ if (!singleInstanceLock) {
                 app.showExitPrompt = true;
             } else {
                 app.showExitPrompt = false;
+            }
+
+            let systemStartupLauncher = new autoLaunch({
+                name: "Altus",
+                isHidden: settings.get('startHidden.value')
+            });
+            if (settings.get('systemStartup.value') === true) {
+                systemStartupLauncher.enable();
+            } else {
+                systemStartupLauncher.disable();
             }
         }
 

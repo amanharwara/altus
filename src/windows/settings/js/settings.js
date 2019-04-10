@@ -80,6 +80,10 @@ document.querySelector('#save-button').addEventListener('click', () => {
 
     settings.set('customTitlebar.value', document.querySelector('#customTitlebarButton').innerText == "Enabled" ? true : false);
 
+    settings.set('systemStartup.value', document.querySelector('#systemStartupButton').innerText == "Enabled" ? true : false);
+
+    settings.set('startHidden.value', document.querySelector('#startHiddenButton').innerText == "Enabled" ? true : false);
+
     ipcRenderer.send('settings-changed', true);
     BrowserWindow.getFocusedWindow().close();
 });
