@@ -21,7 +21,7 @@ window.navigator.serviceWorker.getRegistrations().then(registrations => {
 });
 
 window.onload = () => {
-    const titleEl = document.querySelector('.window-title');
+    const titleEl = document.querySelector('.landing-title');
     if (titleEl && titleEl.innerHTML.includes('Google Chrome 36+')) {
         window.location.reload();
     }
