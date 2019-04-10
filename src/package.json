@@ -34,7 +34,8 @@
             "category": "Chat",
             "target": [
                 "AppImage"
-            ]
+            ],
+            "icon": "build/icon.png"
         },
         "mac": {
             "category": "public.app-category.social-networking",
