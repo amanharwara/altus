@@ -5,6 +5,9 @@ const {
 const ClipboardJS = require('clipboard');
 let cssClipboard = new ClipboardJS('#copy-css-button');
 const Store = require('electron-store');
+const {
+    ipcRenderer
+} = require('electron');
 
 const settings = new Store({
     name: 'settings'
@@ -148,4 +151,12 @@ cssClipboard.on('success', () => {
         copyButton.innerHTML = '<i class="copy icon"></i> Copy CSS';
         copyButton.disabled = false;
     }, 500);
+});
+
+document.getElementById('add-css-button').addEventListener('click', () => {
+    if (document.querySelector('#generatedcssarea').value !== '' && document.querySelector('#generatedcssarea').value !== undefined && document.querySelector('#generatedcssarea').value !== null) {
+        ipcRenderer.send('add-theme-from-customizer', document.querySelector('#generatedcssarea').value);
+    } else {
+        alert("Please Generate The CSS First Using The \"Generate CSS\" Button.")
+    }
 });

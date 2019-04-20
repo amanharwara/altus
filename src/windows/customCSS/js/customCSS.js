@@ -60,6 +60,11 @@ document.getElementById('add-theme-button').addEventListener('click', () => {
     }
 });
 
+ipcRenderer.on('add-theme-from-customizer', (e, css) => {
+    document.getElementById('customcssarea').value = css;
+    document.getElementById('themenameinput').focus();
+});
+
 document.getElementById('themenameinput').addEventListener('focus', () => {
     document.getElementById('themenameinput').parentElement.classList.remove('error');
 });
