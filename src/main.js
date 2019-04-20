@@ -14,6 +14,7 @@ const Store = require('electron-store');
 const fs = require('fs');
 const fetch = require('node-fetch');
 const autoLaunch = require('auto-launch');
+const windowState = require('electron-window-state');
 let Badge;
 if (process.platform === 'win32') Badge = require('electron-windows-badge');
 
@@ -97,6 +98,13 @@ if (!singleInstanceLock) {
 
     //Create main window, main menu
     app.on('ready', () => {
+        //Load previous window state with defaults
+        let mainWindowState = windowState({
+            defaultWidth: 800,
+            defaultHeight: 600
+        })
+
+        //Create main window
         mainWindow = new BrowserWindow({
             title: `Altus ${app.getVersion()}`,
             frame: process.platform !== 'darwin' ? !settings.get('customTitlebar.value') : true,
@@ -106,9 +114,12 @@ if (!singleInstanceLock) {
             webPreferences: {
                 webviewTag: true,
                 nodeIntegration: true
-            }
+            },
+            x: mainWindowState.x,
+            y: mainWindowState.y,
+            width: mainWindowState.width,
+            height: mainWindowState.height
         });
-        mainWindow.maximize(); //Maximizing the main window always
         mainWindow.loadURL(url.format({ //Loads the mainwindow html file
             pathname: path.join(__dirname, 'windows', 'main', 'window.html'),
             protocol: 'file:',
@@ -125,6 +136,7 @@ if (!singleInstanceLock) {
             app.quit();
         });
         if (Badge) new Badge(mainWindow, {});
+        mainWindowState.manage(mainWindow);
 
         //Setting main menu
         const mainMenu = Menu.buildFromTemplate(template);
@@ -145,6 +157,15 @@ if (!singleInstanceLock) {
             }
         });
         ipcMain.on('zoom', (e, data) => mainWindow.webContents.send('zoom', data));
+        ipcMain.on('add-theme-from-customizer', (e, css) => {
+            if (typeof customCSSWindow === 'object') {
+                customCSSWindow.show();
+                customCSSWindow.webContents.send(css);
+            } else {
+                createWindow('customCSS');
+                customCSSWindow.webContents.on('did-finish-load', () => customCSSWindow.webContents.send('add-theme-from-customizer', css));
+            }
+        });
 
         function initializeGlobalSettings() {
             if (settings.get('trayIcon.value') === true) {
@@ -317,6 +338,11 @@ const template = [{
             label: 'Repository',
             click: () => {
                 shell.openExternal('https://www.github.com/shadythgod/altus');
+            }
+        }, {
+            label: 'Discord Chat',
+            click: () => {
+                shell.openExternal('https://discord.gg/mGxNGP6');
             }
         }]
     }]
