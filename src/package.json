@@ -81,7 +81,7 @@
         "electron-window-state": "^5.0.3",
         "electron-windows-badge": "^1.0.5",
         "izitoast": "^1.4.0",
-        "jquery": "^3.3.1",
+        "jquery": ">=3.4.0",
         "mousetrap": "^1.6.2",
         "node-fetch": "^2.3.0",
         "uuid": "^3.3.2"
