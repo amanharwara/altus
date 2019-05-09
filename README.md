@@ -24,13 +24,6 @@ Submit a Feature Request - [Click Here](https://feathub.com/ShadyThGod/altus)
 
 [![Feature Requests](http://feathub.com/ShadyThGod/altus?format=svg)](http://feathub.com/ShadyThGod/altus)
 
-### Planned Features
-
-- [x] ~~**Theme Customizer** so you don't have to learn CSS to create themes~~
-- [ ] **Inbuilt YouTube Video Preview** to view YouTube videos without having to open your browser
-- [x] ~~**Multiple Account Support** to use multiple WhatsApp accounts simultaneously.~~
-- [x] ~~**Tray Icon** so the app runs without you having to keep the window open~~
-
 ## Screenshots
 
 ### First Start
