@@ -19,6 +19,10 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 - **Available for most desktop platforms** including Windows (7 or above), Linux and MacOS.
 - **Tray icon** so you can minimize the app completely and still receive notifications.
 
+## Feature Requests
+Submit a Feature Request - [Click Here](https://feathub.com/ShadyThGod/altus)
+
+[![Feature Requests](http://feathub.com/ShadyThGod/altus?format=svg)](http://feathub.com/ShadyThGod/altus)
 
 ### Planned Features
 
