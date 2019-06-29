@@ -10,6 +10,7 @@ const {
 let settings = new Store({
     name: 'settings'
 });
+const Mousetrap = require('mousetrap');
 
 if (settings.get('customTitlebar.value') === true && process.platform !== 'darwin') {
     // Create main window titlebar
@@ -70,4 +71,18 @@ document.getElementById('themenameinput').addEventListener('focus', () => {
 });
 document.getElementById('customcssarea').addEventListener('focus', () => {
     document.getElementById('customcssarea').parentElement.classList.remove('error');
+});
+
+/* Mac Copy/Paste Fix */
+Mousetrap.bind(['command+c', 'ctrl+c'], function(e) {
+    document.execCommand('copy');
+});
+Mousetrap.bind(['command+v', 'ctrl+v'], function(e) {
+    document.execCommand('paste');
+});
+Mousetrap.bind(['command+x', 'ctrl+x'], function(e) {
+    document.execCommand('cut');
+});
+Mousetrap.bind(['command+a', 'ctrl+a'], function(e) {
+    document.execCommand('selectAll');
 });
