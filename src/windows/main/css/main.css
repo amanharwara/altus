@@ -15,6 +15,21 @@ body {
     height: 100%;
 }
 
+#hide-tabs {
+    position: absolute;
+    top: 0.35rem;
+    right: 1rem;
+    background: #343c46 !important;
+    z-index: 1000;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+}
+
+.hide-tabs-icon {
+    margin: 0.1rem !important;
+    transition: 0.3s;
+}
+
 .main,
 .container-after-titlebar {
     overflow: hidden !important;
@@ -56,6 +71,7 @@ body {
     border: 0 !important;
     border-radius: 0;
     height: 6vh;
+    transition: 0.5s;
 }
 
 .ui.top.attached.tabular.menu .item {

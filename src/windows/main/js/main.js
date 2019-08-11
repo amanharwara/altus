@@ -16,6 +16,38 @@ let settings = new Store({
     name: 'settings'
 });
 
+let tabBarSetting = new Store({
+    name: 'tabBar',
+    defaults: {
+        hidden: false
+    }
+});
+
+function toggleTabBar() {
+    let tabBarHidden = tabBarSetting.get('hidden');
+
+    if (tabBarHidden !== false) {
+        document.querySelector('.ui.top.attached.tabular.menu.tabs').style.display = "none";
+        document.querySelector('.hide-tabs-icon').classList.remove('up');
+        document.querySelector('.hide-tabs-icon').classList.add('down');
+    } else {
+        document.querySelector('.ui.top.attached.tabular.menu.tabs').style.display = "";
+        document.querySelector('.hide-tabs-icon').classList.remove('down');
+        document.querySelector('.hide-tabs-icon').classList.add('up');
+    }
+}
+
+toggleTabBar();
+
+document.querySelector('#hide-tabs').addEventListener('click', function(e) {
+    if (tabBarSetting.get('hidden') == false) {
+        tabBarSetting.set('hidden', true);
+    } else {
+        tabBarSetting.set('hidden', false);
+    }
+    toggleTabBar();
+});
+
 if (settings.get('customTitlebar.value') === true && process.platform !== 'darwin') {
     // Create main window titlebar
     const mainTitlebar = new customTitlebar.Titlebar({
