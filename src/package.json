@@ -1,6 +1,6 @@
 {
     "name": "altus",
-    "version": "2.3.3",
+    "version": "2.4.0",
     "description": "Electron-based desktop wrapper for Whatsapp Web",
     "homepage": "https://github.com/ShadyThGod/altus",
     "repository": {
@@ -21,15 +21,13 @@
             "artifactName": "${productName}-Setup-${version}.${ext}"
         },
         "win": {
-            "target": [
-                {
-                    "target": "nsis",
-                    "arch": [
-                        "x64",
-                        "ia32"
-                    ]
-                }
-            ],
+            "target": [{
+                "target": "nsis",
+                "arch": [
+                    "x64",
+                    "ia32"
+                ]
+            }],
             "icon": "build/icon.ico"
         },
         "linux": {
@@ -49,8 +47,7 @@
             "background": "build/background.png",
             "icon": "build/icon.icns",
             "iconSize": 100,
-            "contents": [
-                {
+            "contents": [{
                     "x": 380,
                     "y": 280,
                     "type": "link",
