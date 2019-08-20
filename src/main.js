@@ -55,6 +55,10 @@ function getDarkTheme(createThemesList) {
 
 getDarkTheme(createThemesList);
 
+// Set application ID, so notifications work properly
+// on Windows 10 (#26)
+app.setAppUserModelId('harwara.aman.altus');
+
 if (!singleInstanceLock) {
     //Quits the second instance
     app.quit();
