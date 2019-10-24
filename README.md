@@ -66,8 +66,6 @@ Installing Altus on Linux using AppImage is really easy. Follow these steps:
 - You might need to make the file executable using chmod. Use: `chmod a+x ~/Downloads/Altus 2.0.0.AppImage`
 - Then simply run it. Use: `~/Downloads/Altus 2.0.0.AppImage`
 
-I recommend checking out [TheAssasin/AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) which will make it easier for you to use any AppImage easily by integrating them into your system like a debian package would be.
-
 #### Mac
 
 One thing to note is that Mac releases most probably will be late than the Windows and Linux releases as I do not own a Mac and my PC runs really slow when I use macOS on a VM.
