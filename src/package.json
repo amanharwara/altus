@@ -1,42 +1,41 @@
 {
     "name": "altus",
-    "version": "2.4.0",
-    "description": "Electron-based desktop wrapper for Whatsapp Web",
-    "homepage": "https://github.com/ShadyThGod/altus",
+    "version": "3.0.0",
+    "description": "Electron-based desktop wrapper for WhatsApp Web",
+    "homepage": "https://shadythgod.github.io/altus",
     "repository": {
         "url": "https://github.com/ShadyThGod/altus"
     },
     "bugs": {
         "url": "https://github.com/ShadyThGod/altus/issues"
     },
-    "main": "main.js",
+    "main": "index.js",
+    "author": {
+        "name": "Aman Harwara (ShadyThGod)",
+        "email": "amanharwara@gmail.com"
+    },
+    "license": "GPL-3.0",
     "scripts": {
         "start": "electron ."
+    },
+    "devDependencies": {
+        "electron": "^7.0.0"
+    },
+    "dependencies": {
+        "custom-electron-titlebar": "^3.0.0",
+        "electron-store": "^5.0.0",
+        "electron-windows-badge": "^1.0.5",
+        "huebee": "^2.0.0",
+        "izitoast": "^1.4.0",
+        "mousetrap": "^1.6.3",
+        "node-fetch": "^2.6.0",
+        "sweetalert2": "^8.18.3",
+        "tabbyjs": "^12.0.3",
+        "uuid": "^3.3.3"
     },
     "build": {
         "appId": "harwara.aman.altus",
         "productName": "Altus",
-        "nsis": {
-            "oneClick": "false",
-            "artifactName": "${productName}-Setup-${version}.${ext}"
-        },
-        "win": {
-            "target": [{
-                "target": "nsis",
-                "arch": [
-                    "x64",
-                    "ia32"
-                ]
-            }],
-            "icon": "build/icon.ico"
-        },
-        "linux": {
-            "category": "Chat",
-            "target": [
-                "AppImage"
-            ],
-            "icon": "build/icon.png"
-        },
         "mac": {
             "category": "public.app-category.social-networking",
             "target": [
@@ -47,7 +46,8 @@
             "background": "build/background.png",
             "icon": "build/icon.icns",
             "iconSize": 100,
-            "contents": [{
+            "contents": [
+                {
                     "x": 380,
                     "y": 280,
                     "type": "link",
@@ -63,27 +63,30 @@
                 "width": 500,
                 "height": 400
             }
+        },
+        "nsis": {
+            "oneClick": "false",
+            "artifactName": "${productName}-Setup-${version}.${ext}",
+            "allowToChangeInstallationDirectory": "true"
+        },
+        "win": {
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64",
+                        "ia32"
+                    ]
+                }
+            ],
+            "icon": "build/icon.ico"
+        },
+        "linux": {
+            "category": "Chat",
+            "target": [
+                "AppImage"
+            ],
+            "icon": "build/icon.png"
         }
-    },
-    "author": {
-        "name": "ShadyThGod",
-        "email": "amanharwara@gmail.com"
-    },
-    "license": "GPL-3.0",
-    "devDependencies": {
-        "electron": "^4.1.1"
-    },
-    "dependencies": {
-        "auto-launch": "^5.0.5",
-        "clipboard": "^2.0.4",
-        "custom-electron-titlebar": "^3.0.0",
-        "electron-store": "^2.0.0",
-        "electron-window-state": "^5.0.3",
-        "electron-windows-badge": "^1.0.5",
-        "izitoast": "^1.4.0",
-        "jquery": ">=3.4.0",
-        "mousetrap": "^1.6.3",
-        "node-fetch": "^2.3.0",
-        "uuid": "^3.3.2"
     }
 }
