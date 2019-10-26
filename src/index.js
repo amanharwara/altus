@@ -46,8 +46,18 @@ getDarkTheme(createThemesList);
  */
 function getDarkTheme(createThemesList) {
     fetch('https://raw.githubusercontent.com/ShadyThGod/shadythgod.github.io/master/css/altus-dark-theme.css')
-        .then(res => res.text())
+        .then(res => {
+            if (res.ok) {
+                return res.text();
+            } else {
+                throw new Error(res.statusText);
+            }
+        })
         .then(css => createThemesList(css))
+        .catch(e => {
+            dialog.showErrorBox('Error: Base Dark Theme Not Loaded (No Internet Connection)', e);
+            createThemesList('');
+        })
 }
 
 // Declaring the themesList variable
@@ -512,8 +522,8 @@ function confirmExit() {
         buttons: ["OK", "Cancel"],
         title: "Exit",
         message: "Are you sure you want to exit?"
-    }, function(res) {
-        if (res == 0) {
+    }).then(res => {
+        if (res.response == 0) {
             app.showExitPrompt = false;
             app.quit();
             return;
