@@ -460,7 +460,7 @@ if (!singleInstanceLock) {
                     trayIcon.setToolTip('Altus');
                     // Set tray icon context menu
                     trayIcon.setContextMenu(trayContextMenu);
-                } else {
+                } else if (process.platform === 'darwin') {
                     // Set dock menu on MacOS
                     app.dock.setMenu(trayContextMenu);
                 }
