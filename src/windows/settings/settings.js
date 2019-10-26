@@ -35,8 +35,8 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
     mainTitlebar.updateTitle(`Settings`);
 }
 
-// Loop through all the settings
-Array.from(settings.get('settings')).forEach(setting => {
+// Loop through all the settings (except tray icon on Linux as it is not supported)
+Array.from(process.platform === 'linux' ? settings.get('settings').filter(s => s.id !== 'trayIcon') : settings.get('settings')).forEach(setting => {
     // Create setting element for DOM
     let settingElement = document.createRange().createContextualFragment(`<div class="setting" data-setting="${setting.id}" data-value="${setting.value ? 'enabled' : 'disabled'}"><div class="information"><div class="setting-title">${setting.name}</div><div class="setting-description">${setting.description}</div></div><div id="${setting.id}-toggle" class="setting-toggle ${setting.value ? 'setting-toggle-enabled' : 'setting-toggle-disabled'}">${setting.value ? '<span class="lni-check-mark-circle"></span> Enabled' : '<span class="lni-cross-circle"></span> Disabled'}</div></div>`);
 
