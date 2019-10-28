@@ -419,3 +419,12 @@ function toggleSound(whatsAppElement, setting, firstStart) {
 ipcRenderer.on('themes-changed', e => {
     window.location.reload();
 });
+
+// IPC event of message indicator
+ipcRenderer.on('message-indicator', (e, i) => {
+    if (i > 0 && i !== undefined && i !== null) {
+        ipcRenderer.sendSync('update-badge', '·');
+    } else {
+        ipcRenderer.sendSync('update-badge', '');
+    }
+});

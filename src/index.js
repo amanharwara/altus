@@ -440,8 +440,7 @@ if (!singleInstanceLock) {
 
         // Creates a new message count badge for the main window if the Badge variable is enabled
         if (Badge) new Badge(mainWindow, {
-            radius: 8.5,
-            font: '10px Arial'
+            font: '4px Calibri'
         })
 
         // Building main menu from template
@@ -527,6 +526,20 @@ if (!singleInstanceLock) {
 
         // Set global settings whenever they are changed
         ipcMain.on('settings-changed', e => setGlobalSettings());
+
+        // Message Indicator
+        ipcMain.on('message-indicator', (e, i) => {
+            if (process.platform === 'darwin') {
+                if (i > 0 && i !== null && i !== undefined) {
+                    app.dock.setBadge('·');
+                } else {
+                    app.dock.setBadge('');
+                }
+            }
+            if (process.platform === 'win32') {
+                mainWindow.webContents.send('message-indicator', i);
+            }
+        });
     });
 
     // Quits app if all windows are closed
