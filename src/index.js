@@ -32,7 +32,8 @@ let mainWindow,
     aboutWindow,
     settingsWindow,
     customThemeWindow,
-    themeManagerWindow;
+    themeManagerWindow,
+    checkUpdatesWindow;
 
 // Declaring the tray icon variable to use later
 let trayIcon;
@@ -277,7 +278,28 @@ const mainMenuTemplate = [{
         label: "Check For Updates",
         accelerator: 'CmdOrCtrl+Shift+U',
         click() {
-            mainWindow.webContents.send('check-for-updates', true);
+            // Check is window exists already
+            if (typeof checkUpdatesWindow === 'object') {
+                // Show window instead of creating new object
+                checkUpdatesWindow.show();
+            } else {
+                // Create new browser window object for the window
+                checkUpdatesWindow = createWindow('checkUpdates', 'Check Updates', 435, 340, true, mainWindow, false, false, 435, 340, '', '');
+                checkUpdatesWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, 'windows', 'checkUpdates', 'checkUpdates.html'),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+                checkUpdatesWindow.once('ready-to-show', () => {
+                    // Shows About window
+                    checkUpdatesWindow.show();
+                });
+                // Close window event (Hides window when closed, instead of deleting it)
+                checkUpdatesWindow.on('close', e => {
+                    e.preventDefault();
+                    checkUpdatesWindow.hide();
+                });
+            }
         }
     }, {
         label: "Links",
