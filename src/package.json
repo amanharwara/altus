@@ -22,10 +22,11 @@
         "electron": "^7.0.0"
     },
     "dependencies": {
+        "@simonwep/pickr": "^1.4.6",
         "custom-electron-titlebar": "^3.0.0",
+        "electron-context-menu": "^0.15.0",
         "electron-store": "^5.0.0",
         "electron-windows-badge": "^1.0.5",
-        "huebee": "^2.0.0",
         "mousetrap": "^1.6.3",
         "node-fetch": "^2.6.0",
         "sweetalert2": "^8.18.3",
