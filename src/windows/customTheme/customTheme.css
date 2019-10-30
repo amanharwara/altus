@@ -224,29 +224,6 @@ body {
     outline: none;
 }
 
-.huebee__container {
-    background: #222;
-    border-radius: 0;
-    left: 0;
-    top: 0;
-}
-
-.setting:nth-child(4) .huebee__container {
-    top: -150px;
-}
-
-.setting:nth-child(5) .huebee__container {
-    top: -150px;
-}
-
-.setting:nth-child(6) .huebee__container {
-    top: -200px;
-}
-
-.setting:nth-child(7) .huebee__container {
-    top: -250px;
-}
-
 
 /** Scrollbar **/
 
@@ -282,4 +259,20 @@ body {
     top: 105%;
     left: 0;
     z-index: 10;
+}
+
+.pcr-button,
+.pcr-button::before,
+.pcr-button::after {
+    border-radius: 0 !important;
+}
+
+.inputs {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.inputs .color-input {
+    margin-right: 0.5em;
 }
