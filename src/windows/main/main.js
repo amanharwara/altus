@@ -3,7 +3,6 @@ const customTitlebar = require('custom-electron-titlebar');
 
 // Import extra electron modules
 const {
-    app,
     process
 } = require('electron').remote;
 const {
@@ -49,7 +48,7 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
         itemBackgroundColor: customTitlebar.Color.fromHex('#1c2028'),
     });
     // Setting title explicitly
-    mainTitlebar.updateTitle(`Altus ${app.getVersion()}`);
+    mainTitlebar.updateTitle(`Altus`);
 }
 
 // Initialize tabs using Tabby
