@@ -51,7 +51,7 @@ setCurrentReleaseNotes();
 async function setCurrentReleaseNotes() {
     // Get current version release notes
     let currentVersionRelease = Array.from(await getReleases()).find(a => a.tag_name === app.getVersion());
-    let currentVersionNotes = currentVersionRelease ? currentVersionRelease.body.replace(/\-/g, '<br>-') : 'No Release Notes Available.';
+    let currentVersionNotes = currentVersionRelease ? currentVersionRelease.body.replace(/\n/g, '<br>-') : 'No Release Notes Available.';
 
     // Set current version notes
     document.querySelector('.release-notes .content').innerHTML = currentVersionNotes.length !== 0 ? currentVersionNotes : 'No Release Notes Available.';
@@ -77,7 +77,7 @@ async function handleUpdateChecks() {
         toggleSpinEffect(document.querySelector('.button.update .lni-reload'), false);
 
         // Release Notes
-        let releaseNotes = (latestRelease.body.length !== 0) ? latestRelease.body : 'No release notes.';
+        let releaseNotes = (latestRelease.body.length !== 0) ? latestRelease.body.replace(/\n/g, '<br />') : 'No release notes.';
 
         // Set release notes
         document.querySelector('.release-notes .content').innerHTML = releaseNotes;
