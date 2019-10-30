@@ -12,6 +12,9 @@ const {
 const url = require('url');
 const path = require('path');
 
+// Import electron context menu library
+const contextMenu = require('electron-context-menu');
+
 // Import createWindow function
 const {
     createWindow
@@ -484,16 +487,19 @@ if (!singleInstanceLock) {
                     }
                 }]);
 
-                if (process.platform !== 'darwin' && process.platform !== 'linux') {
-                    // Create tray icon on Windows
-                    trayIcon = new Tray(trayIconImage);
-                    // Set tray icon tooltip
-                    trayIcon.setToolTip('Altus');
-                    // Set tray icon context menu
-                    trayIcon.setContextMenu(trayContextMenu);
-                } else if (process.platform === 'darwin') {
-                    // Set dock menu on MacOS
-                    app.dock.setMenu(trayContextMenu);
+                // Checks if the tray icon already exists or not
+                if (typeof trayIcon !== "object") {
+                    if (process.platform !== 'darwin' && process.platform !== 'linux') {
+                        // Create tray icon on Windows
+                        trayIcon = new Tray(trayIconImage);
+                        // Set tray icon tooltip
+                        trayIcon.setToolTip('Altus');
+                        // Set tray icon context menu
+                        trayIcon.setContextMenu(trayContextMenu);
+                    } else if (process.platform === 'darwin') {
+                        // Set dock menu on MacOS
+                        app.dock.setMenu(trayContextMenu);
+                    }
                 }
             } else {
                 // If tray icon setting is disabled
@@ -540,6 +546,24 @@ if (!singleInstanceLock) {
                 mainWindow.webContents.send('message-indicator', i);
             }
         });
+    });
+
+    // When web contents are created
+    app.on('web-contents-created', (e, c) => {
+        // Initialize the context menu
+        contextMenu({
+            prepend: (d, p, bW) => [{
+                // Allows user to search the selected text on Google in external browser
+                label: 'Search Google for "{selection}"',
+                visible: p.selectionText.trim().length > 0,
+                click: () => {
+                    shell.openExternal(`https://google.com/search?q=${encodeURIComponent(p.selectionText)}`);
+                }
+            }],
+            window: c,
+            showCopyImage: false,
+            showSaveImageAs: true,
+        })
     });
 
     // Quits app if all windows are closed
