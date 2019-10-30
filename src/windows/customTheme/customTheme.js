@@ -1,15 +1,14 @@
-// Import custom titlebar module
-const customTitlebar = require('custom-electron-titlebar');
-
 // Import extra electron modules
 const {
-    app,
     process,
     Menu
 } = require('electron').remote;
 const {
     ipcRenderer
 } = require('electron');
+
+// Import custom titlebar module
+const customTitlebar = require('custom-electron-titlebar');
 
 // Import electron store module for settings
 const Store = require('electron-store');
@@ -18,14 +17,6 @@ const Store = require('electron-store');
 let settings = new Store({
     name: 'settings'
 });
-
-// Load the themes into themes variable
-let themes = new Store({
-    name: 'themes'
-});
-
-// Import Huebee for color pickers
-const Huebee = require('huebee');
 
 // Checks if custom titlebar is enabled in settings & the platform isn't a Mac
 if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value === true && process.platform !== 'darwin') {
@@ -43,23 +34,10 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
     mainTitlebar.updateTitle(`Custom Theme`);
 }
 
-/* // To close the other collapsible when one is opened
-document.querySelector('.customizer .toggle').addEventListener('click', () => {
-    if (document.querySelector('.customizer .toggle').checked === true) {
-        document.querySelector('.customcss .toggle').checked = false;
-    } else {
-        document.querySelector('.customcss .toggle').checked = true;
-    }
+// Load the themes into themes variable
+let themes = new Store({
+    name: 'themes'
 });
-
-// To close the other collapsible when one is opened
-document.querySelector('.customcss .toggle').addEventListener('click', () => {
-    if (document.querySelector('.customcss .toggle').checked === true) {
-        document.querySelector('.customizer .toggle').checked = false;
-    } else {
-        document.querySelector('.customizer .toggle').checked = true;
-    }
-}); */
 
 // Submit "Custom CSS" Theme
 document.querySelector('#customcssaddbutton').addEventListener('click', () => {
@@ -90,51 +68,6 @@ document.querySelector('#customcssaddbutton').addEventListener('click', () => {
 
     // Send IPC message to refresh main window
     ipcRenderer.send('themes-changed', true);
-});
-
-let colorInputs = document.querySelectorAll('.color-input');
-colorInputs.forEach(i => {
-    let hueb = new Huebee(i, {
-        setText: true,
-        setBGColor: true,
-        hues: 12,
-        saturations: 3,
-        shades: 7,
-        customColors: ['#272C35', '#1F232A', '#D1D1D1', '#E9E9E9', '#7289DA', '#E1E1E1'],
-        className: 'colorpicker'
-    });
-    switch (i.id) {
-        case 'main-bg':
-            hueb.setColor('#272C35')
-            break;
-
-        case 'sec-bg':
-            hueb.setColor('#1F232A')
-            break;
-
-        case 'main-text':
-            hueb.setColor('#D1D1D1')
-            break;
-
-        case 'sec-text':
-            hueb.setColor('#E9E9E9')
-            break;
-
-        case 'accent-color':
-            hueb.setColor('#7289DA')
-            break;
-
-        case 'icon-color':
-            hueb.setColor('#E1E1E1')
-            break;
-
-        case 'shadow-color':
-            hueb.setColor('rgba(0, 0, 0, 0.10)')
-            break;
-
-        default:
-            break;
-    }
 });
 
 /**
@@ -172,13 +105,13 @@ document.querySelector('#customizeraddbutton').addEventListener('click', () => {
         .then(res => res.text())
         .then(baseTheme => {
             // Get new values from DOM
-            let mainBG = document.querySelector('#main-bg').value;
-            let secBG = document.querySelector('#sec-bg').value;
-            let mainText = document.querySelector('#main-text').value;
-            let secText = document.querySelector('#sec-text').value;
-            let accentColor = document.querySelector('#accent-color').value;
-            let iconColor = document.querySelector('#icon-color').value;
-            let shadowColor = document.querySelector('#shadow-color').value;
+            let mainBG = document.querySelector('#main-bg .color-input').value;
+            let secBG = document.querySelector('#sec-bg .color-input').value;
+            let mainText = document.querySelector('#main-text .color-input').value;
+            let secText = document.querySelector('#sec-text .color-input').value;
+            let accentColor = document.querySelector('#accent-color .color-input').value;
+            let iconColor = document.querySelector('#icon-color .color-input').value;
+            let shadowColor = document.querySelector('#shadow-color .color-input').value;
             let emojiOpacity = document.querySelector('#emoji-opacity').value;
             let name = document.querySelector('#customizer-theme-name').value;
 
@@ -204,14 +137,109 @@ document.querySelector('#customizeraddbutton').addEventListener('click', () => {
             ipcRenderer.send('themes-changed', true);
 
             // Reset values after adding theme
-            document.querySelector('#main-bg').value = '#272C35';
-            document.querySelector('#sec-bg').value = '#1F232A';
-            document.querySelector('#main-text').value = '#D1D1D1';
-            document.querySelector('#sec-text').value = '#E9E9E9';
-            document.querySelector('#accent-color').value = '#7289DA';
-            document.querySelector('#icon-color').value = '#E1E1E1';
-            document.querySelector('#shadow-color').value = 'rgba(0, 0, 0, 0.10)';
+            document.querySelector('#main-bg .color-input').value = '#272C35';
+            document.querySelector('#sec-bg .color-input').value = '#1F232A';
+            document.querySelector('#main-text .color-input').value = '#D1D1D1';
+            document.querySelector('#sec-text .color-input').value = '#E9E9E9';
+            document.querySelector('#accent-color .color-input').value = '#7289DA';
+            document.querySelector('#icon-color .color-input').value = '#E1E1E1';
+            document.querySelector('#shadow-color .color-input').value = 'rgba(0, 0, 0, 0.10)';
             document.querySelector('#emoji-opacity').value = '0.75';
             document.querySelector('#customizer-theme-name').value = '';
+
+            // Emitting on-change events so the color pickers reset as well
+            fireChangeEvent(document.querySelector('#main-bg .color-input'));
+            fireChangeEvent(document.querySelector('#main-text .color-input'));
+            fireChangeEvent(document.querySelector('#sec-bg .color-input'));
+            fireChangeEvent(document.querySelector('#sec-text .color-input'));
+            fireChangeEvent(document.querySelector('#accent-color .color-input'));
+            fireChangeEvent(document.querySelector('#icon-color .color-input'));
+            fireChangeEvent(document.querySelector('#shadow-color .color-input'));
         })
+});
+
+/**
+ * Fire "change" event programmatically manually
+ * @param {Element} element Input Element
+ */
+function fireChangeEvent(element) {
+    if ("createEvent" in document) {
+        var evt = document.createEvent("HTMLEvents");
+        evt.initEvent("change", false, true);
+        element.dispatchEvent(evt);
+    } else
+        element.fireEvent("onchange");
+}
+
+// Set up color pickers using Pickr
+
+const Pickr = require('@simonwep/pickr');
+
+document.querySelectorAll('.color-button').forEach(i => {
+    // Initialize default color variable
+    let defaultColor;
+
+    // Get color input ID
+    let inputID = i.parentElement.id;
+
+    // Select default color for specific color input
+    switch (inputID) {
+        case 'main-bg':
+            defaultColor = '#272C35';
+            break;
+        case 'sec-bg':
+            defaultColor = '#1F232A';
+            break;
+        case 'main-text':
+            defaultColor = '#D1D1D1';
+            break;
+        case 'sec-text':
+            defaultColor = '#E9E9E9';
+            break;
+        case 'accent-color':
+            defaultColor = '#7289DA';
+            break;
+        case 'icon-color':
+            defaultColor = '#E1E1E1';
+            break;
+        case 'shadow-color':
+            defaultColor = 'rgba(0,0,0,0.10)';
+            break;
+        default:
+            break;
+    }
+
+    // Initialize color pickers
+    let picker = new Pickr({
+        el: i,
+        theme: 'monolith',
+        swatches: [
+            '#272C35', '#1F232A', '#D1D1D1', '#E9E9E9', '#7289DA', '#E1E1E1', 'rgba(0,0,0,0.10)'
+        ],
+        components: {
+            preview: true,
+            opacity: true,
+            hue: true,
+            interaction: {
+                input: true,
+                save: true
+            }
+        },
+        default: defaultColor,
+    });
+
+    // Initialize text box values
+    picker.on('init', p => {
+        document.querySelector(`#${inputID} .color-input`).value = p.getColor().toHEXA().toString();
+    });
+
+    // Change text box values when new color picked
+    picker.on('save', (color, p) => {
+        document.querySelector(`#${inputID} .color-input`).value = color.toHEXA().toString();
+    });
+
+    // Change picker color when textbox changes
+    document.querySelector(`#${inputID} .color-input`).addEventListener('change', () => {
+        picker.setColor(document.querySelector(`#${inputID} .color-input`).value);
+    });
 });
