@@ -162,7 +162,33 @@ function addTabToDOM(tabId, tabName) {
 
     // Adds event listener for close tab button
     document.querySelector(`[data-tab-id*="${tabId}"]`).querySelector('.lni-close').addEventListener('click', () => {
-        removeTab(document.querySelector(`[data-tab-id*="${tabId}"]`).querySelector('.lni-close'));
+        // Check if "Tab Close Prompt" setting is enabled
+        if (settings.get('settings').find(s => s.id === 'tabClosePrompt').value === true) {
+            Swal.fire({
+                    title: `<h2>Do you really want to close the tab <i>"${tabName}"</i> ?</h2>`,
+                    customClass: {
+                        title: 'edit-popup-title prompt-title',
+                        popup: 'edit-popup',
+                        confirmButton: 'edit-popup-button prompt-confirm-button prompt-button',
+                        cancelButton: 'edit-popup-button prompt-cancel-button prompt-button',
+                        closeButton: 'edit-popup-close-button',
+                        header: 'edit-popup-header'
+                    },
+                    width: '50%',
+                    showCancelButton: true,
+                    confirmButtonText: 'Close',
+                    buttonsStyling: false,
+                })
+                .then(result => {
+                    if (result.value) {
+                        // Remove the tab after prompt
+                        removeTab(document.querySelector(`[data-tab-id*="${tabId}"]`).querySelector('.lni-close'));
+                    }
+                })
+        } else {
+            // Remove the tab directly
+            removeTab(document.querySelector(`[data-tab-id*="${tabId}"]`).querySelector('.lni-close'));
+        }
     });
 
     // Gets the tab's current settings
