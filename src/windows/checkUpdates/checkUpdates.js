@@ -62,8 +62,15 @@ setCurrentReleaseNotes();
  */
 async function setCurrentReleaseNotes() {
     // Get current version release notes
-    let currentVersionRelease = Array.from(await getReleases()).find(a => a.tag_name === app.getVersion());
-    let currentVersionNotes = currentVersionRelease ? currentVersionRelease.body.replace(/\n/g, '<br>-') : 'No Release Notes Available.';
+    let releases = Array.from(await getReleases());
+    let currentVersionNotes = '';
+
+    if (releases[0] !== 'Error') {
+        let currentVersionRelease = releases.find(a => a.tag_name === app.getVersion());
+        currentVersionNotes = currentVersionRelease ? currentVersionRelease.body.replace(/\n/g, '<br>-') : 'No Release Notes Available.';
+    } else {
+        currentVersionNotes = `Error: ${releases[1]}. <br> Please check your internet connection.`;
+    }
 
     // Set current version notes
     document.querySelector('.release-notes .content').innerHTML = currentVersionNotes.length !== 0 ? currentVersionNotes : 'No Release Notes Available.';
@@ -83,66 +90,70 @@ async function handleUpdateChecks() {
     // Latest release
     let latestRelease = releases[0];
 
-    // Check if the release isn't the same as current one
-    if (latestRelease.tag_name !== app.getVersion()) {
-        // Toggle spin effect of update button
-        toggleSpinEffect(document.querySelector('.button.update .lni-reload'), false);
+    if (latestRelease !== 'Error') {
+        // Check if the release isn't the same as current one
+        if (latestRelease.tag_name !== app.getVersion()) {
+            // Toggle spin effect of update button
+            toggleSpinEffect(document.querySelector('.button.update .lni-reload'), false);
 
-        // Release Notes
-        let releaseNotes = (latestRelease.body.length !== 0) ? latestRelease.body.replace(/\n/g, '<br />') : 'No release notes.';
+            // Release Notes
+            let releaseNotes = (latestRelease.body.length !== 0) ? latestRelease.body.replace(/\n/g, '<br />') : 'No release notes.';
 
-        // Set release notes
-        document.querySelector('.release-notes .content').innerHTML = releaseNotes;
+            // Set release notes
+            document.querySelector('.release-notes .content').innerHTML = releaseNotes;
 
-        // Notify about new version
-        document.querySelector('.version').innerHTML = `New Version Available: <a onclick="openLink('${latestRelease.html_url}')">v${latestRelease.tag_name}</a>`;
+            // Notify about new version
+            document.querySelector('.version').innerHTML = `New Version Available: <a onclick="openLink('${latestRelease.html_url}')">v${latestRelease.tag_name}</a>`;
 
-        // Change update button to download button
-        document.querySelector('.button.update').classList.add('green');
-        document.querySelector('.button.update').innerHTML = 'Download <span class="lni-chevron-down"></span>';
+            // Change update button to download button
+            document.querySelector('.button.update').classList.add('green');
+            document.querySelector('.button.update').innerHTML = 'Download <span class="lni-chevron-down"></span>';
 
-        // Add items to dropdown
-        latestRelease.assets.forEach(asset => {
-            // Asset Name
-            let name = asset.name;
+            // Add items to dropdown
+            latestRelease.assets.forEach(asset => {
+                // Asset Name
+                let name = asset.name;
 
-            // Asset Download URL
-            let url = asset.browser_download_url;
+                // Asset Download URL
+                let url = asset.browser_download_url;
 
-            // Initialize Item Element Variable
-            let assetElement = document.createRange().createContextualFragment(`<div class="item" onclick="openLink('${url}')"><span class="lni-${(/\.dmg/.test(name) ? 'apple' : ((/\.exe/).test(name) ? 'windows' : ((/\.AppImage/).test(name)) ? 'code-alt' : 'download'))}"></span> ${name}</div>`);
+                // Initialize Item Element Variable
+                let assetElement = document.createRange().createContextualFragment(`<div class="item" onclick="openLink('${url}')"><span class="lni-${(/\.dmg/.test(name) ? 'apple' : ((/\.exe/).test(name) ? 'windows' : ((/\.AppImage/).test(name)) ? 'code-alt' : 'download'))}"></span> ${name}</div>`);
 
-            // Append item element to dropdown
-            document.querySelector('.dropdown').appendChild(assetElement);
-        });
+                // Append item element to dropdown
+                document.querySelector('.dropdown').appendChild(assetElement);
+            });
 
-        // Change download button event listeners
-        document.querySelector('.button.update').removeEventListener('click', handleUpdateChecks);
-        document.querySelector('.button.update.green').addEventListener('click', () => {
-            // Toggle chevron icons
-            if (document.querySelector('.button.green [class^="lni"]').classList.contains('lni-chevron-down')) {
-                document.querySelector('.button.green [class^="lni"]').classList.add('lni-chevron-up');
-                document.querySelector('.button.green [class^="lni"]').classList.remove('lni-chevron-down');
-            } else if (document.querySelector('.button.green [class^="lni"]').classList.contains('lni-chevron-up')) {
-                document.querySelector('.button.green [class^="lni"]').classList.add('lni-chevron-down');
-                document.querySelector('.button.green [class^="lni"]').classList.remove('lni-chevron-up');
-            };
+            // Change download button event listeners
+            document.querySelector('.button.update').removeEventListener('click', handleUpdateChecks);
+            document.querySelector('.button.update.green').addEventListener('click', () => {
+                // Toggle chevron icons
+                if (document.querySelector('.button.green [class^="lni"]').classList.contains('lni-chevron-down')) {
+                    document.querySelector('.button.green [class^="lni"]').classList.add('lni-chevron-up');
+                    document.querySelector('.button.green [class^="lni"]').classList.remove('lni-chevron-down');
+                } else if (document.querySelector('.button.green [class^="lni"]').classList.contains('lni-chevron-up')) {
+                    document.querySelector('.button.green [class^="lni"]').classList.add('lni-chevron-down');
+                    document.querySelector('.button.green [class^="lni"]').classList.remove('lni-chevron-up');
+                };
 
-            // Toggle dropdown
-            if (document.querySelector('.dropdown').style.display == 'none' || document.querySelector('.dropdown').style.display == '') {
-                toggleElementDisplayProperty(document.querySelector('.dropdown'), true);
-            } else {
-                toggleElementDisplayProperty(document.querySelector('.dropdown'), false);
-            }
-        });
+                // Toggle dropdown
+                if (document.querySelector('.dropdown').style.display == 'none' || document.querySelector('.dropdown').style.display == '') {
+                    toggleElementDisplayProperty(document.querySelector('.dropdown'), true);
+                } else {
+                    toggleElementDisplayProperty(document.querySelector('.dropdown'), false);
+                }
+            });
 
-        // Get rid of release notes loader
-        toggleElementDisplayProperty(document.querySelector('.notes-loader'), false);
+            // Get rid of release notes loader
+            toggleElementDisplayProperty(document.querySelector('.notes-loader'), false);
+        }
     } else {
-        // Show release notes loader
+        // Remove release notes loader
         toggleElementDisplayProperty(document.querySelector('.notes-loader'), false);
-        // Toggle spin effect of update button
+        // Toggle off spin effect of update button
         toggleSpinEffect(document.querySelector('.button.update .lni-reload'), false);
+        // Set error in notes
+        document.querySelector('.release-notes .content').innerHTML = `Error: ${releases[1]} updates. Please check your internet connection.`;
     }
 }
 
