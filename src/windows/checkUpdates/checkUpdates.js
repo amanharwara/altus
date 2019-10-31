@@ -38,6 +38,18 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
     });
     // Setting title explicitly
     mainTitlebar.updateTitle(`Check Updates`);
+} else {
+    // CSS for when there is no custom titlebar
+    let style = document.createElement('style');
+    style.innerText = `body {
+        margin: 0px;
+        overflow:hidden;
+        border:0;
+    }
+    .container{
+        padding: 0rem 1rem 0.6rem 1rem;
+    }`;
+    document.head.appendChild(style);
 }
 
 // Set current version
