@@ -167,7 +167,7 @@ function addTabToDOM(tabId, tabName) {
             Swal.fire({
                     title: `<h2>Do you really want to close the tab <i>"${tabName}"</i> ?</h2>`,
                     customClass: {
-                        title: 'edit-popup-title prompt-title',
+                        title: 'prompt-title',
                         popup: 'edit-popup',
                         confirmButton: 'edit-popup-button prompt-confirm-button prompt-button',
                         cancelButton: 'edit-popup-button prompt-cancel-button prompt-button',
