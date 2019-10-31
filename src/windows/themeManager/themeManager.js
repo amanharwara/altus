@@ -39,6 +39,20 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
     });
     // Setting title explicitly
     mainTitlebar.updateTitle(`Theme Manager`);
+} else {
+    // CSS style when no custom titlebar
+    let style = document.createElement('style');
+    style.innerText = `body {
+        margin: 0;
+        overflow: hidden;
+        border:0;
+    }
+    
+    .container {
+        padding: 15px 25px;
+    }`;
+
+    document.head.appendChild(style);
 }
 
 // Load themes
