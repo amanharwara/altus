@@ -33,6 +33,14 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
     });
     // Setting title explicitly
     mainTitlebar.updateTitle(`Settings`);
+} else {
+    // CSS style when no custom titlebar
+    let style = document.createElement('style');
+    style.innerText = `body {
+        padding: 0rem 1rem;
+        border: 0 !important;
+    }`;
+    document.head.appendChild(style);
 }
 
 // Loop through all the settings (except tray icon on Linux as it is not supported)
