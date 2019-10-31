@@ -32,6 +32,21 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
     });
     // Setting title explicitly
     mainTitlebar.updateTitle(`Custom Theme`);
+} else {
+    // CSS when no custom titlebar
+    let style = document.createElement('style');
+    style.innerText = `body {
+        border: 0 !important;
+    }
+    .setting {
+        flex-direction: column;
+        align-items: start !important;
+    }
+    
+    .setting .inputs, .setting input {
+        width: -webkit-fill-available;
+    }`;
+    document.head.appendChild(style);
 }
 
 // Load the themes into themes variable
