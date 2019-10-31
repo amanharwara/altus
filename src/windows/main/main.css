@@ -288,6 +288,10 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .edit-popup-title h2 {
     margin: 10px 0 !important;
+    max-width: 26.5vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .prompt-title {
