@@ -170,7 +170,20 @@ const mainMenuTemplate = [{
                 customThemeWindow.show();
             } else {
                 // Creates new Browser Window object using createWindow function
-                customThemeWindow = createWindow('customTheme', 'Custom Theme', 400, 480, true, mainWindow, true, false, 630, 480, '', '');
+                customThemeWindow = createWindow({
+                    id: 'customTheme',
+                    title: 'Custom Theme',
+                    width: 400,
+                    height: 480,
+                    resizable: true,
+                    mainWindowObject: mainWindow,
+                    min: true,
+                    max: false,
+                    minWidth: 630,
+                    minHeight: 480,
+                    maxWidth: '',
+                    maxHeight: ''
+                });
                 // Loads Custom Theme Window HTML
                 customThemeWindow.loadURL(url.format({
                     pathname: path.join(__dirname, 'windows', 'customTheme', 'customTheme.html'),
@@ -198,7 +211,20 @@ const mainMenuTemplate = [{
                 themeManagerWindow.show();
             } else {
                 // Creates new Browser Window object using createWindow function
-                themeManagerWindow = createWindow('themeManager', 'Manage Themes', 414, 478, true, mainWindow, true, false, 300, 380, '', '');
+                themeManagerWindow = createWindow({
+                    id: 'themeManager',
+                    title: 'Manage Themes',
+                    width: 414,
+                    height: 478,
+                    resizable: true,
+                    mainWindowObject: mainWindow,
+                    min: true,
+                    max: false,
+                    minWidth: 300,
+                    minHeight: 380,
+                    maxWidth: '',
+                    maxHeight: ''
+                });
                 // Loads Theme Manager Window HTML
                 themeManagerWindow.loadURL(url.format({
                     pathname: path.join(__dirname, 'windows', 'themeManager', 'themeManager.html'),
@@ -229,7 +255,20 @@ const mainMenuTemplate = [{
                 settingsWindow.show();
             } else {
                 // Creates new Browser Window object using createWindow function
-                settingsWindow = createWindow('settings', 'Settings', 450, 450, true, mainWindow, true, false, 450, 450, '', '');
+                settingsWindow = createWindow({
+                    id: 'settings',
+                    title: 'Settings',
+                    width: 450,
+                    height: 450,
+                    resizable: true,
+                    mainWindowObject: mainWindow,
+                    min: true,
+                    max: false,
+                    minWidth: 450,
+                    minHeight: 450,
+                    maxWidth: '',
+                    maxHeight: ''
+                });
                 // Loads settings Window HTML
                 settingsWindow.loadURL(url.format({
                     pathname: path.join(__dirname, 'windows', 'settings', 'settings.html'),
@@ -259,7 +298,20 @@ const mainMenuTemplate = [{
                 aboutWindow.show();
             } else {
                 // Creates new Browser Window object using createWindow function
-                aboutWindow = createWindow('aboutWindow', 'About', 435, 300, false, mainWindow, true, false, '', '', '', '');
+                aboutWindow = createWindow({
+                    id: 'aboutWindow',
+                    title: 'About',
+                    width: 435,
+                    height: 300,
+                    resizable: false,
+                    mainWindowObject: mainWindow,
+                    min: true,
+                    max: false,
+                    minWidth: '',
+                    minHeight: '',
+                    maxWidth: '',
+                    maxHeight: ''
+                });
                 // Loads Theme Manager Window HTML
                 aboutWindow.loadURL(url.format({
                     pathname: path.join(__dirname, 'windows', 'about', 'about.html'),
@@ -287,7 +339,20 @@ const mainMenuTemplate = [{
                 checkUpdatesWindow.show();
             } else {
                 // Create new browser window object for the window
-                checkUpdatesWindow = createWindow('checkUpdates', 'Check Updates', 435, 340, true, mainWindow, false, false, 435, 340, '', '');
+                checkUpdatesWindow = createWindow({
+                    id: 'checkUpdates',
+                    title: 'Check Updates',
+                    width: 435,
+                    height: 340,
+                    resizable: true,
+                    mainWindowObject: mainWindow,
+                    min: false,
+                    max: false,
+                    minWidth: 435,
+                    minHeight: 340,
+                    maxWidth: '',
+                    maxHeight: ''
+                });
                 checkUpdatesWindow.loadURL(url.format({
                     pathname: path.join(__dirname, 'windows', 'checkUpdates', 'checkUpdates.html'),
                     protocol: 'file:',
@@ -376,6 +441,11 @@ if (!singleInstanceLock) {
                 name: 'Custom Titlebar',
                 description: 'If you are having any issues with the custom titlebar, you can disable it using this setting. <b>NOTE: This setting requires you to restart the whole app for changes to apply.</b>',
                 id: 'customTitlebar'
+            }, {
+                value: true,
+                name: 'Prompt When Closing Tab',
+                description: 'When enabled, you will be prompted when you close a tab. This helps if you accidentally click the close button of a tab.',
+                id: 'tabClosePrompt'
             }]
         }
     });
