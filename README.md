@@ -4,7 +4,7 @@
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
-![Altus Banner](/img/altus-banner.png)
+![Altus Banner](./img/altus-banner.png)
 
 The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, noble or profound". The name was actually suggested by one of my friends.
 
@@ -12,10 +12,10 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 
 **Altus** uses the GitHub-produced Electron framework to wrap around WhatsApp Web and add extra features to it.
 
-- **Multiple Account Support** As of v2.0, you can use multiple Whatsapp accounts simultaneously!
+- **Multiple Account Support**: As of v2.0, you can use multiple WhatsApp accounts simultaneously!
 - **Native notification support** for all of the platforms.
 - **Dark mode** for when you need to chill out your eyes in the night (or even in the day)
-- **Custom Theme Support** If you know how to write CSS themes, you can create and use your own theme for WhatsApp.
+- **Custom Theme Support**: Write your own CSS theme for WhatsApp or use the in-built Theme Customizer to create a new one just by picking colors!
 - **Available for most desktop platforms** including Windows (7 or above), Linux and MacOS.
 - **Tray icon** so you can minimize the app completely and still receive notifications.
 
@@ -27,15 +27,16 @@ Submit a Feature Request - [Click Here](https://feathub.com/ShadyThGod/altus)
 ## Screenshots
 
 ### First Start
-![Altus First Start](/img/Altus-First-Start.png)
-### Add New WhatsApp Instance
-![Altus Add Instance](/img/Altus-Add-Instance.png)
+
+![Altus First Start](./img/Altus-First-Start.png)
+
 ### Default WhatsApp Theme
-![Altus Default Theme](/img/Altus-Default-Theme.png)
+
+![Altus Default Theme](./img/Altus-Default-Theme.png)
 ### Dark WhatsApp Theme
-![Altus Dark Theme](/img/Altus-Dark-Theme.png)
+![Altus Dark Theme](./img/Altus-Dark-Theme.png)
 ### Custom WhatsApp Theme Example
-![Altus Custom Theme](/img/Altus-Custom-Theme.png)
+![Altus Custom Theme](./img/Altus-Custom-Theme.png)
 
 
 ## Releases
@@ -48,11 +49,12 @@ To download the latest releases, you can [click here](https://github.com/ShadyTh
 
 #### Windows
 
-- Run the `.exe` file provided in the release. E.g.: `Altus-Setup-2.0.0.exe`
+- Run the `.exe` file provided in the release. E.g.: `Altus-Setup-3.0.0.exe`
 - If Windows displays a warning saying **'Windows protected your PC'**, click on **More info** and then click **Run Anyway**
-- Once the Altus Setup starts, you will be asked to select from two choices which are **Anyone who uses this computer (all users)** and **Only for me (username)**
-  - If you select **Anyone who uses this computer (all users)**, Altus will be installed to `C:\Program Files\Altus` and will be available for all the users on that machine.
-  - If you select **Only for me (username)**, Altus will be installed to `C:\Users\(username)\AppData\Local\Programs\Altus` and will only be available for that user (username).
+- Once the Altus Setup starts, you will be asked to select from two choices which are **Anyone who uses this computer (all users)** and **Only for me (username)**. Select one according to your choice.
+- Choose the destination folder where you want Altus to be installed. The default folder depends on what option you chose previously.
+  - If you chose "_Anyone who uses this computer_", then the default folder will be `C:\Program Files\Altus` which you can change if you want.
+  - If you chose "_Only for me_", then the default folder will be `C:\Users\Username\AppData\Local\Programs\Altus` which you can change if you want.
 - Click **Install**. If it asks for admin privileges (UAC), click **Yes**
 - The installation will Altus will be installed to the path according to what you selected. You can select **Run Altus** if you want to start Altus after closing the setup.
 
@@ -62,9 +64,9 @@ I recommend using the `.AppImage` format since it allows you to use that single 
 
 Installing Altus on Linux using AppImage is really easy. Follow these steps:
 
-- Download and move the AppImage file to wherever you want to. E.g: `~/Downloads/Altus 2.0.0.AppImage`
-- You might need to make the file executable using chmod. Use: `chmod a+x ~/Downloads/Altus 2.0.0.AppImage`
-- Then simply run it. Use: `~/Downloads/Altus 2.0.0.AppImage`
+- Download and move the AppImage file to wherever you want to. E.g: `~/Downloads/Altus 3.0.0.AppImage`
+- You might need to make the file executable using chmod. Use: `chmod a+x ~/Downloads/Altus 3.0.0.AppImage`
+- Then simply run it. Use: `~/Downloads/Altus 3.0.0.AppImage`
 
 #### Mac
 
@@ -82,11 +84,11 @@ To install Altus on a Mac, follow these steps:
 
 ### Latest Releases:
 
-#### Windows - v2.4.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/2.4.0/Altus-Setup-2.4.0.exe)
+#### Windows - v3.0.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.0.0/Altus-Setup-3.0.0.exe)
 
-#### Linux - v2.4.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/2.4.0/Altus.2.4.0.AppImage)
+#### Linux - v3.0.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.0.0/Altus.3.0.0.AppImage)
 
-#### MacOS - v2.4.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/2.4.0/Altus-2.4.0.dmg)
+#### MacOS - v3.0.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.0.0/Altus-3.0.0.dmg)
 
 ## For Developers
 
@@ -108,23 +110,11 @@ Below is the list of the dependencies that helped me greatly to create this app.
 
 ---
 
-#### clipboard.js [(zenorocha/clipboard.js)](https://github.com/zenorocha/clipboard.js) - used for copying generated CSS to the clipboard
-
----
-
 #### custom-electron-titlebar [(AlexTorresSk/custom-electron-titlebar)](https://github.com/AlexTorresSk/custom-electron-titlebar) - used to create a custom titlebar instead of the plain titlebar that Electron has by default
 
 ---
 
 #### electron-store [(sindresorhus/electron-store)](https://github.com/sindresorhus/electron-store) - used to store information of settings, tabs and themes
-
----
-
-#### Mousetrap [(ccampbell/mousetrap)](https://github.com/ccampbell/mousetrap) - used for creating local shortcuts without registering accelerators
-
----
-
-#### iziToast [(marcelodolza/iziToast)](https://github.com/marcelodolza/iziToast) - used for toast notifications when checking for updates
 
 ## Contributors
 

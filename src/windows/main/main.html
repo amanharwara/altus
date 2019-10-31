@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Altus</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700|Montserrat&display=swap">
+    <link rel="stylesheet" href="../otherAssets/LineIcons.min.css">
+    <link rel="stylesheet" href="../otherAssets/normalize.css">
+    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="../otherAssets/selectr.css">
+</head>
+
+<body>
+    <ul data-tabs id="tabs-list-">
+        <li><a href="#addtab"><span class="lni-plus"></span></a></li>
+    </ul>
+
+    <div id="addtab">
+        <div class="flex">
+            <div class="container">
+                <div class="title">Add Instance</div>
+                <div class="inputs">
+                    <div class="input-field">
+                        <div class="label">Name:</div>
+                        <div class="input-flex"><input class="textbox" placeholder="Name of instance" id="tab-name-textbox" type="text"></div>
+                    </div>
+                    <div class="toggle-field">
+                        <div class="label">Enable Notifications:</div>
+                        <div class="input-checkbox">
+                            <input type="checkbox" id="notification-toggle" class="checkbox">
+                        </div>
+                    </div>
+                    <div class="toggle-field">
+                        <div class="label">Enable Sound:</div>
+                        <div class="input-checkbox">
+                            <input type="checkbox" id="sound-toggle" class="checkbox">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <div class="label">Theme:</div>
+                        <select id="theme-select">
+                        </select>
+                    </div>
+                </div>
+                <div class="submit button" id="add-tab-button"><span class="lni-plus"></span> Add Tab</div>
+            </div>
+        </div>
+    </div>
+    <script id="selectr-src" src="../otherAssets/selectr.js"></script>
+    <script id="main-script" src="./main.js"></script>
+</body>
+
+</html>
