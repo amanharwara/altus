@@ -16,8 +16,12 @@ body {
 .container-after-titlebar {
     border: 1px solid var(--window-border);
     overflow: hidden !important;
-    background: linear-gradient(to bottom right, #0b245f, #030e27);
     padding: 2rem;
+    background: linear-gradient(to bottom right, #0b245f, #030e27);
+}
+
+.main {
+    background: linear-gradient(to bottom right, #0b245f, #030e27);
 }
 
 .titlebar {

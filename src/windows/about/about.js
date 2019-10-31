@@ -33,4 +33,17 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
     });
     // Setting title explicitly
     mainTitlebar.updateTitle(`About Altus`);
+} else {
+    // CSS when no custom titlebar
+    let style = document.createElement('style');
+    style.innerText = `body {
+        border: 0 !important;
+        overflow: hidden;
+    }
+    
+    .main {
+        padding: .5rem 2rem 1rem 2rem;
+        height:100%;
+    }`;
+    document.head.appendChild(style);
 }
