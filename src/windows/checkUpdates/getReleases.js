@@ -18,9 +18,7 @@ module.exports = {
                 throw new Error(response.status);
             }
         } catch (error) {
-            return {
-                error
-            }
+            return ['Error', error.message]
         }
     }
 }
