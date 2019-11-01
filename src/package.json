@@ -27,6 +27,8 @@
         "electron-context-menu": "^0.15.0",
         "electron-store": "^5.0.0",
         "electron-windows-badge": "^1.0.5",
+        "escape-string-regexp": "^2.0.0",
+        "fs-extra": "^8.1.0",
         "mousetrap": "^1.6.3",
         "node-fetch": "^2.6.0",
         "sweetalert2": "^8.18.3",
@@ -36,6 +38,7 @@
     "build": {
         "appId": "harwara.aman.altus",
         "productName": "Altus",
+        "afterAllArtifactBuild": "./build/after-all-artifact-build.js",
         "mac": {
             "category": "public.app-category.social-networking",
             "target": [
