@@ -32,7 +32,7 @@ module.exports = {
     createWindow: function(options) {
         return new BrowserWindow({
             title: (options.title) !== undefined ? options.title : 'New Window',
-            frame: process.platform !== 'darwin' ? !Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value : true,
+            frame: process.platform === 'darwin' ? true : !(Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value),
             titleBarStyle: process.platform !== 'darwin' ? 'hidden' : 'default',
             width: (options.width) !== undefined ? options.width : 800,
             height: (options.height) !== undefined ? options.height : 600,
