@@ -106,7 +106,19 @@ However, please make sure you follow a few rules listed below to ensure that you
 
 Below is the list of the dependencies that helped me greatly to create this app.
 
-### Onyx [(vednoc/onyx)](https://github.com/vednoc/onyx) - used as the base for the dark theme. A really cool project, you should definitely check it out!
+#### Onyx [(vednoc/onyx)](https://github.com/vednoc/onyx) - used as the base for the dark theme. A really cool project, you should definitely check it out!
+
+---
+
+#### Tabby [(cferdinandi/tabby)](https://github.com/cferdinandi/tabby) - used to implement the tabs system.
+
+---
+
+#### SweetAlert2 [(https://sweetalert2.github.io/)](https://sweetalert2.github.io/) - used to implement pop-ups.
+
+---
+
+#### pickr [(Simonwep/pickr)](https://github.com/Simonwep/pickr) - used to implement color pickers.
 
 ---
 
