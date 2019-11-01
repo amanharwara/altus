@@ -45,7 +45,7 @@ module.exports = {
             maxHeight: (options.maxHeight) !== undefined ? options.maxHeight : '',
             parent: (options.mainWindowObject) !== undefined ? options.mainWindowObject : null,
             modal: false,
-            transparent: true,
+            transparent: false,
             show: false,
             webPreferences: {
                 nodeIntegration: true
