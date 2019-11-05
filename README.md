@@ -20,9 +20,9 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 - **Tray icon** so you can minimize the app completely and still receive notifications.
 
 ## Feature Requests
-Submit a Feature Request - [Click Here](https://feathub.com/ShadyThGod/altus)
+In order to submit a feature request, create a [new issue](https://github.com/ShadyThGod/altus/issues/new) with the label `enhancement`.
 
-[![Feature Requests](http://feathub.com/ShadyThGod/altus?format=svg)](http://feathub.com/ShadyThGod/altus)
+Please make sure that you provide a helpful description of your feature request. If possible, try implementing the feature yourself by forking this repository and then creating a pull request.
 
 ## Screenshots
 
