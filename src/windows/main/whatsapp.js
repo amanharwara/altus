@@ -23,6 +23,8 @@ window.onload = () => {
         window.location.reload();
     }
 
+    // Message Indicator
+    // Using MutationObserver to check for changes in the title of the WhatsApp page and sending an IPC message to the main process
     new MutationObserver(function(mutations) {
         let title = mutations[0].target.innerText;
         let titleRegEx = /([0-9]+)/;
@@ -35,4 +37,32 @@ window.onload = () => {
             characterData: true
         }
     );
+
+    // Mouse wheel event listener for zoom
+    document.body.addEventListener('wheel', e => {
+        // Mouse wheel delta value. (+1 when scroll up | -1 when scroll down)
+        const delta = Math.sign(e.deltaY);
+
+        if (e.ctrlKey) {
+            switch (delta) {
+                case -1:
+                    ipcRenderer.send('zoom-in');
+                    break;
+
+                case +1:
+                    ipcRenderer.send('zoom-out');
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    });
+
+    // Open links in external browser
+    document.body.addEventListener('click', e => {
+        if (e.target.tagName === 'A') {
+            ipcRenderer.send('link-open', e.target.href);
+        }
+    });
 }
