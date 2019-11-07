@@ -453,3 +453,56 @@ ipcRenderer.on('message-indicator', (e, i) => {
         ipcRenderer.sendSync('update-badge', '');
     }
 });
+
+// IPC for zoom in
+ipcRenderer.on('zoom-in', () => {
+    zoom('in', getActiveTab().whatsapp);
+});
+// IPC for zoom out
+ipcRenderer.on('zoom-out', () => {
+    zoom('out', getActiveTab().whatsapp);
+});
+// IPC for reset zoom
+ipcRenderer.on('reset-zoom', () => {
+    zoom('reset', getActiveTab().whatsapp);
+});
+
+/**
+ * Zoom In/Out or Reset Zoom of WhatsApp element
+ * @param {('in'|'out'|'reset')} type
+ * @param {Element} whatsAppElement WhatsApp Element (Should be 'webview' element)
+ */
+function zoom(type, whatsAppElement) {
+    let currentZoomFactor = whatsAppElement.getWebContents().zoomFactor;
+    switch (type) {
+        case 'in':
+            whatsAppElement.getWebContents().zoomFactor = currentZoomFactor + 0.1;
+            break;
+
+        case 'out':
+            whatsAppElement.getWebContents().zoomFactor = currentZoomFactor - 0.1;
+            break;
+
+        case 'reset':
+            whatsAppElement.getWebContents().zoomFactor = 1;
+            break;
+
+        default:
+            whatsAppElement.getWebContents().zoomFactor = 1;
+            break;
+    }
+}
+
+/**
+ * Get active tab and whatsapp element in an object
+ * @returns {Object.<Element, {tab: Element, whatsapp: Element}>} Active Tab and WhatsApp Element
+ */
+function getActiveTab() {
+    let activeTab = document.querySelector('[id^="tab-content"]:not([hidden])');
+    let activeWhatsApp = activeTab.querySelector('webview');
+
+    return {
+        tab: activeTab,
+        whatsapp: activeWhatsApp
+    }
+}
