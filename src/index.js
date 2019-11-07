@@ -159,6 +159,27 @@ const mainMenuTemplate = [{
         }
     ]
 }, {
+    label: 'Zoom',
+    submenu: [{
+        label: 'Zoom In',
+        accelerator: 'CmdOrCtrl+numadd',
+        click() {
+            mainWindow.webContents.send('zoom-in');
+        }
+    }, {
+        label: 'Zoom Out',
+        accelerator: 'CmdOrCtrl+numsub',
+        click() {
+            mainWindow.webContents.send('zoom-out');
+        }
+    }, {
+        label: 'Reset Zoom',
+        accelerator: 'CmdOrCtrl+num0',
+        click() {
+            mainWindow.webContents.send('reset-zoom');
+        }
+    }]
+}, {
     label: 'Theme',
     submenu: [{
         label: 'Custom Theme',
@@ -593,6 +614,13 @@ if (!singleInstanceLock) {
         setGlobalSettings();
 
         // IPC Functions
+
+        // Send 'zoom-in' message to mainWindow
+        ipcMain.on('zoom-in', e => mainWindow.webContents.send('zoom-in'));
+        // Send 'zoom-out' message to mainWindow
+        ipcMain.on('zoom-out', e => mainWindow.webContents.send('zoom-out'));
+        // Send 'reset-zoom' message to mainWindow
+        ipcMain.on('reset-zoom', e => mainWindow.webContents.send('reset-zoom'));
 
         // Opens links in external browser
         ipcMain.on('link-open', (e, link) => shell.openExternal(link));
