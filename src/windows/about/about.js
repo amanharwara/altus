@@ -47,3 +47,5 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
     }`;
     document.head.appendChild(style);
 }
+
+document.querySelector('#version').innerHTML = `${app.getVersion()}`;
