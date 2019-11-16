@@ -426,16 +426,16 @@ function toggleSound(whatsAppElement, setting, firstStart) {
     if (firstStart) {
         whatsapp.addEventListener('dom-ready', () => {
             if (setting) {
-                whatsapp.setAudioMuted(false);
+                whatsapp.getWebContents().audioMuted = false;
             } else {
-                whatsapp.setAudioMuted(true);
+                whatsapp.getWebContents().audioMuted = true;
             }
         });
     } else {
         if (setting) {
-            whatsapp.setAudioMuted(false);
+            whatsapp.getWebContents().audioMuted = false;
         } else {
-            whatsapp.setAudioMuted(true);
+            whatsapp.getWebContents().audioMuted = true;
         }
     }
 }
