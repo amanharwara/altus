@@ -49,7 +49,9 @@ getDarkTheme(createThemesList);
  * @param {createThemesListCallback} createThemesList
  */
 function getDarkTheme(createThemesList) {
-    fetch('https://raw.githubusercontent.com/ShadyThGod/shadythgod.github.io/master/css/altus-dark-theme.css')
+    fetch('https://raw.githubusercontent.com/ShadyThGod/shadythgod.github.io/master/css/altus-dark-theme.css', {
+            cache: 'no-cache'
+        })
         .then(res => {
             if (res.ok) {
                 return res.text();
