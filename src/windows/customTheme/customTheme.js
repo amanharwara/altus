@@ -18,6 +18,10 @@ let settings = new Store({
     name: 'settings'
 });
 
+const {
+    escape
+} = require('../otherAssets/escapeText');
+
 // Checks if custom titlebar is enabled in settings & the platform isn't a Mac
 if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value === true && process.platform !== 'darwin') {
     // Create main window titlebar
@@ -57,10 +61,10 @@ let themes = new Store({
 // Submit "Custom CSS" Theme
 document.querySelector('#customcssaddbutton').addEventListener('click', () => {
     // Get the CSS from the textarea
-    let css = document.querySelector('#customcss').value;
+    let css = escape(document.querySelector('#customcss').value);
 
     // Get the name from the textbox
-    let name = document.querySelector('#customcssname').value;
+    let name = escape(document.querySelector('#customcssname').value);
 
     // Get the themes list as array
     let themesList = Array.from(themes.get('themes'));
@@ -120,15 +124,15 @@ document.querySelector('#customizeraddbutton').addEventListener('click', () => {
         .then(res => res.text())
         .then(baseTheme => {
             // Get new values from DOM
-            let mainBG = document.querySelector('#main-bg .color-input').value;
-            let secBG = document.querySelector('#sec-bg .color-input').value;
-            let mainText = document.querySelector('#main-text .color-input').value;
-            let secText = document.querySelector('#sec-text .color-input').value;
-            let accentColor = document.querySelector('#accent-color .color-input').value;
-            let iconColor = document.querySelector('#icon-color .color-input').value;
-            let shadowColor = document.querySelector('#shadow-color .color-input').value;
-            let emojiOpacity = document.querySelector('#emoji-opacity').value;
-            let name = document.querySelector('#customizer-theme-name').value;
+            let mainBG = escape(document.querySelector('#main-bg .color-input').value);
+            let secBG = escape(document.querySelector('#sec-bg .color-input').value);
+            let mainText = escape(document.querySelector('#main-text .color-input').value);
+            let secText = escape(document.querySelector('#sec-text .color-input').value);
+            let accentColor = escape(document.querySelector('#accent-color .color-input').value);
+            let iconColor = escape(document.querySelector('#icon-color .color-input').value);
+            let shadowColor = escape(document.querySelector('#shadow-color .color-input').value);
+            let emojiOpacity = escape(document.querySelector('#emoji-opacity').value);
+            let name = escape(document.querySelector('#customizer-theme-name').value);
 
             // Generate new custom theme css
             let css = generateCustomCSS(baseTheme, mainBG, secBG, mainText, secText, accentColor, iconColor, shadowColor, emojiOpacity);

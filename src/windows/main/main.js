@@ -18,6 +18,11 @@ const uuid = require('uuid/v4');
 // Import SweetAlert2 for modals
 const Swal = require('sweetalert2');
 
+// Import escape text function
+const {
+    escape
+} = require('../otherAssets/escapeText');
+
 // Load the main settings into settings variable
 let settings = new Store({
     name: 'settings'
@@ -88,7 +93,7 @@ document.querySelector('#add-tab-button').addEventListener('click', e => {
     };
 
     // Get the name (If no name is put by the user, it assigns the name "New Tab")
-    tab.name = (document.querySelector('#tab-name-textbox').value !== "" && document.querySelector('#tab-name-textbox').value !== null) ? document.querySelector('#tab-name-textbox').value : 'New Tab';
+    tab.name = (document.querySelector('#tab-name-textbox').value !== "" && document.querySelector('#tab-name-textbox').value !== null) ? escape(document.querySelector('#tab-name-textbox').value) : 'New Tab';
 
     // Get notifications setting
     tab.notifications = document.querySelector('#notification-toggle').checked;
@@ -249,25 +254,30 @@ function addTabToDOM(tabId, tabName) {
             padding: '1rem 1.5rem',
             width: 'auto',
             onRender: () => {
+                // Initiate theme selection on tab edit
                 let tabEditSelectr = new Selectr(document.getElementById(`${tabId}-theme-select`), {
                     searchable: true,
                     placeholder: 'Select Theme',
                     customClass: 'theme-select',
                     data: themesList
                 });
+                // Set current theme on select box
                 tabEditSelectr.setValue(tabSettings.theme);
                 document.getElementById(`${tabId}-theme-value`).setAttribute('data-selection-value', tabEditSelectr.getValue());
                 tabEditSelectr.on('selectr.change', option => {
                     document.getElementById(`${tabId}-theme-value`).setAttribute('data-selection-value', option.value);
                 });
-                document.getElementById(`${tabId}-name-textbox`).value = tabSettings.name;
+                // Set name of tab
+                document.getElementById(`${tabId}-name-textbox`).value = escape(tabSettings.name);
+                // Set notification setting
                 document.getElementById(`${tabId}-notification-toggle`).checked = tabSettings.notifications;
+                // Set sound setting
                 document.getElementById(`${tabId}-sound-toggle`).checked = tabSettings.sound;
             },
         }).then(result => {
             if (result.value) {
                 // Get all the new values
-                let name = document.getElementById(`${tabId}-name-textbox`).value;
+                let name = escape(document.getElementById(`${tabId}-name-textbox`).value);
                 let notifications = document.getElementById(`${tabId}-notification-toggle`).checked;
                 let sound = document.getElementById(`${tabId}-sound-toggle`).checked;
                 let theme = document.getElementById(`${tabId}-theme-value`).getAttribute('data-selection-value');
@@ -298,7 +308,7 @@ function addTabToDOM(tabId, tabName) {
 
                 if (name !== tabInList.name) {
                     // Change the name of the tab
-                    changeTabName(tabId, name);
+                    changeTabName(tabId, escape(name));
                 }
 
                 if (sound !== tabInList.sound) {
