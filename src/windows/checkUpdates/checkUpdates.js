@@ -146,6 +146,11 @@ async function handleUpdateChecks() {
 
             // Get rid of release notes loader
             toggleElementDisplayProperty(document.querySelector('.notes-loader'), false);
+        } else {
+            // Remove release notes loader
+            toggleElementDisplayProperty(document.querySelector('.notes-loader'), false);
+            // Toggle off spin effect of update button
+            toggleSpinEffect(document.querySelector('.button.update .lni-reload'), false);
         }
     } else {
         // Remove release notes loader
