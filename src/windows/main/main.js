@@ -68,7 +68,7 @@ let themesList = [];
 themes.get('themes').forEach(i => {
     themesList.push({
         "value": i.name,
-        "text": i.name
+        "text": escape(i.name)
     });
 });
 
