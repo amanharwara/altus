@@ -25,6 +25,10 @@ const Swal = require('sweetalert2');
 // Import node-fetch
 const fetch = require('node-fetch');
 
+const {
+    escape
+} = require('../otherAssets/escapeText');
+
 // Checks if custom titlebar is enabled in settings & the platform isn't a Mac
 if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value === true && process.platform !== 'darwin') {
     // Create main window titlebar
@@ -64,46 +68,50 @@ themes.get('themes').forEach(theme => {
     // Create the theme element for the DOM
     let themeElement = document.createRange().createContextualFragment(`<div class="theme" id="${theme.name}">
                 <div class="name">${theme.name}</div>
-                <div class="remove-theme" ${(theme.name == 'Default') || (theme.name == 'Dark') ? 'data-disabled' : ''}><span class="lni-close"></span></div>
+                <div class="remove-theme" ${(theme.name == 'Default') || (theme.name == 'Dark') ? 'data-disabled' : ''} onclick="removeTheme(this)"><span class="lni-close"></span></div>
             </div>`);
     // Append the element to the themes element
     document.querySelector('.themes').append(themeElement);
-    // Checks whether the themes are the base themes
-    if (theme.name !== 'Default' && theme.name !== 'Dark') {
-        // Adds event listeners for theme remove buttons
-        document.querySelector(`.theme#${theme.name} .remove-theme`).addEventListener('click', () => {
-            Swal.fire({
-                title: `<h2>Do you really want to delete <i>"${theme.name}"</i> ?</h2>`,
-                customClass: {
-                    title: 'edit-popup-title',
-                    popup: 'edit-popup',
-                    confirmButton: 'edit-popup-button edit-popup-confirm-button',
-                    cancelButton: 'edit-popup-button edit-popup-cancel-button',
-                    closeButton: 'edit-popup-close-button',
-                    header: 'edit-popup-header'
-                },
-                width: '50%',
-                showCancelButton: true,
-                confirmButtonText: 'Delete',
-                buttonsStyling: false,
-            }).then(result => {
-                if (result.value) {
-                    // Get themes list
-                    let themesList = Array.from(themes.get('themes'));
-                    let name = theme.name
-                        // Filter themes list to remove current theme
-                    themesList = themesList.filter(x => x.name !== name);
-                    // Set the filtered themes list to global themes list
-                    themes.set('themes', themesList);
-                    // Remove theme from DOM
-                    document.querySelector(`.theme#${theme.name}`).remove();
-                    // IPC message to refresh main window
-                    ipcRenderer.send('themes-changed', true);
-                }
-            });
-        });
-    }
 });
+
+/**
+ * Remove a theme
+ * @param {object} rtObj 'this' object passed during onclick
+ */
+function removeTheme(rtObj) {
+    let themeEl = rtObj.parentElement;
+    let themeName = themeEl.id;
+    console.log(themeName);
+    Swal.fire({
+        title: `<h2>Do you really want to delete the theme <i>"${escape(themeName)}"</i> ?</h2>`,
+        customClass: {
+            title: 'edit-popup-title',
+            popup: 'edit-popup',
+            confirmButton: 'edit-popup-button edit-popup-confirm-button',
+            cancelButton: 'edit-popup-button edit-popup-cancel-button',
+            closeButton: 'edit-popup-close-button',
+            header: 'edit-popup-header'
+        },
+        width: '50%',
+        showCancelButton: true,
+        confirmButtonText: 'Delete',
+        buttonsStyling: false,
+    }).then(result => {
+        if (result.value) {
+            // Get themes list
+            let themesList = Array.from(themes.get('themes'));
+            let name = escape(themeName);
+            // Filter themes list to remove current theme
+            themesList = themesList.filter(x => x.name !== name);
+            // Set the filtered themes list to global themes list
+            themes.set('themes', themesList);
+            // Remove theme from DOM
+            themeEl.remove();
+            // IPC message to refresh main window
+            ipcRenderer.send('themes-changed', true);
+        }
+    });
+}
 
 /**
  * Update base dark theme
