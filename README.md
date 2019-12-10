@@ -41,7 +41,7 @@ Please make sure that you provide a helpful description of your feature request.
 
 ## Releases
 
-To download the latest releases, you can [click here](https://github.com/ShadyThGod/altus/#latest-releases). Alternatively, you can visit the [releases page](https://github.com/ShadyThGod/altus/releases) on the repository or the [downloads page](https://shadythgod.github.io/downloads/) on my website for all the releases available.
+To download the latest releases, you can [click here](https://github.com/ShadyThGod/altus/#latest-releases). Alternatively, you can visit the [releases page](https://github.com/ShadyThGod/altus/releases) on the repository.
 
 ---
 
@@ -84,11 +84,11 @@ To install Altus on a Mac, follow these steps:
 
 ### Latest Releases:
 
-#### Windows - v3.0.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.0.0/Altus-Setup-3.0.0.exe)
+#### Windows - v3.2.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.2.0/Altus-Setup-3.2.0.exe)
 
-#### Linux - v3.0.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.0.0/Altus.3.0.0.AppImage)
+#### Linux - v3.2.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.2.0/Altus.3.2.0.AppImage)
 
-#### MacOS - v3.0.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.0.0/Altus-3.0.0.dmg)
+#### MacOS - v3.2.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.2.0/Altus-3.2.0.dmg)
 
 ## For Developers
 
