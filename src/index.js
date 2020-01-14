@@ -423,6 +423,20 @@ const mainMenuTemplate = [{
     }]
 }];
 
+// Window State Persistence Data
+const windowState = new Store({
+    name: 'windowState',
+    defaults: {
+        bounds: {
+            x: 0,
+            y: 0,
+            width: 800,
+            height: 600,
+        },
+        isMaximized: false,
+    }
+});
+
 // Using singleInstanceLock for making app single instance
 const singleInstanceLock = app.requestSingleInstanceLock();
 
@@ -494,14 +508,13 @@ if (!singleInstanceLock) {
             },
             // Hides main window until it is ready to show
             show: false,
-            // Minimum width
-            minWidth: 818,
-            // Minimum height
-            minHeight: 636
         });
 
-        // Maximizes the main window
-        mainWindow.maximize();
+        mainWindow.setBounds(windowState.get('bounds'));
+
+        if (windowState.get('isMaximized')) {
+            mainWindow.maximize();
+        }
 
         // Shows window once ready
         mainWindow.once('ready-to-show', () => {
@@ -517,6 +530,9 @@ if (!singleInstanceLock) {
 
         // Main Window Close Event
         mainWindow.on('close', e => {
+            // Store window bounds & maximize data
+            windowState.set('bounds', mainWindow.getBounds());
+            windowState.set('isMaximized', mainWindow.isMaximized());
             // Checks if "app.showExitPrompt" variable is true
             if (app.showExitPrompt) {
                 // Stops app from closing in usual manner
