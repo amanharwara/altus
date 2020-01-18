@@ -508,6 +508,7 @@ if (!singleInstanceLock) {
             },
             // Hides main window until it is ready to show
             show: false,
+            minHeight: 600,
         });
 
         mainWindow.setBounds(windowState.get('bounds'));
@@ -648,6 +649,8 @@ if (!singleInstanceLock) {
 
         // Set global settings whenever they are changed
         ipcMain.on('settings-changed', e => setGlobalSettings());
+
+        ipcMain.on('new-message', (e, m) => mainWindow.webContents.send('new-message', m));
 
         // Message Indicator
         ipcMain.on('message-indicator', (e, i) => {

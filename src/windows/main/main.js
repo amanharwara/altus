@@ -3,10 +3,11 @@ const customTitlebar = require('custom-electron-titlebar');
 
 // Import extra electron modules
 const {
-    process
+    process,
+    BrowserWindow
 } = require('electron').remote;
 const {
-    ipcRenderer
+    ipcRenderer,
 } = require('electron');
 
 // Import electron store module for settings
@@ -415,12 +416,16 @@ function toggleNotifications(whatsAppElement, setting, firstStart) {
     if (firstStart) {
         whatsapp.addEventListener('dom-ready', () => {
             if (!setting) {
-                whatsapp.executeJavaScript(`window.Notification = ''`);
+                whatsapp.executeJavaScript(`window.NotificationSetting = false`);
+            } else {
+                whatsapp.executeJavaScript(`window.NotificationSetting = true`);
             }
         });
     } else {
         if (!setting) {
-            whatsapp.executeJavaScript(`window.Notification = ''`);
+            whatsapp.executeJavaScript(`window.NotificationSetting = false`);
+        } else {
+            whatsapp.executeJavaScript(`window.NotificationSetting = true`);
         }
     }
 }
@@ -458,7 +463,7 @@ ipcRenderer.on('themes-changed', e => {
 // IPC event of message indicator
 ipcRenderer.on('message-indicator', (e, i) => {
     if (i > 0 && i !== undefined && i !== null) {
-        ipcRenderer.sendSync('update-badge', '·');
+        ipcRenderer.sendSync('update-badge', i);
     } else {
         ipcRenderer.sendSync('update-badge', '');
     }
@@ -516,3 +521,21 @@ function getActiveTab() {
         whatsapp: activeWhatsApp
     }
 }
+
+ipcRenderer.on('new-message', (e, m) => {
+    if (m.message && m.message.length > 0) {
+        let chat = m.message[0];
+        let name = chat.chat.name;
+        let wID = m.wID;
+        let options = {
+            body: chat.body,
+            icon: chat.sender.profilePicThumbObj.eurl,
+        }
+        let _notification = new Notification(name, options);
+        _notification.onclick = e => {
+            BrowserWindow.getAllWindows()[0].focus();
+            let webview = document.querySelector(`#${wID}`);
+            webview.send('open-chat', chat.chatId._serialized);
+        };
+    }
+});
