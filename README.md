@@ -13,7 +13,8 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 **Altus** uses the GitHub-produced Electron framework to wrap around WhatsApp Web and add extra features to it.
 
 - **Multiple Account Support**: As of v2.0, you can use multiple WhatsApp accounts simultaneously!
-- **Native notification support** for all of the platforms.
+- **Native notification support** for all of the platforms. Clicking the notification opens that specific chat!
+- **Online Indicator**: Shows an indicator at the bottom-left corner of the chats that are online!
 - **Dark mode** for when you need to chill out your eyes in the night (or even in the day)
 - **Custom Theme Support**: Write your own CSS theme for WhatsApp or use the in-built Theme Customizer to create a new one just by picking colors!
 - **Available for most desktop platforms** including Windows (7 or above), Linux and MacOS.
@@ -84,11 +85,11 @@ To install Altus on a Mac, follow these steps:
 
 ### Latest Releases:
 
-#### Windows - v3.2.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.2.0/Altus-Setup-3.2.0.exe)
+#### Windows - v3.4.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.4.0/Altus-Setup-3.4.0.exe)
 
-#### Linux - v3.2.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.2.0/Altus.3.2.0.AppImage)
+#### Linux - v3.4.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.4.0/Altus.3.4.0.AppImage)
 
-#### MacOS - v3.2.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.2.0/Altus-3.2.0.dmg)
+#### MacOS - v3.4.0 - [Download](https://github.com/ShadyThGod/altus/releases/download/3.4.0/Altus-3.4.0.dmg)
 
 ## For Developers
 
