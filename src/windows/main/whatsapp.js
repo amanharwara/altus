@@ -73,7 +73,7 @@ window.onload = () => {
         if (mutations[0].removedNodes && mutations[0].removedNodes[0].id === 'startup') {
             getAPI();
             // Custom Notification
-            window.WAPI.waitNewMessages(true, (message) => {
+            window.WAPI.waitNewMessages(false, (message) => {
                 let wID = document.querySelector('style[id^="whatsapp-style"]').id.replace('whatsapp-style-', '');
                 if (window.NotificationSetting) {
                     ipcRenderer.send('new-message', {
@@ -95,7 +95,7 @@ window.onload = () => {
                 width: 1rem;
                 height: 1rem;
                 display: inline-block;
-                background: var(--accent);
+                background: #07bc4c;
                 border-radius: 50%;
                 margin-left: 0.25rem;
                 z-index: 200;
