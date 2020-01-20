@@ -76,10 +76,12 @@ window.onload = () => {
             window.WAPI.waitNewMessages(false, (message) => {
                 let wID = document.querySelector('style[id^="whatsapp-style"]').id.replace('whatsapp-style-', '');
                 if (window.NotificationSetting) {
-                    ipcRenderer.send('new-message', {
-                        message,
-                        wID
-                    });
+                    if (!document.hasFocus()) {
+                        ipcRenderer.send('new-message', {
+                            message,
+                            wID
+                        });
+                    }
                 } else {
                     console.log("Notifications are turned OFF");
                 }

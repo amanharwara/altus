@@ -527,8 +527,25 @@ ipcRenderer.on('new-message', (e, m) => {
         let chat = m.message[0];
         let name = chat.chat.name;
         let wID = m.wID;
+        let body = chat.body;
+        let mimetype = chat.mimetype ? chat.mimetype : undefined;
+        let filename = chat.filename ? chat.filename : undefined;
+
+        if (mimetype !== undefined) {
+            if (/image/.test(mimetype)) {
+                body = '📷 Image';
+            }
+            if (/audio/.test(mimetype)) {
+                body = '🎵 Audio';
+            }
+        }
+
+        if (filename !== undefined) {
+            body = '📄 ' + filename;
+        }
+
         let options = {
-            body: chat.body,
+            body: body,
             icon: chat.sender.profilePicThumbObj.eurl,
         }
         let _notification = new Notification(name, options);
