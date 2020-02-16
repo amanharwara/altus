@@ -1,6 +1,6 @@
 # Altus
 
-[![GitHub All Releases](https://img.shields.io/github/downloads/shadythgod/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/shadythgod/altus/releases) [![Discord](https://img.shields.io/discord/561853868061753355.svg?label=Discord%20Chat&logo=discord&logoColor=lightgreen&style=for-the-badge)](https://discord.gg/mGxNGP6) [![GitHub issues](https://img.shields.io/github/issues/shadythgod/altus.svg?logo=github&style=for-the-badge)](https://github.com/ShadyThGod/altus/issues) [![Say Thanks!](https://img.shields.io/badge/Say-Thanks!-brightgreen.svg?style=for-the-badge)](https://saythanks.io/to/ShadyThGod)
+[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![Discord](https://img.shields.io/discord/561853868061753355.svg?label=Discord%20Chat&logo=discord&logoColor=lightgreen&style=for-the-badge)](https://discord.gg/mGxNGP6) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues)
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
@@ -21,7 +21,7 @@ The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, n
 - **Tray icon** so you can minimize the app completely and still receive notifications.
 
 ## Feature Requests
-In order to submit a feature request, create a [new issue](https://github.com/ShadyThGod/altus/issues/new) with the label `enhancement`.
+In order to submit a feature request, create a [new issue](https://github.com/amanharwara/altus/issues/new) with the label `enhancement`.
 
 Please make sure that you provide a helpful description of your feature request. If possible, try implementing the feature yourself by forking this repository and then creating a pull request.
 
