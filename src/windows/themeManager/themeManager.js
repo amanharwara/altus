@@ -120,7 +120,7 @@ function updateBaseThemes() {
     // Add spin effect to the icon on the button
     document.querySelector('.button .lni-reload').classList.add('lni-spin-effect');
     // Fetch a new version of the dark theme
-    fetch('https://raw.githubusercontent.com/ShadyThGod/shadythgod.github.io/master/css/altus-dark-theme.css', {
+    fetch('https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.css', {
             cache: 'no-cache'
         })
         .then(res => res.text())
@@ -132,7 +132,7 @@ function updateBaseThemes() {
             // Create new object for the updated theme
             let updatedTheme = {
                 name: 'Dark',
-                css: css
+                css: css.replace(/\/\*(.*\n)+\n@.*\{/gim, '')
             };
 
             // Find index of the dark theme

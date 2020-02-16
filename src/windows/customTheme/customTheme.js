@@ -61,7 +61,7 @@ let themes = new Store({
 // Submit "Custom CSS" Theme
 document.querySelector('#customcssaddbutton').addEventListener('click', () => {
     // Get the CSS from the textarea
-    let css = escape(document.querySelector('#customcss').value);
+    let css = document.querySelector('#customcss').value;
 
     // Get the name from the textbox
     let name = escape(document.querySelector('#customcssname').value);
@@ -101,41 +101,41 @@ document.querySelector('#customcssaddbutton').addEventListener('click', () => {
  * @param {string} shadowColor Shadow color
  * @param {string} emojiOpacity Emoji Opacity
  */
-const generateCustomCSS = (baseTheme, mainBG, secBG, mainText, secText, accentColor, iconColor, shadowColor, emojiOpacity) => {
+const generateCustomCSS = (baseTheme, mainBG, secBG, terBG, mainText, secText, accentColor, shadowColor, emojiOpacity) => {
     let css;
 
     // Replace variable values in CSS with new values
-    css = baseTheme.replace("#272C35", mainBG) //Main background color
-        .replace("#1F232A", secBG) //Secondary background color
-        .replace("#D1D1D1", mainText) //Main text color
-        .replace("#E9E9E9", secText) //Secondary text color
-        .replace("#7289DA", accentColor) //Accent color
-        .replace("#E1E1E1", iconColor) //Icon color
-        .replace("rgba(0, 0, 0, 0.10)", shadowColor) //Shadow color
-        .replace("0.75", emojiOpacity); //Emoji Opacity
+    css = baseTheme.replace("#1f232a", mainBG) //Main background color
+        .replace("#252a33", secBG) //Secondary background color
+        .replace("#2c313a", terBG) //Tertiary background color
+        .replace("#a1a1a1", mainText) //Main text color
+        .replace("#e9e9e9", secText) //Secondary text color
+        .replace("#7289da", accentColor) //Accent color
+        .replace("rgba(0, 0, 0, 0.145)", shadowColor) //Shadow color
+        .replace("0.8", emojiOpacity) //Emoji Opacity
 
     return css;
 }
 
 document.querySelector('#customizeraddbutton').addEventListener('click', () => {
     // Fetch base dark theme
-    window.fetch('https://raw.githubusercontent.com/ShadyThGod/shadythgod.github.io/master/css/altus-dark-theme.css')
+    window.fetch('https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.css')
         // Convert to pure text
         .then(res => res.text())
         .then(baseTheme => {
             // Get new values from DOM
-            let mainBG = escape(document.querySelector('#main-bg .color-input').value);
-            let secBG = escape(document.querySelector('#sec-bg .color-input').value);
-            let mainText = escape(document.querySelector('#main-text .color-input').value);
-            let secText = escape(document.querySelector('#sec-text .color-input').value);
-            let accentColor = escape(document.querySelector('#accent-color .color-input').value);
-            let iconColor = escape(document.querySelector('#icon-color .color-input').value);
-            let shadowColor = escape(document.querySelector('#shadow-color .color-input').value);
-            let emojiOpacity = escape(document.querySelector('#emoji-opacity').value);
-            let name = escape(document.querySelector('#customizer-theme-name').value);
+            let mainBG = document.querySelector('#main-bg .color-input').value;
+            let secBG = document.querySelector('#sec-bg .color-input').value;
+            let terBG = document.querySelector('#ter-bg .color-input').value;
+            let mainText = document.querySelector('#main-text .color-input').value;
+            let secText = document.querySelector('#sec-text .color-input').value;
+            let accentColor = document.querySelector('#accent-color .color-input').value;
+            let shadowColor = document.querySelector('#shadow-color .color-input').value;
+            let emojiOpacity = document.querySelector('#emoji-opacity').value;
+            let name = document.querySelector('#customizer-theme-name').value || 'New Theme';
 
             // Generate new custom theme css
-            let css = generateCustomCSS(baseTheme, mainBG, secBG, mainText, secText, accentColor, iconColor, shadowColor, emojiOpacity);
+            let css = generateCustomCSS(baseTheme.replace(/\/\*(.*\n)+\n@.*\{/gim, '').replace("#2f343d", 'var(--darken)').replace("#383d46", 'var(--darken)'), mainBG, secBG, terBG, mainText, secText, accentColor, shadowColor, emojiOpacity);
 
             // Get themes list as array
             let themesList = Array.from(themes.get('themes'));
@@ -156,12 +156,12 @@ document.querySelector('#customizeraddbutton').addEventListener('click', () => {
             ipcRenderer.send('themes-changed', true);
 
             // Reset values after adding theme
-            document.querySelector('#main-bg .color-input').value = '#272C35';
-            document.querySelector('#sec-bg .color-input').value = '#1F232A';
-            document.querySelector('#main-text .color-input').value = '#D1D1D1';
-            document.querySelector('#sec-text .color-input').value = '#E9E9E9';
-            document.querySelector('#accent-color .color-input').value = '#7289DA';
-            document.querySelector('#icon-color .color-input').value = '#E1E1E1';
+            document.querySelector('#main-bg .color-input').value = '#1f232a';
+            document.querySelector('#sec-bg .color-input').value = '#252a33';
+            document.querySelector('#ter-bg .color-input').value = '#2c313a';
+            document.querySelector('#main-text .color-input').value = '#a1a1a1';
+            document.querySelector('#sec-text .color-input').value = '#e9e9e9';
+            document.querySelector('#accent-color .color-input').value = '#7289da';
             document.querySelector('#shadow-color .color-input').value = 'rgba(0, 0, 0, 0.10)';
             document.querySelector('#emoji-opacity').value = '0.75';
             document.querySelector('#customizer-theme-name').value = '';
@@ -204,10 +204,13 @@ document.querySelectorAll('.color-button').forEach(i => {
     // Select default color for specific color input
     switch (inputID) {
         case 'main-bg':
-            defaultColor = '#272C35';
+            defaultColor = '#1f232a';
             break;
         case 'sec-bg':
-            defaultColor = '#1F232A';
+            defaultColor = '#252a33';
+            break;
+        case 'ter-bg':
+            defaultColor = '#2c313a';
             break;
         case 'main-text':
             defaultColor = '#D1D1D1';
