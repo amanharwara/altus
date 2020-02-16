@@ -49,7 +49,7 @@ getDarkTheme(createThemesList);
  * @param {createThemesListCallback} createThemesList
  */
 function getDarkTheme(createThemesList) {
-    fetch('https://raw.githubusercontent.com/ShadyThGod/shadythgod.github.io/master/css/altus-dark-theme.css', {
+    fetch('https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.css', {
             cache: 'no-cache'
         })
         .then(res => {
@@ -59,7 +59,9 @@ function getDarkTheme(createThemesList) {
                 throw new Error(res.statusText);
             }
         })
-        .then(css => createThemesList(css))
+        .then(css => {
+            createThemesList(css.replace(/\/\*(.*\n)+\n@.*\{/gim, ''))
+        })
         .catch(e => {
             dialog.showErrorBox('Error: Base Dark Theme Not Loaded (No Internet Connection)', e);
             createThemesList('');
@@ -397,22 +399,22 @@ const mainMenuTemplate = [{
         submenu: [{
             label: 'Report Bugs/Issues',
             click: () => {
-                shell.openExternal('https://github.com/shadythgod/altus/issues');
+                shell.openExternal('https://github.com/amanharwara/altus/issues');
             }
         }, {
             label: 'Website',
             click: () => {
-                shell.openExternal('https://shadythgod.github.io');
+                shell.openExternal('https://amanharwara.xyz');
             }
         }, {
             label: 'GitHub',
             click: () => {
-                shell.openExternal('https://www.github.com/shadythgod');
+                shell.openExternal('https://www.github.com/amanharwara');
             }
         }, {
             label: 'Repository',
             click: () => {
-                shell.openExternal('https://www.github.com/shadythgod/altus');
+                shell.openExternal('https://www.github.com/amanharwara/altus');
             }
         }, {
             label: 'Discord Chat',

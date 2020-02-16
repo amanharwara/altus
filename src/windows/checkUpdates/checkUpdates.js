@@ -53,7 +53,7 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
 }
 
 // Set current version
-document.querySelector('.version').innerHTML = `Current Version: <a onclick="openLink('https://github.com/shadythgod/altus/releases/tag/${app.getVersion()}');" href="">v${app.getVersion()}</a>`;
+document.querySelector('.version').innerHTML = `Current Version: <a onclick="openLink('https://github.com/amanharwara/altus/releases/tag/${app.getVersion()}');" href="">v${app.getVersion()}</a>`;
 
 setCurrentReleaseNotes();
 
