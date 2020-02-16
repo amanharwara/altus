@@ -34,6 +34,10 @@ let themes = new Store({
     name: 'themes'
 });
 
+if (!themes.get('themes') || themes.get('themes').length === 0) {
+    window.location.reload();
+}
+
 // Load the tabs 
 let tabStore = new Store({
     name: 'tabs',
