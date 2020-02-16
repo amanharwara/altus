@@ -1,6 +1,6 @@
 {
     "name": "altus",
-    "version": "3.4.1",
+    "version": "3.5.0",
     "description": "Electron-based desktop wrapper for WhatsApp Web",
     "homepage": "https://altus.amanharwara.xyz",
     "repository": {
@@ -49,7 +49,8 @@
             "background": "build/background.png",
             "icon": "build/icon.icns",
             "iconSize": 100,
-            "contents": [{
+            "contents": [
+                {
                     "x": 380,
                     "y": 280,
                     "type": "link",
@@ -72,13 +73,15 @@
             "allowToChangeInstallationDirectory": "true"
         },
         "win": {
-            "target": [{
-                "target": "nsis",
-                "arch": [
-                    "x64",
-                    "ia32"
-                ]
-            }],
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64",
+                        "ia32"
+                    ]
+                }
+            ],
             "icon": "build/icon.ico"
         },
         "linux": {
