@@ -4,7 +4,7 @@ module.exports = {
      */
     getReleases: async() => {
         try {
-            let releasesPromise = await window.fetch('https://api.github.com/repos/shadythgod/altus/releases', {
+            let releasesPromise = await window.fetch('https://api.github.com/repos/amanharwara/altus/releases', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/vnd.github.v3+json'
