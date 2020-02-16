@@ -2,16 +2,16 @@
     "name": "altus",
     "version": "3.4.1",
     "description": "Electron-based desktop wrapper for WhatsApp Web",
-    "homepage": "https://shadythgod.github.io/altus",
+    "homepage": "https://altus.amanharwara.xyz",
     "repository": {
-        "url": "https://github.com/ShadyThGod/altus"
+        "url": "https://github.com/amanharwara/altus"
     },
     "bugs": {
-        "url": "https://github.com/ShadyThGod/altus/issues"
+        "url": "https://github.com/amanharwara/altus/issues"
     },
     "main": "index.js",
     "author": {
-        "name": "Aman Harwara (ShadyThGod)",
+        "name": "Aman Harwara",
         "email": "amanharwara@gmail.com"
     },
     "license": "GPL-3.0",
