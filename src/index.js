@@ -478,6 +478,11 @@ if (!singleInstanceLock) {
                 id: 'trayIcon'
             }, {
                 value: true,
+                name:'Tab Bar',
+                description: 'Toggle the tab bar',
+                id: 'tabBar'
+            }, {
+                value: true,
                 name: 'Exit Prompt',
                 description: 'If this setting is enabled, the app will prompt you everytime you close the app. Disabling this will disable the prompt.',
                 id: 'exitPrompt'
@@ -634,6 +639,12 @@ if (!singleInstanceLock) {
                 app.showExitPrompt = true;
             } else {
                 app.showExitPrompt = false;
+            }
+
+            if (settings.get('settings').find(s => s.id === 'tabBar').value === true) {
+                mainWindow.webContents.send('set-tabbar', true);
+            } else {
+                mainWindow.webContents.send('set-tabbar', false);
             }
         }
 

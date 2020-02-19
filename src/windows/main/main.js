@@ -131,6 +131,12 @@ document.querySelector('#add-tab-button').addEventListener('click', e => {
     themeSelect.setValue('Default');
 });
 
+/**
+ * Run code after DOM has loaded
+ */
+document.addEventListener('DOMContentLoaded', e => {
+    setTabBarVisibility(settings.get('settings').find(s=>s.id==='tabBar').value);
+});
 
 /**
  * Setup existing tabs at the start
@@ -410,6 +416,22 @@ function setTabTheme(whatsAppElement, themeCSS, firstStart) {
 }
 
 /**
+ * Set Tab Bar Visibility
+ * @param {boolean} visible Whether tab bar is visible or not
+ */
+function setTabBarVisibility(visible) {
+    let tabBar = document.querySelector('#tabs-list-');
+    let styleEl = document.querySelector('#tabbar-style');
+    if (visible) {
+        tabBar.style.display = '';
+        styleEl.innerHTML = `[role="tabpanel"] {height: 94.3%}`;
+    } else {
+        tabBar.style.display = 'none';
+        styleEl.innerHTML = `[role="tabpanel"] {height: -webkit-fill-available}`;
+    }
+}
+
+/**
  * Toggle notifications of a tab (Requires tab to be refreshed)
  * @param {Element} whatsAppElement The whatsapp webview element for the specific tab
  * @param {boolean} setting Enable = true | Disable = false
@@ -528,6 +550,10 @@ function getActiveTab() {
 
 ipcRenderer.on('switch-to-add', e=>{
     tabs.toggle('#addtab');
+});
+
+ipcRenderer.on('set-tabbar', (e,t)=>{
+    setTabBarVisibility(t);
 });
 
 ipcRenderer.on('new-message', (e, m) => {
