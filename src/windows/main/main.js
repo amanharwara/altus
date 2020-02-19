@@ -526,6 +526,10 @@ function getActiveTab() {
     }
 }
 
+ipcRenderer.on('switch-to-add', e=>{
+    tabs.toggle('#addtab');
+});
+
 ipcRenderer.on('new-message', (e, m) => {
     if (m.message && m.message.length > 0) {
         let chat = m.message[0];

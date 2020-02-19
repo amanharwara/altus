@@ -95,6 +95,12 @@ function createThemesList(darkThemeCSS) {
 let fileMenuTemplate;
 
 fileMenuTemplate = [{
+    label: 'Add New Instance',
+    accelerator: 'CmdOrCtrl+N',
+    click() {
+        mainWindow.webContents.send('switch-to-add');
+    }
+},{
     label: 'Force Reload',
     accelerator: 'CmdOrCtrl+Shift+R',
     click() {
