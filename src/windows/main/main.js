@@ -8,6 +8,7 @@ const {
 } = require('electron').remote;
 const {
     ipcRenderer,
+    remote,
 } = require('electron');
 
 // Import electron store module for settings
@@ -467,16 +468,16 @@ function toggleSound(whatsAppElement, setting, firstStart) {
     if (firstStart) {
         whatsapp.addEventListener('dom-ready', () => {
             if (setting) {
-                whatsapp.getWebContents().audioMuted = false;
+                remote.webContents.fromId(whatsapp.getWebContentsId()).audioMuted = false;
             } else {
-                whatsapp.getWebContents().audioMuted = true;
+                remote.webContents.fromId(whatsapp.getWebContentsId()).audioMuted = true;
             }
         });
     } else {
         if (setting) {
-            whatsapp.getWebContents().audioMuted = false;
+            remote.webContents.fromId(whatsapp.getWebContentsId()).audioMuted = false;
         } else {
-            whatsapp.getWebContents().audioMuted = true;
+            remote.webContents.fromId(whatsapp.getWebContentsId()).audioMuted = true;
         }
     }
 }
@@ -514,22 +515,22 @@ ipcRenderer.on('reset-zoom', () => {
  * @param {Element} whatsAppElement WhatsApp Element (Should be 'webview' element)
  */
 function zoom(type, whatsAppElement) {
-    let currentZoomFactor = whatsAppElement.getWebContents().zoomFactor;
+    let currentZoomFactor = remote.webContents.fromId(whatsAppElement.getWebContentsId()).zoomFactor;
     switch (type) {
         case 'in':
-            whatsAppElement.getWebContents().zoomFactor = currentZoomFactor + 0.1;
+            remote.webContents.fromId(whatsAppElement.getWebContentsId()).zoomFactor = currentZoomFactor + 0.1;
             break;
 
         case 'out':
-            whatsAppElement.getWebContents().zoomFactor = currentZoomFactor - 0.1;
+            remote.webContents.fromId(whatsAppElement.getWebContentsId()).zoomFactor = currentZoomFactor - 0.1;
             break;
 
         case 'reset':
-            whatsAppElement.getWebContents().zoomFactor = 1;
+            remote.webContents.fromId(whatsAppElement.getWebContentsId()).zoomFactor = 1;
             break;
 
         default:
-            whatsAppElement.getWebContents().zoomFactor = 1;
+            remote.webContents.fromId(whatsAppElement.getWebContentsId()).zoomFactor = 1;
             break;
     }
 }
