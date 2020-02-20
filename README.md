@@ -4,6 +4,8 @@
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
+### [v4.0 Discussion](https://github.com/amanharwara/altus/issues/49)
+
 ![Altus Banner](./img/altus-banner.png)
 
 The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, noble or profound". The name was actually suggested by one of my friends.
