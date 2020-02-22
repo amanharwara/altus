@@ -100,7 +100,7 @@ fileMenuTemplate = [{
     click() {
         mainWindow.webContents.send('switch-to-add');
     }
-},{
+}, {
     label: 'Force Reload',
     accelerator: 'CmdOrCtrl+Shift+R',
     click() {
@@ -478,7 +478,7 @@ if (!singleInstanceLock) {
                 id: 'trayIcon'
             }, {
                 value: true,
-                name:'Tab Bar',
+                name: 'Tab Bar',
                 description: 'Toggle the tab bar',
                 id: 'tabBar'
             }, {
@@ -579,7 +579,7 @@ if (!singleInstanceLock) {
          * Set global settings
          */
         function setGlobalSettings() {
-            if (settings.get('settings').find(s => s.id === 'trayIcon').value === true) {
+            if (process.platform !== 'linux' && settings.get('settings').find(s => s.id === 'trayIcon').value === true) {
                 // If tray icon setting is enabled
 
                 // Get tray icon image
