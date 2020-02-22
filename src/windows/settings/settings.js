@@ -76,7 +76,7 @@ document.querySelector('.save.button').addEventListener('click', e => {
     document.querySelector('.save.button').innerHTML = '<span class="lni-spinner-solid lni-spin-effect"></span>';
 
     // Loop through current settings
-    Array.from(settings.get('settings')).forEach(setting => {
+    Array.from(process.platform === 'linux' ? settings.get('settings').filter(s => s.id !== 'trayIcon') : settings.get('settings')).forEach(setting => {
         // Find the DOM element of the setting
         let settingDOMElement = document.querySelector(`[data-setting="${setting.id}"]`);
 
