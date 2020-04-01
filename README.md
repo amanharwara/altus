@@ -85,13 +85,13 @@ To install Altus on a Mac, follow these steps:
 
 ---
 
-### Latest Releases (v3.6.0):
+### Latest Releases (v3.7.0):
 
-#### Windows - [Download](https://github.com/amanharwara/altus/releases/download/3.6.0/Altus-Setup-3.6.0.exe)
+#### Windows - [Download](https://github.com/amanharwara/altus/releases/download/3.7.0/Altus-Setup-3.7.0.exe)
 
-#### Linux - [Download](https://github.com/amanharwara/altus/releases/download/3.6.0/Altus-3.6.0.AppImage)
+#### Linux - [Download](https://github.com/amanharwara/altus/releases/download/3.7.0/Altus-3.7.0.AppImage)
 
-#### MacOS - [Download](https://github.com/amanharwara/altus/releases/download/3.6.0/Altus-3.6.0.dmg)
+#### MacOS - [Download](https://github.com/amanharwara/altus/releases/download/3.7.0/Altus-3.7.0.dmg)
 
 ## For Developers
 
@@ -135,5 +135,6 @@ Below is the list of the dependencies that helped me greatly to create this app.
 
 Below is the list of contributors who have contributed to Altus by creating a feature or helping fix an issue.
 
+#### [Melvin-Abraham](https://github.com/Melvin-Abraham) - Helped fix issues #55, #53
 #### [dylanmcdougall](https://github.com/dylanmcdougall) - PR #10 (Added feature - Confirmation Dialog on close)
 #### [Dafnik](https://github.com/Dafnik) - PR #5 (Helped fix issue #4)
