@@ -135,7 +135,7 @@ document.querySelector('#customizeraddbutton').addEventListener('click', () => {
             let name = document.querySelector('#customizer-theme-name').value || 'New Theme';
 
             // Generate new custom theme css
-            let css = generateCustomCSS(baseTheme.replace(/\/\*(.*\n)+\n@.*\{/gim, '').replace("#2f343d", 'var(--darken)').replace("#383d46", 'var(--darken)'), mainBG, secBG, terBG, mainText, secText, accentColor, shadowColor, emojiOpacity);
+            let css = generateCustomCSS(baseTheme.replace(/\@.*\{/gim, '').replace("#2f343d", 'var(--darken)').replace("#383d46", 'var(--darken)'), mainBG, secBG, terBG, mainText, secText, accentColor, shadowColor, emojiOpacity);
 
             // Get themes list as array
             let themesList = Array.from(themes.get('themes'));

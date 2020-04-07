@@ -129,10 +129,19 @@ function updateBaseThemes() {
             document.querySelector('.button .lni-reload').classList.remove('lni-spin-effect');
             // Get the themes list as an array
             let themesList = Array.from(themes.get('themes'));
+
+            css = `
+            .app {
+                width: 100% !important;
+                border-radius: 0 !important;
+                border: 0 !important;
+            }
+            ` + css;
+
             // Create new object for the updated theme
             let updatedTheme = {
                 name: 'Dark',
-                css: css.replace(/\/\*(.*\n)+\n@.*\{/gim, '')
+                css: css.replace(/\@.*\{/gim, '')
             };
 
             // Find index of the dark theme

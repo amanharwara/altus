@@ -60,7 +60,14 @@ function getDarkTheme(createThemesList) {
             }
         })
         .then(css => {
-            createThemesList(css.replace(/\/\*(.*\n)+\n@.*\{/gim, ''))
+            css = `
+            .app {
+                width: 100% !important;
+                border-radius: 0 !important;
+                border: 0 !important;
+            }
+            ` + css;
+            createThemesList(css.replace(/\@.*\{/gim, ''))
         })
         .catch(e => {
             dialog.showErrorBox('Error: Base Dark Theme Not Loaded (No Internet Connection)', e);

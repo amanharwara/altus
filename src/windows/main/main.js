@@ -136,7 +136,7 @@ document.querySelector('#add-tab-button').addEventListener('click', e => {
  * Run code after DOM has loaded
  */
 document.addEventListener('DOMContentLoaded', e => {
-    setTabBarVisibility(settings.get('settings').find(s=>s.id==='tabBar').value);
+    setTabBarVisibility(settings.get('settings').find(s => s.id === 'tabBar').value);
 });
 
 /**
@@ -549,11 +549,11 @@ function getActiveTab() {
     }
 }
 
-ipcRenderer.on('switch-to-add', e=>{
+ipcRenderer.on('switch-to-add', e => {
     tabs.toggle('#addtab');
 });
 
-ipcRenderer.on('set-tabbar', (e,t)=>{
+ipcRenderer.on('set-tabbar', (e, t) => {
     setTabBarVisibility(t);
 });
 
