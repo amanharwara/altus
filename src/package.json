@@ -1,6 +1,6 @@
 {
     "name": "altus",
-    "version": "3.7.0",
+    "version": "3.8.0",
     "description": "Electron-based desktop wrapper for WhatsApp Web",
     "homepage": "https://altus.amanharwara.xyz",
     "repository": {
@@ -88,5 +88,8 @@
             ],
             "icon": "build/icon.png"
         }
+    },
+    "resolutions": {
+        "minimist": ">=0.2.1"
     }
 }
