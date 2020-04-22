@@ -599,7 +599,7 @@ if (!singleInstanceLock) {
                     label: 'Exit',
                     click() {
                         // Quit the app
-                        app.quit()
+                        app.exit(0)
                     }
                 }]);
 
