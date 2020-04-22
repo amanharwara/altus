@@ -443,16 +443,12 @@ function toggleNotifications(whatsAppElement, setting, firstStart) {
     if (firstStart) {
         whatsapp.addEventListener('dom-ready', () => {
             if (!setting) {
-                whatsapp.executeJavaScript(`window.NotificationSetting = false`);
-            } else {
-                whatsapp.executeJavaScript(`window.NotificationSetting = true`);
+                whatsapp.executeJavaScript(`window.Notification = ''`);
             }
         });
     } else {
         if (!setting) {
-            whatsapp.executeJavaScript(`window.NotificationSetting = false`);
-        } else {
-            whatsapp.executeJavaScript(`window.NotificationSetting = true`);
+            whatsapp.executeJavaScript(`window.Notification = ''`);
         }
     }
 }
@@ -555,39 +551,4 @@ ipcRenderer.on('switch-to-add', e => {
 
 ipcRenderer.on('set-tabbar', (e, t) => {
     setTabBarVisibility(t);
-});
-
-ipcRenderer.on('new-message', (e, m) => {
-    if (m.message && m.message.length > 0) {
-        let chat = m.message[0];
-        let name = chat.chat.name;
-        let wID = m.wID;
-        let body = chat.body;
-        let mimetype = chat.mimetype ? chat.mimetype : undefined;
-        let filename = chat.filename ? chat.filename : undefined;
-
-        if (mimetype !== undefined) {
-            if (/image/.test(mimetype)) {
-                body = '📷 Image';
-            }
-            if (/audio/.test(mimetype)) {
-                body = '🎵 Audio';
-            }
-        }
-
-        if (filename !== undefined) {
-            body = '📄 ' + filename;
-        }
-
-        let options = {
-            body: body,
-            icon: chat.sender.profilePicThumbObj.eurl,
-        }
-        let _notification = new Notification(name, options);
-        _notification.onclick = e => {
-            BrowserWindow.getAllWindows()[0].focus();
-            let webview = document.querySelector(`#${wID}`);
-            webview.send('open-chat', chat.chatId._serialized);
-        };
-    }
 });

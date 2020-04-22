@@ -3,10 +3,6 @@ const {
     ipcRenderer
 } = require('electron');
 
-const {
-    getAPI
-} = require('./wapi');
-
 // Fix for "WhatsApp works with Chrome 36+" issue . DO NOT REMOVE
 var ses = remote.session.defaultSession;
 
@@ -69,86 +65,4 @@ window.onload = () => {
             ipcRenderer.send('link-open', e.target.href);
         }
     });
-
-    window.Notification = '';
-
-    new MutationObserver(mutations => {
-        // Check when WhatsApp is done loading
-        if (mutations[0].removedNodes && mutations[0].removedNodes[0].id === 'startup') {
-            getAPI();
-            // Custom Notification
-            window.WAPI.waitNewMessages(false, (message) => {
-                let wID = document.querySelector('style[id^="whatsapp-style"]').id.replace('whatsapp-style-', '');
-                if (window.NotificationSetting) {
-                    if (!document.hasFocus()) {
-                        ipcRenderer.send('new-message', {
-                            message,
-                            wID
-                        });
-                    }
-                } else {
-                    console.log("Notifications are turned OFF");
-                }
-            });
-            // Online Marker Styling
-            let mStyle = document.createElement('style');
-            mStyle.innerHTML = `
-            .is-online {
-                overflow: visible; 
-            }
-            .is-online::after {
-                content: '';
-                width: 1rem;
-                height: 1rem;
-                display: inline-block;
-                background: #07bc4c;
-                border-radius: 50%;
-                margin-left: 0.25rem;
-                z-index: 200;
-                position: absolute;
-                top: 60%;
-                left: 1%;
-            }`;
-            document.head.appendChild(mStyle);
-            // Online Status
-            window.WAPI.getAllChats(chats => {
-                // Get all chats
-                let allChatIDs = chats.map(chat => chat.id._serialized);
-                // Subscribe to all chats' presence update
-                allChatIDs.forEach(id => window.WAPI.getChat(id).presence.subscribe());
-                // Presence Updates
-                window.presenceInterval = setInterval(() => {
-                    allChatIDs.forEach(id => {
-                        let el = getChatElement(id);
-                        let chat = window.WAPI.getChat(id);
-                        let isOnline = chat.presence.isOnline;
-                        if (isOnline) {
-                            el.classList.add('is-online');
-                        } else {
-                            el.classList.remove('is-online');
-                        }
-                    });
-                }, 2000);
-            });
-        }
-    }).observe(document.querySelector('#app'), {
-        subtree: true,
-        childList: true
-    });
-}
-
-ipcRenderer.on('open-chat', (e, id) => {
-    let ocAPI = new window.Store.OpenChat();
-    ocAPI.openChat(id);
-});
-
-function getChatElement(id) {
-    let chatElement;
-    document.querySelectorAll('#pane-side>*>*>*>*').forEach(chatEl => {
-        let elID = chatEl[Object.keys(chatEl).filter(k => /Event/.test(k))[0]].children.props.contact.id._serialized;
-        if (id === elID) {
-            chatElement = chatEl;
-        }
-    });
-    return chatElement;
 }
