@@ -23,6 +23,11 @@ const {
 // Used for storing settings
 const Store = require('electron-store');
 
+// Import default settings
+const {
+    defaultSettings
+} = require('./js/defaultSettings');
+
 // Used for fetching base dark theme CSS & more
 const fetch = require('node-fetch');
 
@@ -478,32 +483,7 @@ if (!singleInstanceLock) {
     let settings = new Store({
         name: 'settings',
         defaults: {
-            settings: [{
-                value: true,
-                name: 'Tray Icon',
-                description: 'Toggle the tray icon',
-                id: 'trayIcon'
-            }, {
-                value: true,
-                name: 'Tab Bar',
-                description: 'Toggle the tab bar',
-                id: 'tabBar'
-            }, {
-                value: true,
-                name: 'Exit Prompt',
-                description: 'If this setting is enabled, the app will prompt you everytime you close the app. Disabling this will disable the prompt.',
-                id: 'exitPrompt'
-            }, {
-                value: true,
-                name: 'Custom Titlebar',
-                description: 'If you are having any issues with the custom titlebar, you can disable it using this setting. <b>NOTE: This setting requires you to restart the whole app for changes to apply.</b>',
-                id: 'customTitlebar'
-            }, {
-                value: true,
-                name: 'Prompt When Closing Tab',
-                description: 'When enabled, you will be prompted when you close a tab. This helps if you accidentally click the close button of a tab.',
-                id: 'tabClosePrompt'
-            }]
+            settings: defaultSettings
         }
     });
 
@@ -554,12 +534,18 @@ if (!singleInstanceLock) {
             // Store window bounds & maximize data
             windowState.set('bounds', mainWindow.getBounds());
             windowState.set('isMaximized', mainWindow.isMaximized());
-            // Checks if "app.showExitPrompt" variable is true
-            if (app.showExitPrompt) {
-                // Stops app from closing in usual manner
+
+            if (app.closeToTray) {
                 e.preventDefault();
-                // Uses a new function to confirm and then closes the app
-                confirmExit();
+                mainWindow.hide();
+            } else {
+                // Checks if "app.showExitPrompt" variable is true
+                if (app.showExitPrompt) {
+                    // Stops app from closing in usual manner
+                    e.preventDefault();
+                    // Uses a new function to confirm and then closes the app
+                    confirmExit();
+                }
             }
         });
 
@@ -626,6 +612,10 @@ if (!singleInstanceLock) {
                         trayIcon.setToolTip('Altus');
                         // Set tray icon context menu
                         trayIcon.setContextMenu(trayContextMenu);
+                        // Add double-click event
+                        trayIcon.on('double-click', () => {
+                            mainWindow.show();
+                        });
                     } else if (process.platform === 'darwin') {
                         // Set dock menu on MacOS
                         app.dock.setMenu(trayContextMenu);
@@ -644,6 +634,7 @@ if (!singleInstanceLock) {
 
             let exitPromptSetting = settings.get('settings').find(s => s.id === 'exitPrompt');
             let tabBarSetting = settings.get('settings').find(s => s.id === 'tabBar');
+            let closeToTraySetting = settings.get('settings').find(s => s.id === 'closeToTray');
 
             if (exitPromptSetting && exitPromptSetting.value === true) {
                 app.showExitPrompt = true;
@@ -656,10 +647,43 @@ if (!singleInstanceLock) {
             } else {
                 mainWindow.webContents.send('set-tabbar', false);
             }
+
+            if (closeToTraySetting && closeToTraySetting.value === true) {
+                app.closeToTray = true;
+                app.showExitPrompt = false;
+            } else {
+                app.closeToTray = true;
+                app.showExitPrompt = false;
+            }
         }
 
-        // Set global settings for the first start
-        setGlobalSettings();
+        /**
+         * Check if all settings are in place and add if not
+         */
+        function validateGlobalSettings() {
+            let _settings = settings.get('settings');
+            let wereInvalid = false;
+            defaultSettings.forEach((setting, index) => {
+                let _index = _settings.findIndex(_setting => _setting.name === setting.name);
+                if (_index === -1) {
+                    _settings.unshift(setting);
+                    settings.set('settings', _settings);
+                    wereInvalid = true;
+                }
+            });
+            if (wereInvalid) {
+                return false;
+            } else {
+                return true
+            };
+        }
+
+        if (validateGlobalSettings()) {
+            setGlobalSettings();
+        } else {
+            app.relaunch();
+            app.exit(0);
+        }
 
         // IPC Functions
 
@@ -700,14 +724,6 @@ if (!singleInstanceLock) {
     app.on('web-contents-created', (e, c) => {
         // Initialize the context menu
         contextMenu({
-            prepend: (d, p, bW) => [{
-                // Allows user to search the selected text on Google in external browser
-                label: 'Search Google for "{selection}"',
-                visible: p.selectionText.trim().length > 0,
-                click: () => {
-                    shell.openExternal(`https://google.com/search?q=${encodeURIComponent(p.selectionText)}`);
-                }
-            }],
             window: c,
             showCopyImage: false,
             showSaveImageAs: true,
