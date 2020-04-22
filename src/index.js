@@ -648,12 +648,14 @@ if (!singleInstanceLock) {
                 mainWindow.webContents.send('set-tabbar', false);
             }
 
-            if (closeToTraySetting && closeToTraySetting.value === true) {
-                app.closeToTray = true;
-                app.showExitPrompt = false;
-            } else {
-                app.closeToTray = true;
-                app.showExitPrompt = false;
+            if (process.platform !== 'linux') {
+                if (closeToTraySetting && closeToTraySetting.value === true) {
+                    app.closeToTray = true;
+                    app.showExitPrompt = false;
+                } else {
+                    app.closeToTray = true;
+                    app.showExitPrompt = false;
+                }
             }
         }
 
