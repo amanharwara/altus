@@ -7,33 +7,33 @@ const {
     dialog,
     shell,
     Tray,
-    nativeImage
-} = require('electron');
-const url = require('url');
-const path = require('path');
+    nativeImage,
+} = require("electron");
+const url = require("url");
+const path = require("path");
 
 // Import electron context menu library
-const contextMenu = require('electron-context-menu');
+const contextMenu = require("electron-context-menu");
 
 // Import createWindow function
 const {
     createWindow
-} = require('./js/createWindow');
+} = require("./js/createWindow");
 
 // Used for storing settings
-const Store = require('electron-store');
+const Store = require("electron-store");
 
 // Import default settings
 const {
     defaultSettings
-} = require('./js/defaultSettings');
+} = require("./js/defaultSettings");
 
 // Used for fetching base dark theme CSS & more
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 
 // Used to create a message count badge on Windows
 let Badge;
-if (process.platform == 'win32') Badge = require('electron-windows-badge');
+if (process.platform == "win32") Badge = require("electron-windows-badge");
 
 // Declaring the window variables to use later
 let mainWindow,
@@ -54,30 +54,36 @@ getDarkTheme(createThemesList);
  * @param {createThemesListCallback} createThemesList
  */
 function getDarkTheme(createThemesList) {
-    fetch('https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.css', {
-            cache: 'no-cache'
-        })
-        .then(res => {
+    fetch(
+            "https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.css", {
+                cache: "no-cache",
+            }
+        )
+        .then((res) => {
             if (res.ok) {
                 return res.text();
             } else {
                 throw new Error(res.statusText);
             }
         })
-        .then(css => {
-            css = `
+        .then((css) => {
+            css =
+                `
             .app {
                 width: 100% !important;
                 border-radius: 0 !important;
                 border: 0 !important;
             }
             ` + css;
-            createThemesList(css.replace(/\@.*\{/gim, ''))
+            createThemesList(css.replace(/\@.*\{/gim, ""));
         })
-        .catch(e => {
-            dialog.showErrorBox('Error: Base Dark Theme Not Loaded (No Internet Connection)', e);
-            createThemesList('');
-        })
+        .catch((e) => {
+            dialog.showErrorBox(
+                "Error: Base Dark Theme Not Loaded (No Internet Connection)",
+                e
+            );
+            createThemesList("");
+        });
 }
 
 // Declaring the themesList variable
@@ -90,16 +96,18 @@ let themesList;
  */
 function createThemesList(darkThemeCSS) {
     themesList = new Store({
-        name: 'themes',
+        name: "themes",
         defaults: {
             themes: [{
-                name: 'Default',
-                css: ''
-            }, {
-                name: 'Dark',
-                css: darkThemeCSS
-            }]
-        }
+                    name: "Default",
+                    css: "",
+                },
+                {
+                    name: "Dark",
+                    css: darkThemeCSS,
+                },
+            ],
+        },
     });
 }
 
@@ -107,345 +115,432 @@ function createThemesList(darkThemeCSS) {
 let fileMenuTemplate;
 
 fileMenuTemplate = [{
-    label: 'Add New Instance',
-    accelerator: 'CmdOrCtrl+N',
-    click() {
-        mainWindow.webContents.send('switch-to-add');
-    }
-}, {
-    label: 'Force Reload',
-    accelerator: 'CmdOrCtrl+Shift+R',
-    click() {
-        var window = BrowserWindow.getFocusedWindow();
-        window.webContents.reload();
-    }
-}, {
-    label: 'Quit',
-    accelerator: 'CmdOrCtrl+Q',
-    click() {
-        app.quit();
-    }
-}];
+        label: "Add New Instance",
+        accelerator: "CmdOrCtrl+N",
+        click() {
+            mainWindow.webContents.send("switch-to-add");
+        },
+    },
+    {
+        label: "Force Reload",
+        accelerator: "CmdOrCtrl+Shift+R",
+        click() {
+            var window = BrowserWindow.getFocusedWindow();
+            window.webContents.reload();
+        },
+    },
+    {
+        label: "Quit",
+        accelerator: "CmdOrCtrl+Q",
+        click() {
+            // Quit the app
+            app.exit(0);
+        },
+    },
+];
 
 // Checks if app is packaged or not
 if (!app.isPackaged) {
     // Allows DevTools if app is not packaged
     fileMenuTemplate.unshift({
-        label: 'Open DevTools',
-        accelerator: 'CmdOrCtrl+Shift+I',
+        label: "Open DevTools",
+        accelerator: "CmdOrCtrl+Shift+I",
         click() {
             var window = BrowserWindow.getFocusedWindow();
             window.webContents.openDevTools();
-        }
+        },
     });
 }
 
 // Create the main menu template
 const mainMenuTemplate = [{
-    label: 'File',
-    submenu: fileMenuTemplate
-}, {
-    label: "Edit",
-    submenu: [{
-            label: "Undo",
-            accelerator: "CmdOrCtrl+Z",
-            selector: "undo:"
-        },
-        {
-            label: "Redo",
-            accelerator: "Shift+CmdOrCtrl+Z",
-            selector: "redo:"
-        },
-        {
-            type: "separator"
-        },
-        {
-            label: "Cut",
-            accelerator: "CmdOrCtrl+X",
-            selector: "cut:"
-        },
-        {
-            label: "Copy",
-            accelerator: "CmdOrCtrl+C",
-            selector: "copy:"
-        },
-        {
-            label: "Paste",
-            accelerator: "CmdOrCtrl+V",
-            selector: "paste:"
-        },
-        {
-            label: "Select All",
-            accelerator: "CmdOrCtrl+A",
-            selector: "selectAll:"
-        }
-    ]
-}, {
-    label: 'Zoom',
-    submenu: [{
-        label: 'Zoom In',
-        accelerator: 'CmdOrCtrl+numadd',
-        click() {
-            mainWindow.webContents.send('zoom-in');
-        }
-    }, {
-        label: 'Zoom Out',
-        accelerator: 'CmdOrCtrl+numsub',
-        click() {
-            mainWindow.webContents.send('zoom-out');
-        }
-    }, {
-        label: 'Reset Zoom',
-        accelerator: 'CmdOrCtrl+num0',
-        click() {
-            mainWindow.webContents.send('reset-zoom');
-        }
-    }]
-}, {
-    label: 'Theme',
-    submenu: [{
-        label: 'Custom Theme',
-        accelerator: 'CmdOrCtrl+Shift+T',
-        click() {
-            // Checks if custom theme window exists
-            if (typeof customThemeWindow === 'object') {
-                // Shows the custom theme window instead of creating new one
-                customThemeWindow.show();
-            } else {
-                // Creates new Browser Window object using createWindow function
-                customThemeWindow = createWindow({
-                    id: 'customTheme',
-                    title: 'Custom Theme',
-                    width: 400,
-                    height: 480,
-                    resizable: true,
-                    mainWindowObject: mainWindow,
-                    min: true,
-                    max: false,
-                    minWidth: 630,
-                    minHeight: 480,
-                    maxWidth: '',
-                    maxHeight: ''
-                });
-                // Loads Custom Theme Window HTML
-                customThemeWindow.loadURL(url.format({
-                    pathname: path.join(__dirname, 'windows', 'customTheme', 'customTheme.html'),
-                    protocol: 'file:',
-                    slashes: true
-                }));
-                customThemeWindow.once('ready-to-show', () => {
-                    // Shows the custom theme window
-                    customThemeWindow.show();
-                });
-                // Close window event (Hides window when closed, instead of deleting it)
-                customThemeWindow.on('close', e => {
-                    e.preventDefault();
-                    customThemeWindow.hide();
-                });
-            }
-        }
-    }, {
-        label: 'Manage Themes',
-        accelerator: 'CmdOrCtrl+T',
-        click() {
-            // Checks if theme manager window exists
-            if (typeof themeManagerWindow === 'object') {
-                // Shows theme manager window instead of creating new object
-                themeManagerWindow.show();
-            } else {
-                // Creates new Browser Window object using createWindow function
-                themeManagerWindow = createWindow({
-                    id: 'themeManager',
-                    title: 'Manage Themes',
-                    width: 414,
-                    height: 478,
-                    resizable: true,
-                    mainWindowObject: mainWindow,
-                    min: true,
-                    max: false,
-                    minWidth: 300,
-                    minHeight: 380,
-                    maxWidth: '',
-                    maxHeight: ''
-                });
-                // Loads Theme Manager Window HTML
-                themeManagerWindow.loadURL(url.format({
-                    pathname: path.join(__dirname, 'windows', 'themeManager', 'themeManager.html'),
-                    protocol: 'file:',
-                    slashes: true
-                }));
-                themeManagerWindow.once('ready-to-show', () => {
-                    // Shows Theme Manager window
-                    themeManagerWindow.show();
-                });
-                // Close window event (Hides window when closed, instead of deleting it)
-                themeManagerWindow.on('close', e => {
-                    e.preventDefault();
-                    themeManagerWindow.hide();
-                });
-            }
-        }
-    }]
-}, {
-    label: 'Settings',
-    submenu: [{
-        label: 'Settings',
-        accelerator: 'CmdOrCtrl+,',
-        click() {
-            // Checks settings window exists
-            if (typeof settingsWindow === 'object') {
-                // Shows settings window instead of creating new object
-                settingsWindow.show();
-            } else {
-                // Creates new Browser Window object using createWindow function
-                settingsWindow = createWindow({
-                    id: 'settings',
-                    title: 'Settings',
-                    width: 450,
-                    height: 450,
-                    resizable: true,
-                    mainWindowObject: mainWindow,
-                    min: true,
-                    max: false,
-                    minWidth: 450,
-                    minHeight: 450,
-                    maxWidth: '',
-                    maxHeight: ''
-                });
-                // Loads settings Window HTML
-                settingsWindow.loadURL(url.format({
-                    pathname: path.join(__dirname, 'windows', 'settings', 'settings.html'),
-                    protocol: 'file:',
-                    slashes: true
-                }));
-                settingsWindow.once('ready-to-show', () => {
-                    // Shows settings window
-                    settingsWindow.show();
-                });
-                // Close window event (Hides window when closed, instead of deleting it)
-                settingsWindow.on('close', e => {
-                    e.preventDefault();
-                    settingsWindow.hide();
-                });
-            }
-        }
-    }]
-}, {
-    label: "About",
-    submenu: [{
-        label: "About",
-        click() {
-            // Checks if about window exists
-            if (typeof aboutWindow === 'object') {
-                // Shows about window instead of creating new object
-                aboutWindow.show();
-            } else {
-                // Creates new Browser Window object using createWindow function
-                aboutWindow = createWindow({
-                    id: 'aboutWindow',
-                    title: 'About',
-                    width: 435,
-                    height: 300,
-                    resizable: false,
-                    mainWindowObject: mainWindow,
-                    min: true,
-                    max: false,
-                    minWidth: '',
-                    minHeight: '',
-                    maxWidth: '',
-                    maxHeight: ''
-                });
-                // Loads Theme Manager Window HTML
-                aboutWindow.loadURL(url.format({
-                    pathname: path.join(__dirname, 'windows', 'about', 'about.html'),
-                    protocol: 'file:',
-                    slashes: true
-                }));
-                aboutWindow.once('ready-to-show', () => {
-                    // Shows About window
-                    aboutWindow.show();
-                });
-                // Close window event (Hides window when closed, instead of deleting it)
-                aboutWindow.on('close', e => {
-                    e.preventDefault();
-                    aboutWindow.hide();
-                });
-            }
-        }
-    }, {
-        label: "Check For Updates",
-        accelerator: 'CmdOrCtrl+Shift+U',
-        click() {
-            // Check is window exists already
-            if (typeof checkUpdatesWindow === 'object') {
-                // Show window instead of creating new object
-                checkUpdatesWindow.show();
-            } else {
-                // Create new browser window object for the window
-                checkUpdatesWindow = createWindow({
-                    id: 'checkUpdates',
-                    title: 'Check Updates',
-                    width: 435,
-                    height: 340,
-                    resizable: true,
-                    mainWindowObject: mainWindow,
-                    min: false,
-                    max: false,
-                    minWidth: 435,
-                    minHeight: 340,
-                    maxWidth: '',
-                    maxHeight: ''
-                });
-                checkUpdatesWindow.loadURL(url.format({
-                    pathname: path.join(__dirname, 'windows', 'checkUpdates', 'checkUpdates.html'),
-                    protocol: 'file:',
-                    slashes: true
-                }));
-                checkUpdatesWindow.once('ready-to-show', () => {
-                    // Shows About window
-                    checkUpdatesWindow.show();
-                });
-                // Close window event (Hides window when closed, instead of deleting it)
-                checkUpdatesWindow.on('close', e => {
-                    e.preventDefault();
-                    checkUpdatesWindow.hide();
-                });
-            }
-        }
-    }, {
-        label: "Links",
+        label: "File",
+        submenu: fileMenuTemplate,
+    },
+    {
+        label: "Edit",
         submenu: [{
-            label: 'Report Bugs/Issues',
-            click: () => {
-                shell.openExternal('https://github.com/amanharwara/altus/issues');
+                label: "Undo",
+                accelerator: "CmdOrCtrl+Z",
+                selector: "undo:",
+            },
+            {
+                label: "Redo",
+                accelerator: "Shift+CmdOrCtrl+Z",
+                selector: "redo:",
+            },
+            {
+                type: "separator",
+            },
+            {
+                label: "Cut",
+                accelerator: "CmdOrCtrl+X",
+                selector: "cut:",
+            },
+            {
+                label: "Copy",
+                accelerator: "CmdOrCtrl+C",
+                selector: "copy:",
+            },
+            {
+                label: "Paste",
+                accelerator: "CmdOrCtrl+V",
+                selector: "paste:",
+            },
+            {
+                label: "Select All",
+                accelerator: "CmdOrCtrl+A",
+                selector: "selectAll:",
+            },
+        ],
+    }, {
+        label: "Tab",
+        submenu: [{
+            label: "Go to Next Tab",
+            accelerator: "CmdOrCtrl+Tab",
+            click() {
+                mainWindow.webContents.send('next-tab');
             }
         }, {
-            label: 'Website',
-            click: () => {
-                shell.openExternal('https://amanharwara.xyz');
+            label: "Go to Previous Tab",
+            accelerator: "CmdOrCtrl+Shift+Tab",
+            click() {
+                mainWindow.webContents.send('previous-tab');
             }
         }, {
-            label: 'GitHub',
-            click: () => {
-                shell.openExternal('https://www.github.com/amanharwara');
+            type: "separator"
+        }, {
+            label: "Close Active Tab",
+            accelerator: "CmdOrCtrl+W",
+            click() {
+                mainWindow.webContents.send('close-tab');
             }
         }, {
-            label: 'Repository',
-            click: () => {
-                shell.openExternal('https://www.github.com/amanharwara/altus');
-            }
-        }, {
-            label: 'Discord Chat',
-            click: () => {
-                shell.openExternal('https://discord.gg/mGxNGP6');
+            label: "Edit Active Tab",
+            accelerator: "CmdOrCtrl+E",
+            click() {
+                mainWindow.webContents.send('edit-tab');
             }
         }]
-    }]
-}];
+    },
+    {
+        label: "Zoom",
+        submenu: [{
+                label: "Zoom In",
+                accelerator: "CmdOrCtrl+numadd",
+                click() {
+                    mainWindow.webContents.send("zoom-in");
+                },
+            },
+            {
+                label: "Zoom Out",
+                accelerator: "CmdOrCtrl+numsub",
+                click() {
+                    mainWindow.webContents.send("zoom-out");
+                },
+            },
+            {
+                label: "Reset Zoom",
+                accelerator: "CmdOrCtrl+num0",
+                click() {
+                    mainWindow.webContents.send("reset-zoom");
+                },
+            },
+        ],
+    },
+    {
+        label: "Theme",
+        submenu: [{
+                label: "Custom Theme",
+                accelerator: "CmdOrCtrl+Shift+T",
+                click() {
+                    // Checks if custom theme window exists
+                    if (typeof customThemeWindow === "object") {
+                        // Shows the custom theme window instead of creating new one
+                        customThemeWindow.show();
+                    } else {
+                        // Creates new Browser Window object using createWindow function
+                        customThemeWindow = createWindow({
+                            id: "customTheme",
+                            title: "Custom Theme",
+                            width: 630,
+                            height: 480,
+                            resizable: true,
+                            mainWindowObject: mainWindow,
+                            min: true,
+                            max: false,
+                            minWidth: 630,
+                            minHeight: 480,
+                            maxWidth: "",
+                            maxHeight: "",
+                        });
+                        // Loads Custom Theme Window HTML
+                        customThemeWindow.loadURL(
+                            url.format({
+                                pathname: path.join(
+                                    __dirname,
+                                    "windows",
+                                    "customTheme",
+                                    "customTheme.html"
+                                ),
+                                protocol: "file:",
+                                slashes: true,
+                            })
+                        );
+                        customThemeWindow.once("ready-to-show", () => {
+                            // Shows the custom theme window
+                            customThemeWindow.show();
+                        });
+                        // Close window event (Hides window when closed, instead of deleting it)
+                        customThemeWindow.on("close", (e) => {
+                            e.preventDefault();
+                            customThemeWindow.hide();
+                        });
+                    }
+                },
+            },
+            {
+                label: "Manage Themes",
+                accelerator: "CmdOrCtrl+T",
+                click() {
+                    // Checks if theme manager window exists
+                    if (typeof themeManagerWindow === "object") {
+                        // Shows theme manager window instead of creating new object
+                        themeManagerWindow.show();
+                    } else {
+                        // Creates new Browser Window object using createWindow function
+                        themeManagerWindow = createWindow({
+                            id: "themeManager",
+                            title: "Manage Themes",
+                            width: 414,
+                            height: 478,
+                            resizable: true,
+                            mainWindowObject: mainWindow,
+                            min: true,
+                            max: false,
+                            minWidth: 300,
+                            minHeight: 380,
+                            maxWidth: "",
+                            maxHeight: "",
+                        });
+                        // Loads Theme Manager Window HTML
+                        themeManagerWindow.loadURL(
+                            url.format({
+                                pathname: path.join(
+                                    __dirname,
+                                    "windows",
+                                    "themeManager",
+                                    "themeManager.html"
+                                ),
+                                protocol: "file:",
+                                slashes: true,
+                            })
+                        );
+                        themeManagerWindow.once("ready-to-show", () => {
+                            // Shows Theme Manager window
+                            themeManagerWindow.show();
+                        });
+                        // Close window event (Hides window when closed, instead of deleting it)
+                        themeManagerWindow.on("close", (e) => {
+                            e.preventDefault();
+                            themeManagerWindow.hide();
+                        });
+                    }
+                },
+            },
+        ],
+    },
+    {
+        label: "Settings",
+        submenu: [{
+            label: "Settings",
+            accelerator: "CmdOrCtrl+,",
+            click() {
+                // Checks settings window exists
+                if (typeof settingsWindow === "object") {
+                    // Shows settings window instead of creating new object
+                    settingsWindow.show();
+                } else {
+                    // Creates new Browser Window object using createWindow function
+                    settingsWindow = createWindow({
+                        id: "settings",
+                        title: "Settings",
+                        width: 540,
+                        height: 515,
+                        resizable: true,
+                        mainWindowObject: mainWindow,
+                        min: true,
+                        max: false,
+                        minWidth: 540,
+                        minHeight: 515,
+                        maxWidth: "",
+                        maxHeight: "",
+                    });
+                    // Loads settings Window HTML
+                    settingsWindow.loadURL(
+                        url.format({
+                            pathname: path.join(
+                                __dirname,
+                                "windows",
+                                "settings",
+                                "settings.html"
+                            ),
+                            protocol: "file:",
+                            slashes: true,
+                        })
+                    );
+                    settingsWindow.once("ready-to-show", () => {
+                        // Shows settings window
+                        settingsWindow.show();
+                    });
+                    // Close window event (Hides window when closed, instead of deleting it)
+                    settingsWindow.on("close", (e) => {
+                        e.preventDefault();
+                        settingsWindow.hide();
+                    });
+                }
+            },
+        }, ],
+    },
+    {
+        label: "About",
+        submenu: [{
+                label: "About",
+                click() {
+                    // Checks if about window exists
+                    if (typeof aboutWindow === "object") {
+                        // Shows about window instead of creating new object
+                        aboutWindow.show();
+                    } else {
+                        // Creates new Browser Window object using createWindow function
+                        aboutWindow = createWindow({
+                            id: "aboutWindow",
+                            title: "About",
+                            width: 435,
+                            height: 300,
+                            resizable: false,
+                            mainWindowObject: mainWindow,
+                            min: true,
+                            max: false,
+                            minWidth: "",
+                            minHeight: "",
+                            maxWidth: "",
+                            maxHeight: "",
+                        });
+                        // Loads Theme Manager Window HTML
+                        aboutWindow.loadURL(
+                            url.format({
+                                pathname: path.join(
+                                    __dirname,
+                                    "windows",
+                                    "about",
+                                    "about.html"
+                                ),
+                                protocol: "file:",
+                                slashes: true,
+                            })
+                        );
+                        aboutWindow.once("ready-to-show", () => {
+                            // Shows About window
+                            aboutWindow.show();
+                        });
+                        // Close window event (Hides window when closed, instead of deleting it)
+                        aboutWindow.on("close", (e) => {
+                            e.preventDefault();
+                            aboutWindow.hide();
+                        });
+                    }
+                },
+            },
+            {
+                label: "Check For Updates",
+                accelerator: "CmdOrCtrl+Shift+U",
+                click() {
+                    // Check is window exists already
+                    if (typeof checkUpdatesWindow === "object") {
+                        // Show window instead of creating new object
+                        checkUpdatesWindow.show();
+                    } else {
+                        // Create new browser window object for the window
+                        checkUpdatesWindow = createWindow({
+                            id: "checkUpdates",
+                            title: "Check Updates",
+                            width: 435,
+                            height: 340,
+                            resizable: true,
+                            mainWindowObject: mainWindow,
+                            min: false,
+                            max: false,
+                            minWidth: 435,
+                            minHeight: 340,
+                            maxWidth: "",
+                            maxHeight: "",
+                        });
+                        checkUpdatesWindow.loadURL(
+                            url.format({
+                                pathname: path.join(
+                                    __dirname,
+                                    "windows",
+                                    "checkUpdates",
+                                    "checkUpdates.html"
+                                ),
+                                protocol: "file:",
+                                slashes: true,
+                            })
+                        );
+                        checkUpdatesWindow.once("ready-to-show", () => {
+                            // Shows About window
+                            checkUpdatesWindow.show();
+                        });
+                        // Close window event (Hides window when closed, instead of deleting it)
+                        checkUpdatesWindow.on("close", (e) => {
+                            e.preventDefault();
+                            checkUpdatesWindow.hide();
+                        });
+                    }
+                },
+            },
+            {
+                label: "Links",
+                submenu: [{
+                        label: "Report Bugs/Issues",
+                        click: () => {
+                            shell.openExternal("https://github.com/amanharwara/altus/issues");
+                        },
+                    },
+                    {
+                        label: "Website",
+                        click: () => {
+                            shell.openExternal("https://amanharwara.xyz");
+                        },
+                    },
+                    {
+                        label: "GitHub",
+                        click: () => {
+                            shell.openExternal("https://www.github.com/amanharwara");
+                        },
+                    },
+                    {
+                        label: "Repository",
+                        click: () => {
+                            shell.openExternal("https://www.github.com/amanharwara/altus");
+                        },
+                    },
+                    {
+                        label: "Discord Chat",
+                        click: () => {
+                            shell.openExternal("https://discord.gg/mGxNGP6");
+                        },
+                    },
+                ],
+            },
+        ],
+    },
+];
 
 // Window State Persistence Data
 const windowState = new Store({
-    name: 'windowState',
+    name: "windowState",
     defaults: {
         bounds: {
             x: 0,
@@ -454,7 +549,7 @@ const windowState = new Store({
             height: 600,
         },
         isMaximized: false,
-    }
+    },
 });
 
 // Using singleInstanceLock for making app single instance
@@ -463,10 +558,10 @@ const singleInstanceLock = app.requestSingleInstanceLock();
 // Checks for single instance lock
 if (!singleInstanceLock) {
     // Quits the second instance
-    app.quit();
+    app.exit(0);
 } else {
     // Focus current instance
-    app.on('second-instance', () => {
+    app.on("second-instance", () => {
         // Checks if mainWindow object exists
         if (mainWindow) {
             // Checks if main window is minimized
@@ -481,59 +576,65 @@ if (!singleInstanceLock) {
 
     // Sets the default settings
     let settings = new Store({
-        name: 'settings',
+        name: "settings",
         defaults: {
-            settings: defaultSettings
-        }
+            settings: defaultSettings,
+        },
     });
 
-    app.on('ready', () => {
+    app.on("ready", () => {
         // Create the main window object
         mainWindow = new BrowserWindow({
             // Set main window title
             title: `Altus ${app.getVersion()}`,
             // Enable frame if on macOS or if custom titlebar setting is disabled
-            frame: process.platform !== 'darwin' ? !Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value : true,
+            frame: process.platform !== "darwin" ?
+                !Array.from(settings.get("settings")).find(
+                    (s) => s.id === "customTitlebar"
+                ).value : true,
             // Show default title bar on macOS and hide it on others
-            titleBarStyle: process.platform !== 'darwin' ? 'hidden' : 'default',
+            titleBarStyle: process.platform !== "darwin" ? "hidden" : "default",
             // Set main window background color
-            backgroundColor: '#282C34',
+            backgroundColor: "#282C34",
             // Set main window icon
-            icon: './build/icon.ico',
+            icon: "./build/icon.ico",
             webPreferences: {
                 // Enable <webview> tag for embedding WhatsApp
                 webviewTag: true,
                 // Enable nodeIntegration so window can use node functions
-                nodeIntegration: true
+                nodeIntegration: true,
             },
             // Hides main window until it is ready to show
             show: false,
+            minWidth: 800,
             minHeight: 600,
         });
 
-        mainWindow.setBounds(windowState.get('bounds'));
+        mainWindow.setBounds(windowState.get("bounds"));
 
-        if (windowState.get('isMaximized')) {
+        if (windowState.get("isMaximized")) {
             mainWindow.maximize();
         }
 
         // Shows window once ready
-        mainWindow.once('ready-to-show', () => {
+        mainWindow.once("ready-to-show", () => {
             mainWindow.show();
         });
 
         // Load the main window HTML file
-        mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'windows', 'main', 'main.html'),
-            protocol: 'file:',
-            slashes: true
-        }));
+        mainWindow.loadURL(
+            url.format({
+                pathname: path.join(__dirname, "windows", "main", "main.html"),
+                protocol: "file:",
+                slashes: true,
+            })
+        );
 
         // Main Window Close Event
-        mainWindow.on('close', e => {
+        mainWindow.on("close", (e) => {
             // Store window bounds & maximize data
-            windowState.set('bounds', mainWindow.getBounds());
-            windowState.set('isMaximized', mainWindow.isMaximized());
+            windowState.set("bounds", mainWindow.getBounds());
+            windowState.set("isMaximized", mainWindow.isMaximized());
 
             if (app.closeToTray) {
                 e.preventDefault();
@@ -550,7 +651,7 @@ if (!singleInstanceLock) {
         });
 
         // Main Window Closed Event
-        mainWindow.on('closed', () => {
+        mainWindow.on("closed", () => {
             // Gets rid of the main window object from memory
             mainWindow = null;
             // Quits app
@@ -558,9 +659,10 @@ if (!singleInstanceLock) {
         });
 
         // Creates a new message count badge for the main window if the Badge variable is enabled
-        if (Badge) new Badge(mainWindow, {
-            font: '4px Calibri'
-        })
+        if (Badge)
+            new Badge(mainWindow, {
+                font: "4px Calibri",
+            });
 
         // Building main menu from template
         const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
@@ -572,51 +674,59 @@ if (!singleInstanceLock) {
          * Set global settings
          */
         function setGlobalSettings() {
-            if (process.platform !== 'linux' && settings.get('settings').find(s => s.id === 'trayIcon').value === true) {
+            if (
+                process.platform !== "linux" &&
+                settings.get("settings").find((s) => s.id === "trayIcon").value === true
+            ) {
                 // If tray icon setting is enabled
 
                 // Get tray icon image
-                let trayIconImage = nativeImage.createFromPath(path.join(__dirname, '/windows/otherAssets/icon.ico'));
+                let trayIconImage = nativeImage.createFromPath(
+                    path.join(__dirname, "/windows/otherAssets/icon.ico")
+                );
 
                 // Create context menu for tray icon
                 let trayContextMenu = Menu.buildFromTemplate([{
-                    label: 'Maximize',
-                    click() {
-                        if (mainWindow) {
-                            // Show the main window
-                            mainWindow.show();
-                            // Focus the main window
-                            mainWindow.focus();
-                        };
-                    }
-                }, {
-                    label: 'Minimize to Tray',
-                    click() {
-                        // Hide the main window i.e. minimize to tray
-                        mainWindow.hide();
-                    }
-                }, {
-                    label: 'Exit',
-                    click() {
-                        // Quit the app
-                        app.exit(0)
-                    }
-                }]);
+                        label: "Maximize",
+                        click() {
+                            if (mainWindow) {
+                                // Show the main window
+                                mainWindow.show();
+                                // Focus the main window
+                                mainWindow.focus();
+                            }
+                        },
+                    },
+                    {
+                        label: "Minimize to Tray",
+                        click() {
+                            // Hide the main window i.e. minimize to tray
+                            mainWindow.hide();
+                        },
+                    },
+                    {
+                        label: "Exit",
+                        click() {
+                            // Quit the app
+                            app.exit(0);
+                        },
+                    },
+                ]);
 
                 // Checks if the tray icon already exists or not
                 if (typeof trayIcon !== "object") {
-                    if (process.platform !== 'darwin' && process.platform !== 'linux') {
+                    if (process.platform !== "darwin" && process.platform !== "linux") {
                         // Create tray icon on Windows
                         trayIcon = new Tray(trayIconImage);
                         // Set tray icon tooltip
-                        trayIcon.setToolTip('Altus');
+                        trayIcon.setToolTip("Altus");
                         // Set tray icon context menu
                         trayIcon.setContextMenu(trayContextMenu);
                         // Add double-click event
-                        trayIcon.on('double-click', () => {
+                        trayIcon.on("double-click", () => {
                             mainWindow.show();
                         });
-                    } else if (process.platform === 'darwin') {
+                    } else if (process.platform === "darwin") {
                         // Set dock menu on MacOS
                         app.dock.setMenu(trayContextMenu);
                     }
@@ -632,9 +742,16 @@ if (!singleInstanceLock) {
                 trayIcon = undefined;
             }
 
-            let exitPromptSetting = settings.get('settings').find(s => s.id === 'exitPrompt');
-            let tabBarSetting = settings.get('settings').find(s => s.id === 'tabBar');
-            let closeToTraySetting = settings.get('settings').find(s => s.id === 'closeToTray');
+            let exitPromptSetting = settings
+                .get("settings")
+                .find((s) => s.id === "exitPrompt");
+            let tabBarSetting = settings
+                .get("settings")
+                .find((s) => s.id === "tabBar");
+
+            let closeToTraySetting = settings
+                .get("settings")
+                .find((s) => s.id === "closeToTray");
 
             if (exitPromptSetting && exitPromptSetting.value === true) {
                 app.showExitPrompt = true;
@@ -643,18 +760,16 @@ if (!singleInstanceLock) {
             }
 
             if (tabBarSetting && tabBarSetting.value === true) {
-                mainWindow.webContents.send('set-tabbar', true);
+                mainWindow.webContents.send("set-tabbar", true);
             } else {
-                mainWindow.webContents.send('set-tabbar', false);
+                mainWindow.webContents.send("set-tabbar", false);
             }
 
-            if (process.platform !== 'linux') {
+            if (process.platform !== "linux") {
                 if (closeToTraySetting && closeToTraySetting.value === true) {
                     app.closeToTray = true;
-                    app.showExitPrompt = false;
                 } else {
-                    app.closeToTray = true;
-                    app.showExitPrompt = false;
+                    app.closeToTray = false;
                 }
             }
         }
@@ -663,21 +778,23 @@ if (!singleInstanceLock) {
          * Check if all settings are in place and add if not
          */
         function validateGlobalSettings() {
-            let _settings = settings.get('settings');
+            let _settings = settings.get("settings");
             let wereInvalid = false;
             defaultSettings.forEach((setting, index) => {
-                let _index = _settings.findIndex(_setting => _setting.name === setting.name);
+                let _index = _settings.findIndex(
+                    (_setting) => _setting.name === setting.name
+                );
                 if (_index === -1) {
                     _settings.unshift(setting);
-                    settings.set('settings', _settings);
+                    settings.set("settings", _settings);
                     wereInvalid = true;
                 }
             });
             if (wereInvalid) {
                 return false;
             } else {
-                return true
-            };
+                return true;
+            }
         }
 
         if (validateGlobalSettings()) {
@@ -690,50 +807,50 @@ if (!singleInstanceLock) {
         // IPC Functions
 
         // Send 'zoom-in' message to mainWindow
-        ipcMain.on('zoom-in', e => mainWindow.webContents.send('zoom-in'));
+        ipcMain.on("zoom-in", (e) => mainWindow.webContents.send("zoom-in"));
         // Send 'zoom-out' message to mainWindow
-        ipcMain.on('zoom-out', e => mainWindow.webContents.send('zoom-out'));
+        ipcMain.on("zoom-out", (e) => mainWindow.webContents.send("zoom-out"));
         // Send 'reset-zoom' message to mainWindow
-        ipcMain.on('reset-zoom', e => mainWindow.webContents.send('reset-zoom'));
+        ipcMain.on("reset-zoom", (e) => mainWindow.webContents.send("reset-zoom"));
 
         // Opens links in external browser
-        ipcMain.on('link-open', (e, link) => shell.openExternal(link));
+        ipcMain.on("link-open", (e, link) => shell.openExternal(link));
 
         // Refresh main window when a theme is added or removed
-        ipcMain.on('themes-changed', e => mainWindow.webContents.send('themes-changed', true));
+        ipcMain.on("themes-changed", (e) =>
+            mainWindow.webContents.send("themes-changed", true)
+        );
 
         // Set global settings whenever they are changed
-        ipcMain.on('settings-changed', e => setGlobalSettings());
-
-        ipcMain.on('new-message', (e, m) => mainWindow.webContents.send('new-message', m));
+        ipcMain.on("settings-changed", (e) => setGlobalSettings());
 
         // Message Indicator
-        ipcMain.on('message-indicator', (e, i) => {
-            if (process.platform === 'darwin') {
+        ipcMain.on("message-indicator", (e, i) => {
+            if (process.platform === "darwin") {
                 if (i > 0 && i !== null && i !== undefined) {
-                    app.dock.setBadge('·');
+                    app.dock.setBadge("·");
                 } else {
-                    app.dock.setBadge('');
+                    app.dock.setBadge("");
                 }
             }
-            if (process.platform === 'win32') {
-                mainWindow.webContents.send('message-indicator', i);
+            if (process.platform === "win32") {
+                mainWindow.webContents.send("message-indicator", i);
             }
         });
     });
 
     // When web contents are created
-    app.on('web-contents-created', (e, c) => {
+    app.on("web-contents-created", (e, c) => {
         // Initialize the context menu
         contextMenu({
             window: c,
             showCopyImage: false,
             showSaveImageAs: true,
-        })
+        });
     });
 
     // Quits app if all windows are closed
-    app.on('window-all-closed', () => {
+    app.on("window-all-closed", () => {
         app.quit();
     });
 }
@@ -742,16 +859,18 @@ if (!singleInstanceLock) {
  * Confirm exiting using a dialog
  */
 function confirmExit() {
-    dialog.showMessageBox({
-        type: 'question',
-        buttons: ["OK", "Cancel"],
-        title: "Exit",
-        message: "Are you sure you want to exit?"
-    }).then(res => {
-        if (res.response == 0) {
-            app.showExitPrompt = false;
-            app.quit();
-            return;
-        }
-    });
+    dialog
+        .showMessageBox({
+            type: "question",
+            buttons: ["OK", "Cancel"],
+            title: "Exit",
+            message: "Are you sure you want to exit?",
+        })
+        .then((res) => {
+            if (res.response == 0) {
+                app.showExitPrompt = false;
+                app.quit();
+                return;
+            }
+        });
 }
