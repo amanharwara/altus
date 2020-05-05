@@ -12,12 +12,18 @@
 
 <body>
     <div class="container">
-        <div class="title">Settings
-            <div class="buttons">
-                <div class="save button tooltip" data-tooltip="Save Settings"><span class="lni-save"></span></div>
-            </div>
-        </div>
+        <div class="title">Settings</div>
         <div class="settings-container" id="settings-container"></div>
+        <div class="footer">
+            <!-- <div class="save button tooltip" data-tooltip="Save Settings"><span class="lni-save"></span></div> -->
+            <button title="Save Settings" class="save button">Save</button>
+            <button data-tooltip="Reset Settings" class="reset button tooltip tooltip-top"><i
+                    class="lni lni-reload"></i></button>
+            <button data-tooltip="Import Settings" class="import button tooltip tooltip-top"><i
+                    class="lni lni-download"></i></button>
+            <button data-tooltip="Export Settings" class="export button tooltip tooltip-top"><i
+                    class="lni lni-upload"></i></button>
+        </div>
     </div>
     <script src="./settings.js"></script>
 </body>

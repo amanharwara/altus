@@ -1,177 +1,215 @@
 :root {
-    --window-border: #1f1f20e7;
+  --window-border: #1f1f20e7;
 }
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    border: 1px solid var(--window-border);
-    background: linear-gradient(to bottom right, #1a1a1a, #0f1010) !important;
-    margin: 0;
-    overflow: hidden;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  border: 1px solid var(--window-border);
+  background: linear-gradient(to bottom right, #1a1a1a, #0f1010) !important;
+  margin: 0;
+  overflow: hidden;
 }
 
 .container-after-titlebar {
-    border-bottom: 1px solid var(--window-border);
-    padding: 0rem 1rem;
+  border-bottom: 1px solid var(--window-border);
+  padding: 0rem 1rem;
 }
 
 .titlebar {
-    border: 1px solid var(--window-border);
-    border-bottom: 0;
+  border: 1px solid var(--window-border);
+  border-bottom: 0;
 }
 
 ::-webkit-scrollbar {
-    width: 2vw;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #313131;
+  background: #3A4049;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #5c5c5c;
-    position: relative;
+  background: rgba(0, 0, 0, 0.4);
+  position: relative;
+  border-radius: 10px;
 }
 
 .title {
-    font-weight: 700;
-    font-size: 2.5rem;
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: #fff;
-    border-bottom: 4px solid #b9b9b9de;
-    -webkit-user-select: none;
-    position: relative;
+  margin-top: .5rem;
+  font-weight: 500;
+  font-size: 2.25rem;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #fff;
+  padding-bottom: .15rem;
+  border-bottom: 3px solid #48484891;
+  -webkit-user-select: none;
+  position: relative;
 }
 
 .settings-container {
-    overflow: hidden;
-    max-height: 75vh;
-    overflow-y: auto;
+  overflow: hidden;
+  max-height: 68vh;
+  overflow-y: auto;
+  margin: .5rem 0;
 }
 
 .setting {
-    display: flex;
-    color: #fff;
-    padding: 0.45rem 0.6rem;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  color: #fff;
+  padding: 0.45rem 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(80, 80, 80, 0.25);
+  margin-right: .5em;
 }
 
-.setting:nth-child(odd) {
-    background: #242424;
-}
-
-.setting:nth-child(even) {
-    background: #303030;
+.setting:last-child {
+  border-bottom: none;
 }
 
 .setting .information {
-    margin-right: 4vw;
+  margin-right: 4vw;
 }
 
 .setting-title {
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 700;
-    font-size: 1.45rem;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  font-size: 1.45rem;
 }
 
 .setting-description {
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 0.85rem;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  margin: 0.35rem 0;
 }
 
-.setting-toggle {
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    -webkit-user-select: none;
-    padding: 0.3rem 0.5rem;
+.toggle-bg,
+.input-checkbox {
+  background: #fff;
+  width: 2.75rem;
+  height: 1.5rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  position: relative;
 }
 
-.setting-toggle [class^='lni'] {
-    margin-right: 1.5vw;
+.input-checkbox {
+  background: none;
 }
 
-.setting-toggle-enabled {
-    background: #2fb62f;
+.toggle-bg::after {
+  content: "";
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 100%;
+  background: linear-gradient(270deg, #09a5d7 0%, #2a71d1 100%);
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  z-index: 0;
 }
 
-.setting-toggle-enabled:hover {
-    background: #148b1a;
+.checkbox {
+  cursor: pointer;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
 }
 
-.setting-toggle-disabled {
-    background: #b62f2f;
+.checkbox:checked+.toggle-bg::after {
+  transition: 0.15s;
+  background: #fff;
+  left: auto;
+  right: 10%;
 }
 
-.setting-toggle-disabled:hover {
-    background: #a71a1a;
+.checkbox:checked+.toggle-bg {
+  background: linear-gradient(270deg, #09a5d7 0%, #2a71d1 100%);
 }
 
-.buttons {
-    position: absolute;
-    bottom: 10%;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.checkbox:focus+.toggle-bg,
+.checkbox:active+.toggle-bg {
+  outline: 1px solid #2a71d1;
 }
 
-.button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 0.55rem;
-    background: #414141;
-    cursor: pointer;
-    margin: 0 5px;
+/* Footer */
+
+.footer {
+  display: flex;
+  flex-direction: row-reverse;
 }
 
-.button:last-of-type {
-    margin: 0 0 0 5px;
+.footer button {
+  margin: 0 .25rem;
+  border: 1px solid #3A4049;
+  padding: .5rem 1rem;
+  font-size: 1.05rem;
+  cursor: pointer;
+  background: transparent;
+  color: #fff;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.button [class^="lni"] {
-    font-size: 1.75rem;
+.footer button:focus {
+  outline: 1px solid #2a71d1;
 }
 
-.save.button {
-    background: #2fb62f;
+.footer button:hover {
+  background: #3A4049;
 }
 
-.save.button:hover {
-    background: #148b1a;
+.footer button:first-child {
+  margin-right: 0;
+  background: #1e72e0;
+  border: 1px solid #2a71d1;
+  padding: .5em 1.35em;
 }
 
-.reset.button {
-    background: #b62f2f;
+.footer button:first-child:hover {
+  background: #1760c0;
 }
 
-.reset.button:hover {
-    background: #a71a1a;
+.footer button:first-child:focus {
+  outline: 1px solid #09a5d7;
 }
 
 .tooltip {
-    position: relative;
+  position: relative;
 }
 
-.tooltip:hover::after {
-    content: attr(data-tooltip);
-    background: #101114;
-    border: 1px solid #242525;
-    font-size: 1rem;
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 400;
-    padding: 0.25rem 1rem;
-    position: absolute;
-    width: max-content;
-    top: 110%;
-    right: 0;
-    z-index: 10;
+.tooltip:hover::after,
+.tooltip:focus::after {
+  content: attr(data-tooltip);
+  background: #101114;
+  border: 1px solid #242525;
+  font-size: 1rem;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 300;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  width: max-content;
+}
+
+.tooltip-top:hover::after,
+.tooltip-top:focus::after {
+  width: auto;
+  bottom: 110%;
+  left: 0;
 }
