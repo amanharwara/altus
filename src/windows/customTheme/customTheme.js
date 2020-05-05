@@ -12,6 +12,8 @@ const customTitlebar = require('custom-electron-titlebar');
 
 // Import electron store module for settings
 const Store = require('electron-store');
+// Load tabbyjs for tabs
+const Tabby = require('tabbyjs');
 
 // Load the main settings into settings variable
 let settings = new Store({
@@ -21,6 +23,11 @@ let settings = new Store({
 const {
     escape
 } = require('../otherAssets/escapeText');
+
+// Initialize tabs using Tabby
+let tabs = new Tabby('[data-tabs]');
+
+tabs.toggle('#customizer');
 
 // Checks if custom titlebar is enabled in settings & the platform isn't a Mac
 if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value === true && process.platform !== 'darwin') {
