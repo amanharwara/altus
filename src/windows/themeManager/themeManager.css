@@ -1,212 +1,236 @@
 :root {
-    --window-border: #1f1f20e7;
+  --window-border: #1f1f20e7;
 }
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    border: 1px solid var(--window-border);
-    background: linear-gradient(to bottom right, #1a1a1a, #0f1010) !important;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  border: 1px solid var(--window-border);
+  background: linear-gradient(to bottom right, #1a1a1a, #0f1010) !important;
 }
 
 .container-after-titlebar {
-    border-bottom: 1px solid var(--window-border);
-    overflow: hidden !important;
-    padding: 15px 25px;
+  border-bottom: 1px solid var(--window-border);
+  overflow: hidden !important;
+  padding: 15px 25px;
 }
 
 .container {
-    position: relative;
-    height: -webkit-fill-available;
+  position: relative;
+  height: -webkit-fill-available;
 }
 
 .titlebar {
-    border: 1px solid var(--window-border);
-    border-bottom: 0;
+  border: 1px solid var(--window-border);
+  border-bottom: 0;
 }
 
 .title {
-    font-weight: 700;
-    font-size: 2.5rem;
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: #fff;
-    border-bottom: 4px solid #b9b9b9de;
-    position: relative;
-    -webkit-user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  font-weight: 700;
+  font-size: 2.5rem;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #fff;
+  border-bottom: 4px solid #b9b9b9de;
+  position: relative;
+  -webkit-user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .themes {
-    overflow-y: auto;
-    max-height: 60vh;
-    margin: 10px 0;
+  overflow-y: auto;
+  max-height: 60vh;
+  margin: 10px 0;
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(24, 23, 23, 0.795);
+  background: rgba(24, 23, 23, 0.795);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgb(48, 48, 48);
+  background: rgb(48, 48, 48);
 }
 
 .theme {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: #fff;
-    padding: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  padding: 0 0 10px 0;
 }
 
 .theme:last-of-type {
-    padding: 0;
+  padding: 0;
 }
 
 .theme .name {
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 400;
-    font-size: 1.65rem;
-    text-overflow: ellipsis;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  font-size: 1.65rem;
+  text-overflow: ellipsis;
 }
 
 .remove-theme {
-    margin-right: 5px;
+  margin-right: 5px;
+  border: 0;
+  background: transparent;
+}
+
+.remove-theme:focus {
+  outline: 1px solid #75b1ff;
 }
 
 .remove-theme .lni-close {
-    font-size: 1.5rem;
-    color: #d61e1e;
-    cursor: pointer;
-    font-weight: bolder;
+  font-size: 1.5rem;
+  color: #d61e1e;
+  cursor: pointer;
+  font-weight: bolder;
 }
 
 .remove-theme[data-disabled] .lni-close {
-    color: #771010;
-    cursor: not-allowed;
+  color: #771010;
+  cursor: not-allowed;
 }
 
 .button.update {
-    padding: 10px;
-    background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #fff;
-    font-size: 1rem;
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: -webkit-fill-available;
-    -webkit-user-select: none;
+  padding: 10px;
+  background: #0960d1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1rem;
+  border: 0;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: -webkit-fill-available;
+  -webkit-user-select: none;
 }
 
 .button.update:hover {
-    background: linear-gradient(to bottom right, #0a151a, #16282e, #1f3a46);
+  background: #024bac;
+}
+
+.button.update:focus {
+  outline: 1px solid #75b1ff;
 }
 
 .button.update .lni-reload {
-    font-weight: bolder;
-    margin-right: 10px;
+  font-weight: bolder;
+  margin-right: 10px;
 }
 
 .edit-popup-title {
-    font-family: Poppins, Montserrat, OpenSans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: #fff !important;
-    margin: 0 !important;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #fff !important;
+  margin: 0 !important;
 }
 
 .edit-popup-title h2 {
-    font-size: 1rem;
-    margin: 10px 0 !important;
+  font-size: 1rem;
+  margin: 10px 0 !important;
 }
 
 .edit-popup {
-    background: linear-gradient(to bottom, #101114, #0f1010) !important;
-    color: #fff !important;
-    border: 1px solid #94949482 !important;
+  background: linear-gradient(to bottom, #101114, #0f1010) !important;
+  color: #fff !important;
+  border: 1px solid #94949482 !important;
 }
 
 .edit-popup * {
-    color: #fff;
+  color: #fff;
 }
 
 .edit-popup-button {
-    padding: 0.75rem 1.2rem;
-    margin: 5px 15px;
-    cursor: pointer;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 400;
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    width: -webkit-fill-available;
+  padding: 0.75rem 1.2rem;
+  margin: 5px 15px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  width: -webkit-fill-available;
 }
 
 .edit-popup-button:active,
 .edit-popup-button:focus {
-    outline: none;
+  outline: 1px solid #75b1ff;
 }
 
 .edit-popup-confirm-button {
-    background: linear-gradient(to bottom right, #d61e1e, #771010);
-    border: 0;
+  background: #d61e1e;
+  border: 0;
 }
 
 .edit-popup-confirm-button:hover {
-    background: linear-gradient(to bottom right, #a31717, #4e0a0a);
-    border: 0;
+  background: #4e0a0a;
+  border: 0;
 }
 
 .edit-popup-cancel-button {
-    background: linear-gradient(to bottom right, #1d1f24, #383b3b);
-    border: 0;
+  background: #383b3b;
+  border: 0;
 }
 
 .edit-popup-cancel-button:hover {
-    background: linear-gradient(to bottom right, #131418, #242525);
-    border: 0;
+  background: #242525;
+  border: 0;
 }
 
 .title .lni-reload {
-    font-size: 2rem;
-    cursor: pointer;
-    font-weight: bolder;
+  font-size: 2rem;
+  cursor: pointer;
+  font-weight: bolder;
+  border: 0;
+  background: transparent;
+  color: inherit;
 }
 
 .tooltip {
-    position: relative;
+  position: relative;
 }
 
-.tooltip:hover::after {
-    content: attr(data-tooltip);
-    background: #101114;
-    border: 1px solid #242525;
-    font-size: 1rem;
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 400;
-    padding: 0.25rem 1rem;
-    position: absolute;
-    width: max-content;
+.tooltip:hover::after,
+.tooltip:focus::after {
+  content: attr(data-tooltip);
+  background: #101114;
+  border: 1px solid #242525;
+  font-size: 1rem;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 300;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  width: max-content;
 }
 
-.tooltip-bottom:hover::after {
-    top: 110%;
-    right: 0;
+.tooltip-bottom:hover::after,
+.tooltip-bottom:focus::after {
+  top: 110%;
+  right: 0;
 }
 
-.tooltip-top:hover::after {
-    width: auto;
-    bottom: 110%;
-    left: 0;
+.tooltip-top:hover::after,
+.tooltip-top:focus::after {
+  width: auto;
+  bottom: 110%;
+  left: 0;
 }
