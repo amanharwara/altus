@@ -24,7 +24,7 @@ const defaultSettings = [{
     description: 'If you are having any issues with the custom titlebar, you can disable it using this setting. <b>NOTE: This setting requires you to restart the whole app for changes to apply.</b>',
     id: 'customTitlebar'
 }, {
-    value: true,
+    value: false,
     name: 'Prompt When Closing Tab',
     description: 'When enabled, you will be prompted when you close a tab. This helps if you accidentally click the close button of a tab.',
     id: 'tabClosePrompt'
