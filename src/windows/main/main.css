@@ -1,384 +1,436 @@
 :root {
-    --window-border: #1f1f20e7;
+  --window-border: #1f1f20e7;
 }
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    border: 1px solid var(--window-border);
-    overflow: hidden;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  border: 1px solid var(--window-border);
+  overflow: hidden;
 }
 
 .titlebar {
-    border: 1px solid var(--window-border);
-    border-bottom: 0;
+  border: 1px solid var(--window-border);
+  border-bottom: 0;
 }
 
 .container-after-titlebar {
-    border: 1px solid var(--window-border);
-    overflow: hidden !important;
+  border: 1px solid var(--window-border);
+  overflow: hidden !important;
 }
 
 .menubar-menu-container {
-    margin-top: -1px !important;
+  margin-top: -1px !important;
 }
 
 [role="tablist"] {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    background-image: linear-gradient(60deg, #29323c 0%, #353f49 100%);
-    display: flex;
-    height: 5.5vh;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  height: 5.5vh;
+  background: #191b1f;
+  color: #fff;
+  flex-flow: row nowrap;
+  overflow: auto;
 }
 
 [role="tab"] {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 15px;
-    color: #fff;
-    text-decoration: none;
-    background: linear-gradient(to right, #3d495e, #424d61)
+  height: 100%;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: flex;
+  padding: 0.4em 1em;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 [role="tab"] .lni-cog {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 
 [role="tab"] .lni-close {
-    margin: 0 0 0 5px;
+  margin: 0 0 0 5px;
 }
 
 [role="tab"][aria-selected="true"] {
-    background: linear-gradient(to right, #1e3c72, #2a5298) !important;
+  background: #2a3440 !important;
 }
 
+
 [role="tabpanel"] {
-    height: 94.3%;
+  height: 94.3%;
 }
 
 [role="tab"]:focus {
-    outline: none;
+  outline: none;
 }
 
 [href="#addtab"] {
-    background: linear-gradient(to right, #1e726e, #2a985b);
-    padding: 0 13px;
+  padding: 0 13px;
 }
 
 webview {
-    height: 100%;
+  height: 100%;
 }
 
 #addtab {
-    background: linear-gradient(to bottom, #30323e, #181a1a) !important;
+  background: linear-gradient(to bottom, #30323e, #1a1b24) !important;
 }
 
 #addtab .flex {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .container {
-    width: 30%;
-    background: linear-gradient(to bottom right, #191a24, #0f1010) !important;
-    box-shadow: 0px 0px 15px #15161d;
-    color: #fff;
-    padding: 10px 30px 30px 30px;
+  width: 25%;
+  background: linear-gradient(to bottom right, #191a24, #0f1010) !important;
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px 30px 30px 30px;
 }
 
 @media screen and (max-width: 960px) {
-    .container {
-        width: 40%;
-    }
+  .container {
+    width: 40%;
+  }
 }
 
 .container>.title {
-    text-align: center;
-    font-family: Poppins, Montserrat, OpenSans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 2.65rem;
-    margin: 15px 0;
-    -webkit-user-select: none;
+  text-align: center;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 2.65rem;
+  margin: 15px 0;
+  -webkit-user-select: none;
 }
 
 .inputs>* {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 .label {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 1.5rem;
-    text-align: left;
-    -webkit-user-select: none;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 1.25rem;
+  text-align: left;
+  -webkit-user-select: none;
 }
 
 .input-flex {
-    display: flex;
+  display: flex;
 }
 
 .textbox {
-    padding: 0.75rem 1.5rem;
-    margin: 10px 0 0 0;
-    border: 1px solid #5c5c5c;
-    font-size: 1rem;
-    background: #15161d;
-    color: #fff;
-    flex: 1;
+  padding: 0.75rem 1.5rem;
+  margin: 10px 0 0 0;
+  border: 1px solid #5c5c5c;
+  font-size: 1rem;
+  background: #15161d;
+  color: #fff;
+  flex: 1;
 }
 
 .textbox::-webkit-input-placeholder {
-    color: #bdbdbd;
-    -webkit-user-select: none;
+  color: #bdbdbd;
+  -webkit-user-select: none;
 }
 
 .textbox:focus {
-    outline: none;
-    border: 1px solid #b6b6b68f;
+  outline: none;
+  border: 1px solid #2a71d1;
 }
 
 .toggle-field {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.toggle-bg,
+.input-checkbox {
+  background: #fff;
+  width: 2.75rem;
+  height: 1.5rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  position: relative;
 }
 
 .input-checkbox {
-    margin-bottom: -5px;
+  background: none;
+}
+
+.toggle-bg::after {
+  content: "";
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 100%;
+  background: linear-gradient(270deg, #09a5d7 0%, #2a71d1 100%);
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  z-index: 0;
 }
 
 .checkbox {
-    width: 30px;
-    height: 30px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    background: #181a25;
-    border: 1px solid #5c5c5c;
-    -webkit-appearance: none;
-    transition: 0.35s;
+  cursor: pointer;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
 }
 
-.checkbox:checked {
-    background: linear-gradient(to bottom right, #61b17e, #3f9a1b);
-    border: 1px solid #13291b;
-    position: relative;
+.checkbox:checked+.toggle-bg::after {
+  transition: 0.15s;
+  background: #fff;
+  left: auto;
+  right: 10%;
 }
 
-.checkbox:checked::after {
-    content: url(../otherAssets/checkmark.svg);
-    position: absolute;
-    transform: translateX(10%) translateY(10%);
+.checkbox:checked+.toggle-bg {
+  background: linear-gradient(270deg, #09a5d7 0%, #2a71d1 100%);
 }
 
-.checkbox:focus,
-.checkbox:active {
-    outline: none;
+.checkbox:focus+.toggle-bg,
+.checkbox:active+.toggle-bg {
+  outline: 1px solid #2a71d1;
 }
 
 .submit.button {
-    cursor: pointer;
-    background: linear-gradient(to right, #126347, #61b17e);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    font-size: 1.15rem;
-    transition: background 0.35s;
-    -webkit-user-select: none;
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  cursor: pointer;
+  background: #0960d1;
+  color: inherit;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1.15rem;
+  font-weight: 400;
+  border-radius: 2px;
+  transition: background 0.35s;
+  -webkit-user-select: none;
+}
+
+.submit.button:focus {
+  outline: 1px solid #75b1ff;
 }
 
 .submit.button .lni-plus {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .submit.button:hover {
-    transition: background 0.35s;
-    background: linear-gradient(to right, #157452, #73d396);
+  transition: background 0.15s;
+  background: #024bac;
 }
 
 .theme-select {
-    margin: 10px 0 15px 0;
+  margin: 10px 0 15px 0;
 }
 
 .theme-select .selectr-selected:focus,
 .theme-select input:focus {
-    outline: none;
+  outline: 1px solid #2a71d1;
 }
 
 .theme-select .selectr-label {
-    -webkit-user-select: none;
+  -webkit-user-select: none;
 }
 
 .theme-select .selectr-selected {
-    background: #15161d;
-    border: 1px solid #5c5c5cb0;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0 !important
+  background: #15161d;
+  border: 1px solid #5c5c5cb0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 !important;
 }
 
 .theme-select .selectr-input-container {
-    background: #242530;
+  background: #242530;
 }
 
 .theme-select .selectr-input-container input {
-    background: #1a1b24;
-    border: 1px solid #5c5c5cb0;
-    color: #fff;
-    border-radius: 0 !important;
+  background: #1a1b24;
+  border: 1px solid #5c5c5cb0;
+  color: #fff;
+  border-radius: 0 !important;
 }
 
 .theme-select .selectr-options {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .theme-select .selectr-options-container {
-    border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 
 .theme-select,
 .theme-select * {
-    border-color: #5c5c5c !important;
+  border-color: #5c5c5c !important;
 }
 
 .theme-select .selectr-option {
-    background: #16171f;
-    padding: 15px;
+  background: #16171f;
+  padding: 15px;
 }
 
 .theme-select .selectr-option.selected {
-    background: #232536;
+  background: #232536;
 }
 
 .theme-select .selectr-option.active {
-    background: #272936;
+  background: #272936;
 }
 
 .theme-select .selectr-input-clear {
-    display: none;
+  display: none;
 }
 
 .theme-select .selectr-notice {
-    background: #302e6d;
-    border-radius: 0;
+  background: #302e6d;
+  border-radius: 0;
 }
 
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
-    display: none;
+  display: none;
 }
 
 .edit-popup-title {
-    font-family: Poppins, Montserrat, OpenSans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: #fff !important;
-    margin: 0 !important;
-    -webkit-user-select: none;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #fff !important;
+  margin: 0 !important;
+  -webkit-user-select: none;
+  padding-bottom: .5rem !important;
+  border-bottom: 1px solid #2b2b2bbf;
+  margin-bottom: .5rem !important;
 }
 
 .edit-popup-title h2 {
-    margin: 10px 0 !important;
-    max-width: 26.5vw;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  margin: 10px 0 !important;
+  max-width: 25vw;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .prompt-title {
-    font-size: 1.25rem !important;
+  font-size: 1rem !important;
 }
 
 .edit-popup {
-    background: linear-gradient(to bottom, #101114, #0f1010) !important;
-    color: #fff !important;
-    border: 1px solid #94949482 !important;
-    border-radius: 0 !important;
+  background: linear-gradient(to bottom right, #191a24, #0f1010) !important;
+  color: #fff !important;
+  border: 1px solid rgba(58, 58, 58, 0.295) !important;
+  border-radius: 0 !important;
 }
 
 .edit-popup * {
-    color: #fff;
+  color: #fff;
 }
 
 .edit-popup-button {
-    padding: 0.75rem 1.2rem;
-    margin: 5px 15px;
-    cursor: pointer;
-    -webkit-user-select: none;
+  padding: 0.75rem 1.2rem;
+  cursor: pointer;
+  border-radius: 2px;
+  -webkit-user-select: none;
 }
 
 .edit-popup-button:active,
 .edit-popup-button:focus {
-    outline: none;
+  outline: 1px solid #75b1ff;
 }
 
 .edit-popup-confirm-button {
-    border: 0;
-    background: linear-gradient(to bottom right, #61b17e, #43b914);
-    color: #fff;
+  border: 0;
+  background: #0960d1;
+  color: #fff;
 }
 
 .edit-popup-confirm-button:hover {
-    background: linear-gradient(to bottom right, #4e8f66, #34920f);
+  background: #024bac;
 }
 
 .edit-popup-cancel-button {
-    background: linear-gradient(to bottom right, #d61e1e, #771010);
-    border: 0;
+  margin-right: 10px;
+  background: none;
+  border: 1px solid transparent;
 }
 
 .edit-popup-cancel-button:hover {
-    background: linear-gradient(to bottom right, #a31717, #4e0a0a);
-    border: 0;
+  border: 1px solid #fff;
 }
 
 .prompt-confirm-button {
-    background: linear-gradient(to bottom right, #d61e1e, #771010);
-    border: 0;
+  background: #d61e1e;
+  border: 0;
 }
 
 .prompt-confirm-button:hover {
-    background: linear-gradient(to bottom right, #a31717, #4e0a0a);
-    border: 0;
+  background: #a31717;
+  border: 0;
 }
 
 .prompt-cancel-button {
-    background: linear-gradient(to bottom right, #1d1f24, #383b3b);
-    border: 0;
+  background: #383b3b;
+  border: 0;
 }
 
 .prompt-cancel-button:hover {
-    background: linear-gradient(to bottom right, #131418, #242525);
-    border: 0;
+  background: #242525;
+  border: 0;
 }
 
 .prompt-button {
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    padding: 1rem 2rem;
-    font-size: 1.15rem;
-    font-weight: 400;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding: .75rem 1.5rem;
+  font-size: 1.15rem;
+  font-weight: 400;
+  margin: 0 .25rem;
+}
+
+.close-popup .swal2-actions {
+  justify-content: center !important;
 }
 
 .edit-popup .toggle-field {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .edit-popup .theme-select {
-    text-align: left;
+  text-align: left;
 }
 
 .edit-popup .swal2-actions {
-    z-index: 0;
-    margin-top: 0;
+  z-index: 0;
+  margin-top: 0;
+  justify-content: flex-end;
 }

@@ -20,10 +20,16 @@ const uuid = require('uuid/v4');
 // Import SweetAlert2 for modals
 const Swal = require('sweetalert2');
 
+// Load tabbyjs for tabs
+const Tabby = require('tabbyjs');
+
 // Import escape text function
 const {
     escape
 } = require('../otherAssets/escapeText');
+
+// Context menu
+const contextMenu = require('electron-context-menu');
 
 // Load the main settings into settings variable
 let settings = new Store({
@@ -46,9 +52,6 @@ let tabStore = new Store({
         tabs: []
     }
 });
-
-// Load tabbyjs for tabs
-const Tabby = require('tabbyjs');
 
 // Checks if custom titlebar is enabled in settings & the platform isn't a Mac
 if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value === true && process.platform !== 'darwin') {
@@ -74,7 +77,7 @@ let themesList = [];
 themes.get('themes').forEach(i => {
     themesList.push({
         "value": i.name,
-        "text": escape(i.name)
+        "text": i.name
     });
 });
 
@@ -87,8 +90,7 @@ let themeSelect = new Selectr('#theme-select', {
     data: themesList
 });
 
-// Click event for the "Add Tab" button
-document.querySelector('#add-tab-button').addEventListener('click', e => {
+function addNewTab() {
     // Create a tab object to use later
     let tab = {
         name: null,
@@ -99,7 +101,7 @@ document.querySelector('#add-tab-button').addEventListener('click', e => {
     };
 
     // Get the name (If no name is put by the user, it assigns the name "New Tab")
-    tab.name = (document.querySelector('#tab-name-textbox').value !== "" && document.querySelector('#tab-name-textbox').value !== null) ? escape(document.querySelector('#tab-name-textbox').value) : 'New Tab';
+    tab.name = (document.querySelector('#tab-name-textbox').value !== "" && document.querySelector('#tab-name-textbox').value !== null) ? document.querySelector('#tab-name-textbox').value : 'New Tab';
 
     // Get notifications setting
     tab.notifications = document.querySelector('#notification-toggle').checked;
@@ -127,9 +129,21 @@ document.querySelector('#add-tab-button').addEventListener('click', e => {
 
     // Clears the value of all the inputs after tab is added
     document.querySelector('#tab-name-textbox').value = '';
-    document.querySelector('#notification-toggle').checked = false;
-    document.querySelector('#sound-toggle').checked = false;
+    document.querySelector('#notification-toggle').checked = true;
+    document.querySelector('#sound-toggle').checked = true;
     themeSelect.setValue('Default');
+}
+
+// Click event for the "Add Tab" button
+document.querySelector('#add-tab-button').addEventListener('click', () => {
+    addNewTab();
+});
+
+// Add tab when Enter is pressed
+document.querySelector('#addtab').addEventListener('keydown', e => {
+    if (e.which == 13) {
+        addNewTab();
+    }
 });
 
 /**
@@ -160,7 +174,7 @@ setupExistingTabs();
  */
 function addTabToDOM(tabId, tabName) {
     // Create tab element
-    let tabElement = document.createRange().createContextualFragment(`<li><a data-tab-id="${tabId}" href="#tab-content-${tabId}"><span class="tabName">${tabName}</span> <span class="lni-cog"></span><span class="lni-close"></span></a></li>`);
+    let tabElement = document.createRange().createContextualFragment(`<li><a data-tab-id="${tabId}" href="#tab-content-${tabId}"><span class="tabName">${escape(tabName)}</span> <span class="lni-cog"></span><span class="lni-close"></span></a></li>`);
 
     // Create tab content element
     let tabContentElement = document.createRange().createContextualFragment(`<div id="tab-content-${tabId}"><webview id="whatsapp-${tabId}" preload="./whatsapp.js" src="https://web.whatsapp.com/" useragent="${window.navigator.userAgent.replace(/(altus|Electron)([^\s]+\s)/g, '')}" partition="persist:${tabId}"></webview></div>`);
@@ -182,10 +196,10 @@ function addTabToDOM(tabId, tabName) {
         // Check if "Tab Close Prompt" setting is enabled
         if (settings.get('settings').find(s => s.id === 'tabClosePrompt').value === true) {
             Swal.fire({
-                    title: `<h2>Do you really want to close the tab <i>"${tabName}"</i> ?</h2>`,
+                    title: `<h2>Do you really want to close the tab <i>"${escape(tabName)}"</i> ?</h2>`,
                     customClass: {
                         title: 'prompt-title',
-                        popup: 'edit-popup',
+                        popup: 'edit-popup close-popup',
                         confirmButton: 'edit-popup-button prompt-confirm-button prompt-button',
                         cancelButton: 'edit-popup-button prompt-cancel-button prompt-button',
                         closeButton: 'edit-popup-close-button',
@@ -227,7 +241,7 @@ function addTabToDOM(tabId, tabName) {
     document.querySelector(`[data-tab-id*="${tabId}"]`).querySelector('.lni-cog').addEventListener('click', () => {
         let tabSettings = tabStore.get('tabs').find(x => x.id === tabId);
         Swal.fire({
-            title: `<h2>Edit <i>${tabSettings.name}</i></h2>`,
+            title: `Tab Preferences`,
             customClass: {
                 title: 'edit-popup-title',
                 popup: 'edit-popup',
@@ -241,26 +255,29 @@ function addTabToDOM(tabId, tabName) {
                         <div class="label">Name:</div>
                         <div class="input-flex"><input class="textbox" placeholder="Name of instance" id="${tabId}-name-textbox" type="text"></div>
                     </div>
+                    <div class="input-field">
+                        <div class="label" data-selection-value="" id="${tabId}-theme-value">Theme:</div>
+                        <select id="${tabId}-theme-select">
+                        </select>
+                    </div>
                     <div class="toggle-field">
                         <div class="label"
                         title="Changing this setting will cause the page to be refreshed">Notifications:</div>
                         <div class="input-checkbox">
                             <input title="Changing this setting will cause the page to be refreshed" type="checkbox" id="${tabId}-notification-toggle" class="checkbox">
+                            <div class="toggle-bg"></div>
                         </div>
                     </div>
                     <div class="toggle-field">
                         <div class="label">Sound:</div>
                         <div class="input-checkbox">
                             <input type="checkbox" id="${tabId}-sound-toggle" class="checkbox">
+                            <div class="toggle-bg"></div>
                         </div>
-                    </div>
-                    <div class="input-field">
-                        <div class="label" data-selection-value="" id="${tabId}-theme-value">Theme:</div>
-                        <select id="${tabId}-theme-select">
-                        </select>
                     </div>
                 </div>`,
             showCancelButton: true,
+            reverseButtons: true,
             confirmButtonText: 'Confirm',
             buttonsStyling: false,
             padding: '1rem 1.5rem',
@@ -280,7 +297,7 @@ function addTabToDOM(tabId, tabName) {
                     document.getElementById(`${tabId}-theme-value`).setAttribute('data-selection-value', option.value);
                 });
                 // Set name of tab
-                document.getElementById(`${tabId}-name-textbox`).value = escape(tabSettings.name);
+                document.getElementById(`${tabId}-name-textbox`).value = tabSettings.name;
                 // Set notification setting
                 document.getElementById(`${tabId}-notification-toggle`).checked = tabSettings.notifications;
                 // Set sound setting
@@ -289,7 +306,7 @@ function addTabToDOM(tabId, tabName) {
         }).then(result => {
             if (result.value) {
                 // Get all the new values
-                let name = escape(document.getElementById(`${tabId}-name-textbox`).value);
+                let name = document.getElementById(`${tabId}-name-textbox`).value || tabSettings.name;
                 let notifications = document.getElementById(`${tabId}-notification-toggle`).checked;
                 let sound = document.getElementById(`${tabId}-sound-toggle`).checked;
                 let theme = document.getElementById(`${tabId}-theme-value`).getAttribute('data-selection-value');
@@ -320,7 +337,7 @@ function addTabToDOM(tabId, tabName) {
 
                 if (name !== tabInList.name) {
                     // Change the name of the tab
-                    changeTabName(tabId, escape(name));
+                    changeTabName(tabId, name);
                 }
 
                 if (sound !== tabInList.sound) {
@@ -351,7 +368,7 @@ function removeTab(closeTabElement) {
     let tabsList = Array.from(tabStore.get('tabs'));
 
     // Get the next sibling of current tab
-    let nextSibling = closeTabElement.parentElement.parentElement.nextElementSibling.querySelector('a');
+    let nextSibling = closeTabElement.closest('li').nextElementSibling.querySelector('a');
 
     // Toggles to the next sibling tab
     tabs.toggle(nextSibling);
@@ -360,7 +377,7 @@ function removeTab(closeTabElement) {
     let tabID = closeTabElement.parentElement.getAttribute('data-tab-id');
 
     // Remove the tab from the tab list
-    closeTabElement.parentElement.parentElement.remove();
+    closeTabElement.closest('li').remove();
 
     // Remove the tab content
     document.querySelector(`#tab-content-${tabID}`).remove();
@@ -377,7 +394,7 @@ function removeTab(closeTabElement) {
  * @param {string} tabId 
  */
 function changeTabName(tabId, name) {
-    document.querySelector(`[data-tab-id*="${tabId}"] .tabName`).innerHTML = name;
+    document.querySelector(`[data-tab-id*="${tabId}"] .tabName`).innerHTML = escape(name);
 }
 
 /**
@@ -551,4 +568,40 @@ ipcRenderer.on('switch-to-add', e => {
 
 ipcRenderer.on('set-tabbar', (e, t) => {
     setTabBarVisibility(t);
+});
+
+ipcRenderer.on('close-tab', () => {
+    const activeTab = document.querySelector(`[role="tab"][aria-selected="true"]`);
+
+    removeTab(activeTab.querySelector('.lni-close'));
+});
+
+ipcRenderer.on('edit-tab', () => {
+    const activeTab = document.querySelector(`[role="tab"][aria-selected="true"]`);
+
+    activeTab.querySelector('.lni-cog').click();
+});
+
+ipcRenderer.on('next-tab', () => {
+    const activeTab = document.querySelector(`[role="tab"][aria-selected="true"]`);
+
+    const tabItem = activeTab.closest('li');
+
+    if (tabItem.nextSibling.querySelector) {
+        tabs.toggle(tabItem.nextSibling.querySelector('a'));
+    } else {
+        tabs.toggle(tabItem.closest('ul').querySelector('li:first-child > a'));
+    }
+});
+
+ipcRenderer.on('previous-tab', () => {
+    const activeTab = document.querySelector(`[role="tab"][aria-selected="true"]`);
+
+    const tabItem = activeTab.closest('li');
+
+    if (tabItem.matches('li:first-child')) {
+        tabs.toggle(tabItem.closest('ul').querySelector('li:nth-last-child(2) > a'));
+    } else {
+        tabs.toggle(tabItem.previousSibling.querySelector('a'));
+    }
 });
