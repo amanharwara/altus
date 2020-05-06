@@ -85,13 +85,13 @@ To install Altus on a Mac, follow these steps:
 
 ---
 
-### Latest Releases (v3.7.0):
+### Latest Releases (v3.10.0):
 
-#### Windows - [Download](https://github.com/amanharwara/altus/releases/download/3.7.0/Altus-Setup-3.7.0.exe)
+#### Windows - [Download](https://github.com/amanharwara/altus/releases/download/3.10.0/Altus-Setup-3.10.0.exe)
 
-#### Linux - [Download](https://github.com/amanharwara/altus/releases/download/3.7.0/Altus-3.7.0.AppImage)
+#### Linux - [Download](https://github.com/amanharwara/altus/releases/download/3.10.0/Altus-3.10.0.AppImage)
 
-#### MacOS - [Download](https://github.com/amanharwara/altus/releases/download/3.7.0/Altus-3.7.0.dmg)
+#### MacOS - [Download](https://github.com/amanharwara/altus/releases/download/3.10.0/Altus-3.10.0.dmg)
 
 ## For Developers
 
@@ -118,6 +118,10 @@ Below is the list of the dependencies that helped me greatly to create this app.
 ---
 
 #### SweetAlert2 [(https://sweetalert2.github.io/)](https://sweetalert2.github.io/) - used to implement pop-ups.
+
+---
+
+#### Manrope [https://manropefont.com/](https://manropefont.com/) - The font used in Altus.
 
 ---
 
