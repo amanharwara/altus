@@ -141,6 +141,14 @@ document.querySelector('#customizeraddbutton').addEventListener('click', () => {
             let emojiOpacity = document.querySelector('#emoji-opacity').value;
             let name = document.querySelector('#customizer-theme-name').value || 'New Theme';
 
+            baseTheme = `
+            .app {
+                width: 100% !important;
+                border-radius: 0 !important;
+                border: 0 !important;
+            }
+            ` + baseTheme;
+
             // Generate new custom theme css
             let css = generateCustomCSS(baseTheme.replace(/\@.*\{/gim, '').replace("#2f343d", 'var(--darken)').replace("#383d46", 'var(--darken)'), mainBG, secBG, terBG, mainText, secText, accentColor, shadowColor, emojiOpacity);
 
