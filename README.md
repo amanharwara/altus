@@ -36,10 +36,10 @@ Please make sure that you provide a helpful description of your feature request.
 ### Default WhatsApp Theme
 
 ![Altus Default Theme](./img/Altus-Default-Theme.png)
+
 ### Dark WhatsApp Theme
+
 ![Altus Dark Theme](./img/Altus-Dark-Theme.png)
-### Custom WhatsApp Theme Example
-![Altus Custom Theme](./img/Altus-Custom-Theme.png)
 
 
 ## Releases
