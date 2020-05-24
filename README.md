@@ -46,8 +46,6 @@ Please make sure that you provide a helpful description of your feature request.
 
 To download the latest releases, you can [click here](https://github.com/ShadyThGod/altus/#latest-releases). Alternatively, you can visit the [releases page](https://github.com/ShadyThGod/altus/releases) on the repository.
 
----
-
 ### Installation :-
 
 #### Windows
@@ -83,14 +81,14 @@ To install Altus on a Mac, follow these steps:
 - Let it copy
 - Done!
 
----
-
 ## Support
 
 If you like Altus, consider supporting it by donating using any of the following methods:
 
 - Bitcoin: `13v38VvX6jvqeVZZTdrnu83dsSobNAFc2N`
+- Bitcoin Cash: `qq0lsyejqndpeqcqcjx6sxcc6adpsfqegspdhuhu3u`
 - Ether: `0x906AD9b23722A551F5e5edbB0F0E0C99Ba5C98e8`
+- Stellar: `GDO2PVPR6TJDY36N73MA6EMSTETPEOGL2VNZCJHVLG4PSNPVWH42UU4W`
 
 ## For Developers
 
