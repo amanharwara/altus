@@ -1,6 +1,6 @@
 # Altus
 
-[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![Discord](https://img.shields.io/discord/561853868061753355.svg?label=Discord%20Chat&logo=discord&logoColor=lightgreen&style=for-the-badge)](https://discord.gg/mGxNGP6) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues)
+[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![Discord](https://img.shields.io/discord/561853868061753355.svg?label=Discord%20Chat&logo=discord&logoColor=lightgreen&style=for-the-badge)](https://discord.gg/mGxNGP6) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues) [![Support](https://img.shields.io/badge/%E2%9D%A4-Support-cc2478?style=for-the-badge)](https://github.com/amanharwara/altus#support)
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
@@ -85,13 +85,12 @@ To install Altus on a Mac, follow these steps:
 
 ---
 
-### Latest Releases (v3.10.0):
+## Support
 
-#### Windows - [Download](https://github.com/amanharwara/altus/releases/download/3.10.0/Altus-Setup-3.10.0.exe)
+If you like Altus, consider supporting it by donating using any of the following methods:
 
-#### Linux - [Download](https://github.com/amanharwara/altus/releases/download/3.10.0/Altus-3.10.0.AppImage)
-
-#### MacOS - [Download](https://github.com/amanharwara/altus/releases/download/3.10.0/Altus-3.10.0.dmg)
+- Bitcoin: `13v38VvX6jvqeVZZTdrnu83dsSobNAFc2N`
+- Ether: `0x906AD9b23722A551F5e5edbB0F0E0C99Ba5C98e8`
 
 ## For Developers
 
