@@ -1,6 +1,6 @@
 # Altus
 
-[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![Discord](https://img.shields.io/discord/561853868061753355.svg?label=Discord%20Chat&logo=discord&logoColor=lightgreen&style=for-the-badge)](https://discord.gg/mGxNGP6) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues) [![Support](https://img.shields.io/badge/%E2%9D%A4-Support-cc2478?style=for-the-badge)](https://github.com/amanharwara/altus#support) <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues) [![Support](https://img.shields.io/badge/%E2%9D%A4-Support-cc2478?style=for-the-badge)](https://github.com/amanharwara/altus#support) <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>  [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
@@ -85,11 +85,12 @@ To install Altus on a Mac, follow these steps:
 
 If you like Altus, consider supporting it by donating using any of the following methods:
 
+- LiberaPay: <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+- Ko-Fi: [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
 - Bitcoin: `13v38VvX6jvqeVZZTdrnu83dsSobNAFc2N`
 - Bitcoin Cash: `qq0lsyejqndpeqcqcjx6sxcc6adpsfqegspdhuhu3u`
 - Ether: `0x906AD9b23722A551F5e5edbB0F0E0C99Ba5C98e8`
 - Stellar: `GDO2PVPR6TJDY36N73MA6EMSTETPEOGL2VNZCJHVLG4PSNPVWH42UU4W`
-- LiberaPay: <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
 
 ## For Developers
 
