@@ -1,6 +1,6 @@
 # Altus
 
-[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![Discord](https://img.shields.io/discord/561853868061753355.svg?label=Discord%20Chat&logo=discord&logoColor=lightgreen&style=for-the-badge)](https://discord.gg/mGxNGP6) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues)
+[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues) [![Support](https://img.shields.io/badge/%E2%9D%A4-Support-cc2478?style=for-the-badge)](https://github.com/amanharwara/altus#support) <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>  [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
@@ -46,8 +46,6 @@ Please make sure that you provide a helpful description of your feature request.
 
 To download the latest releases, you can [click here](https://github.com/ShadyThGod/altus/#latest-releases). Alternatively, you can visit the [releases page](https://github.com/ShadyThGod/altus/releases) on the repository.
 
----
-
 ### Installation :-
 
 #### Windows
@@ -83,15 +81,16 @@ To install Altus on a Mac, follow these steps:
 - Let it copy
 - Done!
 
----
+## Support
 
-### Latest Releases (v3.10.0):
+If you like Altus, consider supporting it by donating using any of the following methods:
 
-#### Windows - [Download](https://github.com/amanharwara/altus/releases/download/3.10.0/Altus-Setup-3.10.0.exe)
-
-#### Linux - [Download](https://github.com/amanharwara/altus/releases/download/3.10.0/Altus-3.10.0.AppImage)
-
-#### MacOS - [Download](https://github.com/amanharwara/altus/releases/download/3.10.0/Altus-3.10.0.dmg)
+- LiberaPay: <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+- Ko-Fi: [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
+- Bitcoin: `13v38VvX6jvqeVZZTdrnu83dsSobNAFc2N`
+- Bitcoin Cash: `qq0lsyejqndpeqcqcjx6sxcc6adpsfqegspdhuhu3u`
+- Ether: `0x906AD9b23722A551F5e5edbB0F0E0C99Ba5C98e8`
+- Stellar: `GDO2PVPR6TJDY36N73MA6EMSTETPEOGL2VNZCJHVLG4PSNPVWH42UU4W`
 
 ## For Developers
 
