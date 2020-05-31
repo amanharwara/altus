@@ -1,0 +1,64 @@
+.choices {
+    font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.choices__inner {
+    background: #15161d !important;
+    border: 1px solid #5c5c5c !important;
+    box-sizing: border-box;
+}
+
+.choices__input {
+    background: #15161d !important;
+    color: #fff !important;
+    caret-color: #fff;
+    border-bottom: 1px solid #5c5c5c !important;
+    font-size: .9rem !important;
+}
+
+.choices__item {
+    font-size: .9rem !important;
+}
+
+.choices__input--cloned {
+    border: none !important;
+}
+
+.is-selected {
+    background: #2263b9 !important;
+}
+
+[data-type="select-one"] .choices__inner {
+    padding: 5.5px 7.5px 3.75px !important;
+}
+
+.choices__list--single {
+    padding: .35rem 16px 4px 4px !important;
+}
+
+.choices__list--single .choices__item {
+    font-size: 1rem !important;
+}
+
+.choices__list--multiple .choices__item {
+    background: #2263b9 !important;
+    border: 1px solid #2263b9 !important;
+}
+
+.choices[data-type*=select-multiple] .choices__button {
+    border-left: 1px solid #397cd4 !important;
+}
+
+.is-highlighted {
+    background: #2d3547 !important;
+}
+
+.choices__list--dropdown {
+    background: #15161d !important;
+    border: 1px solid #5c5c5c !important;
+}
+
+.input-field .choices {
+    margin-top: .25rem;
+}

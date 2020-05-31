@@ -1,3 +1,5 @@
+@import './choices.css';
+
 :root {
   --window-border: #1f1f20e7;
 }
@@ -9,7 +11,7 @@ body {
 
 body {
   font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
   border: 1px solid var(--window-border);
   overflow: hidden;
 }
@@ -95,7 +97,8 @@ webview {
   justify-content: center;
 }
 
-.container {
+.main-container {
+  box-sizing: unset;
   width: 25%;
   background: linear-gradient(to bottom right, #191a24, #0f1010) !important;
   border-radius: 5px;
@@ -104,12 +107,12 @@ webview {
 }
 
 @media screen and (max-width: 960px) {
-  .container {
+  .main-container {
     width: 40%;
   }
 }
 
-.container>.title {
+.main-container>.title {
   text-align: center;
   font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -135,7 +138,7 @@ webview {
 }
 
 .textbox {
-  padding: 0.75rem 1.5rem;
+  padding: 0.55rem .7rem;
   margin: 10px 0 0 0;
   border: 1px solid #5c5c5c;
   font-size: 1rem;
@@ -247,79 +250,6 @@ webview {
   background: #024bac;
 }
 
-.theme-select {
-  margin: 10px 0 15px 0;
-}
-
-.theme-select .selectr-selected:focus,
-.theme-select input:focus {
-  outline: 1px solid #2a71d1;
-}
-
-.theme-select .selectr-label {
-  -webkit-user-select: none;
-}
-
-.theme-select .selectr-selected {
-  background: #15161d;
-  border: 1px solid #5c5c5cb0;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0 !important;
-}
-
-.theme-select .selectr-input-container {
-  background: #242530;
-}
-
-.theme-select .selectr-input-container input {
-  background: #1a1b24;
-  border: 1px solid #5c5c5cb0;
-  color: #fff;
-  border-radius: 0 !important;
-}
-
-.theme-select .selectr-options {
-  overflow: hidden;
-}
-
-.theme-select .selectr-options-container {
-  border-radius: 0 !important;
-}
-
-.theme-select,
-.theme-select * {
-  border-color: #5c5c5c !important;
-}
-
-.theme-select .selectr-option {
-  background: #16171f;
-  padding: 15px;
-}
-
-.theme-select .selectr-option.selected {
-  background: #232536;
-}
-
-.theme-select .selectr-option.active {
-  background: #272936;
-}
-
-.theme-select .selectr-input-clear {
-  display: none;
-}
-
-.theme-select .selectr-notice {
-  background: #302e6d;
-  border-radius: 0;
-}
-
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
-  display: none;
-}
-
 .edit-popup-title {
   font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -425,7 +355,7 @@ input[type="search"]::-webkit-search-results-decoration {
   align-items: center;
 }
 
-.edit-popup .theme-select {
+.edit-popup .choices {
   text-align: left;
 }
 
@@ -433,4 +363,58 @@ input[type="search"]::-webkit-search-results-decoration {
   z-index: 0;
   margin-top: 0;
   justify-content: flex-end;
+}
+
+.help {
+  background: #2c2e30;
+  border: none;
+  border-radius: 1rem;
+  font-size: 1rem;
+  padding: .25rem .55rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+  margin-left: .5rem;
+  cursor: pointer;
+}
+
+.edit-popup .help {
+  margin-right: 1rem;
+}
+
+.help:focus {
+  outline: 1px solid #2a71d1;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip:hover::after,
+.tooltip:focus::after {
+  content: attr(data-tooltip);
+  background: #101114;
+  border: 1px solid #242525;
+  font-size: 1rem;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 300;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  z-index: 100;
+  line-height: 1.45rem;
+}
+
+.tooltip-top:hover::after,
+.tooltip-top:focus::after {
+  min-width: 30vw;
+  width: 40vw;
+  max-width: 50vw;
+  bottom: 115%;
+}
+
+.with-help {
+  display: flex;
+  align-items: center;
 }
