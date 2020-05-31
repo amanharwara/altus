@@ -9,19 +9,19 @@
     <link rel="stylesheet" href="../otherAssets/manrope.css">
     <link rel="stylesheet" href="../otherAssets/LineIcons.min.css">
     <link rel="stylesheet" href="../otherAssets/normalize.css">
-    <link rel="stylesheet" href="./main.css">
-    <link rel="stylesheet" href="../otherAssets/selectr.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="../../node_modules/choices.js/public/assets/styles/choices.min.css">
     <style id="tabbar-style"></style>
 </head>
 
 <body>
     <ul data-tabs id="tabs-list-">
-        <li><a href="#addtab"><span class="lni-plus"></span></a></li>
+        <li><a href="#addtab"><span class="lni lni-plus"></span></a></li>
     </ul>
 
     <div id="addtab">
         <div class="flex">
-            <div class="container">
+            <div class="main-container">
                 <div class="title">Add Tab</div>
                 <div class="inputs">
                     <div class="input-field">
@@ -48,13 +48,29 @@
                             <div class="toggle-bg"></div>
                         </div>
                     </div>
+                    <div class="toggle-field">
+                        <div class="label with-help">Experimental Features:
+                            <button class="help tooltip tooltip-top"
+                                data-tooltip="Experimental features like online indicator, quick replies, etc require using the WhatsApp API. This makes these features unstable as they can change and break at any time.">?</button>
+                        </div>
+                        <div class="input-checkbox">
+                            <input type="checkbox" id="experimental-toggle" class="checkbox">
+                            <div class="toggle-bg"></div>
+                        </div>
+                    </div>
+                    <div class="input-field experimental-select">
+                        <select id="experimental-select" multiple>
+                            <option value="">Select Features</option>
+                            <option value="online-indicator">Online Indicator</option>
+                            <option value="quick-replies">Quick Replies</option>
+                        </select>
+                    </div>
                 </div>
-                <button type="button" class="submit button" id="add-tab-button"><span class="lni-plus"></span> Add
+                <button type="button" class="submit button" id="add-tab-button"><span class="lni lni-plus"></span> Add
                     Tab</button>
             </div>
         </div>
     </div>
-    <script id="selectr-src" src="../otherAssets/selectr.js"></script>
     <script id="main-script" src="./main.js"></script>
 </body>
 
