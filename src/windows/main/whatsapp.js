@@ -3,6 +3,16 @@ const {
     ipcRenderer
 } = require('electron');
 
+const {
+    setupWAPI
+} = require('./wapi/wapi');
+
+const {
+    enableOnlineIndicator,
+    enableOnlineNotification,
+    enableQuickReplies,
+} = require('./experimental');
+
 // Fix for "WhatsApp works with Chrome 36+" issue . DO NOT REMOVE
 var ses = remote.session.defaultSession;
 
@@ -11,11 +21,13 @@ ses.clearStorageData({
     storages: ['appcache', 'serviceworkers', 'cachestorage', 'websql', 'indexdb'],
 });
 
-window.navigator.serviceWorker.getRegistrations().then(registrations => {
-    for (let registration of registrations) {
-        registration.unregister();
-    }
-});
+if (window.navigator.serviceWorker) {
+    window.navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let registration of registrations) {
+            registration.unregister();
+        }
+    });
+}
 
 window.onload = () => {
     const titleEl = document.querySelector('.landing-title');
@@ -37,6 +49,17 @@ window.onload = () => {
             characterData: true
         }
     );
+
+    new MutationObserver(mutations => {
+        // Check when WhatsApp is done loading
+        if (mutations[0].removedNodes && mutations[0].removedNodes[0].id === 'startup') {
+            let tabId = document.querySelector('[id^="whatsapp-style"]').id.replace('whatsapp-style-', '');
+            ipcRenderer.send('set-experimental-features', tabId);
+        }
+    }).observe(document.querySelector('#app'), {
+        subtree: true,
+        childList: true
+    });
 
     // Mouse wheel event listener for zoom
     document.body.addEventListener('wheel', e => {
@@ -66,3 +89,14 @@ window.onload = () => {
         }
     });
 }
+
+ipcRenderer.on('set-experimental-features', (_, exp) => {
+    if (exp.value) {
+        setupWAPI()
+
+        exp.features.forEach(feature => {
+            if (feature === 'online-indicator') enableOnlineIndicator();
+            if (feature === 'quick-replies') enableQuickReplies(exp.id);
+        });
+    }
+});

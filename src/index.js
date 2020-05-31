@@ -453,6 +453,12 @@ const mainMenuTemplate = [{
                 },
             },
             {
+                label: "Donate",
+                click() {
+                    shell.openExternal("https://github.com/amanharwara/altus#support");
+                }
+            },
+            {
                 label: "Check For Updates",
                 accelerator: "CmdOrCtrl+Shift+U",
                 click() {
@@ -807,22 +813,27 @@ if (!singleInstanceLock) {
         // IPC Functions
 
         // Send 'zoom-in' message to mainWindow
-        ipcMain.on("zoom-in", (e) => mainWindow.webContents.send("zoom-in"));
+        ipcMain.on("zoom-in", () => mainWindow.webContents.send("zoom-in"));
         // Send 'zoom-out' message to mainWindow
-        ipcMain.on("zoom-out", (e) => mainWindow.webContents.send("zoom-out"));
+        ipcMain.on("zoom-out", () => mainWindow.webContents.send("zoom-out"));
         // Send 'reset-zoom' message to mainWindow
-        ipcMain.on("reset-zoom", (e) => mainWindow.webContents.send("reset-zoom"));
+        ipcMain.on("reset-zoom", () => mainWindow.webContents.send("reset-zoom"));
 
         // Opens links in external browser
         ipcMain.on("link-open", (e, link) => shell.openExternal(link));
 
         // Refresh main window when a theme is added or removed
-        ipcMain.on("themes-changed", (e) =>
+        ipcMain.on("themes-changed", () =>
             mainWindow.webContents.send("themes-changed", true)
         );
 
         // Set global settings whenever they are changed
-        ipcMain.on("settings-changed", (e) => setGlobalSettings());
+        ipcMain.on("settings-changed", () => setGlobalSettings());
+
+        // Set experimental features for a tab
+        ipcMain.on('set-experimental-features', (_, tabId) => {
+            mainWindow.webContents.send('set-experimental-features', tabId);
+        })
 
         // Message Indicator
         ipcMain.on("message-indicator", (e, i) => {
