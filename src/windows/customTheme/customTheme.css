@@ -44,6 +44,11 @@ body {
   color: #fff;
   flex-flow: row nowrap;
   overflow: auto;
+
+  position: sticky;
+  top: -3%;
+  left: 0;
+  z-index: 200;
 }
 
 [role="tab"] {

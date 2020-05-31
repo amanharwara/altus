@@ -173,11 +173,11 @@ document.querySelector('.button.update').addEventListener('click', handleUpdateC
 function toggleSpinEffect(element, toggleBoolean) {
     if (toggleBoolean) {
         // Toggle on spin effect
-        element.classList.add('lni-spin-effect');
+        element.classList.add('lni-is-spinning');
     } else {
         // Toggle off spin effect
-        if (element.classList.contains('lni-spin-effect'))
-            element.classList.remove('lni-spin-effect');
+        if (element.classList.contains('lni-is-spinning'))
+            element.classList.remove('lni-is-spinning');
     }
 }
 

@@ -68,7 +68,7 @@ themes.get('themes').forEach(theme => {
     // Create the theme element for the DOM
     let themeElement = document.createRange().createContextualFragment(`<div class="theme" id="${theme.name}">
                 <div class="name">${theme.name}</div>
-                <button type="button" class="remove-theme" ${(theme.name == 'Default') || (theme.name == 'Dark') ? 'data-disabled' : ''} onclick="removeTheme(this)"><span class="lni-close"></span></button>
+                <button type="button" class="remove-theme" ${(theme.name == 'Default') || (theme.name == 'Dark') ? 'data-disabled' : ''} onclick="removeTheme(this)"><span class="lni lni-close"></span></button>
             </div>`);
     // Append the element to the themes element
     document.querySelector('.themes').append(themeElement);
@@ -119,15 +119,16 @@ function removeTheme(rtObj) {
  */
 function updateBaseThemes() {
     // Add spin effect to the icon on the button
-    document.querySelector('.button .lni-reload').classList.add('lni-spin-effect');
+    document.querySelector('.button .lni-reload').classList.add('lni-is-spinning');
     // Fetch a new version of the dark theme
     fetch('https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.css', {
             cache: 'no-cache'
         })
         .then(res => res.text())
         .then(css => {
+            console.log("done")
             // Remove the spin effect from the icon
-            document.querySelector('.button .lni-reload').classList.remove('lni-spin-effect');
+            document.querySelector('.button .lni-reload').classList.remove('lni-is-spinning');
             // Get the themes list as an array
             let themesList = Array.from(themes.get('themes'));
 
@@ -165,6 +166,6 @@ document.querySelector('#reload-page').addEventListener('click', () => {
     // Remove tooltip class so the tooltip doesn't spin
     document.querySelector('.lni-reload').classList.remove('tooltip');
     // Add spin effect to the icon on the button
-    document.querySelector('.lni-reload').classList.add('lni-spin-effect');
+    document.querySelector('.lni-reload').classList.add('lni-is-spinning');
     window.location.reload();
 });

@@ -76,7 +76,7 @@ document.querySelector('.save.button').addEventListener('click', e => {
     let newSettings = [];
 
     // Replace save icon with spinner while saving
-    document.querySelector('.save.button').innerHTML = '<span class="lni-spinner-solid lni-spin-effect"></span>';
+    document.querySelector('.save.button').innerHTML = '<span class="lni lni-spinner-solid"></span>';
 
     // Loop through current settings
     Array.from(process.platform === 'linux' ? settings.get('settings').filter(s => s.id !== 'trayIcon') : settings.get('settings')).forEach(setting => {
