@@ -29,7 +29,7 @@ module.exports = {
      * @param {number} options.maxHeight The maximum height of specific window
      * @returns {BrowserWindow} BrowserWindow object with options configured for specific window
      */
-    createWindow: function(options) {
+    createWindow: function (options) {
         return new BrowserWindow({
             title: (options.title) !== undefined ? options.title : 'New Window',
             frame: process.platform === 'darwin' ? true : !(Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value),
@@ -50,7 +50,9 @@ module.exports = {
             webPreferences: {
                 nodeIntegration: true
             },
-            icon: './windows/otherAssets/icon.ico'
+            icon: nativeImage.createFromPath(
+                path.join(__dirname, "/windows/otherAssets/icon.ico")
+            )
         });
     }
 }
