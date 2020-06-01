@@ -1,6 +1,7 @@
 // Import BrowserWindow module
 const { BrowserWindow, nativeImage } = require("electron");
 
+const path = require("path");
 // Import Store module
 const Store = require("electron-store");
 
