@@ -79,7 +79,7 @@ document.querySelector('.save.button').addEventListener('click', e => {
     document.querySelector('.save.button').innerHTML = '<span class="lni lni-spinner-solid"></span>';
 
     // Loop through current settings
-    Array.from(process.platform === 'linux' ? settings.get('settings').filter(s => s.id !== 'trayIcon' || s.id !== 'closeToTray') : settings.get('settings')).forEach(setting => {
+    Array.from(process.platform === 'linux' ? settings.get('settings').filter(s => s.id !== 'trayIcon' && s.id !== 'closeToTray') : settings.get('settings')).forEach(setting => {
         // Find the DOM element of the setting
         let settingDOMElement = document.querySelector(`#${setting.id}-checkbox`);
 
