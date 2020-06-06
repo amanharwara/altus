@@ -5,16 +5,34 @@
  */
 function addTabToDOM(tabId, tabName) {
     // Create tab element
-    let tabElement = document.createRange().createContextualFragment(`<li><a data-tab-id="${tabId}" href="#tab-content-${tabId}"><span class="tabName">${escape(tabName)}</span> <span class="lni lni-cog"></span><span class="lni lni-close"></span></a></li>`);
+    let tabElement = document
+        .createRange()
+        .createContextualFragment(
+            `<li><a data-tab-id="${tabId}" href="#tab-content-${tabId}"><span class="tabName">${escape(
+        tabName
+      )}</span> <span class="lni lni-cog"></span><span class="lni lni-close"></span></a></li>`
+        );
 
     // Create tab content element
-    let tabContentElement = document.createRange().createContextualFragment(`<div id="tab-content-${tabId}"><webview id="whatsapp-${tabId}" preload="./whatsapp.js" src="https://web.whatsapp.com/" useragent="${window.navigator.userAgent.replace(/(altus|Electron)([^\s]+\s)/g, '')}" partition="persist:${tabId}"></webview></div>`);
+    let tabContentElement = document
+        .createRange()
+        .createContextualFragment(
+            `<div id="tab-content-${tabId}"><webview id="whatsapp-${tabId}" preload="./whatsapp.js" src="https://web.whatsapp.com/" useragent="${window.navigator.userAgent.replace(
+        /(altus|Electron)([^\s]+\s)/g,
+        ""
+      )}" partition="persist:${tabId}"></webview></div>`
+        );
 
     // Prepend tab element to tab list
-    document.querySelector('#tabs-list-').prepend(tabElement);
+    document.querySelector("#tabs-list-").prepend(tabElement);
 
     // Add tab content div
-    document.querySelector('#main-script').parentNode.insertBefore(tabContentElement, document.querySelector('#selectr-src'));
+    document
+        .querySelector("#main-script")
+        .parentNode.insertBefore(
+            tabContentElement,
+            document.querySelector("#selectr-src")
+        );
 
     // Setup tabs after adding new one
     tabs.setup();
@@ -23,65 +41,98 @@ function addTabToDOM(tabId, tabName) {
     tabs.toggle(`#tab-content-${tabId}`);
 
     // Adds event listener for close tab button
-    document.querySelector(`[data-tab-id*="${tabId}"]`).querySelector('.lni-close').addEventListener('click', () => {
-        // Check if "Tab Close Prompt" setting is enabled
-        if (settings.get('settings').find(s => s.id === 'tabClosePrompt').value === true) {
-            Swal.fire({
-                    title: `<h2>Do you really want to close the tab <i>"${escape(tabName)}"</i> ?</h2>`,
+    document
+        .querySelector(`[data-tab-id*="${tabId}"]`)
+        .querySelector(".lni-close")
+        .addEventListener("click", () => {
+            // Check if "Tab Close Prompt" setting is enabled
+            if (
+                settings.get("settings").find((s) => s.id === "tabClosePrompt")
+                .value === true
+            ) {
+                Swal.fire({
+                    title: `<h2>Do you really want to close the tab <i>"${escape(
+            tabName
+          )}"</i> ?</h2>`,
                     customClass: {
-                        title: 'prompt-title',
-                        popup: 'edit-popup close-popup',
-                        confirmButton: 'edit-popup-button prompt-confirm-button prompt-button',
-                        cancelButton: 'edit-popup-button prompt-cancel-button prompt-button',
-                        closeButton: 'edit-popup-close-button',
-                        header: 'edit-popup-header'
+                        title: "prompt-title",
+                        popup: "edit-popup close-popup",
+                        confirmButton: "edit-popup-button prompt-confirm-button prompt-button",
+                        cancelButton: "edit-popup-button prompt-cancel-button prompt-button",
+                        closeButton: "edit-popup-close-button",
+                        header: "edit-popup-header",
                     },
-                    width: '50%',
+                    width: "50%",
                     showCancelButton: true,
-                    confirmButtonText: 'Close',
+                    confirmButtonText: "Close",
                     buttonsStyling: false,
-                })
-                .then(result => {
+                }).then((result) => {
                     if (result.value) {
                         // Remove the tab after prompt
-                        removeTab(document.querySelector(`[data-tab-id*="${tabId}"]`).querySelector('.lni-close'));
+                        removeTab(
+                            document
+                            .querySelector(`[data-tab-id*="${tabId}"]`)
+                            .querySelector(".lni-close")
+                        );
                     }
-                })
-        } else {
-            // Remove the tab directly
-            removeTab(document.querySelector(`[data-tab-id*="${tabId}"]`).querySelector('.lni-close'));
-        }
-    });
+                });
+            } else {
+                // Remove the tab directly
+                removeTab(
+                    document
+                    .querySelector(`[data-tab-id*="${tabId}"]`)
+                    .querySelector(".lni-close")
+                );
+            }
+        });
 
     // Gets the tab's current settings
-    let tabSettings = tabStore.get('tabs').find(x => x.id === tabId);
+    let tabSettings = tabStore.get("tabs").find((x) => x.id === tabId);
 
     // Sets the tab theme
     let themeName = tabSettings.theme;
     // Gets the CSS of theme if it exists otherwise gets Default CSS
-    let currentThemeCSS = (themes.get('themes').find(x => x.name === themeName)) ? themes.get('themes').find(x => x.name === themeName).css : themes.get('themes').find(x => x.name === 'Default').css;
-    setTabTheme(document.querySelector(`#whatsapp-${tabId}`), currentThemeCSS, true);
+    let currentThemeCSS = themes.get("themes").find((x) => x.name === themeName) ?
+        themes.get("themes").find((x) => x.name === themeName).css :
+        themes.get("themes").find((x) => x.name === "Default").css;
+
+    setTabTheme(
+        document.querySelector(`#whatsapp-${tabId}`),
+        themeName === 'Dark' ? 'dark' : currentThemeCSS,
+        true
+    );
 
     // Toggles notifications according to setting
-    toggleNotifications(document.querySelector(`#whatsapp-${tabId}`), tabSettings.notifications, true);
+    toggleNotifications(
+        document.querySelector(`#whatsapp-${tabId}`),
+        tabSettings.notifications,
+        true
+    );
 
     // Toggles sound according to setting
-    toggleSound(document.querySelector(`#whatsapp-${tabId}`), tabSettings.sound, true);
+    toggleSound(
+        document.querySelector(`#whatsapp-${tabId}`),
+        tabSettings.sound,
+        true
+    );
 
     // Adds event listener for tab settings button
-    document.querySelector(`[data-tab-id*="${tabId}"]`).querySelector('.lni-cog').addEventListener('click', () => {
-        let tabSettings = tabStore.get('tabs').find(x => x.id === tabId);
-        Swal.fire({
-            title: `Tab Preferences`,
-            customClass: {
-                title: 'edit-popup-title',
-                popup: 'edit-popup',
-                confirmButton: 'edit-popup-button edit-popup-confirm-button',
-                cancelButton: 'edit-popup-button edit-popup-cancel-button',
-                closeButton: 'edit-popup-close-button',
-                header: 'edit-popup-header'
-            },
-            html: `<div class="inputs">
+    document
+        .querySelector(`[data-tab-id*="${tabId}"]`)
+        .querySelector(".lni-cog")
+        .addEventListener("click", () => {
+            let tabSettings = tabStore.get("tabs").find((x) => x.id === tabId);
+            Swal.fire({
+                title: `Tab Preferences`,
+                customClass: {
+                    title: "edit-popup-title",
+                    popup: "edit-popup",
+                    confirmButton: "edit-popup-button edit-popup-confirm-button",
+                    cancelButton: "edit-popup-button edit-popup-cancel-button",
+                    closeButton: "edit-popup-close-button",
+                    header: "edit-popup-header",
+                },
+                html: `<div class="inputs">
                     <div class="input-field">
                         <div class="label">Name:</div>
                         <div class="input-flex"><input class="textbox" placeholder="Name of instance" id="${tabId}-name-textbox" type="text"></div>
@@ -126,135 +177,207 @@ function addTabToDOM(tabId, tabName) {
                         </select>
                     </div>
                 </div>`,
-            showCancelButton: true,
-            reverseButtons: true,
-            confirmButtonText: 'Confirm',
-            buttonsStyling: false,
-            padding: '1rem 1.5rem',
-            width: 'auto',
-            onRender: () => {
-                // Initiate theme selection on tab edit
-                let tabEditSelectr = new choices(document.getElementById(`${tabId}-theme-select`), {
-                    searchEnabled: true,
-                    choices: themesList,
-                });
-                let experimentalSelect = new choices(document.getElementById(`${tabId}-experimental-select`), {
-                    removeItems: true,
-                    removeItemButton: true,
-                    duplicateItemsAllowed: false,
-                    paste: false,
-                });
+                showCancelButton: true,
+                reverseButtons: true,
+                confirmButtonText: "Confirm",
+                buttonsStyling: false,
+                padding: "1rem 1.5rem",
+                width: "auto",
+                onRender: () => {
+                    // Initiate theme selection on tab edit
+                    let tabEditSelectr = new choices(
+                        document.getElementById(`${tabId}-theme-select`), {
+                            searchEnabled: true,
+                            choices: themesList,
+                        }
+                    );
+                    let experimentalSelect = new choices(
+                        document.getElementById(`${tabId}-experimental-select`), {
+                            removeItems: true,
+                            removeItemButton: true,
+                            duplicateItemsAllowed: false,
+                            paste: false,
+                        }
+                    );
 
-                // Set current theme on select box
-                tabEditSelectr.setChoiceByValue(tabSettings.theme);
-                document.getElementById(`${tabId}-theme-value`).setAttribute('data-selection-value', tabEditSelectr.getValue(true));
+                    // Set current theme on select box
+                    tabEditSelectr.setChoiceByValue(tabSettings.theme);
+                    document
+                        .getElementById(`${tabId}-theme-value`)
+                        .setAttribute(
+                            "data-selection-value",
+                            tabEditSelectr.getValue(true)
+                        );
 
-                experimentalSelect.setChoiceByValue(tabSettings.exp_features);
-                document.querySelector(`.experimental-select-${tabId} .choices`).setAttribute('data-selection-value', experimentalSelect.getValue(true));
+                    experimentalSelect.setChoiceByValue(tabSettings.exp_features);
+                    document
+                        .querySelector(`.experimental-select-${tabId} .choices`)
+                        .setAttribute(
+                            "data-selection-value",
+                            experimentalSelect.getValue(true)
+                        );
 
-                tabEditSelectr.passedElement.element.addEventListener('choice', (e) => {
-                    document.getElementById(`${tabId}-theme-value`).setAttribute('data-selection-value', e.detail.choice.value)
-                });
+                    tabEditSelectr.passedElement.element.addEventListener(
+                        "choice",
+                        (e) => {
+                            document
+                                .getElementById(`${tabId}-theme-value`)
+                                .setAttribute("data-selection-value", e.detail.choice.value);
+                        }
+                    );
 
-                experimentalSelect.passedElement.element.addEventListener('choice', (e) => {
-                    let value = experimentalSelect.getValue(true);
-                    value.push(e.detail.choice.value)
-                    document.querySelector(`.experimental-select-${tabId} .choices`).setAttribute('data-selection-value', value)
-                });
+                    experimentalSelect.passedElement.element.addEventListener(
+                        "choice",
+                        (e) => {
+                            let value = experimentalSelect.getValue(true);
+                            value.push(e.detail.choice.value);
+                            document
+                                .querySelector(`.experimental-select-${tabId} .choices`)
+                                .setAttribute("data-selection-value", value);
+                        }
+                    );
 
-                experimentalSelect.passedElement.element.addEventListener('removeItem', (e) => {
-                    let value = document.querySelector(`.experimental-select-${tabId} .choices`).getAttribute('data-selection-value').replace(e.detail.value, '');
-                    document.querySelector(`.experimental-select-${tabId} .choices`).setAttribute('data-selection-value', value)
-                });
+                    experimentalSelect.passedElement.element.addEventListener(
+                        "removeItem",
+                        (e) => {
+                            let value = document
+                                .querySelector(`.experimental-select-${tabId} .choices`)
+                                .getAttribute("data-selection-value")
+                                .replace(e.detail.value, "");
+                            document
+                                .querySelector(`.experimental-select-${tabId} .choices`)
+                                .setAttribute("data-selection-value", value);
+                        }
+                    );
 
-                // Set name of tab
-                document.getElementById(`${tabId}-name-textbox`).value = tabSettings.name;
-                // Set notification setting
-                document.getElementById(`${tabId}-notification-toggle`).checked = tabSettings.notifications;
-                // Set sound setting
-                document.getElementById(`${tabId}-sound-toggle`).checked = tabSettings.sound;
-                // Set experimental setting
-                document.getElementById(`${tabId}-experimental-toggle`).checked = tabSettings.experimental;
+                    // Set name of tab
+                    document.getElementById(`${tabId}-name-textbox`).value =
+                        tabSettings.name;
+                    // Set notification setting
+                    document.getElementById(`${tabId}-notification-toggle`).checked =
+                        tabSettings.notifications;
+                    // Set sound setting
+                    document.getElementById(`${tabId}-sound-toggle`).checked =
+                        tabSettings.sound;
+                    // Set experimental setting
+                    document.getElementById(`${tabId}-experimental-toggle`).checked =
+                        tabSettings.experimental;
 
-                if (tabSettings.experimental) {
-                    document.querySelector(`.experimental-select-${tabId} .choices`).style.display = '';
-                } else {
-                    document.querySelector(`.experimental-select-${tabId} .choices`).style.display = 'none';
-                }
-
-                document.getElementById(`${tabId}-experimental-toggle`).addEventListener('change', (e) => {
-                    if (e.target.checked) {
-                        document.querySelector(`.experimental-select-${tabId} .choices`).style.display = '';
+                    if (tabSettings.experimental) {
+                        document.querySelector(
+                            `.experimental-select-${tabId} .choices`
+                        ).style.display = "";
                     } else {
-                        document.querySelector(`.experimental-select-${tabId} .choices`).style.display = 'none';
+                        document.querySelector(
+                            `.experimental-select-${tabId} .choices`
+                        ).style.display = "none";
                     }
-                });
-            },
-        }).then(result => {
-            if (result.value) {
-                // Get all the new values
-                let name = document.getElementById(`${tabId}-name-textbox`).value || tabSettings.name;
-                let notifications = document.getElementById(`${tabId}-notification-toggle`).checked;
-                let sound = document.getElementById(`${tabId}-sound-toggle`).checked;
-                let theme = document.getElementById(`${tabId}-theme-value`).getAttribute('data-selection-value');
-                let experimental = document.getElementById(`${tabId}-experimental-toggle`).checked;
-                let exp_features;
 
-                exp_features = document.querySelector(`.experimental-select-${tabId} .choices`).getAttribute('data-selection-value').split(',').filter(str => str.length > 0);
+                    document
+                        .getElementById(`${tabId}-experimental-toggle`)
+                        .addEventListener("change", (e) => {
+                            if (e.target.checked) {
+                                document.querySelector(
+                                    `.experimental-select-${tabId} .choices`
+                                ).style.display = "";
+                            } else {
+                                document.querySelector(
+                                    `.experimental-select-${tabId} .choices`
+                                ).style.display = "none";
+                            }
+                        });
+                },
+            }).then((result) => {
+                if (result.value) {
+                    // Get all the new values
+                    let name =
+                        document.getElementById(`${tabId}-name-textbox`).value ||
+                        tabSettings.name;
+                    let notifications = document.getElementById(
+                        `${tabId}-notification-toggle`
+                    ).checked;
+                    let sound = document.getElementById(`${tabId}-sound-toggle`).checked;
+                    let theme = document
+                        .getElementById(`${tabId}-theme-value`)
+                        .getAttribute("data-selection-value");
+                    let experimental = document.getElementById(
+                        `${tabId}-experimental-toggle`
+                    ).checked;
+                    let exp_features;
 
-                // Create object from new values
-                let tab = {
-                    id: tabId,
-                    name,
-                    notifications,
-                    sound,
-                    theme,
-                    experimental,
-                    exp_features
+                    exp_features = document
+                        .querySelector(`.experimental-select-${tabId} .choices`)
+                        .getAttribute("data-selection-value")
+                        .split(",")
+                        .filter((str) => str.length > 0);
+
+                    // Create object from new values
+                    let tab = {
+                        id: tabId,
+                        name,
+                        notifications,
+                        sound,
+                        theme,
+                        experimental,
+                        exp_features,
+                    };
+
+                    // Get the tabs list in array form
+                    let tabsList = Array.from(tabStore.get("tabs"));
+
+                    // Find the original tab object in array
+                    let tabInList = tabsList.find((x) => x.id === tab.id);
+
+                    // Get the index of the original tab
+                    let indexOfTab = tabsList.indexOf(tabInList);
+
+                    // Replace original tab with new tab
+                    tabsList[indexOfTab] = tab;
+
+                    // Set new tabs list
+                    tabStore.set("tabs", tabsList);
+
+                    if (name !== tabInList.name) {
+                        // Change the name of the tab
+                        changeTabName(tabId, name);
+                    }
+
+                    if (sound !== tabInList.sound) {
+                        // Toggle sound
+                        toggleSound(
+                            document.querySelector(`#whatsapp-${tabId}`),
+                            sound,
+                            false
+                        );
+                    }
+
+                    if (theme !== tabInList.theme) {
+                        // Set Theme of tab
+                        if (theme === 'Dark') {
+                            setTabTheme(document.querySelector(`#whatsapp-${tabId}`),
+                                'dark',
+                                false);
+                        } else {
+                            setTabTheme(
+                                document.querySelector(`#whatsapp-${tabId}`),
+                                themes.get("themes").find((x) => x.name === theme).css,
+                                false
+                            );
+                        }
+                    }
+
+                    if (notifications !== tabInList.notifications) {
+                        location.reload();
+                    }
+
+                    if (experimental !== tabInList.experimental) {
+                        location.reload();
+                    }
                 }
-
-                // Get the tabs list in array form
-                let tabsList = Array.from(tabStore.get('tabs'));
-
-                // Find the original tab object in array
-                let tabInList = tabsList.find(x => x.id === tab.id);
-
-                // Get the index of the original tab
-                let indexOfTab = tabsList.indexOf(tabInList);
-
-                // Replace original tab with new tab
-                tabsList[indexOfTab] = tab;
-
-                // Set new tabs list
-                tabStore.set('tabs', tabsList);
-
-                if (name !== tabInList.name) {
-                    // Change the name of the tab
-                    changeTabName(tabId, name);
-                }
-
-                if (sound !== tabInList.sound) {
-                    // Toggle sound
-                    toggleSound(document.querySelector(`#whatsapp-${tabId}`), sound, false);
-                }
-
-                if (theme !== tabInList.theme) {
-                    // Set Theme of tab
-                    setTabTheme(document.querySelector(`#whatsapp-${tabId}`), themes.get('themes').find(x => x.name === theme).css, false);
-                }
-
-                if (notifications !== tabInList.notifications) {
-                    location.reload();
-                }
-
-                if (experimental !== tabInList.experimental) {
-                    location.reload();
-                }
-            }
+            });
         });
-    });
 }
 
 module.exports = {
-    addTabToDOM
-}
+    addTabToDOM,
+};

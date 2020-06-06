@@ -7,30 +7,32 @@
 function setTabTheme(whatsAppElement, themeCSS, firstStart) {
     let whatsapp = whatsAppElement;
 
+    let cssElementString = `
+    if (document.querySelector('.web').classList.contains('dark')) document.querySelector('.web').classList.remove('dark');
+    var styleElem = document.querySelector('#whatsapp-style-${whatsapp.id}');
+    if (styleElem) {
+        styleElem.innerHTML = \`${themeCSS}\`;
+    } else if (!styleElem) {
+        var styleElement = document.createElement('style');
+        styleElement.id = 'whatsapp-style-${whatsapp.id}';
+        styleElement.innerHTML = \`${themeCSS}\`;
+        document.head.appendChild(styleElement);
+    }`;
+
+    let darkThemeString = `
+    var styleElem = document.querySelector('#whatsapp-style-${whatsapp.id}');
+    if (styleElem) {
+        styleElem.innerHTML = "";
+    }
+    document.querySelector('.web').classList.add('dark');
+    `;
+
     if (firstStart) {
         whatsapp.addEventListener('dom-ready', () => {
-            whatsapp.executeJavaScript(`
-                        var styleElem = document.querySelector('#whatsapp-style-${whatsapp.id}');
-                        if (styleElem) {
-                            styleElem.innerHTML = \`${themeCSS}\`;
-                        } else if (!styleElem) {
-                            var styleElement = document.createElement('style');
-                            styleElement.id = 'whatsapp-style-${whatsapp.id}';
-                            styleElement.innerHTML = \`${themeCSS}\`;
-                            document.head.appendChild(styleElement);
-                        }`);
+            whatsapp.executeJavaScript(themeCSS === 'dark' ? darkThemeString : cssElementString);
         });
     } else {
-        whatsapp.executeJavaScript(`
-                        var styleElem = document.querySelector('#whatsapp-style-${whatsapp.id}');
-                        if (styleElem) {
-                            styleElem.innerHTML = \`${themeCSS}\`;
-                        } else if (!styleElem) {
-                            var styleElement = document.createElement('style');
-                            styleElement.id = 'whatsapp-style-${whatsapp.id}';
-                            styleElement.innerHTML = \`${themeCSS}\`;
-                            document.head.appendChild(styleElement);
-                        }`);
+        whatsapp.executeJavaScript(themeCSS === 'dark' ? darkThemeString : cssElementString);
     }
 }
 

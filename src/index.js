@@ -75,11 +75,11 @@ function getDarkTheme(createThemesList) {
       createThemesList(css.replace(/\@.*\{/gim, ""));
     })
     .catch((e) => {
+      createThemesList("");
       dialog.showErrorBox(
         "Error: Base Dark Theme Not Loaded (No Internet Connection)",
         e
       );
-      createThemesList("");
     });
 }
 
@@ -102,6 +102,10 @@ function createThemesList(darkThemeCSS) {
         },
         {
           name: "Dark",
+          css: "",
+        },
+        {
+          name: "Dark Plus",
           css: darkThemeCSS,
         },
       ],

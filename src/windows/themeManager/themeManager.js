@@ -142,14 +142,18 @@ function updateBaseThemes() {
 
             // Create new object for the updated theme
             let updatedTheme = {
-                name: 'Dark',
+                name: 'Dark Plus',
                 css: css.replace(/\@.*\{/gim, '')
             };
 
             // Find index of the dark theme
-            let i = themesList.findIndex(x => x.name == 'Dark');
-            // Replace old version of dark theme with new version
-            themesList[i] = updatedTheme;
+            let i = themesList.findIndex(x => x.name == 'Dark Plus');
+            if (i !== -1) {
+                // Replace old version of dark theme with new version
+                themesList[i] = updatedTheme;
+            } else {
+                themesList.push(updatedTheme);
+            }
 
             // Set the new themes list
             themes.set('themes', themesList);
