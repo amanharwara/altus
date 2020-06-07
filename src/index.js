@@ -16,13 +16,17 @@ const path = require("path");
 const contextMenu = require("electron-context-menu");
 
 // Import createWindow function
-const { createWindow } = require("./js/createWindow");
+const {
+  createWindow
+} = require("./js/createWindow");
 
 // Used for storing settings
 const Store = require("electron-store");
 
 // Import default settings
-const { defaultSettings } = require("./js/defaultSettings");
+const {
+  defaultSettings
+} = require("./js/defaultSettings");
 
 // Used for fetching base dark theme CSS & more
 const fetch = require("node-fetch");
@@ -42,6 +46,10 @@ let mainWindow,
 // Declaring the tray icon variable to use later
 let trayIcon;
 
+const {
+  generateTheme
+} = require("./windows/util/generateTheme");
+
 // Get the dark theme css using fetch & generate the default themes list
 getDarkTheme(createThemesList);
 
@@ -50,36 +58,12 @@ getDarkTheme(createThemesList);
  * @param {createThemesListCallback} createThemesList
  */
 function getDarkTheme(createThemesList) {
-  fetch(
-    "https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.css",
-    {
-      cache: "no-cache",
-    }
-  )
-    .then((res) => {
-      if (res.ok) {
-        return res.text();
-      } else {
-        throw new Error(res.statusText);
-      }
+  window.fetch("https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl", {
+      cache: 'no-cache'
     })
-    .then((css) => {
-      css =
-        `
-            .app {
-                width: 100% !important;
-                border-radius: 0 !important;
-                border: 0 !important;
-            }
-            ` + css;
-      createThemesList(css.replace(/\@.*\{/gim, ""));
-    })
-    .catch((e) => {
-      createThemesList("");
-      dialog.showErrorBox(
-        "Error: Base Dark Theme Not Loaded (No Internet Connection)",
-        e
-      );
+    .then(res => res.text())
+    .then((style) => {
+      createThemesList(generateTheme({}, style));
     });
 }
 
@@ -95,8 +79,7 @@ function createThemesList(darkThemeCSS) {
   themesList = new Store({
     name: "themes",
     defaults: {
-      themes: [
-        {
+      themes: [{
           name: "Default",
           css: "",
         },
@@ -116,8 +99,7 @@ function createThemesList(darkThemeCSS) {
 // Declaring the fileMenuTemplate variable & creating the template for the 'File' menu
 let fileMenuTemplate;
 
-fileMenuTemplate = [
-  {
+fileMenuTemplate = [{
     label: "Add New Instance",
     accelerator: "CmdOrCtrl+N",
     click() {
@@ -156,15 +138,13 @@ if (!app.isPackaged) {
 }
 
 // Create the main menu template
-const mainMenuTemplate = [
-  {
+const mainMenuTemplate = [{
     label: "File",
     submenu: fileMenuTemplate,
   },
   {
     label: "Edit",
-    submenu: [
-      {
+    submenu: [{
         label: "Undo",
         accelerator: "CmdOrCtrl+Z",
         selector: "undo:",
@@ -201,8 +181,7 @@ const mainMenuTemplate = [
   },
   {
     label: "Tab",
-    submenu: [
-      {
+    submenu: [{
         label: "Go to Next Tab",
         accelerator: "CmdOrCtrl+Tab",
         click() {
@@ -237,8 +216,7 @@ const mainMenuTemplate = [
   },
   {
     label: "Zoom",
-    submenu: [
-      {
+    submenu: [{
         label: "Zoom In",
         accelerator: "CmdOrCtrl+numadd",
         click() {
@@ -263,8 +241,7 @@ const mainMenuTemplate = [
   },
   {
     label: "Theme",
-    submenu: [
-      {
+    submenu: [{
         label: "Custom Theme",
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
@@ -276,17 +253,17 @@ const mainMenuTemplate = [
             // Creates new Browser Window object using createWindow function
             customThemeWindow = createWindow({
               id: "customTheme",
-              title: "Custom Theme",
-              width: 630,
-              height: 480,
-              resizable: true,
+              title: "Theme Creator",
+              width: 435,
+              height: 350,
+              resizable: false,
               mainWindowObject: mainWindow,
               min: true,
               max: false,
-              minWidth: 630,
-              minHeight: 480,
-              maxWidth: "",
-              maxHeight: "",
+              minWidth: 435,
+              minHeight: 350,
+              maxWidth: 435,
+              maxHeight: 425,
             });
             // Loads Custom Theme Window HTML
             customThemeWindow.loadURL(
@@ -366,62 +343,59 @@ const mainMenuTemplate = [
   },
   {
     label: "Settings",
-    submenu: [
-      {
-        label: "Settings",
-        accelerator: "CmdOrCtrl+,",
-        click() {
-          // Checks settings window exists
-          if (typeof settingsWindow === "object") {
-            // Shows settings window instead of creating new object
+    submenu: [{
+      label: "Settings",
+      accelerator: "CmdOrCtrl+,",
+      click() {
+        // Checks settings window exists
+        if (typeof settingsWindow === "object") {
+          // Shows settings window instead of creating new object
+          settingsWindow.show();
+        } else {
+          // Creates new Browser Window object using createWindow function
+          settingsWindow = createWindow({
+            id: "settings",
+            title: "Settings",
+            width: 540,
+            height: 515,
+            resizable: true,
+            mainWindowObject: mainWindow,
+            min: true,
+            max: false,
+            minWidth: 540,
+            minHeight: 515,
+            maxWidth: "",
+            maxHeight: "",
+          });
+          // Loads settings Window HTML
+          settingsWindow.loadURL(
+            url.format({
+              pathname: path.join(
+                __dirname,
+                "windows",
+                "settings",
+                "settings.html"
+              ),
+              protocol: "file:",
+              slashes: true,
+            })
+          );
+          settingsWindow.once("ready-to-show", () => {
+            // Shows settings window
             settingsWindow.show();
-          } else {
-            // Creates new Browser Window object using createWindow function
-            settingsWindow = createWindow({
-              id: "settings",
-              title: "Settings",
-              width: 540,
-              height: 515,
-              resizable: true,
-              mainWindowObject: mainWindow,
-              min: true,
-              max: false,
-              minWidth: 540,
-              minHeight: 515,
-              maxWidth: "",
-              maxHeight: "",
-            });
-            // Loads settings Window HTML
-            settingsWindow.loadURL(
-              url.format({
-                pathname: path.join(
-                  __dirname,
-                  "windows",
-                  "settings",
-                  "settings.html"
-                ),
-                protocol: "file:",
-                slashes: true,
-              })
-            );
-            settingsWindow.once("ready-to-show", () => {
-              // Shows settings window
-              settingsWindow.show();
-            });
-            // Close window event (Hides window when closed, instead of deleting it)
-            settingsWindow.on("close", (e) => {
-              e.preventDefault();
-              settingsWindow.hide();
-            });
-          }
-        },
+          });
+          // Close window event (Hides window when closed, instead of deleting it)
+          settingsWindow.on("close", (e) => {
+            e.preventDefault();
+            settingsWindow.hide();
+          });
+        }
       },
-    ],
+    }, ],
   },
   {
     label: "About",
-    submenu: [
-      {
+    submenu: [{
         label: "About",
         click() {
           // Checks if about window exists
@@ -525,8 +499,7 @@ const mainMenuTemplate = [
       },
       {
         label: "Links",
-        submenu: [
-          {
+        submenu: [{
             label: "Report Bugs/Issues",
             click: () => {
               shell.openExternal("https://github.com/amanharwara/altus/issues");
@@ -612,12 +585,10 @@ if (!singleInstanceLock) {
       // Set main window title
       title: `Altus ${app.getVersion()}`,
       // Enable frame if on macOS or if custom titlebar setting is disabled
-      frame:
-        process.platform !== "darwin"
-          ? !Array.from(settings.get("settings")).find(
-              (s) => s.id === "customTitlebar"
-            ).value
-          : true,
+      frame: process.platform !== "darwin" ?
+        !Array.from(settings.get("settings")).find(
+          (s) => s.id === "customTitlebar"
+        ).value : true,
       // Show default title bar on macOS and hide it on others
       titleBarStyle: process.platform !== "darwin" ? "hidden" : "default",
       // Set main window background color
@@ -714,8 +685,7 @@ if (!singleInstanceLock) {
         );
 
         // Create context menu for tray icon
-        let trayContextMenu = Menu.buildFromTemplate([
-          {
+        let trayContextMenu = Menu.buildFromTemplate([{
             label: "Maximize",
             click() {
               if (mainWindow) {

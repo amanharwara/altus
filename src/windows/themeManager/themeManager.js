@@ -1,51 +1,59 @@
 // Import custom titlebar module
-const customTitlebar = require('custom-electron-titlebar');
+const customTitlebar = require("custom-electron-titlebar");
 
 // Import extra electron modules
 const {
     app,
     process,
     Menu
-} = require('electron').remote;
+} = require("electron").remote;
 const {
     ipcRenderer
-} = require('electron');
+} = require("electron");
 
 // Import electron store module for settings
-const Store = require('electron-store');
+const Store = require("electron-store");
 
 // Load the main settings into settings variable
 let settings = new Store({
-    name: 'settings'
+    name: "settings",
 });
 
 // Import SweetAlert2 for modals
-const Swal = require('sweetalert2');
+const Swal = require("sweetalert2");
 
 // Import node-fetch
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 
 const {
     escape
-} = require('../otherAssets/escapeText');
+} = require("../otherAssets/escapeText");
+
+const {
+    generateTheme
+} = require("../util/generateTheme");
 
 // Checks if custom titlebar is enabled in settings & the platform isn't a Mac
-if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').value === true && process.platform !== 'darwin') {
+if (
+    Array.from(settings.get("settings")).find((s) => s.id === "customTitlebar")
+    .value === true &&
+    process.platform !== "darwin"
+) {
     // Create main window titlebar
     const mainTitlebar = new customTitlebar.Titlebar({
-        backgroundColor: customTitlebar.Color.fromHex('#202224'),
-        icon: '../otherAssets/icon.ico',
-        itemBackgroundColor: customTitlebar.Color.fromHex('#1c2028'),
-        menu: process.platform === 'darwin' ? Menu.getApplicationMenu() : new Menu(),
+        backgroundColor: customTitlebar.Color.fromHex("#202224"),
+        icon: "../otherAssets/icon.ico",
+        itemBackgroundColor: customTitlebar.Color.fromHex("#1c2028"),
+        menu: process.platform === "darwin" ? Menu.getApplicationMenu() : new Menu(),
         minimizable: false,
         maximizable: false,
-        closeable: true
+        closeable: true,
     });
     // Setting title explicitly
     mainTitlebar.updateTitle(`Theme Manager`);
 } else {
     // CSS style when no custom titlebar
-    let style = document.createElement('style');
+    let style = document.createElement("style");
     style.innerText = `body {
         margin: 0;
         overflow: hidden;
@@ -61,17 +69,22 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
 
 // Load themes
 let themes = new Store({
-    name: 'themes'
+    name: "themes",
 });
 
-themes.get('themes').forEach(theme => {
+themes.get("themes").forEach((theme) => {
     // Create the theme element for the DOM
-    let themeElement = document.createRange().createContextualFragment(`<div class="theme" id="${theme.name}">
+    let themeElement = document.createRange()
+        .createContextualFragment(`<div class="theme" id="${theme.name}" ${theme.id ? `data-id=\"${theme.id}\"` : ""}>
                 <div class="name">${theme.name}</div>
-                <button type="button" class="remove-theme" ${(theme.name == 'Default') || (theme.name == 'Dark') ? 'data-disabled' : ''} onclick="removeTheme(this)"><span class="lni lni-close"></span></button>
+                <button type="button" class="remove-theme" ${
+                  theme.name == "Default" || theme.name == "Dark" || theme.name == "Dark Plus"
+                    ? "disabled"
+                    : ""
+                } onclick="removeTheme(this)"><span class="lni lni-close"></span></button>
             </div>`);
     // Append the element to the themes element
-    document.querySelector('.themes').append(themeElement);
+    document.querySelector(".themes").append(themeElement);
 });
 
 /**
@@ -81,34 +94,36 @@ themes.get('themes').forEach(theme => {
 function removeTheme(rtObj) {
     let themeEl = rtObj.parentElement;
     let themeName = themeEl.id;
-    if (themeName !== 'Default' && themeName !== 'Dark') {
+    let themeId = themeEl.getAttribute('data-id').length > 0 ? themeEl.getAttribute('data-id') : undefined;
+    if (themeName !== "Default" && themeName !== "Dark") {
         Swal.fire({
-            title: `<h2>Do you really want to delete the theme <i>"${escape(themeName)}"</i> ?</h2>`,
+            title: `<h2>Do you really want to delete the theme <i>"${escape(
+        themeName
+      )}"</i> ?</h2>`,
             customClass: {
-                title: 'edit-popup-title',
-                popup: 'edit-popup',
-                confirmButton: 'edit-popup-button edit-popup-confirm-button',
-                cancelButton: 'edit-popup-button edit-popup-cancel-button',
-                closeButton: 'edit-popup-close-button',
-                header: 'edit-popup-header'
+                title: "edit-popup-title",
+                popup: "edit-popup",
+                confirmButton: "edit-popup-button edit-popup-confirm-button",
+                cancelButton: "edit-popup-button edit-popup-cancel-button",
+                closeButton: "edit-popup-close-button",
+                header: "edit-popup-header",
             },
-            width: '50%',
+            width: "50%",
             showCancelButton: true,
-            confirmButtonText: 'Delete',
+            confirmButtonText: "Delete",
             buttonsStyling: false,
-        }).then(result => {
+        }).then((result) => {
             if (result.value) {
                 // Get themes list
-                let themesList = Array.from(themes.get('themes'));
-                let name = escape(themeName);
+                let themesList = Array.from(themes.get("themes"));
                 // Filter themes list to remove current theme
-                themesList = themesList.filter(x => x.name !== name);
+                themesList = themesList.filter((x) => x.id !== themeId);
                 // Set the filtered themes list to global themes list
-                themes.set('themes', themesList);
+                themes.set("themes", themesList);
                 // Remove theme from DOM
                 themeEl.remove();
                 // IPC message to refresh main window
-                ipcRenderer.send('themes-changed', true);
+                ipcRenderer.send("themes-changed", true);
             }
         });
     }
@@ -119,57 +134,53 @@ function removeTheme(rtObj) {
  */
 function updateBaseThemes() {
     // Add spin effect to the icon on the button
-    document.querySelector('.button .lni-reload').classList.add('lni-is-spinning');
-    // Fetch a new version of the dark theme
-    fetch('https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.css', {
+    document
+        .querySelector(".button .lni-reload")
+        .classList.add("lni-is-spinning");
+
+    window.fetch("https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl", {
             cache: 'no-cache'
         })
         .then(res => res.text())
-        .then(css => {
-            console.log("done")
+        .then((style) => {
+            let _themes = themes.get("themes");
+
+            _themes = _themes.map((theme) => {
+                if (theme.name === "Dark Plus" || theme.colors) {
+                    if (theme.name === "Dark Plus") {
+                        theme.css = generateTheme({}, style);
+                        return theme;
+                    }
+                    if (theme.colors) {
+                        let colors = theme.colors;
+                        theme.css = generateTheme(colors, style);
+                        return theme;
+                    }
+                } else {
+                    return theme;
+                }
+            });
+
+            themes.set('themes', _themes);
+
+            ipcRenderer.send('themes-changed', true);
+
             // Remove the spin effect from the icon
-            document.querySelector('.button .lni-reload').classList.remove('lni-is-spinning');
-            // Get the themes list as an array
-            let themesList = Array.from(themes.get('themes'));
-
-            css = `
-            .app {
-                width: 100% !important;
-                border-radius: 0 !important;
-                border: 0 !important;
-            }
-            ` + css;
-
-            // Create new object for the updated theme
-            let updatedTheme = {
-                name: 'Dark Plus',
-                css: css.replace(/\@.*\{/gim, '')
-            };
-
-            // Find index of the dark theme
-            let i = themesList.findIndex(x => x.name == 'Dark Plus');
-            if (i !== -1) {
-                // Replace old version of dark theme with new version
-                themesList[i] = updatedTheme;
-            } else {
-                themesList.push(updatedTheme);
-            }
-
-            // Set the new themes list
-            themes.set('themes', themesList);
+            document
+                .querySelector(".button .lni-reload")
+                .classList.remove("lni-is-spinning");
         })
+        .catch(e => {
+            if (e) throw e;
+        });
 }
 
 // Update Base Themes Button Click
-document.querySelector('.button.update').addEventListener('click', () => {
+document.querySelector(".button.update").addEventListener("click", () => {
     updateBaseThemes();
 });
 
 // Button To Reload The Page
-document.querySelector('#reload-page').addEventListener('click', () => {
-    // Remove tooltip class so the tooltip doesn't spin
-    document.querySelector('.lni-reload').classList.remove('tooltip');
-    // Add spin effect to the icon on the button
-    document.querySelector('.lni-reload').classList.add('lni-is-spinning');
+document.querySelector("#reload-page").addEventListener("click", () => {
     window.location.reload();
 });

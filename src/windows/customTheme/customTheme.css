@@ -12,11 +12,12 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border: 1px solid var(--window-border);
   background: linear-gradient(to bottom right, #1a1a1a, #0f1010) !important;
+  color: #fff;
 }
 
 .container-after-titlebar {
   border-bottom: 1px solid var(--window-border);
-  padding: 0.75rem 1rem 1rem 1rem;
+  padding: 0 1rem;
 }
 
 .titlebar {
@@ -25,222 +26,17 @@ body {
 }
 
 .title {
-  font-weight: 700;
-  font-size: 2.5rem;
+  margin-top: .5rem;
+  font-weight: 500;
+  font-size: 2.25rem;
   font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: #fff;
-  border-bottom: 4px solid #b9b9b9de;
+  padding-bottom: .15rem;
+  border-bottom: 3px solid #48484891;
   -webkit-user-select: none;
+  position: relative;
 }
-
-[role="tablist"] {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  height: 7vh;
-  background: #191b1f;
-  color: #fff;
-  flex-flow: row nowrap;
-  overflow: auto;
-
-  position: sticky;
-  top: -3%;
-  left: 0;
-  z-index: 200;
-}
-
-[role="tab"] {
-  height: 100%;
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.95rem;
-  display: flex;
-  padding: 0.7em 1em;
-  align-items: center;
-  justify-content: space-between;
-  user-select: none;
-  white-space: nowrap;
-  box-sizing: border-box;
-}
-
-[role="tab"] .lni-cog {
-  margin: 0 10px;
-}
-
-[role="tab"] .lni-close {
-  margin: 0 0 0 5px;
-}
-
-[role="tab"][aria-selected="true"] {
-  background: #2a3440 !important;
-}
-
-.customcss .content {
-  display: flex;
-  flex-direction: column;
-}
-
-.customcss * {
-  margin: 5px 0;
-}
-
-.customcss-textarea {
-  padding: 0.75rem 1rem;
-  background: #15161d;
-  color: #fff;
-  border: 1px solid #5c5c5c;
-  font-family: Source Code Pro, Consolas, Anonymous Pro, Monaco, Inconsolata,
-    "Courier New", Courier, monospace;
-  height: 25vh;
-  resize: vertical;
-  max-height: 20.5em;
-  min-height: 5em;
-}
-
-@media (min-height: 490px) {
-  .customcss-textarea {
-    height: 28vh;
-  }
-}
-
-@media (min-height: 550px) {
-  .customcss-textarea {
-    height: 35vh;
-  }
-}
-
-@media (min-height: 620px) {
-  .customcss-textarea {
-    height: 45vh;
-  }
-}
-
-.customcss-textarea::-webkit-input-placeholder {
-  color: #bdbdbd;
-  -webkit-user-select: none;
-}
-
-.customcss-textarea:focus {
-  outline: none;
-  border: 1px solid #b6b6b68f;
-}
-
-.textbox {
-  padding: 0.75rem 1rem;
-  margin: 10px 0 0 0;
-  border: 1px solid #5c5c5c;
-  font-size: 1rem;
-  background: #15161d;
-  color: #fff;
-  flex: 1;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-.textbox::-webkit-input-placeholder {
-  color: #bdbdbd;
-  -webkit-user-select: none;
-}
-
-.textbox:focus {
-  outline: none;
-  border: 1px solid #b6b6b68f;
-}
-
-.button {
-  cursor: pointer;
-  background: #0960d1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.65rem 0.5rem;
-  font-size: 1.15rem;
-  transition: background 0.35s;
-  -webkit-user-select: none;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  border: 0;
-  color: #fff;
-  width: 100%;
-}
-
-.button .lni-plus {
-  margin-right: 10px;
-}
-
-.button:hover {
-  transition: background 0.35s;
-  background: #024bac;
-}
-
-.button:focus {
-  outline: 1px solid #75b1ff;
-}
-
-/** Theme Customizer **/
-
-.customizer input.textbox {
-  width: -webkit-fill-available;
-}
-
-#customizeraddbutton {
-  margin: 10px 0;
-}
-
-.settings-container {
-  margin-top: 0.5em;
-}
-
-.setting {
-  display: flex;
-  align-items: center;
-  color: #fff;
-  padding: 0.45rem 0.8rem;
-}
-
-.setting:nth-child(odd) {
-  background: #242424;
-}
-
-.setting:nth-child(even) {
-  background: #333333;
-}
-
-.setting .label {
-  flex-grow: 1;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-.setting input {
-  flex-grow: 1;
-}
-
-.setting .color-input {
-  border: 1px solid #5c5c5cde;
-  padding: 0.25rem 0.4rem;
-  background: #222;
-  color: #fff;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-.setting input[type="number"] {
-  border: 1px solid #5c5c5cde;
-  padding: 0.25rem 0.4rem;
-  background: #222;
-  color: #fff;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-.setting .color-input:focus {
-  outline: none;
-}
-
-/** Scrollbar **/
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -251,45 +47,71 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(36, 53, 90, 0.623);
-  position: relative;
-
-}
-
-/** Tooltip **/
-
-.tooltip {
+  background: rgba(0, 0, 0, 0.4);
   position: relative;
 }
 
-.tooltip:hover::after {
-  content: attr(data-tooltip);
-  background: #101114;
-  border: 1px solid #242525;
-  font-size: 1rem;
+.creator {
+  margin: 0.5rem 0;
+}
+
+.input {
+  font-size: 1.3rem;
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input .inputs {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.input input[type="text"] {
   font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-weight: 400;
-  padding: 0.25rem 1rem;
-  position: absolute;
-  width: max-content;
-  top: 105%;
-  left: 0;
-  z-index: 10;
+  font-size: 0.9rem;
+  padding: .15rem .35rem;
 }
 
-.pcr-button,
-.pcr-button::before,
-.pcr-button::after {
-  border-radius: 0 !important;
+.input.color input[type="text"] {
+  width: 60%;
+  margin-right: 0.5rem;
 }
 
-.inputs {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
+.input input:focus,
+button:focus {
+  outline: 2px solid #2a71d1;
 }
 
-.inputs .color-input {
-  margin-right: 0.5em;
+.input input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+  width: 1.5rem;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
+button {
+  width: 100%;
+  margin-top: .5rem;
+  background: #1e72e0;
+  border: 1px solid #2a71d1;
+  padding: .5rem 1rem;
+  font-size: 1.05rem;
+  cursor: pointer;
+  color: #fff;
+  font-family: BlinkMacSystemFont, "Manrope", 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+button:hover {
+  background: #1760c0;
 }

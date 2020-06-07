@@ -1,121 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Theme Creator</title>
+    <link rel="stylesheet" href="../otherAssets/LineIcons.min.css" />
+    <link rel="stylesheet" href="./customTheme.css" />
+    <link
+      rel="stylesheet"
+      href="../../node_modules/@simonwep/pickr/dist/themes/monolith.min.css"
+    />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Custom Theme</title>
-    <link rel="stylesheet" href="../otherAssets/LineIcons.min.css">
-    <link rel="stylesheet" href="./customTheme.css">
-    <link rel="stylesheet" href="../../node_modules/@simonwep/pickr/dist/themes/monolith.min.css">
-</head>
-
-<body>
+  <body>
     <div class="container">
-        <div class="title">Custom Theme</div>
-
-        <ul data-tabs>
-            <li><a href="#customizer">Theme Builder</a></li>
-            <li><a href="#customcss-container">Custom CSS</a></li>
-        </ul>
-
-        <div class="customizer" id="customizer">
-            <div class="settings-container">
-                <div class="setting">
-                    <div class="label">
-                        Main Background Color:
-                    </div>
-                    <div class="inputs" id="main-bg">
-                        <input class="color-input">
-                        <div class="color-button"></div>
-                    </div>
-                </div>
-                <div class="setting">
-                    <div class="label">
-                        Secondary Background Color:
-                    </div>
-                    <div class="inputs" id="sec-bg">
-                        <input class="color-input">
-                        <div class="color-button"></div>
-                    </div>
-                </div>
-                <div class="setting">
-                    <div class="label">
-                        Tertiary Background Color:
-                    </div>
-                    <div class="inputs" id="ter-bg">
-                        <input class="color-input">
-                        <div class="color-button"></div>
-                    </div>
-                </div>
-                <div class="setting">
-                    <div class="label">
-                        Main Text Color:
-                    </div>
-                    <div class="inputs" id="main-text">
-                        <input class="color-input">
-                        <div class="color-button"></div>
-                    </div>
-                </div>
-                <div class="setting">
-                    <div class="label">
-                        Secondary Text Color:
-                    </div>
-                    <div class="inputs" id="sec-text">
-                        <input class="color-input">
-                        <div class="color-button"></div>
-                    </div>
-                </div>
-                <div class="setting">
-                    <div class="label">
-                        Accent Color:
-                    </div>
-                    <div class="inputs" id="accent-color">
-                        <input class="color-input">
-                        <div class="color-button"></div>
-                    </div>
-                </div>
-                <div class="setting">
-                    <div class="label">
-                        Icon Color:
-                    </div>
-                    <div class="inputs" id="icon-color">
-                        <input class="color-input">
-                        <div class="color-button"></div>
-                    </div>
-                </div>
-                <div class="setting">
-                    <div class="label">
-                        Shadow Color:
-                    </div>
-                    <div class="inputs" id="shadow-color">
-                        <input class="color-input">
-                        <div class="color-button"></div>
-                    </div>
-                </div>
-                <div class="setting">
-                    <div class="label">
-                        Emoji Opacity:
-                    </div><input type="number" id="emoji-opacity" class="number-input" value="0.75" min="0" max="1"
-                        step="0.05">
-                </div>
+      <div class="title">Theme Creator</div>
+      <div class="creator" id="creator">
+        <div class="inputs-container">
+          <div class="text input">
+            <label for="customizer-theme-name">Theme Name:</label>
+            <input type="text" class="textbox" id="name" />
+          </div>
+          <div class="color input">
+            <div class="label">
+              Background Color:
             </div>
-            <input type="text" class="textbox" id="customizer-theme-name" placeholder="Theme Name">
-            <button type="button" class="button" id="customizeraddbutton"><span class="lni lni-plus"></span> Add
-                Theme</button>
-        </div>
-        <div class="customcss" id="customcss-container">
-            <div class="content">
-                <textarea name="customcss" id="customcss" class="customcss-textarea"
-                    placeholder="Custom CSS Code"></textarea>
-                <input type="text" id="customcssname" class="textbox" placeholder="Theme Name">
-                <button type="button" class="button" id="customcssaddbutton"><span class="lni lni-plus"></span> Add
-                    Theme</button>
+            <div class="inputs" id="next_bg">
+              <input class="color-text" type="text" value="#1f232a" />
+              <input type="color" class="color-input" value="#1f232a" />
             </div>
+          </div>
+          <div class="color input">
+            <div class="label">
+              Foreground Color:
+            </div>
+            <div class="inputs" id="next_fg">
+              <input class="color-text" type="text" value="#eee" />
+              <input type="color" class="color-input" value="#eeeeee" />
+            </div>
+          </div>
+          <div class="color input">
+            <div class="label">
+              Accent Color:
+            </div>
+            <div class="inputs" id="next_ac">
+              <input class="color-text" type="text" value="#7289da" />
+              <input type="color" class="color-input" value="#7289da" />
+            </div>
+          </div>
         </div>
+        <button type="button" class="button" id="customizeraddbutton">
+          <span class="lni lni-plus"></span> Add Theme
+        </button>
+      </div>
     </div>
     <script src="./customTheme.js"></script>
-</body>
-
+  </body>
 </html>

@@ -99,7 +99,7 @@ body {
   font-weight: bolder;
 }
 
-.remove-theme[data-disabled] .lni-close {
+.remove-theme[disabled] .lni-close {
   color: #771010;
   cursor: not-allowed;
 }
