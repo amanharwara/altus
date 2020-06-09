@@ -1,17 +1,28 @@
+const Color = require("color");
+const {
+    checkContrastAndFix
+} = require("../../util/checkContrastAndFix");
+
 /**
  * Add tab to DOM
  * @param {string} tabId ID of the tab
  * @param {string} tabName Name of the tab
  */
 function addTabToDOM(tabId, tabName) {
+    // Gets the tab's current settings
+    let tabSettings = tabStore.get("tabs").find((x) => x.id === tabId);
+
+    let tab_bg_color = Color(
+        tabSettings.tab_color ? tabSettings.tab_color : "#2a3440"
+    ).hex().toString();
+    let tab_fg_color = Color(tab_bg_color).isDark() ? "#FFFFFF" : "#000000";
+
     // Create tab element
-    let tabElement = document
-        .createRange()
-        .createContextualFragment(
-            `<li><a data-tab-id="${tabId}" href="#tab-content-${tabId}"><span class="tabName">${escape(
-        tabName
-      )}</span> <span class="lni lni-cog"></span><span class="lni lni-close"></span></a></li>`
-        );
+    let tabElement = document.createRange().createContextualFragment(
+        `<li><a data-tab-id="${tabId}" style="background: ${tab_bg_color} !important; color: ${tab_fg_color};"  href="#tab-content-${tabId}"><span class="tabName">${escape(
+      tabName
+    )}</span> <span class="lni lni-cog"></span><span class="lni lni-close"></span></a></li>`
+    );
 
     // Create tab content element
     let tabContentElement = document
@@ -86,9 +97,6 @@ function addTabToDOM(tabId, tabName) {
             }
         });
 
-    // Gets the tab's current settings
-    let tabSettings = tabStore.get("tabs").find((x) => x.id === tabId);
-
     // Sets the tab theme
     let themeName = tabSettings.theme;
     // Gets the CSS of theme if it exists otherwise gets Default CSS
@@ -98,7 +106,7 @@ function addTabToDOM(tabId, tabName) {
 
     setTabTheme(
         document.querySelector(`#whatsapp-${tabId}`),
-        themeName === 'Dark' ? 'dark' : currentThemeCSS,
+        themeName === "Dark" ? "dark" : currentThemeCSS,
         true
     );
 
@@ -156,6 +164,12 @@ function addTabToDOM(tabId, tabName) {
                         <div class="input-checkbox">
                             <input type="checkbox" id="${tabId}-sound-toggle" class="checkbox">
                             <div class="toggle-bg"></div>
+                        </div>
+                    </div>
+                    <div class="toggle-field">
+                        <div class="label">Tab Color:</div>
+                        <div class="input-checkbox">
+                            <input type="color" id="${tabId}-tab-color" class="color-input">
                         </div>
                     </div>
                     <div class="toggle-field">
@@ -259,6 +273,14 @@ function addTabToDOM(tabId, tabName) {
                     // Set sound setting
                     document.getElementById(`${tabId}-sound-toggle`).checked =
                         tabSettings.sound;
+
+                    // Set color setting
+                    document.getElementById(
+                            `${tabId}-tab-color`
+                        ).value = tabSettings.tab_color ?
+                        Color(tabSettings.tab_color).hex().toString() :
+                        "#2a3440";
+
                     // Set experimental setting
                     document.getElementById(`${tabId}-experimental-toggle`).checked =
                         tabSettings.experimental;
@@ -297,6 +319,7 @@ function addTabToDOM(tabId, tabName) {
                         `${tabId}-notification-toggle`
                     ).checked;
                     let sound = document.getElementById(`${tabId}-sound-toggle`).checked;
+                    let tab_color = document.getElementById(`${tabId}-tab-color`).value;
                     let theme = document
                         .getElementById(`${tabId}-theme-value`)
                         .getAttribute("data-selection-value");
@@ -320,6 +343,7 @@ function addTabToDOM(tabId, tabName) {
                         theme,
                         experimental,
                         exp_features,
+                        tab_color,
                     };
 
                     // Get the tabs list in array form
@@ -351,12 +375,22 @@ function addTabToDOM(tabId, tabName) {
                         );
                     }
 
+                    if (tab_color !== tabInList.tab_color) {
+                        let bg = Color(tab_color).hex().toString();
+                        let fg = Color(tab_color).isDark() ? "#FFFFFF" : "#000000";
+                        document.querySelector(
+                            `[data-tab-id="${tabId}"]`
+                        ).setAttribute('style', `background: ${bg} !important; color: ${fg} !important;`);
+                    }
+
                     if (theme !== tabInList.theme) {
                         // Set Theme of tab
-                        if (theme === 'Dark') {
-                            setTabTheme(document.querySelector(`#whatsapp-${tabId}`),
-                                'dark',
-                                false);
+                        if (theme === "Dark") {
+                            setTabTheme(
+                                document.querySelector(`#whatsapp-${tabId}`),
+                                "dark",
+                                false
+                            );
                         } else {
                             setTabTheme(
                                 document.querySelector(`#whatsapp-${tabId}`),

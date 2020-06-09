@@ -56,6 +56,10 @@ body {
   box-sizing: border-box;
 }
 
+[role="tab"]:not([aria-selected="true"]) {
+  filter: brightness(0.75);
+}
+
 [role="tab"] .lni-cog {
   margin: 0 10px;
 }
@@ -162,6 +166,24 @@ webview {
   align-items: center;
   justify-content: space-between;
   margin: 20px 0;
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
+input:focus,
+button:focus {
+  outline: 2px solid #2a71d1;
 }
 
 .toggle-bg,

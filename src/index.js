@@ -58,7 +58,7 @@ getDarkTheme(createThemesList);
  * @param {createThemesListCallback} createThemesList
  */
 function getDarkTheme(createThemesList) {
-  window.fetch("https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl", {
+  fetch("https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl", {
       cache: 'no-cache'
     })
     .then(res => res.text())

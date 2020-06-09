@@ -14,7 +14,7 @@ const {
 
 const {
     checkContrastAndFix
-} = require('./util/checkContrastAndFix');
+} = require('../util/checkContrastAndFix');
 
 const uuid = require('uuid/v4');
 

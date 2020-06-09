@@ -7,7 +7,8 @@ function addNewTab() {
         theme: null,
         experimental: null,
         exp_features: [],
-        id: null
+        id: null,
+        tab_color: null,
     };
 
     // Get the name (If no name is put by the user, it assigns the name "New Tab")
@@ -28,6 +29,9 @@ function addNewTab() {
     // Get experimental features
     tab.exp_features = experimentalSelect.getValue(true);
 
+    // Get tab color
+    tab.tab_color = document.querySelector('#tab-color').value;
+
     // Assign unique ID to tab
     tab.id = uuid();
 
@@ -45,6 +49,7 @@ function addNewTab() {
 
     // Clears the value of all the inputs after tab is added
     document.querySelector('#tab-name-textbox').value = '';
+    document.querySelector('#tab-color').value = '';
     document.querySelector('#notification-toggle').checked = true;
     document.querySelector('#sound-toggle').checked = true;
     document.querySelector('#experimental-toggle').checked = false;
