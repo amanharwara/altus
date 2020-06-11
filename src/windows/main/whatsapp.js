@@ -84,7 +84,7 @@ window.onload = () => {
 
     // Open links in external browser
     document.body.addEventListener('click', e => {
-        if (e.target.tagName === 'A') {
+        if (e.target.tagName === 'A' && e.target.getAttribute('target') === '_blank') {
             ipcRenderer.send('link-open', e.target.href);
         }
     });
