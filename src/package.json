@@ -19,7 +19,7 @@
         "start": "electron ."
     },
     "devDependencies": {
-        "electron": "^9.0.0"
+        "electron": "^9.0.4"
     },
     "dependencies": {
         "@simonwep/pickr": "^1.4.6",
