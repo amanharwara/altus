@@ -35,6 +35,9 @@ let themes = new Store({
 });
 
 const Color = require("color");
+const {
+    default: fetch
+} = require("node-fetch");
 
 // Checks if custom titlebar is enabled in settings & the platform isn't a Mac
 if (
@@ -91,8 +94,6 @@ document.querySelectorAll(".color-text").forEach((colorInput) => {
     });
 });
 
-console.log(Color('#000'));
-
 document.querySelector("button").addEventListener("click", async () => {
     let name = document.querySelector("#name").value || "Custom Theme";
     let id = uuid();
@@ -107,11 +108,15 @@ document.querySelector("button").addEventListener("click", async () => {
     fg = checkContrastAndFix(bg, fg).hex().toString();
     ac = ac.hex().toString();
 
+    let fetchStyle = await fetch("https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl");
+
+    let styleIntoText = await fetchStyle.text();
+
     let css = await generateTheme({
         bg,
         fg,
         ac
-    });
+    }, styleIntoText);
 
     let theme = {
         name,
