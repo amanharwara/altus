@@ -34,8 +34,6 @@ function generateTheme(opt, style) {
 
   let new_metadata_string = "";
 
-  console.log(parsed_metadata);
-
   for (let k in vars) {
     let current = vars[k];
     if (k === "theme") current.default = "'custom'";
@@ -46,8 +44,6 @@ function generateTheme(opt, style) {
     if (k === "next_ac") current.default = next_ac;
     new_metadata_string = `${k} = ${current.default !== null ? current.default : current}${current.units ? current.units : ""}\n` + new_metadata_string;
   }
-
-  console.log(new_metadata_string);
 
   css = new_metadata_string + css;
 
