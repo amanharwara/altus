@@ -47,6 +47,8 @@ function generateTheme(opt, style) {
 
   css = new_metadata_string + css;
 
+  css[css.length] = " "; // Removes extra "}" at the end
+
   let new_css = "";
 
   stylus.render(css, (e, css) => {
