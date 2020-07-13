@@ -13,6 +13,12 @@ const {
     enableQuickReplies,
 } = require('./experimental');
 
+const Store = require('electron-store');
+
+const themes = new Store({
+    name: "themes"
+});
+
 // Fix for "WhatsApp works with Chrome 36+" issue . DO NOT REMOVE
 var ses = remote.session.defaultSession;
 
@@ -99,4 +105,30 @@ ipcRenderer.on('set-experimental-features', (_, exp) => {
             if (feature === 'quick-replies') enableQuickReplies(exp.id);
         });
     }
+});
+
+ipcRenderer.on('theme', (_, theme_name) => {
+    let theme = themes.get("themes").find(theme => theme.name === theme_name);
+
+    if (theme_name === "Dark") {
+        if (!document.body.classList.contains("dark")) document.body.classList.add("dark");
+        if (document.querySelector("#whatsapp-style")) document.querySelector("#whatsapp-style").innerHTML = "";
+        return;
+    }
+
+    if (theme_name === "Default") {
+        if (document.body.classList.contains("dark")) document.body.classList.remove("dark");
+        if (document.querySelector("#whatsapp-style")) document.querySelector("#whatsapp-style").innerHTML = "";
+        return;
+    }
+
+    if (document.querySelector("#whatsapp-style")) {
+        document.querySelector("#whatsapp-style").innerHTML = theme.css;
+    } else {
+        let theme_element = document.createElement("style");
+        theme_element.id = "whatsapp-style";
+        theme_element.innerHTML = theme.css;
+        document.head.appendChild(theme_element);
+    }
+
 });

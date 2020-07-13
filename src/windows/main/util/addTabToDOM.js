@@ -51,6 +51,13 @@ function addTabToDOM(tabId, tabName) {
     // Toggle the new tab
     tabs.toggle(`#tab-content-${tabId}`);
 
+    document.querySelector(`#whatsapp-${tabId}`).addEventListener('dom-ready', () => {
+        setTabTheme(
+            document.querySelector(`#whatsapp-${tabId}`),
+            themeName,
+        );
+    });
+
     // Adds event listener for close tab button
     document
         .querySelector(`[data-tab-id*="${tabId}"]`)
@@ -103,12 +110,6 @@ function addTabToDOM(tabId, tabName) {
     let currentThemeCSS = themes.get("themes").find((x) => x.name === themeName) ?
         themes.get("themes").find((x) => x.name === themeName).css :
         themes.get("themes").find((x) => x.name === "Default").css;
-
-    setTabTheme(
-        document.querySelector(`#whatsapp-${tabId}`),
-        themeName === "Dark" ? "dark" : currentThemeCSS,
-        true
-    );
 
     // Toggles notifications according to setting
     toggleNotifications(
@@ -384,20 +385,10 @@ function addTabToDOM(tabId, tabName) {
                     }
 
                     if (theme !== tabInList.theme) {
-                        // Set Theme of tab
-                        if (theme === "Dark") {
-                            setTabTheme(
-                                document.querySelector(`#whatsapp-${tabId}`),
-                                "dark",
-                                false
-                            );
-                        } else {
-                            setTabTheme(
-                                document.querySelector(`#whatsapp-${tabId}`),
-                                themes.get("themes").find((x) => x.name === theme).css,
-                                false
-                            );
-                        }
+                        setTabTheme(
+                            document.querySelector(`#whatsapp-${tabId}`),
+                            theme,
+                        );
                     }
 
                     if (notifications !== tabInList.notifications) {

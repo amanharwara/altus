@@ -64,6 +64,9 @@ function getDarkTheme(createThemesList) {
     .then(res => res.text())
     .then((style) => {
       createThemesList(generateTheme({}, style));
+    })
+    .catch(err => {
+      throw new Error(err)
     });
 }
 
@@ -445,9 +448,22 @@ const mainMenuTemplate = [{
       },
       {
         label: "Donate",
-        click() {
-          shell.openExternal("https://github.com/amanharwara/altus#support");
-        },
+        submenu: [{
+          label: "Liberapay",
+          click() {
+            shell.openExternal("https://liberapay.com/aman_harwara/");
+          }
+        }, {
+          label: "Ko-Fi",
+          click() {
+            shell.openExternal("ko-fi.com/amanharwara");
+          }
+        }, {
+          label: "Other Methods...",
+          click() {
+            shell.openExternal("https://github.com/amanharwara/altus#support");
+          },
+        }],
       },
       {
         label: "Check For Updates",
@@ -509,12 +525,6 @@ const mainMenuTemplate = [{
             label: "Website",
             click: () => {
               shell.openExternal("https://amanharwara.xyz");
-            },
-          },
-          {
-            label: "GitHub",
-            click: () => {
-              shell.openExternal("https://www.github.com/amanharwara");
             },
           },
           {
