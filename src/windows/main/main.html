@@ -49,27 +49,20 @@
                         </div>
                     </div>
                     <div class="toggle-field">
+                        <div class="label with-help">Enable Utility Bar:
+                            <button class="help tooltip tooltip-top"
+                                data-tooltip="This enables a utility bar above the textbox where you can quickly format your text and save Quick Replies.">?</button>
+                        </div>
+                        <div class="input-checkbox">
+                            <input type="checkbox" id="utility-bar-toggle" class="checkbox">
+                            <div class="toggle-bg"></div>
+                        </div>
+                    </div>
+                    <div class="toggle-field">
                         <div class="label">Tab Color:</div>
                         <div class="input-checkbox">
                             <input type="color" id="tab-color" class="color-input" value="#2a3440">
                         </div>
-                    </div>
-                    <div class="toggle-field">
-                        <div class="label with-help">Experimental Features:
-                            <button class="help tooltip tooltip-top"
-                                data-tooltip="Experimental features like online indicator, quick replies, etc require using the WhatsApp API. This makes these features unstable as they can change and break at any time.">?</button>
-                        </div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="experimental-toggle" class="checkbox">
-                            <div class="toggle-bg"></div>
-                        </div>
-                    </div>
-                    <div class="input-field experimental-select">
-                        <select id="experimental-select" multiple>
-                            <option value="">Select Features</option>
-                            <option value="online-indicator">Online Indicator</option>
-                            <option value="quick-replies">Quick Replies</option>
-                        </select>
                     </div>
                 </div>
                 <button type="button" class="submit button" id="add-tab-button"><span class="lni lni-plus"></span> Add

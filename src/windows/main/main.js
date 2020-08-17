@@ -38,8 +38,8 @@ const {
     setupExistingTabs,
     changeTabName,
     setTabTheme,
+    setUtilityBar,
     setTabBarVisibility,
-    toggleExperimentalFeatures,
     toggleNotifications,
     toggleSound,
     zoom,
@@ -70,8 +70,7 @@ let tabStore = new Store({
 
 // Checks if custom titlebar is enabled in settings & the platform isn't a Mac
 if (
-    Array.from(settings.get("settings")).find((s) => s.id === "customTitlebar")
-    .value === true &&
+    Array.from(settings.get("settings")).find((s) => s.id === "customTitlebar").value === true &&
     process.platform !== "darwin"
 ) {
     // Create main window titlebar
@@ -109,14 +108,6 @@ let themeSelect = new choices("#theme-select", {
     choices: themesList,
 });
 
-// Select box for experimental features
-let experimentalSelect = new choices('#experimental-select', {
-    removeItems: true,
-    removeItemButton: true,
-    duplicateItemsAllowed: false,
-    paste: false,
-})
-
 // Click event for the "Add Tab" button
 document.querySelector("#add-tab-button").addEventListener("click", () => {
     addNewTab();
@@ -126,15 +117,6 @@ document.querySelector("#add-tab-button").addEventListener("click", () => {
 document.querySelector("#tab-name-textbox").addEventListener("keydown", (e) => {
     if (e.which == 13) {
         addNewTab();
-    }
-});
-
-document.querySelector('.experimental-select .choices').style.display = 'none';
-document.querySelector('#experimental-toggle').addEventListener('change', (e) => {
-    if (e.target.checked) {
-        document.querySelector('.experimental-select .choices').style.display = '';
-    } else {
-        document.querySelector('.experimental-select .choices').style.display = 'none';
     }
 });
 
@@ -228,13 +210,4 @@ ipcRenderer.on("previous-tab", () => {
     } else {
         tabs.toggle(tabItem.previousSibling.querySelector("a"));
     }
-});
-
-ipcRenderer.on('set-experimental-features', (_, tabId) => {
-    let tabSettings = tabStore.get('tabs').find(tab => tab.id === tabId.replace('whatsapp-', ''));
-    toggleExperimentalFeatures(document.querySelector(`#${tabId}`), {
-        value: tabSettings.experimental,
-        features: tabSettings.exp_features,
-        id: tabSettings.id
-    });
 });

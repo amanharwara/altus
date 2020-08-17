@@ -5,10 +5,9 @@ function addNewTab() {
         notifications: null,
         sound: null,
         theme: null,
-        experimental: null,
-        exp_features: [],
         id: null,
         tab_color: null,
+        utility_bar: null,
     };
 
     // Get the name (If no name is put by the user, it assigns the name "New Tab")
@@ -20,14 +19,11 @@ function addNewTab() {
     // Get sound setting
     tab.sound = document.querySelector('#sound-toggle').checked;
 
-    // Get experimental features setting
-    tab.experimental = document.querySelector('#experimental-toggle').checked;
+    // Get utility bar setting
+    tab.utility_bar = document.querySelector('#utility-bar-toggle').checked;
 
     // Get the theme
     tab.theme = themeSelect.getValue(true);
-
-    // Get experimental features
-    tab.exp_features = experimentalSelect.getValue(true);
 
     // Get tab color
     tab.tab_color = document.querySelector('#tab-color').value;
@@ -52,10 +48,8 @@ function addNewTab() {
     document.querySelector('#tab-color').value = '';
     document.querySelector('#notification-toggle').checked = true;
     document.querySelector('#sound-toggle').checked = true;
-    document.querySelector('#experimental-toggle').checked = false;
+    document.querySelector('#utility-bar-toggle').checked = false;
     themeSelect.setChoiceByValue('Default');
-    experimentalSelect.removeActiveItems();
-    document.querySelector('.experimental-select .choices').style.display = 'none';
 }
 
 module.exports = {

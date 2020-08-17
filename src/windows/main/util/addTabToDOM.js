@@ -1,7 +1,4 @@
 const Color = require("color");
-const {
-    checkContrastAndFix
-} = require("../../util/checkContrastAndFix");
 
 /**
  * Add tab to DOM
@@ -56,6 +53,8 @@ function addTabToDOM(tabId, tabName) {
             document.querySelector(`#whatsapp-${tabId}`),
             themeName,
         );
+
+        setUtilityBar(document.querySelector(`#whatsapp-${tabId}`), tabSettings.utility_bar);
     });
 
     // Adds event listener for close tab button
@@ -168,28 +167,20 @@ function addTabToDOM(tabId, tabName) {
                         </div>
                     </div>
                     <div class="toggle-field">
+                        <div class="label with-help">Utility Bar:
+                            <button class="help tooltip tooltip-top"
+                                data-tooltip="This enables a utility bar above the textbox where you can quickly format your text and save Quick Replies.">?</button>
+                        </div>
+                        <div class="input-checkbox">
+                            <input type="checkbox" id="${tabId}-utility-bar-toggle" class="checkbox">
+                            <div class="toggle-bg"></div>
+                        </div>
+                    </div>
+                    <div class="toggle-field">
                         <div class="label">Tab Color:</div>
                         <div class="input-checkbox">
                             <input type="color" id="${tabId}-tab-color" class="color-input">
                         </div>
-                    </div>
-                    <div class="toggle-field">
-                        <div class="label with-help">
-                            <span>Experimental Features:</span>
-                            <button class="help tooltip tooltip-top"
-                                data-tooltip="Experimental features like online indicator, quick replies, etc require using the WhatsApp API. This makes these features unstable as they can change and break at any time.">?</button>
-                        </div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="${tabId}-experimental-toggle" class="checkbox">
-                            <div class="toggle-bg"></div>
-                        </div>
-                    </div>
-                    <div class="input-field experimental-select-${tabId}" style="max-width: 50vh;">
-                        <select id="${tabId}-experimental-select" multiple>
-                            <option value="">Select Features</option>
-                            <option value="online-indicator">Online Indicator</option>
-                            <option value="quick-replies">Quick Replies</option>
-                        </select>
                     </div>
                 </div>`,
                 showCancelButton: true,
@@ -206,14 +197,6 @@ function addTabToDOM(tabId, tabName) {
                             choices: themesList,
                         }
                     );
-                    let experimentalSelect = new choices(
-                        document.getElementById(`${tabId}-experimental-select`), {
-                            removeItems: true,
-                            removeItemButton: true,
-                            duplicateItemsAllowed: false,
-                            paste: false,
-                        }
-                    );
 
                     // Set current theme on select box
                     tabEditSelectr.setChoiceByValue(tabSettings.theme);
@@ -224,44 +207,12 @@ function addTabToDOM(tabId, tabName) {
                             tabEditSelectr.getValue(true)
                         );
 
-                    experimentalSelect.setChoiceByValue(tabSettings.exp_features);
-                    document
-                        .querySelector(`.experimental-select-${tabId} .choices`)
-                        .setAttribute(
-                            "data-selection-value",
-                            experimentalSelect.getValue(true)
-                        );
-
                     tabEditSelectr.passedElement.element.addEventListener(
                         "choice",
                         (e) => {
                             document
                                 .getElementById(`${tabId}-theme-value`)
                                 .setAttribute("data-selection-value", e.detail.choice.value);
-                        }
-                    );
-
-                    experimentalSelect.passedElement.element.addEventListener(
-                        "choice",
-                        (e) => {
-                            let value = experimentalSelect.getValue(true);
-                            value.push(e.detail.choice.value);
-                            document
-                                .querySelector(`.experimental-select-${tabId} .choices`)
-                                .setAttribute("data-selection-value", value);
-                        }
-                    );
-
-                    experimentalSelect.passedElement.element.addEventListener(
-                        "removeItem",
-                        (e) => {
-                            let value = document
-                                .querySelector(`.experimental-select-${tabId} .choices`)
-                                .getAttribute("data-selection-value")
-                                .replace(e.detail.value, "");
-                            document
-                                .querySelector(`.experimental-select-${tabId} .choices`)
-                                .setAttribute("data-selection-value", value);
                         }
                     );
 
@@ -274,6 +225,9 @@ function addTabToDOM(tabId, tabName) {
                     // Set sound setting
                     document.getElementById(`${tabId}-sound-toggle`).checked =
                         tabSettings.sound;
+                    // Set utility bar setting
+                    document.getElementById(`${tabId}-utility-bar-toggle`).checked =
+                        tabSettings.utility_bar;
 
                     // Set color setting
                     document.getElementById(
@@ -281,34 +235,6 @@ function addTabToDOM(tabId, tabName) {
                         ).value = tabSettings.tab_color ?
                         Color(tabSettings.tab_color).hex().toString() :
                         "#2a3440";
-
-                    // Set experimental setting
-                    document.getElementById(`${tabId}-experimental-toggle`).checked =
-                        tabSettings.experimental;
-
-                    if (tabSettings.experimental) {
-                        document.querySelector(
-                            `.experimental-select-${tabId} .choices`
-                        ).style.display = "";
-                    } else {
-                        document.querySelector(
-                            `.experimental-select-${tabId} .choices`
-                        ).style.display = "none";
-                    }
-
-                    document
-                        .getElementById(`${tabId}-experimental-toggle`)
-                        .addEventListener("change", (e) => {
-                            if (e.target.checked) {
-                                document.querySelector(
-                                    `.experimental-select-${tabId} .choices`
-                                ).style.display = "";
-                            } else {
-                                document.querySelector(
-                                    `.experimental-select-${tabId} .choices`
-                                ).style.display = "none";
-                            }
-                        });
                 },
             }).then((result) => {
                 if (result.value) {
@@ -320,20 +246,11 @@ function addTabToDOM(tabId, tabName) {
                         `${tabId}-notification-toggle`
                     ).checked;
                     let sound = document.getElementById(`${tabId}-sound-toggle`).checked;
+                    let utility_bar = document.getElementById(`${tabId}-utility-bar-toggle`).checked;
                     let tab_color = document.getElementById(`${tabId}-tab-color`).value;
                     let theme = document
                         .getElementById(`${tabId}-theme-value`)
                         .getAttribute("data-selection-value");
-                    let experimental = document.getElementById(
-                        `${tabId}-experimental-toggle`
-                    ).checked;
-                    let exp_features;
-
-                    exp_features = document
-                        .querySelector(`.experimental-select-${tabId} .choices`)
-                        .getAttribute("data-selection-value")
-                        .split(",")
-                        .filter((str) => str.length > 0);
 
                     // Create object from new values
                     let tab = {
@@ -342,8 +259,7 @@ function addTabToDOM(tabId, tabName) {
                         notifications,
                         sound,
                         theme,
-                        experimental,
-                        exp_features,
+                        utility_bar,
                         tab_color,
                     };
 
@@ -376,6 +292,13 @@ function addTabToDOM(tabId, tabName) {
                         );
                     }
 
+                    if (utility_bar !== tabInList.utility_bar) {
+                        setUtilityBar(
+                            document.querySelector(`#whatsapp-${tabId}`),
+                            utility_bar
+                        );
+                    }
+
                     if (tab_color !== tabInList.tab_color) {
                         let bg = Color(tab_color).hex().toString();
                         let fg = Color(tab_color).isDark() ? "#FFFFFF" : "#000000";
@@ -392,10 +315,6 @@ function addTabToDOM(tabId, tabName) {
                     }
 
                     if (notifications !== tabInList.notifications) {
-                        location.reload();
-                    }
-
-                    if (experimental !== tabInList.experimental) {
                         location.reload();
                     }
                 }

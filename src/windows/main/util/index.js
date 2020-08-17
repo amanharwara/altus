@@ -17,6 +17,9 @@ const {
     setTabTheme
 } = require('./setTabTheme');
 const {
+    setUtilityBar
+} = require('./setUtilityBar');
+const {
     setTabBarVisibility
 } = require('./setTabBarVisibility');
 const {
@@ -26,9 +29,6 @@ const {
     toggleSound
 } = require('./toggleSound');
 const {
-    toggleExperimentalFeatures
-} = require('./toggleExperimentalFeatures');
-const {
     zoom
 } = require('./zoom');
 const {
@@ -36,7 +36,6 @@ const {
 } = require('./getActiveTab');
 
 module.exports = {
-    toggleExperimentalFeatures,
     getActiveTab,
     zoom,
     toggleSound,
@@ -45,6 +44,7 @@ module.exports = {
     addTabToDOM,
     changeTabName,
     setTabTheme,
+    setUtilityBar,
     addNewTab,
     removeTab,
     setupExistingTabs
