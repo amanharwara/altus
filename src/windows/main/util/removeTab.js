@@ -1,7 +1,3 @@
-const {
-    quickRepliesStore
-} = require('../store/quickReplies');
-
 /**
  * Remove tab
  * @param {Element} closeTabElement "Close Tab" button element
@@ -31,8 +27,6 @@ function removeTab(closeTabElement) {
 
     // Sets the new tab list
     tabStore.set('tabs', tabsList);
-
-    if (quickRepliesStore.get('replyStore').find(x => x.id === tabID)) quickRepliesStore.set('replyStore', quickRepliesStore.get('replyStore').filter(x => x.id !== tabID));
 }
 
 module.exports = {

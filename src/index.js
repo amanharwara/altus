@@ -58,15 +58,17 @@ getDarkTheme(createThemesList);
  * @param {createThemesListCallback} createThemesList
  */
 function getDarkTheme(createThemesList) {
-  fetch("https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl", {
-      cache: 'no-cache'
-    })
-    .then(res => res.text())
+  fetch(
+      "https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl", {
+        cache: "no-cache",
+      }
+    )
+    .then((res) => res.text())
     .then((style) => {
       createThemesList(generateTheme({}, style));
     })
-    .catch(err => {
-      throw new Error(err)
+    .catch((err) => {
+      throw new Error(err);
     });
 }
 
@@ -449,21 +451,26 @@ const mainMenuTemplate = [{
       {
         label: "Donate",
         submenu: [{
-          label: "Liberapay",
-          click() {
-            shell.openExternal("https://liberapay.com/aman_harwara/");
-          }
-        }, {
-          label: "Ko-Fi",
-          click() {
-            shell.openExternal("ko-fi.com/amanharwara");
-          }
-        }, {
-          label: "Other Methods...",
-          click() {
-            shell.openExternal("https://github.com/amanharwara/altus#support");
+            label: "Liberapay",
+            click() {
+              shell.openExternal("https://liberapay.com/aman_harwara/");
+            },
           },
-        }],
+          {
+            label: "Ko-Fi",
+            click() {
+              shell.openExternal("ko-fi.com/amanharwara");
+            },
+          },
+          {
+            label: "Other Methods...",
+            click() {
+              shell.openExternal(
+                "https://github.com/amanharwara/altus#support"
+              );
+            },
+          },
+        ],
       },
       {
         label: "Check For Updates",
@@ -834,11 +841,6 @@ if (!singleInstanceLock) {
     // Set global settings whenever they are changed
     ipcMain.on("settings-changed", () => setGlobalSettings());
 
-    // Set experimental features for a tab
-    ipcMain.on("set-experimental-features", (_, tabId) => {
-      mainWindow.webContents.send("set-experimental-features", tabId);
-    });
-
     // Message Indicator
     ipcMain.on("message-indicator", (e, i) => {
       if (process.platform === "darwin") {
@@ -861,6 +863,35 @@ if (!singleInstanceLock) {
       window: c,
       showCopyImage: false,
       showSaveImageAs: true,
+      append: (def, params, window) => [{
+          label: "Bold",
+          visible: params.isEditable,
+          click: () => {
+            window.webContents.send("format-text", "*");
+          },
+        },
+        {
+          label: "Italic",
+          visible: params.isEditable,
+          click: () => {
+            window.webContents.send("format-text", "_");
+          },
+        },
+        {
+          label: "Strike",
+          visible: params.isEditable,
+          click: () => {
+            window.webContents.send("format-text", "~");
+          },
+        },
+        {
+          label: "Monospaced",
+          visible: params.isEditable,
+          click: () => {
+            window.webContents.send("format-text", "```");
+          },
+        },
+      ],
     });
   });
 
