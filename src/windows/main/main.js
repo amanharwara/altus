@@ -131,16 +131,17 @@ document.addEventListener("DOMContentLoaded", (e) => {
 });
 
 document.addEventListener("tabby", (e) => {
-    console.log(e);
-    if (e.detail.previousTab) {
-        let previous_tab_id = e.detail.previousTab.id;
-        if (!document.getElementById(previous_tab_id)) {
-            if (previous_tab_id.replace("tabby-toggle_tab-content-", "") === tabStore.get("active_tab_id")) {
-                tabStore.set("active_tab_id", null);
+    if (settings.get("settings").find((s) => s.id === "rememberActiveTab").value === true) {
+        if (e.detail.previousTab) {
+            let previous_tab_id = e.detail.previousTab.id;
+            if (!document.getElementById(previous_tab_id)) {
+                if (previous_tab_id.replace("tabby-toggle_tab-content-", "") === tabStore.get("active_tab_id")) {
+                    tabStore.set("active_tab_id", null);
+                }
+            } else {
+                let tab_id = e.target.id.replace("tabby-toggle_tab-content-", "");
+                tabStore.set("active_tab_id", tab_id);
             }
-        } else {
-            let tab_id = e.target.id.replace("tabby-toggle_tab-content-", "");
-            tabStore.set("active_tab_id", tab_id);
         }
     }
 }, false);
