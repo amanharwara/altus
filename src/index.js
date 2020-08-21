@@ -612,7 +612,7 @@ if (!singleInstanceLock) {
       backgroundColor: "#282C34",
       // Set main window icon
       icon: nativeImage.createFromPath(
-        path.join(__dirname, "/windows/otherAssets/icon.ico")
+        path.join(__dirname, "/windows/otherAssets/icon" + (process.platform === "linux" ? ".png" : ".ico"))
       ),
       webPreferences: {
         // Enable <webview> tag for embedding WhatsApp
@@ -692,14 +692,13 @@ if (!singleInstanceLock) {
      */
     function setGlobalSettings() {
       if (
-        process.platform !== "linux" &&
         settings.get("settings").find((s) => s.id === "trayIcon").value === true
       ) {
         // If tray icon setting is enabled
 
         // Get tray icon image
         let trayIconImage = nativeImage.createFromPath(
-          path.join(__dirname, "/windows/otherAssets/icon.ico")
+          path.join(__dirname, "/windows/otherAssets/" + (process.platform === "linux" ? "tray.png" : "icon.ico"))
         );
 
         // Create context menu for tray icon
@@ -729,16 +728,19 @@ if (!singleInstanceLock) {
             },
           },
         ]);
-
+        
         // Checks if the tray icon already exists or not
         if (typeof trayIcon !== "object") {
-          if (process.platform !== "darwin" && process.platform !== "linux") {
+          if (process.platform !== "darwin") {
             // Create tray icon on Windows
             trayIcon = new Tray(trayIconImage);
+            
             // Set tray icon tooltip
             trayIcon.setToolTip("Altus");
+
             // Set tray icon context menu
             trayIcon.setContextMenu(trayContextMenu);
+
             // Add double-click event
             trayIcon.on("double-click", () => {
               mainWindow.show();
@@ -782,12 +784,10 @@ if (!singleInstanceLock) {
         mainWindow.webContents.send("set-tabbar", false);
       }
 
-      if (process.platform !== "linux") {
-        if (closeToTraySetting && closeToTraySetting.value === true) {
-          app.closeToTray = true;
-        } else {
-          app.closeToTray = false;
-        }
+      if (closeToTraySetting && closeToTraySetting.value === true) {
+        app.closeToTray = true;
+      } else {
+        app.closeToTray = false;
       }
     }
 

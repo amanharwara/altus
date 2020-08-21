@@ -51,8 +51,7 @@ if (Array.from(settings.get('settings')).find(s => s.id === 'customTitlebar').va
     document.head.appendChild(style);
 }
 
-// Loop through all the settings (except tray icon on Linux as it is not supported)
-Array.from(process.platform === 'linux' ? settings.get('settings').filter(s => s.id !== 'trayIcon' && s.id !== 'closeToTray') : settings.get('settings')).forEach(setting => {
+Array.from(settings.get('settings')).forEach(setting => {
     // Create setting element for DOM
     let settingElement = document.createRange()
         .createContextualFragment(`<div class="setting" data-setting="${setting.id}" data-value="${setting.value ? 'enabled' : 'disabled'}">
@@ -79,7 +78,7 @@ document.querySelector('.save.button').addEventListener('click', e => {
     document.querySelector('.save.button').innerHTML = '<span class="lni lni-spinner-solid"></span>';
 
     // Loop through current settings
-    Array.from(process.platform === 'linux' ? settings.get('settings').filter(s => s.id !== 'trayIcon' && s.id !== 'closeToTray') : settings.get('settings')).forEach(setting => {
+    Array.from(settings.get('settings')).forEach(setting => {
         // Find the DOM element of the setting
         let settingDOMElement = document.querySelector(`#${setting.id}-checkbox`);
 
