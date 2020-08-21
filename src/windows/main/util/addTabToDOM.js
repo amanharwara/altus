@@ -2,12 +2,12 @@ const Color = require("color");
 
 /**
  * Add tab to DOM
- * @param {string} tabId ID of the tab
+ * @param {string} tab_id ID of the tab
  * @param {string} tabName Name of the tab
  */
-function addTabToDOM(tabId, tabName) {
+function addTabToDOM(tab_id, tabName) {
     // Gets the tab's current settings
-    let tabSettings = tabStore.get("tabs").find((x) => x.id === tabId);
+    let tabSettings = tabStore.get("tabs").find((x) => x.id === tab_id);
 
     let tab_bg_color = Color(
         tabSettings.tab_color ? tabSettings.tab_color : "#2a3440"
@@ -16,7 +16,7 @@ function addTabToDOM(tabId, tabName) {
 
     // Create tab element
     let tabElement = document.createRange().createContextualFragment(
-        `<li><a data-tab-id="${tabId}" style="background: ${tab_bg_color} !important; color: ${tab_fg_color};"  href="#tab-content-${tabId}"><span class="tabName">${escape(
+        `<li><a data-tab-id="${tab_id}" style="background: ${tab_bg_color} !important; color: ${tab_fg_color};"  href="#tab-content-${tab_id}"><span class="tabName">${escape(
       tabName
     )}</span> <span class="lni lni-cog"></span><span class="lni lni-close"></span></a></li>`
     );
@@ -25,10 +25,10 @@ function addTabToDOM(tabId, tabName) {
     let tabContentElement = document
         .createRange()
         .createContextualFragment(
-            `<div id="tab-content-${tabId}"><webview id="whatsapp-${tabId}" preload="./whatsapp.js" src="https://web.whatsapp.com/" useragent="${window.navigator.userAgent.replace(
+            `<div id="tab-content-${tab_id}"><webview id="whatsapp-${tab_id}" preload="./whatsapp.js" src="https://web.whatsapp.com/" useragent="${window.navigator.userAgent.replace(
         /(altus|Electron)([^\s]+\s)/g,
         ""
-      )}" partition="persist:${tabId}"></webview></div>`
+      )}" partition="persist:${tab_id}"></webview></div>`
         );
 
     // Prepend tab element to tab list
@@ -46,20 +46,20 @@ function addTabToDOM(tabId, tabName) {
     tabs.setup();
 
     // Toggle the new tab
-    tabs.toggle(`#tab-content-${tabId}`);
+    tabs.toggle(`#tab-content-${tab_id}`);
 
-    document.querySelector(`#whatsapp-${tabId}`).addEventListener('dom-ready', () => {
+    document.querySelector(`#whatsapp-${tab_id}`).addEventListener('dom-ready', () => {
         setTabTheme(
-            document.querySelector(`#whatsapp-${tabId}`),
+            document.querySelector(`#whatsapp-${tab_id}`),
             themeName,
         );
 
-        setUtilityBar(document.querySelector(`#whatsapp-${tabId}`), tabSettings.utility_bar);
+        setUtilityBar(document.querySelector(`#whatsapp-${tab_id}`), tabSettings.utility_bar);
     });
 
     // Adds event listener for close tab button
     document
-        .querySelector(`[data-tab-id*="${tabId}"]`)
+        .querySelector(`[data-tab-id*="${tab_id}"]`)
         .querySelector(".lni-close")
         .addEventListener("click", () => {
             // Check if "Tab Close Prompt" setting is enabled
@@ -88,7 +88,7 @@ function addTabToDOM(tabId, tabName) {
                         // Remove the tab after prompt
                         removeTab(
                             document
-                            .querySelector(`[data-tab-id*="${tabId}"]`)
+                            .querySelector(`[data-tab-id*="${tab_id}"]`)
                             .querySelector(".lni-close")
                         );
                     }
@@ -97,7 +97,7 @@ function addTabToDOM(tabId, tabName) {
                 // Remove the tab directly
                 removeTab(
                     document
-                    .querySelector(`[data-tab-id*="${tabId}"]`)
+                    .querySelector(`[data-tab-id*="${tab_id}"]`)
                     .querySelector(".lni-close")
                 );
             }
@@ -112,24 +112,24 @@ function addTabToDOM(tabId, tabName) {
 
     // Toggles notifications according to setting
     toggleNotifications(
-        document.querySelector(`#whatsapp-${tabId}`),
+        document.querySelector(`#whatsapp-${tab_id}`),
         tabSettings.notifications,
         true
     );
 
     // Toggles sound according to setting
     toggleSound(
-        document.querySelector(`#whatsapp-${tabId}`),
+        document.querySelector(`#whatsapp-${tab_id}`),
         tabSettings.sound,
         true
     );
 
     // Adds event listener for tab settings button
     document
-        .querySelector(`[data-tab-id*="${tabId}"]`)
+        .querySelector(`[data-tab-id*="${tab_id}"]`)
         .querySelector(".lni-cog")
         .addEventListener("click", () => {
-            let tabSettings = tabStore.get("tabs").find((x) => x.id === tabId);
+            let tabSettings = tabStore.get("tabs").find((x) => x.id === tab_id);
             Swal.fire({
                 title: `Tab Preferences`,
                 customClass: {
@@ -143,11 +143,11 @@ function addTabToDOM(tabId, tabName) {
                 html: `<div class="inputs">
                     <div class="input-field">
                         <div class="label">Name:</div>
-                        <div class="input-flex"><input class="textbox" placeholder="Name of instance" id="${tabId}-name-textbox" type="text"></div>
+                        <div class="input-flex"><input class="textbox" placeholder="Name of instance" id="${tab_id}-name-textbox" type="text"></div>
                     </div>
                     <div class="input-field">
-                        <div class="label" data-selection-value="" id="${tabId}-theme-value">Theme:</div>
-                        <select id="${tabId}-theme-select">
+                        <div class="label" data-selection-value="" id="${tab_id}-theme-value">Theme:</div>
+                        <select id="${tab_id}-theme-select">
                         </select>
                     </div>
                     <div class="toggle-field">
@@ -155,14 +155,14 @@ function addTabToDOM(tabId, tabName) {
                         <button class="help tooltip tooltip-top"
                         data-tooltip="Changing this setting will cause the page to be refreshed.">?</button></div>
                         <div class="input-checkbox">
-                            <input title="Changing this setting will cause the page to be refreshed" type="checkbox" id="${tabId}-notification-toggle" class="checkbox">
+                            <input title="Changing this setting will cause the page to be refreshed" type="checkbox" id="${tab_id}-notification-toggle" class="checkbox">
                             <div class="toggle-bg"></div>
                         </div>
                     </div>
                     <div class="toggle-field">
                         <div class="label">Sound:</div>
                         <div class="input-checkbox">
-                            <input type="checkbox" id="${tabId}-sound-toggle" class="checkbox">
+                            <input type="checkbox" id="${tab_id}-sound-toggle" class="checkbox">
                             <div class="toggle-bg"></div>
                         </div>
                     </div>
@@ -172,14 +172,14 @@ function addTabToDOM(tabId, tabName) {
                                 data-tooltip="This enables a utility bar above the textbox where you can quickly format your text and save Quick Replies.">?</button>
                         </div>
                         <div class="input-checkbox">
-                            <input type="checkbox" id="${tabId}-utility-bar-toggle" class="checkbox">
+                            <input type="checkbox" id="${tab_id}-utility-bar-toggle" class="checkbox">
                             <div class="toggle-bg"></div>
                         </div>
                     </div>
                     <div class="toggle-field">
                         <div class="label">Tab Color:</div>
                         <div class="input-checkbox">
-                            <input type="color" id="${tabId}-tab-color" class="color-input">
+                            <input type="color" id="${tab_id}-tab-color" class="color-input">
                         </div>
                     </div>
                 </div>`,
@@ -192,7 +192,7 @@ function addTabToDOM(tabId, tabName) {
                 onRender: () => {
                     // Initiate theme selection on tab edit
                     let tabEditSelectr = new choices(
-                        document.getElementById(`${tabId}-theme-select`), {
+                        document.getElementById(`${tab_id}-theme-select`), {
                             searchEnabled: true,
                             choices: themesList,
                         }
@@ -201,7 +201,7 @@ function addTabToDOM(tabId, tabName) {
                     // Set current theme on select box
                     tabEditSelectr.setChoiceByValue(tabSettings.theme);
                     document
-                        .getElementById(`${tabId}-theme-value`)
+                        .getElementById(`${tab_id}-theme-value`)
                         .setAttribute(
                             "data-selection-value",
                             tabEditSelectr.getValue(true)
@@ -211,27 +211,27 @@ function addTabToDOM(tabId, tabName) {
                         "choice",
                         (e) => {
                             document
-                                .getElementById(`${tabId}-theme-value`)
+                                .getElementById(`${tab_id}-theme-value`)
                                 .setAttribute("data-selection-value", e.detail.choice.value);
                         }
                     );
 
                     // Set name of tab
-                    document.getElementById(`${tabId}-name-textbox`).value =
+                    document.getElementById(`${tab_id}-name-textbox`).value =
                         tabSettings.name;
                     // Set notification setting
-                    document.getElementById(`${tabId}-notification-toggle`).checked =
+                    document.getElementById(`${tab_id}-notification-toggle`).checked =
                         tabSettings.notifications;
                     // Set sound setting
-                    document.getElementById(`${tabId}-sound-toggle`).checked =
+                    document.getElementById(`${tab_id}-sound-toggle`).checked =
                         tabSettings.sound;
                     // Set utility bar setting
-                    document.getElementById(`${tabId}-utility-bar-toggle`).checked =
+                    document.getElementById(`${tab_id}-utility-bar-toggle`).checked =
                         tabSettings.utility_bar;
 
                     // Set color setting
                     document.getElementById(
-                            `${tabId}-tab-color`
+                            `${tab_id}-tab-color`
                         ).value = tabSettings.tab_color ?
                         Color(tabSettings.tab_color).hex().toString() :
                         "#2a3440";
@@ -240,21 +240,21 @@ function addTabToDOM(tabId, tabName) {
                 if (result.value) {
                     // Get all the new values
                     let name =
-                        document.getElementById(`${tabId}-name-textbox`).value ||
+                        document.getElementById(`${tab_id}-name-textbox`).value ||
                         tabSettings.name;
                     let notifications = document.getElementById(
-                        `${tabId}-notification-toggle`
+                        `${tab_id}-notification-toggle`
                     ).checked;
-                    let sound = document.getElementById(`${tabId}-sound-toggle`).checked;
-                    let utility_bar = document.getElementById(`${tabId}-utility-bar-toggle`).checked;
-                    let tab_color = document.getElementById(`${tabId}-tab-color`).value;
+                    let sound = document.getElementById(`${tab_id}-sound-toggle`).checked;
+                    let utility_bar = document.getElementById(`${tab_id}-utility-bar-toggle`).checked;
+                    let tab_color = document.getElementById(`${tab_id}-tab-color`).value;
                     let theme = document
-                        .getElementById(`${tabId}-theme-value`)
+                        .getElementById(`${tab_id}-theme-value`)
                         .getAttribute("data-selection-value");
 
                     // Create object from new values
                     let tab = {
-                        id: tabId,
+                        id: tab_id,
                         name,
                         notifications,
                         sound,
@@ -280,13 +280,13 @@ function addTabToDOM(tabId, tabName) {
 
                     if (name !== tabInList.name) {
                         // Change the name of the tab
-                        changeTabName(tabId, name);
+                        changeTabName(tab_id, name);
                     }
 
                     if (sound !== tabInList.sound) {
                         // Toggle sound
                         toggleSound(
-                            document.querySelector(`#whatsapp-${tabId}`),
+                            document.querySelector(`#whatsapp-${tab_id}`),
                             sound,
                             false
                         );
@@ -294,7 +294,7 @@ function addTabToDOM(tabId, tabName) {
 
                     if (utility_bar !== tabInList.utility_bar) {
                         setUtilityBar(
-                            document.querySelector(`#whatsapp-${tabId}`),
+                            document.querySelector(`#whatsapp-${tab_id}`),
                             utility_bar
                         );
                     }
@@ -303,13 +303,13 @@ function addTabToDOM(tabId, tabName) {
                         let bg = Color(tab_color).hex().toString();
                         let fg = Color(tab_color).isDark() ? "#FFFFFF" : "#000000";
                         document.querySelector(
-                            `[data-tab-id="${tabId}"]`
+                            `[data-tab-id="${tab_id}"]`
                         ).setAttribute('style', `background: ${bg} !important; color: ${fg} !important;`);
                     }
 
                     if (theme !== tabInList.theme) {
                         setTabTheme(
-                            document.querySelector(`#whatsapp-${tabId}`),
+                            document.querySelector(`#whatsapp-${tab_id}`),
                             theme,
                         );
                     }

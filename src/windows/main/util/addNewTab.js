@@ -43,6 +43,8 @@ function addNewTab() {
     // Adds new tab to the DOM
     addTabToDOM(tab.id, tab.name);
 
+    tabStore.set("active_tab_id", tab.id)
+
     // Clears the value of all the inputs after tab is added
     document.querySelector('#tab-name-textbox').value = '';
     document.querySelector('#tab-color').value = '';

@@ -8,6 +8,11 @@ function setupExistingTabs() {
         tabStore.get('tabs').forEach(tab => {
             addTabToDOM(tab.id, tab.name);
         });
+        if (!tabStore.get("active_tab_id")) {
+            //tabStore.set("active_tab_id", document.querySelector('[id^="tab-content"]:not([hidden])').id.replace("tab-content-", ""));
+        } else {
+            tabs.toggle(`#tab-content-${tabStore.get("active_tab_id")}`);
+        }
     }
 }
 
