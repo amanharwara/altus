@@ -91,7 +91,7 @@
                 "AppImage"
             ],
             "icon": "build/icon.png",
-            "asar": true
+            "asar": false
         }
     },
     "resolutions": {
