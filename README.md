@@ -8,8 +8,6 @@
 
 ![Altus Banner](./img/altus-banner.png)
 
-The name **Altus** comes from the Latin adjective _altus_ meaning "high, deep, noble or profound". The name was actually suggested by one of my friends.
-
 ## Features
 
 **Altus** uses the GitHub-produced Electron framework to wrap around WhatsApp Web and add extra features to it.
@@ -87,10 +85,6 @@ If you like Altus, consider supporting it by donating using any of the following
 
 - LiberaPay: <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
 - Ko-Fi: [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
-- Bitcoin: `13v38VvX6jvqeVZZTdrnu83dsSobNAFc2N`
-- Bitcoin Cash: `qq0lsyejqndpeqcqcjx6sxcc6adpsfqegspdhuhu3u`
-- Ether: `0x906AD9b23722A551F5e5edbB0F0E0C99Ba5C98e8`
-- Stellar: `GDO2PVPR6TJDY36N73MA6EMSTETPEOGL2VNZCJHVLG4PSNPVWH42UU4W`
 
 ## For Developers
 
@@ -141,3 +135,4 @@ Below is the list of contributors who have contributed to Altus by creating a fe
 #### [Melvin-Abraham](https://github.com/Melvin-Abraham) - Helped fix issues #55, #53
 #### [dylanmcdougall](https://github.com/dylanmcdougall) - PR #10 (Added feature - Confirmation Dialog on close)
 #### [Dafnik](https://github.com/Dafnik) - PR #5 (Helped fix issue #4)
+#### [Marcelo Zapatta](https://github.com/MarceloZapatta) - PR #77 (Fixed #23 by adding tray icon support on Linux)
