@@ -1,7 +1,4 @@
-const {
-  remote,
-  ipcRenderer,
-} = require("electron");
+const { remote, ipcRenderer } = require("electron");
 
 const Store = require("electron-store");
 
@@ -10,7 +7,7 @@ const themes = new Store({
 });
 
 const quick_replies_store = new Store({
-  name: "quick_replies"
+  name: "quick_replies",
 });
 
 // Fix for "WhatsApp works with Chrome 36+" issue . DO NOT REMOVE
@@ -40,13 +37,13 @@ window.onload = () => {
   new MutationObserver(function (mutations) {
     let title = mutations[0].target.innerText;
     let title_regex = /([0-9]+)/;
-    let number = title_regex.exec(title) ?
-      parseInt(title_regex.exec(title)[0]) !== 0 &&
-      parseInt(title_regex.exec(title)[0]) !== undefined &&
-      parseInt(title_regex.exec(title)[0]) !== null ?
-      parseInt(title_regex.exec(title)[0]) :
-      null :
-      null;
+    let number = title_regex.exec(title)
+      ? parseInt(title_regex.exec(title)[0]) !== 0 &&
+        parseInt(title_regex.exec(title)[0]) !== undefined &&
+        parseInt(title_regex.exec(title)[0]) !== null
+        ? parseInt(title_regex.exec(title)[0])
+        : null
+      : null;
     ipcRenderer.send("message-indicator", number);
   }).observe(document.querySelector("title"), {
     subtree: true,
@@ -73,14 +70,15 @@ window.onload = () => {
             }
 
             new MutationObserver((mutations) => {
+              console.log(mutations);
               if (window.utility_bar_enabled) {
                 for (let i = 0; i < mutations.length; i++) {
                   let mutation = mutations[i];
-
                   if (
                     mutation.removedNodes.length > 0 &&
                     (mutation.removedNodes[0].classList.contains("_1qDvT") ||
-                      mutation.removedNodes[0].classList.contains("_36Lgj"))
+                      mutation.removedNodes[0].classList.contains("_36Lgj") ||
+                      mutation.removedNodes[0].classList.contains("_1x3hh"))
                   ) {
                     if (!document.querySelector("._36Lgj")) {
                       document.querySelector(
@@ -95,7 +93,8 @@ window.onload = () => {
                   if (
                     mutation.addedNodes.length > 0 &&
                     (mutation.addedNodes[0].classList.contains("_1qDvT") ||
-                      mutation.addedNodes[0].classList.contains("_36Lgj"))
+                      mutation.addedNodes[0].classList.contains("_36Lgj") ||
+                      mutation.addedNodes[0].classList.contains("_1x3hh"))
                   ) {
                     document.querySelector(".utility-bar").style.display =
                       "none";
@@ -154,9 +153,7 @@ window.onload = () => {
 ipcRenderer.on("theme", (_, tab_info) => {
   let theme_name = tab_info.theme;
 
-  let {
-    tabId
-  } = tab_info;
+  let { tabId } = tab_info;
 
   document.body.dataset.tabid = tabId;
 
@@ -363,7 +360,10 @@ function enable_utility_bar() {
 
   document.querySelector(".utility-bar").addEventListener("click", (e) => {
     if (e.target.classList.contains("ub-remove")) {
-      confirm_remove_quick_reply(document.body.dataset.tabid, e.target.dataset.replyid);
+      confirm_remove_quick_reply(
+        document.body.dataset.tabid,
+        e.target.dataset.replyid
+      );
     }
 
     if (e.target.classList.contains("ub-input")) {
@@ -375,12 +375,22 @@ function enable_utility_bar() {
       format_selected_text(e.target.getAttribute("data-wrapper"));
     }
 
-    if (e.target.closest('.quick-reply') && !e.target.classList.contains('ub-remove')) {
-      insert_message_text(e.target.closest(".quick-reply").dataset.message, true);
+    if (
+      e.target.closest(".quick-reply") &&
+      !e.target.classList.contains("ub-remove")
+    ) {
+      insert_message_text(
+        e.target.closest(".quick-reply").dataset.message,
+        true
+      );
     }
 
     if (e.target.id === "toggle-add-reply") {
-      if (document.querySelector(".add-reply-container").classList.contains("show")) {
+      if (
+        document
+          .querySelector(".add-reply-container")
+          .classList.contains("show")
+      ) {
         document.querySelector(".add-reply-container").classList.remove("show");
       } else {
         document.querySelector(".add-reply-container").classList.add("show");
@@ -388,14 +398,18 @@ function enable_utility_bar() {
     }
 
     if (e.target.id === "add-reply-button") {
-      if (document.getElementById("label-input").value.length > 0 && document.getElementById("message-input").value.length > 0) {
+      if (
+        document.getElementById("label-input").value.length > 0 &&
+        document.getElementById("message-input").value.length > 0
+      ) {
         let tab_id = document.body.dataset.tabid;
         let label = document.getElementById("label-input").value;
         add_quick_reply({
           tab_id,
-          reply_id: (quick_replies_store.get(tab_id).length + 1) + label.split(' ')[0],
+          reply_id:
+            quick_replies_store.get(tab_id).length + 1 + label.split(" ")[0],
           label,
-          message: document.getElementById("message-input").value
+          message: document.getElementById("message-input").value,
         });
         document.getElementById("label-input").value = "";
         document.getElementById("message-input").value = "";
@@ -462,9 +476,9 @@ function set_caret_position({
   let selection = window.getSelection();
   let range = document.createRange();
   let offset =
-    focus_offset > anchor_offset ?
-    focus_offset + wrapper_length :
-    anchor_offset + wrapper_length;
+    focus_offset > anchor_offset
+      ? focus_offset + wrapper_length
+      : anchor_offset + wrapper_length;
   range.setStart(focus_node.firstChild, offset);
   range.collapse(true);
   selection.removeAllRanges();
@@ -565,23 +579,18 @@ function format_single_line_selection(selection, wrapper) {
 }
 
 /**
- * @param {object} quick_reply_object 
+ * @param {object} quick_reply_object
  * @param {string} quick_reply_object.tab_id Tab ID
  * @param {string} quick_reply_object.reply_id Quick Reply ID
  * @param {string} quick_reply_object.label Label for the quick reply
  * @param {string} quick_reply_object.message Message for the quick reply
  */
-function add_quick_reply({
-  tab_id,
-  reply_id,
-  label,
-  message
-}) {
+function add_quick_reply({ tab_id, reply_id, label, message }) {
   let quick_replies = quick_replies_store.get(tab_id);
   quick_replies.push({
     id: reply_id,
     label,
-    message
+    message,
   });
   quick_replies_store.set(tab_id, quick_replies);
 }
@@ -626,12 +635,14 @@ function initialize_quick_replies(tab_id) {
 }
 
 /**
- * @param {string} tab_id 
- * @param {string} reply_id 
+ * @param {string} tab_id
+ * @param {string} reply_id
  */
 function remove_quick_reply(tab_id, reply_id) {
   let quick_replies_array = Array.from(quick_replies_store.get(tab_id));
-  quick_replies_array = quick_replies_array.filter(reply => reply.id !== reply_id);
+  quick_replies_array = quick_replies_array.filter(
+    (reply) => reply.id !== reply_id
+  );
   quick_replies_store.set(tab_id, quick_replies_array);
 }
 
@@ -659,10 +670,13 @@ function confirm_remove_quick_reply(tab_id, reply_id) {
     }
   });
   if (!document.getElementById("confirm-message-container")) {
-    document.querySelector(".quick-reply-container").appendChild(confirm_message_element);
+    document
+      .querySelector(".quick-reply-container")
+      .appendChild(confirm_message_element);
   }
 }
 
 ipcRenderer.on("format-text", (_, wrapper) => {
   format_selected_text(wrapper);
 });
+

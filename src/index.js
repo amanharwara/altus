@@ -16,24 +16,23 @@ const path = require("path");
 const contextMenu = require("electron-context-menu");
 
 // Import createWindow function
-const {
-  createWindow
-} = require("./js/createWindow");
+const { createWindow } = require("./js/createWindow");
 
 // Used for storing settings
 const Store = require("electron-store");
 
 // Import default settings
-const {
-  defaultSettings
-} = require("./js/defaultSettings");
+const { defaultSettings } = require("./js/defaultSettings");
 
 // Used for fetching base dark theme CSS & more
 const fetch = require("node-fetch");
 
 // Used to create a message count badge on Windows
-let Badge;
-if (process.platform == "win32") Badge = require("electron-windows-badge");
+let Badge, BadgeGen;
+if (process.platform == "win32") {
+  Badge = require("electron-windows-badge");
+  BadgeGen = require("electron-windows-badge/badge_generator");
+}
 
 // Declaring the window variables to use later
 let mainWindow,
@@ -46,12 +45,7 @@ let mainWindow,
 // Declaring the tray icon variable to use later
 let trayIcon;
 
-const {
-  generateTheme
-} = require("./windows/util/generateTheme");
-
-// Get the dark theme css using fetch & generate the default themes list
-getDarkTheme(createThemesList);
+const { generateTheme } = require("./windows/util/generateTheme");
 
 /**
  * Get the Dark Theme CSS and pass it to the createThemesList callback
@@ -59,10 +53,11 @@ getDarkTheme(createThemesList);
  */
 function getDarkTheme(createThemesList) {
   fetch(
-      "https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl", {
-        cache: "no-cache",
-      }
-    )
+    "https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl",
+    {
+      cache: "no-cache",
+    }
+  )
     .then((res) => res.text())
     .then((style) => {
       createThemesList(generateTheme({}, style));
@@ -72,19 +67,17 @@ function getDarkTheme(createThemesList) {
     });
 }
 
-// Declaring the themesList variable
-let themesList;
-
 /**
  * Create the default themes list
  * @callback createThemesListCallback
  * @param {string} darkThemeCSS CSS for the dark theme
  */
 function createThemesList(darkThemeCSS) {
-  themesList = new Store({
+  new Store({
     name: "themes",
     defaults: {
-      themes: [{
+      themes: [
+        {
           name: "Default",
           css: "",
         },
@@ -101,10 +94,12 @@ function createThemesList(darkThemeCSS) {
   });
 }
 
-// Declaring the fileMenuTemplate variable & creating the template for the 'File' menu
-let fileMenuTemplate;
+// Get the dark theme css using fetch & generate the default themes list
+getDarkTheme(createThemesList);
 
-fileMenuTemplate = [{
+// Declaring the fileMenuTemplate variable & creating the template for the 'File' menu
+let fileMenuTemplate = [
+  {
     label: "Add New Instance",
     accelerator: "CmdOrCtrl+N",
     click() {
@@ -143,13 +138,15 @@ if (!app.isPackaged) {
 }
 
 // Create the main menu template
-const mainMenuTemplate = [{
+const mainMenuTemplate = [
+  {
     label: "File",
     submenu: fileMenuTemplate,
   },
   {
     label: "Edit",
-    submenu: [{
+    submenu: [
+      {
         label: "Undo",
         accelerator: "CmdOrCtrl+Z",
         selector: "undo:",
@@ -186,7 +183,8 @@ const mainMenuTemplate = [{
   },
   {
     label: "Tab",
-    submenu: [{
+    submenu: [
+      {
         label: "Go to Next Tab",
         accelerator: "CmdOrCtrl+Tab",
         click() {
@@ -220,8 +218,9 @@ const mainMenuTemplate = [{
     ],
   },
   {
-    label: "Zoom",
-    submenu: [{
+    label: "View",
+    submenu: [
+      {
         label: "Zoom In",
         accelerator: "CmdOrCtrl+numadd",
         click() {
@@ -242,11 +241,29 @@ const mainMenuTemplate = [{
           mainWindow.webContents.send("reset-zoom");
         },
       },
+      {
+        type: "separator",
+      },
+      {
+        label: "Toggle Fullscreen",
+        accelerator: "F11",
+        click() {
+          mainWindow.setFullScreen(!mainWindow.fullScreen);
+        },
+      },
+      {
+        label: "Toggle Tab Bar",
+        accelerator: "CmdOrCtrl+Shift+B",
+        click() {
+          mainWindow.webContents.send("toggle-tab-bar");
+        },
+      },
     ],
   },
   {
     label: "Theme",
-    submenu: [{
+    submenu: [
+      {
         label: "Custom Theme",
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
@@ -348,59 +365,62 @@ const mainMenuTemplate = [{
   },
   {
     label: "Settings",
-    submenu: [{
-      label: "Settings",
-      accelerator: "CmdOrCtrl+,",
-      click() {
-        // Checks settings window exists
-        if (typeof settingsWindow === "object") {
-          // Shows settings window instead of creating new object
-          settingsWindow.show();
-        } else {
-          // Creates new Browser Window object using createWindow function
-          settingsWindow = createWindow({
-            id: "settings",
-            title: "Settings",
-            width: 540,
-            height: 515,
-            resizable: true,
-            mainWindowObject: mainWindow,
-            min: true,
-            max: false,
-            minWidth: 540,
-            minHeight: 515,
-            maxWidth: "",
-            maxHeight: "",
-          });
-          // Loads settings Window HTML
-          settingsWindow.loadURL(
-            url.format({
-              pathname: path.join(
-                __dirname,
-                "windows",
-                "settings",
-                "settings.html"
-              ),
-              protocol: "file:",
-              slashes: true,
-            })
-          );
-          settingsWindow.once("ready-to-show", () => {
-            // Shows settings window
+    submenu: [
+      {
+        label: "Settings",
+        accelerator: "CmdOrCtrl+,",
+        click() {
+          // Checks settings window exists
+          if (typeof settingsWindow === "object") {
+            // Shows settings window instead of creating new object
             settingsWindow.show();
-          });
-          // Close window event (Hides window when closed, instead of deleting it)
-          settingsWindow.on("close", (e) => {
-            e.preventDefault();
-            settingsWindow.hide();
-          });
-        }
+          } else {
+            // Creates new Browser Window object using createWindow function
+            settingsWindow = createWindow({
+              id: "settings",
+              title: "Settings",
+              width: 540,
+              height: 515,
+              resizable: true,
+              mainWindowObject: mainWindow,
+              min: true,
+              max: false,
+              minWidth: 540,
+              minHeight: 515,
+              maxWidth: "",
+              maxHeight: "",
+            });
+            // Loads settings Window HTML
+            settingsWindow.loadURL(
+              url.format({
+                pathname: path.join(
+                  __dirname,
+                  "windows",
+                  "settings",
+                  "settings.html"
+                ),
+                protocol: "file:",
+                slashes: true,
+              })
+            );
+            settingsWindow.once("ready-to-show", () => {
+              // Shows settings window
+              settingsWindow.show();
+            });
+            // Close window event (Hides window when closed, instead of deleting it)
+            settingsWindow.on("close", (e) => {
+              e.preventDefault();
+              settingsWindow.hide();
+            });
+          }
+        },
       },
-    }, ],
+    ],
   },
   {
     label: "About",
-    submenu: [{
+    submenu: [
+      {
         label: "About",
         click() {
           // Checks if about window exists
@@ -450,7 +470,8 @@ const mainMenuTemplate = [{
       },
       {
         label: "Donate",
-        submenu: [{
+        submenu: [
+          {
             label: "Liberapay",
             click() {
               shell.openExternal("https://liberapay.com/aman_harwara/");
@@ -522,7 +543,8 @@ const mainMenuTemplate = [{
       },
       {
         label: "Links",
-        submenu: [{
+        submenu: [
+          {
             label: "Report Bugs/Issues",
             click: () => {
               shell.openExternal("https://github.com/amanharwara/altus/issues");
@@ -566,6 +588,15 @@ const windowState = new Store({
   },
 });
 
+// Get tray icon image
+let trayIconImage = nativeImage.createFromPath(
+  path.join(
+    __dirname,
+    "/windows/otherAssets/" +
+      (process.platform === "linux" ? "tray.png" : "icon.ico")
+  )
+);
+
 // Using singleInstanceLock for making app single instance
 const singleInstanceLock = app.requestSingleInstanceLock();
 
@@ -602,17 +633,23 @@ if (!singleInstanceLock) {
       // Set main window title
       title: `Altus ${app.getVersion()}`,
       // Enable frame if on macOS or if custom titlebar setting is disabled
-      frame: process.platform !== "darwin" ?
-        !Array.from(settings.get("settings")).find(
-          (s) => s.id === "customTitlebar"
-        ).value : true,
+      frame:
+        process.platform !== "darwin"
+          ? !Array.from(settings.get("settings")).find(
+              (s) => s.id === "customTitlebar"
+            ).value
+          : true,
       // Show default title bar on macOS and hide it on others
       titleBarStyle: process.platform !== "darwin" ? "hidden" : "default",
       // Set main window background color
       backgroundColor: "#282C34",
       // Set main window icon
       icon: nativeImage.createFromPath(
-        path.join(__dirname, "/windows/otherAssets/icon" + (process.platform === "linux" ? ".png" : ".ico"))
+        path.join(
+          __dirname,
+          "/windows/otherAssets/icon" +
+            (process.platform === "linux" ? ".png" : ".ico")
+        )
       ),
       webPreferences: {
         // Enable <webview> tag for embedding WhatsApp
@@ -635,6 +672,7 @@ if (!singleInstanceLock) {
 
     // Shows window once ready
     mainWindow.once("ready-to-show", () => {
+      mainWindow.setFullScreen(false);
       mainWindow.show();
     });
 
@@ -696,13 +734,9 @@ if (!singleInstanceLock) {
       ) {
         // If tray icon setting is enabled
 
-        // Get tray icon image
-        let trayIconImage = nativeImage.createFromPath(
-          path.join(__dirname, "/windows/otherAssets/" + (process.platform === "linux" ? "tray.png" : "icon.ico"))
-        );
-
         // Create context menu for tray icon
-        let trayContextMenu = Menu.buildFromTemplate([{
+        let trayContextMenu = Menu.buildFromTemplate([
+          {
             label: "Maximize",
             click() {
               if (mainWindow) {
@@ -728,13 +762,13 @@ if (!singleInstanceLock) {
             },
           },
         ]);
-        
+
         // Checks if the tray icon already exists or not
         if (typeof trayIcon !== "object") {
           if (process.platform !== "darwin") {
             // Create tray icon on Windows
             trayIcon = new Tray(trayIconImage);
-            
+
             // Set tray icon tooltip
             trayIcon.setToolTip("Altus");
 
@@ -779,9 +813,9 @@ if (!singleInstanceLock) {
       }
 
       if (tabBarSetting && tabBarSetting.value === true) {
-        mainWindow.webContents.send("set-tabbar", true);
+        mainWindow.webContents.send("toggle-tab-bar", true);
       } else {
-        mainWindow.webContents.send("set-tabbar", false);
+        mainWindow.webContents.send("toggle-tab-bar", false);
       }
 
       if (closeToTraySetting && closeToTraySetting.value === true) {
@@ -842,16 +876,49 @@ if (!singleInstanceLock) {
     ipcMain.on("settings-changed", () => setGlobalSettings());
 
     // Message Indicator
-    ipcMain.on("message-indicator", (e, i) => {
-      if (process.platform === "darwin") {
-        if (i > 0 && i !== null && i !== undefined) {
-          app.dock.setBadge("·");
-        } else {
-          app.dock.setBadge("");
+    const trayBadge = new BadgeGen(mainWindow);
+
+    ipcMain.on("message-indicator", (e, messageCount) => {
+      if (
+        messageCount > 0 &&
+        messageCount !== null &&
+        messageCount !== undefined
+      ) {
+        switch (process.platform) {
+          case "darwin":
+            app.dock.setBadge("·");
+            break;
+          case "win32":
+            if (
+              settings
+                .get("settings")
+                .find((setting) => setting.id === "notificationCountInTray")
+                .value
+            ) {
+              trayBadge.generate(messageCount).then((imgDataUrl) => {
+                const generatedImage = nativeImage.createFromDataURL(
+                  imgDataUrl
+                );
+                trayIcon.setImage(generatedImage);
+              });
+            }
+            break;
+          default:
+            break;
+        }
+      } else {
+        switch (process.platform) {
+          case "darwin":
+            app.dock.setBadge("");
+            break;
+          default:
+            trayIcon.setImage(trayIconImage);
+            break;
         }
       }
+
       if (process.platform === "win32") {
-        mainWindow.webContents.send("message-indicator", i);
+        mainWindow.webContents.send("message-indicator", messageCount);
       }
     });
   });
@@ -863,7 +930,8 @@ if (!singleInstanceLock) {
       window: c,
       showCopyImage: false,
       showSaveImageAs: true,
-      append: (def, params, window) => [{
+      append: (def, params, window) => [
+        {
           label: "Bold",
           visible: params.isEditable,
           click: () => {
