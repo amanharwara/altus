@@ -67,7 +67,7 @@ jobs:
       with:
         automatic_release_tag: continuous
         title: Continuous
-        prerelease: false
+        prerelease: true
         files: |
           altus-continuous-x86_64.AppImage
 
