@@ -876,7 +876,9 @@ if (!singleInstanceLock) {
     ipcMain.on("settings-changed", () => setGlobalSettings());
 
     // Message Indicator
-    const trayBadge = new BadgeGen(mainWindow);
+    let trayBadge;
+
+    if (process.platform === "win32") trayBadge = new BadgeGen(mainWindow);
 
     ipcMain.on("message-indicator", (e, messageCount) => {
       if (
