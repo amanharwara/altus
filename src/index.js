@@ -901,7 +901,7 @@ if (!singleInstanceLock) {
                 const generatedImage = nativeImage.createFromDataURL(
                   imgDataUrl
                 );
-                trayIcon.setImage(generatedImage);
+                if (trayIcon) trayIcon.setImage(generatedImage);
               });
             }
             break;
@@ -914,7 +914,7 @@ if (!singleInstanceLock) {
             app.dock.setBadge("");
             break;
           default:
-            trayIcon.setImage(trayIconImage);
+            if (trayIcon) trayIcon.setImage(trayIconImage);
             break;
         }
       }
@@ -930,7 +930,6 @@ if (!singleInstanceLock) {
     // Initialize the context menu
     contextMenu({
       window: c,
-      showCopyImage: false,
       showSaveImageAs: true,
       append: (def, params, window) => [
         {
