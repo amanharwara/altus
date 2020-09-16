@@ -70,7 +70,6 @@ window.onload = () => {
             }
 
             new MutationObserver((mutations) => {
-              console.log(mutations);
               if (window.utility_bar_enabled) {
                 for (let i = 0; i < mutations.length; i++) {
                   let mutation = mutations[i];
@@ -448,6 +447,7 @@ function insert_message_text(text, autoSend = false) {
   const message_input = document.querySelector(
     "#main footer div[contenteditable]"
   );
+
   if (!message_input) return false;
 
   return setTimeout(() => {
@@ -489,6 +489,10 @@ function set_caret_position({
  * @param {string} wrapper Character to wrap around selected text
  */
 function format_selected_text(wrapper) {
+  const message_input = document.querySelector(
+    "#main footer div[contenteditable]"
+  );
+
   const selection = window.getSelection();
 
   let focus_offset = selection.focusOffset;
@@ -497,7 +501,11 @@ function format_selected_text(wrapper) {
   if (selection.anchorNode == selection.focusNode) {
     switch (format_single_line_selection(selection, wrapper)) {
       case 0:
-        insert_message_text(wrapper + wrapper);
+        if (message_input.innerHTML.length !== 0) {
+          insert_message_text(wrapper + message_input.textContent + wrapper);
+        } else {
+          insert_message_text(wrapper + wrapper);
+        }
         setTimeout(() => {
           set_caret_position({
             focus_offset: wrapper.length,
@@ -679,4 +687,3 @@ function confirm_remove_quick_reply(tab_id, reply_id) {
 ipcRenderer.on("format-text", (_, wrapper) => {
   format_selected_text(wrapper);
 });
-
