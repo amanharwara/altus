@@ -53,6 +53,13 @@ const defaultSettings = [
       "When enabled, Altus will show the notification count on the tray icon on Windows.",
     id: "notificationCountInTray",
   },
+  {
+    value: false,
+    name: "Prevents Default Enter Submit Message",
+    description:
+      "When enabled, Altus will prevent the default Enter for submitting the message, instead, add a new line. (Control + Enter) became the replacement for submitting.",
+    id: "preventEnter",
+  }
 ];
 
 module.exports = {

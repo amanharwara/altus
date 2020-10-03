@@ -9,6 +9,7 @@ const {
   Tray,
   nativeImage,
 } = require("electron");
+
 const url = require("url");
 const path = require("path");
 
@@ -961,6 +962,31 @@ if (!singleInstanceLock) {
           },
         },
       ],
+    });
+
+    // Prevents default Enter (instead Control + Enter)
+    c.on("before-input-event", function (event, input) {
+      if (
+        settings.get("settings").find((s) => s.id === "preventEnter").value ===
+        true
+      ) {
+        if (input.key === "Enter" && !input.shift && !input.control) {
+          c.webContents.sendInputEvent({
+            keyCode: "Shift+Return",
+            type: "keyDown",
+          });
+          event.preventDefault();
+          return;
+        }
+
+        if (input.key === "Enter" && input.control) {
+          c.webContents.executeJavaScript(
+            `document.querySelector('[data-icon="send"]').click()`
+          );
+          event.preventDefault();
+          return;
+        }
+      }
     });
   });
 
