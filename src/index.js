@@ -206,7 +206,11 @@ const mainMenuTemplate = [
         label: "Close Active Tab",
         accelerator: "CmdOrCtrl+W",
         click() {
-          if (app.showExitPrompt === true) {
+          if (
+            Array.from(settings.get("settings")).find(
+              (s) => s.id === "tabClosePrompt"
+            ).value === true
+          ) {
             confirmCloseTab(mainWindow);
           } else {
             mainWindow.webContents.send("close-tab");
@@ -602,6 +606,14 @@ let trayIconImage = nativeImage.createFromPath(
   )
 );
 
+// Sets the default settings
+let settings = new Store({
+  name: "settings",
+  defaults: {
+    settings: defaultSettings,
+  },
+});
+
 // Using singleInstanceLock for making app single instance
 const singleInstanceLock = app.requestSingleInstanceLock();
 
@@ -622,14 +634,6 @@ if (!singleInstanceLock) {
       // Focuses the main window
       mainWindow.focus();
     }
-  });
-
-  // Sets the default settings
-  let settings = new Store({
-    name: "settings",
-    defaults: {
-      settings: defaultSettings,
-    },
   });
 
   app.on("ready", () => {
