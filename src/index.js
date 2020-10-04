@@ -205,7 +205,11 @@ const mainMenuTemplate = [
         label: "Close Active Tab",
         accelerator: "CmdOrCtrl+W",
         click() {
-          confirmCloseTab(mainWindow);
+          if (app.showExitPrompt === true) {
+            confirmCloseTab(mainWindow);
+          } else {
+            mainWindow.webContents.send("close-tab");
+          }
         },
       },
       {
@@ -995,7 +999,7 @@ function confirmCloseTab(mainWindow) {
     .showMessageBox({
       type: "question",
       buttons: ["OK", "Cancel"],
-      title: "Exit",
+      title: "Close tab",
       message: "Are you sure you want to close the tab?",
     })
     .then((res) => {
