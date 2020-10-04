@@ -239,4 +239,3 @@ ipcRenderer.on("previous-tab", () => {
     tabs.toggle(tabItem.previousSibling.querySelector("a"));
   }
 });
-

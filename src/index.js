@@ -206,7 +206,11 @@ const mainMenuTemplate = [
         label: "Close Active Tab",
         accelerator: "CmdOrCtrl+W",
         click() {
-          mainWindow.webContents.send("close-tab");
+          if (app.showExitPrompt === true) {
+            confirmCloseTab(mainWindow);
+          } else {
+            mainWindow.webContents.send("close-tab");
+          }
         },
       },
       {
@@ -1011,6 +1015,22 @@ function confirmExit() {
       if (res.response == 0) {
         app.showExitPrompt = false;
         app.quit();
+        return;
+      }
+    });
+}
+
+function confirmCloseTab(mainWindow) {
+  dialog
+    .showMessageBox({
+      type: "question",
+      buttons: ["OK", "Cancel"],
+      title: "Close tab",
+      message: "Are you sure you want to close the tab?",
+    })
+    .then((res) => {
+      if (res.response == 0) {
+        mainWindow.webContents.send("close-tab");
         return;
       }
     });
