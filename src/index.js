@@ -597,6 +597,15 @@ const windowState = new Store({
   },
 });
 
+// Get icon image
+let iconImage = nativeImage.createFromPath(
+  path.join(
+    __dirname,
+    "/windows/otherAssets/icon" +
+      (process.platform === "linux" ? ".png" : ".ico")
+  )
+);
+
 // Get tray icon image
 let trayIconImage = nativeImage.createFromPath(
   path.join(
@@ -604,6 +613,11 @@ let trayIconImage = nativeImage.createFromPath(
     "/windows/otherAssets/" +
       (process.platform === "linux" ? "tray.png" : "icon.ico")
   )
+);
+
+// Get tray notification image
+let trayIconNotificationImage = nativeImage.createFromPath(
+  path.join(__dirname, "/windows/otherAssets/tray-notification.png")
 );
 
 // Sets the default settings
@@ -653,13 +667,7 @@ if (!singleInstanceLock) {
       // Set main window background color
       backgroundColor: "#282C34",
       // Set main window icon
-      icon: nativeImage.createFromPath(
-        path.join(
-          __dirname,
-          "/windows/otherAssets/icon" +
-            (process.platform === "linux" ? ".png" : ".ico")
-        )
-      ),
+      icon: iconImage,
       webPreferences: {
         // Enable <webview> tag for embedding WhatsApp
         webviewTag: true,
@@ -891,45 +899,56 @@ if (!singleInstanceLock) {
 
     ipcMain.on("message-indicator", (e, messageCount) => {
       if (
-        messageCount > 0 &&
-        messageCount !== null &&
-        messageCount !== undefined
+        settings
+          .get("settings")
+          .find((setting) => setting.id === "notificationBadge").value
       ) {
-        switch (process.platform) {
-          case "darwin":
-            app.dock.setBadge("·");
-            break;
-          case "win32":
-            if (
-              settings
-                .get("settings")
-                .find((setting) => setting.id === "notificationCountInTray")
-                .value
-            ) {
-              trayBadge.generate(messageCount).then((imgDataUrl) => {
-                const generatedImage = nativeImage.createFromDataURL(
-                  imgDataUrl
-                );
-                if (trayIcon) trayIcon.setImage(generatedImage);
-              });
-            }
-            break;
-          default:
-            break;
-        }
-      } else {
-        switch (process.platform) {
-          case "darwin":
-            app.dock.setBadge("");
-            break;
-          default:
-            if (trayIcon) trayIcon.setImage(trayIconImage);
-            break;
-        }
-      }
+        if (
+          messageCount > 0 &&
+          messageCount !== null &&
+          messageCount !== undefined
+        ) {
+          switch (process.platform) {
+            case "darwin":
+              app.dock.setBadge("·");
+              break;
+            case "win32":
+              if (
+                settings
+                  .get("settings")
+                  .find((setting) => setting.id === "notificationCountInTray")
+                  .value
+              ) {
+                trayBadge.generate(messageCount).then((imgDataUrl) => {
+                  const generatedImage = nativeImage.createFromDataURL(
+                    imgDataUrl
+                  );
+                  if (trayIcon) trayIcon.setImage(generatedImage);
+                });
+              }
+              break;
+            default:
+              if (trayIcon) trayIcon.setImage(trayIconNotificationImage);
 
-      if (process.platform === "win32") {
-        mainWindow.webContents.send("message-indicator", messageCount);
+              mainWindow.setIcon(trayIconNotificationImage);
+              break;
+          }
+        } else {
+          switch (process.platform) {
+            case "darwin":
+              app.dock.setBadge("");
+              break;
+            default:
+              if (trayIcon) trayIcon.setImage(trayIconImage);
+
+              mainWindow.setIcon(iconImage);
+              break;
+          }
+        }
+
+        if (process.platform === "win32") {
+          mainWindow.webContents.send("message-indicator", messageCount);
+        }
       }
     });
   });
