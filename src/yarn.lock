@@ -366,10 +366,10 @@ electron-windows-badge@^1.0.5:
   resolved "https://registry.yarnpkg.com/electron-windows-badge/-/electron-windows-badge-1.0.5.tgz#22d8d9be626812f45918cce568665eb4928cb601"
   integrity sha512-khEdgNmszS8+xZwQkTmcpqG3NCIuooryDF760T95zcC1CB5YeBBGhhmKGVcyQkWKTeZ4RXcyqqXbmjesTfeU5A==
 
-electron@^9.3.0:
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-9.3.0.tgz#a4f3dc17f31acc6797eb4c2c4bd0d0e25efb939b"
-  integrity sha512-7zPLEZ+kOjVJqfawMQ0vVuZZRqvZIeiID3tbjjbVybbxXIlFMpZ2jogoh7PV3rLrtm+dKRfu7Qc4E7ob1d0FqQ==
+electron@^9.3.1:
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-9.3.1.tgz#e301932c5c0537d8c9a8850d216d3ba454dbf55c"
+  integrity sha512-DScrhqBT4a54KfdF0EoipALpHmdQTn3m7SSCtbpTcEcG+UDUiXad2cOfW6DHeVH7N+CVDKDG12q2PhVJjXkFAA==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
