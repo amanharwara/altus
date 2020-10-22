@@ -248,3 +248,8 @@ ipcRenderer.on("previous-tab", () => {
     tabs.toggle(tabItem.previousSibling.querySelector("a"));
   }
 });
+
+ipcRenderer.on("activate-window-and-tab", (e, tabid) => {
+  remote.getCurrentWindow().show();
+  tabs.toggle(document.querySelector(`[data-tab-id="${tabid}"]`));
+});

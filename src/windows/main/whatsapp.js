@@ -691,3 +691,41 @@ function confirm_remove_quick_reply(tab_id, reply_id) {
 ipcRenderer.on("format-text", (_, wrapper) => {
   format_selected_text(wrapper);
 });
+
+const NotificationProxy = window.Notification;
+
+ipcRenderer.on("toggle-notification", (_, setting) => {
+  if (!setting) {
+    window.Notification = "";
+  } else {
+    let NativeNotification = Notification;
+    Notification = function (title, options) {
+      var notification = new NativeNotification(title, options);
+
+      notification.addEventListener("click", function () {
+        ipcRenderer.send(
+          "activate-window-and-tab",
+          document.body.dataset.tabid
+        );
+      });
+
+      notification.addEventListener = function () {
+        return true;
+      };
+      notification.attachEvent = function () {
+        return true;
+      };
+      notification.addListener = function () {
+        return true;
+      };
+
+      return notification;
+    };
+
+    Notification.prototype = NativeNotification.prototype;
+    Notification.permission = NativeNotification.permission;
+    Notification.requestPermission = NativeNotification.requestPermission.bind(
+      Notification
+    );
+  }
+});

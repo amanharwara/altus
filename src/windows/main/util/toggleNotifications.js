@@ -5,20 +5,20 @@
  * @param {boolean} firstStart Whether the function is being run at the start of the app
  */
 function toggleNotifications(whatsAppElement, setting, firstStart) {
-    let whatsapp = whatsAppElement;
-    if (firstStart) {
-        whatsapp.addEventListener('dom-ready', () => {
-            if (!setting) {
-                whatsapp.executeJavaScript(`window.Notification = ''`);
-            }
-        });
-    } else {
-        if (!setting) {
-            whatsapp.executeJavaScript(`window.Notification = ''`);
-        }
-    }
+  let whatsapp = whatsAppElement;
+  if (firstStart) {
+    whatsapp.addEventListener("dom-ready", () => {
+      remote.webContents
+        .fromId(whatsapp.getWebContentsId())
+        .send("toggle-notification", setting);
+    });
+  } else {
+    remote.webContents
+      .fromId(whatsapp.getWebContentsId())
+      .send("toggle-notification", setting);
+  }
 }
 
 module.exports = {
-    toggleNotifications
-}
+  toggleNotifications,
+};

@@ -899,6 +899,10 @@ if (!singleInstanceLock) {
       mainWindow.webContents.send("themes-changed", true)
     );
 
+    ipcMain.on("activate-window-and-tab", (_, tabid) =>
+      mainWindow.webContents.send("activate-window-and-tab", tabid)
+    );
+
     // Set global settings whenever they are changed
     ipcMain.on("settings-changed", () => setGlobalSettings());
 
