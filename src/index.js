@@ -848,12 +848,22 @@ if (!singleInstanceLock) {
     function validateGlobalSettings() {
       let _settings = settings.get("settings");
       let wereInvalid = false;
-      defaultSettings.forEach((setting, index) => {
+      defaultSettings.forEach((setting) => {
         let _index = _settings.findIndex(
-          (_setting) => _setting.name === setting.name
+          (_setting) => _setting.id === setting.id
         );
         if (_index === -1) {
           _settings.unshift(setting);
+          settings.set("settings", _settings);
+          wereInvalid = true;
+        }
+      });
+      _settings.forEach((_setting) => {
+        let index = defaultSettings.findIndex(
+          (setting) => setting.id === _setting.id
+        );
+        if (index === -1) {
+          _settings = _settings.filter((setting) => setting.id !== _setting.id);
           settings.set("settings", _settings);
           wereInvalid = true;
         }
@@ -897,7 +907,8 @@ if (!singleInstanceLock) {
 
     if (process.platform === "win32") trayBadge = new BadgeGen(mainWindow);
 
-    ipcMain.on("message-indicator", (e, messageCount) => {
+    ipcMain.on("message-indicator", (e, detail) => {
+      let { messageCount } = detail;
       if (
         settings
           .get("settings")
@@ -911,21 +922,6 @@ if (!singleInstanceLock) {
           switch (process.platform) {
             case "darwin":
               app.dock.setBadge("·");
-              break;
-            case "win32":
-              if (
-                settings
-                  .get("settings")
-                  .find((setting) => setting.id === "notificationCountInTray")
-                  .value
-              ) {
-                trayBadge.generate(messageCount).then((imgDataUrl) => {
-                  const generatedImage = nativeImage.createFromDataURL(
-                    imgDataUrl
-                  );
-                  if (trayIcon) trayIcon.setImage(generatedImage);
-                });
-              }
               break;
             default:
               if (trayIcon) trayIcon.setImage(trayIconNotificationImage);
@@ -947,7 +943,7 @@ if (!singleInstanceLock) {
         }
 
         if (process.platform === "win32") {
-          mainWindow.webContents.send("message-indicator", messageCount);
+          mainWindow.webContents.send("message-indicator", detail);
         }
       }
     });

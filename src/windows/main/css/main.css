@@ -1,4 +1,4 @@
-@import './choices.css';
+@import "./choices.css";
 
 :root {
   --window-border: #1f1f20e7;
@@ -10,8 +10,8 @@ body {
 }
 
 body {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
   border: 1px solid var(--window-border);
   overflow: hidden;
 }
@@ -56,6 +56,24 @@ body {
   box-sizing: border-box;
 }
 
+[role="tab"] .badge {
+  background: #c70e0e;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+[role="tab"] .badge::after {
+  content: attr(data-count);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 [role="tab"]:not([aria-selected="true"]) {
   filter: brightness(0.75);
 }
@@ -71,7 +89,6 @@ body {
 [role="tab"][aria-selected="true"] {
   background: #2a3440 !important;
 }
-
 
 [role="tabpanel"] {
   height: 94.3%;
@@ -116,22 +133,22 @@ webview {
   }
 }
 
-.main-container>.title {
+.main-container > .title {
   text-align: center;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 2.65rem;
   margin: 15px 0;
   -webkit-user-select: none;
 }
 
-.inputs>* {
+.inputs > * {
   margin: 10px 0;
 }
 
 .label {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 1.25rem;
   text-align: left;
   -webkit-user-select: none;
@@ -142,7 +159,7 @@ webview {
 }
 
 .textbox {
-  padding: 0.55rem .7rem;
+  padding: 0.55rem 0.7rem;
   margin: 10px 0 0 0;
   border: 1px solid #5c5c5c;
   font-size: 1rem;
@@ -224,25 +241,25 @@ button:focus {
   z-index: 5;
 }
 
-.checkbox:checked+.toggle-bg::after {
+.checkbox:checked + .toggle-bg::after {
   transition: 0.15s;
   background: #fff;
   left: auto;
   right: 10%;
 }
 
-.checkbox:checked+.toggle-bg {
+.checkbox:checked + .toggle-bg {
   background: linear-gradient(270deg, #09a5d7 0%, #2a71d1 100%);
 }
 
-.checkbox:focus+.toggle-bg,
-.checkbox:active+.toggle-bg {
+.checkbox:focus + .toggle-bg,
+.checkbox:active + .toggle-bg {
   outline: 1px solid #2a71d1;
 }
 
 .submit.button {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   cursor: pointer;
   background: #0960d1;
   color: inherit;
@@ -273,14 +290,14 @@ button:focus {
 }
 
 .edit-popup-title {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: #fff !important;
   margin: 0 !important;
   -webkit-user-select: none;
-  padding-bottom: .5rem !important;
+  padding-bottom: 0.5rem !important;
   border-bottom: 1px solid #2b2b2bbf;
-  margin-bottom: .5rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .edit-popup-title h2 {
@@ -359,12 +376,12 @@ button:focus {
 }
 
 .prompt-button {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  padding: .75rem 1.5rem;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding: 0.75rem 1.5rem;
   font-size: 1.15rem;
   font-weight: 400;
-  margin: 0 .25rem;
+  margin: 0 0.25rem;
 }
 
 .close-popup .swal2-actions {
@@ -392,12 +409,12 @@ button:focus {
   border: none;
   border-radius: 1rem;
   font-size: 1rem;
-  padding: .25rem .55rem;
+  padding: 0.25rem 0.55rem;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   color: inherit;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
   cursor: pointer;
 }
 
@@ -419,8 +436,8 @@ button:focus {
   background: #101114;
   border: 1px solid #242525;
   font-size: 1rem;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 300;
   padding: 0.5rem 1rem;
   position: absolute;

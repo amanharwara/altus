@@ -37,14 +37,18 @@ window.onload = () => {
   new MutationObserver(function (mutations) {
     let title = mutations[0].target.innerText;
     let title_regex = /([0-9]+)/;
-    let number = title_regex.exec(title)
+    let messageCount = title_regex.exec(title)
       ? parseInt(title_regex.exec(title)[0]) !== 0 &&
         parseInt(title_regex.exec(title)[0]) !== undefined &&
         parseInt(title_regex.exec(title)[0]) !== null
         ? parseInt(title_regex.exec(title)[0])
         : null
       : null;
-    ipcRenderer.send("message-indicator", number);
+    let tabId = document.body.dataset.tabid;
+    ipcRenderer.send("message-indicator", {
+      messageCount,
+      tabId,
+    });
   }).observe(document.querySelector("title"), {
     subtree: true,
     childList: true,

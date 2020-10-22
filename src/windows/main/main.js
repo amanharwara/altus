@@ -159,11 +159,20 @@ ipcRenderer.on("themes-changed", (e) => {
 });
 
 // IPC event of message indicator
-ipcRenderer.on("message-indicator", (e, messageCount) => {
+ipcRenderer.on("message-indicator", (e, detail) => {
+  let { messageCount, tabId } = detail;
+  let tabElement = document.getElementById("tabby-toggle_tab-content-" + tabId);
   if (messageCount > 0 && messageCount !== undefined && messageCount !== null) {
-    ipcRenderer.sendSync("update-badge", messageCount);
+    if (tabElement.querySelector(".badge")) {
+      tabElement.querySelector(".badge").dataset.count = messageCount;
+    } else {
+      let badge = document.createElement("span");
+      badge.className = "badge";
+      badge.dataset.count = messageCount;
+      tabElement.prepend(badge);
+    }
   } else {
-    ipcRenderer.sendSync("update-badge", "");
+    tabElement.querySelector(".badge").remove();
   }
 });
 
