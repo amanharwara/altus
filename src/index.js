@@ -952,10 +952,7 @@ if (!singleInstanceLock) {
               break;
           }
         }
-
-        if (process.platform === "win32") {
-          mainWindow.webContents.send("message-indicator", detail);
-        }
+	mainWindow.webContents.send("message-indicator", detail);
       }
     });
   });
