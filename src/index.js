@@ -641,7 +641,7 @@ if (!singleInstanceLock) {
   app.exit(0);
 } else {
   // Focus current instance
-  app.on("second-instance", () => {
+  app.on("second-instance", (e, argv) => {
     // Checks if mainWindow object exists
     if (mainWindow) {
       // Checks if main window is minimized
@@ -651,10 +651,21 @@ if (!singleInstanceLock) {
       }
       // Focuses the main window
       mainWindow.focus();
+      // Opens whatsapp if link there is one
+      if (argv.findIndex((arg) => arg.includes("whatsapp")) !== -1) {
+        let code = argv[
+          argv.findIndex((arg) => arg.includes("whatsapp"))
+        ].split("=")[1];
+        mainWindow.webContents.executeJavaScript(`
+        document.querySelector('[role="tabpanel"]:not([hidden="hidden"]) webview').src = "https://web.whatsapp.com/accept?code=${code}";
+        `);
+      }
     }
   });
 
   app.on("ready", () => {
+    if (app.isPackaged) app.setAsDefaultProtocolClient("whatsapp");
+
     // Create the main window object
     mainWindow = new BrowserWindow({
       // Set main window title
@@ -705,6 +716,15 @@ if (!singleInstanceLock) {
         slashes: true,
       })
     );
+
+    if (process.argv.findIndex((arg) => arg.includes("whatsapp")) !== -1) {
+      let code = process.argv[
+        process.argv.findIndex((arg) => arg.includes("whatsapp"))
+      ].split("=")[1];
+      mainWindow.webContents.executeJavaScript(`
+      document.querySelector('[role="tabpanel"]:not([hidden="hidden"]) webview').src = "https://web.whatsapp.com/accept?code=${code}";
+      `);
+    }
 
     // Main Window Close Event
     mainWindow.on("close", (e) => {
@@ -952,7 +972,7 @@ if (!singleInstanceLock) {
               break;
           }
         }
-	mainWindow.webContents.send("message-indicator", detail);
+        mainWindow.webContents.send("message-indicator", detail);
       }
     });
   });

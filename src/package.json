@@ -1,6 +1,6 @@
 {
   "name": "altus",
-  "version": "3.18.1",
+  "version": "3.19.0",
   "description": "Electron-based desktop wrapper for WhatsApp Web",
   "homepage": "https://altus.amanharwara.xyz",
   "repository": {
@@ -43,6 +43,11 @@
     "appId": "harwara.aman.altus",
     "productName": "Altus",
     "afterAllArtifactBuild": "./build/after-all-artifact-build.js",
+    "protocols": [{
+      "name": "whatsapp",
+      "role": "Viewer",
+      "schemes": ["whatsapp"]
+    }],
     "mac": {
       "category": "public.app-category.social-networking",
       "target": [

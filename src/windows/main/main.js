@@ -172,7 +172,8 @@ ipcRenderer.on("message-indicator", (e, detail) => {
       tabElement.prepend(badge);
     }
   } else {
-    tabElement.querySelector(".badge").remove();
+    if (tabElement.querySelector(".badge"))
+      tabElement.querySelector(".badge").remove();
   }
 });
 
