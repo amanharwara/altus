@@ -51,9 +51,6 @@ jobs:
   Release:
     needs: [AppImage]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: [3.8]
 
     steps:
     - uses: actions/download-artifact@v1
