@@ -606,6 +606,10 @@ let iconImage = nativeImage.createFromPath(
   )
 );
 
+let iconNotificationImage = nativeImage.createFromPath(
+  path.join(__dirname, "/windows/otherAssets/icon-notif.png")
+);
+
 // Get tray icon image
 let trayIconImage = nativeImage.createFromPath(
   path.join(
@@ -930,7 +934,10 @@ if (!singleInstanceLock) {
             default:
               if (trayIcon) trayIcon.setImage(trayIconNotificationImage);
 
-              mainWindow.setIcon(trayIconNotificationImage);
+              mainWindow.setOverlayIcon(
+                iconNotificationImage,
+                "Notification badge"
+              );
               break;
           }
         } else {
