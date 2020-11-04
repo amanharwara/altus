@@ -28,7 +28,7 @@ if (window.navigator.serviceWorker) {
 
 window.onload = () => {
   const title_element = document.querySelector(".landing-title");
-  if (title_element && title_element.innerHTML.includes("Google Chrome 49+")) {
+  if (title_element && title_element.innerHTML.includes("Google Chrome")) {
     window.location.reload();
   }
 
