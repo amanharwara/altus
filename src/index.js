@@ -948,7 +948,7 @@ if (!singleInstanceLock) {
             default:
               if (trayIcon) trayIcon.setImage(trayIconImage);
 
-              mainWindow.setIcon(iconImage);
+              mainWindow.setOverlayIcon(null, "Notification badge empty");
               break;
           }
         }
