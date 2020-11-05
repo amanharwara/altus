@@ -1,4 +1,3 @@
-// Base Electron modules
 const {
   app,
   BrowserWindow,
@@ -9,31 +8,13 @@ const {
   Tray,
   nativeImage,
 } = require("electron");
-
 const url = require("url");
 const path = require("path");
-
-// Import electron context menu library
-const contextMenu = require("electron-context-menu");
-
-// Import createWindow function
-const { createWindow } = require("./js/createWindow");
-
-// Used for storing settings
-const Store = require("electron-store");
-
-// Import default settings
-const { defaultSettings } = require("./js/defaultSettings");
-
-// Used for fetching base dark theme CSS & more
 const fetch = require("node-fetch");
-
-// Used to create a message count badge on Windows
-let Badge, BadgeGen;
-if (process.platform == "win32") {
-  Badge = require("electron-windows-badge");
-  BadgeGen = require("electron-windows-badge/badge_generator");
-}
+const contextMenu = require("electron-context-menu");
+const { createWindow } = require("./js/createWindow");
+const Store = require("electron-store");
+const { defaultSettings } = require("./js/defaultSettings");
 
 // Declaring the window variables to use later
 let mainWindow,
@@ -43,7 +24,6 @@ let mainWindow,
   themeManagerWindow,
   checkUpdatesWindow;
 
-// Declaring the tray icon variable to use later
 let trayIcon;
 
 const { generateTheme } = require("./windows/util/generateTheme");
@@ -492,14 +472,6 @@ const mainMenuTemplate = [
               shell.openExternal("ko-fi.com/amanharwara");
             },
           },
-          {
-            label: "Other Methods...",
-            click() {
-              shell.openExternal(
-                "https://github.com/amanharwara/altus#support"
-              );
-            },
-          },
         ],
       },
       {
@@ -754,12 +726,6 @@ if (!singleInstanceLock) {
       app.quit();
     });
 
-    // Creates a new message count badge for the main window if the Badge variable is enabled
-    if (Badge)
-      new Badge(mainWindow, {
-        font: "4px Calibri",
-      });
-
     // Building main menu from template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
 
@@ -870,25 +836,27 @@ if (!singleInstanceLock) {
      * Check if all settings are in place and add if not
      */
     function validateGlobalSettings() {
-      let _settings = settings.get("settings");
+      let current_settings = settings.get("settings");
       let wereInvalid = false;
-      defaultSettings.forEach((setting) => {
-        let _index = _settings.findIndex(
-          (_setting) => _setting.id === setting.id
+      defaultSettings.forEach((default_setting) => {
+        let default_setting_index = current_settings.findIndex(
+          (current_setting) => current_setting.id === default_setting.id
         );
-        if (_index === -1) {
-          _settings.unshift(setting);
-          settings.set("settings", _settings);
+        if (default_setting_index === -1) {
+          current_settings.unshift(default_setting);
+          settings.set("settings", current_settings);
           wereInvalid = true;
         }
       });
-      _settings.forEach((_setting) => {
-        let index = defaultSettings.findIndex(
-          (setting) => setting.id === _setting.id
+      current_settings.forEach((current_setting) => {
+        let current_setting_index = defaultSettings.findIndex(
+          (setting) => setting.id === current_setting.id
         );
-        if (index === -1) {
-          _settings = _settings.filter((setting) => setting.id !== _setting.id);
-          settings.set("settings", _settings);
+        if (current_setting_index === -1) {
+          current_settings = current_settings.filter(
+            (setting) => setting.id !== current_setting.id
+          );
+          settings.set("settings", current_settings);
           wereInvalid = true;
         }
       });
@@ -929,11 +897,6 @@ if (!singleInstanceLock) {
 
     // Set global settings whenever they are changed
     ipcMain.on("settings-changed", () => setGlobalSettings());
-
-    // Message Indicator
-    let trayBadge;
-
-    if (process.platform === "win32") trayBadge = new BadgeGen(mainWindow);
 
     ipcMain.on("message-indicator", (e, detail) => {
       let { messageCount } = detail;
@@ -978,10 +941,10 @@ if (!singleInstanceLock) {
   });
 
   // When web contents are created
-  app.on("web-contents-created", (e, c) => {
+  app.on("web-contents-created", (e, context) => {
     // Initialize the context menu
     contextMenu({
-      window: c,
+      window: context,
       showSaveImageAs: true,
       append: (def, params, window) => [
         {
@@ -1016,13 +979,13 @@ if (!singleInstanceLock) {
     });
 
     // Prevents default Enter (instead Control + Enter)
-    c.on("before-input-event", function (event, input) {
+    context.on("before-input-event", function (event, input) {
       if (
         settings.get("settings").find((s) => s.id === "preventEnter").value ===
         true
       ) {
         if (input.key === "Enter" && !input.shift && !input.control) {
-          c.webContents.sendInputEvent({
+          context.webContents.sendInputEvent({
             keyCode: "Shift+Return",
             type: "keyDown",
           });
@@ -1031,7 +994,7 @@ if (!singleInstanceLock) {
         }
 
         if (input.key === "Enter" && input.control) {
-          c.webContents.executeJavaScript(
+          context.webContents.executeJavaScript(
             `document.querySelector('[data-icon="send"]').click()`
           );
           event.preventDefault();
