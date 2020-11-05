@@ -361,11 +361,6 @@ electron-store@^5.0.0:
     conf "^6.2.1"
     type-fest "^0.7.1"
 
-electron-windows-badge@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/electron-windows-badge/-/electron-windows-badge-1.0.5.tgz#22d8d9be626812f45918cce568665eb4928cb601"
-  integrity sha512-khEdgNmszS8+xZwQkTmcpqG3NCIuooryDF760T95zcC1CB5YeBBGhhmKGVcyQkWKTeZ4RXcyqqXbmjesTfeU5A==
-
 electron@^9.3.2:
   version "9.3.2"
   resolved "https://registry.yarnpkg.com/electron/-/electron-9.3.2.tgz#afa2942e2642ee25b422b90f1497f7d9bbeec550"

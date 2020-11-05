@@ -28,7 +28,6 @@
     "custom-electron-titlebar": "^3.0.0",
     "electron-context-menu": "^0.15.0",
     "electron-store": "^5.0.0",
-    "electron-windows-badge": "^1.0.5",
     "escape-string-regexp": "^2.0.0",
     "fs-extra": "^8.1.0",
     "mousetrap": "^1.6.3",
@@ -43,11 +42,15 @@
     "appId": "harwara.aman.altus",
     "productName": "Altus",
     "afterAllArtifactBuild": "./build/after-all-artifact-build.js",
-    "protocols": [{
-      "name": "whatsapp",
-      "role": "Viewer",
-      "schemes": ["whatsapp"]
-    }],
+    "protocols": [
+      {
+        "name": "whatsapp",
+        "role": "Viewer",
+        "schemes": [
+          "whatsapp"
+        ]
+      }
+    ],
     "mac": {
       "category": "public.app-category.social-networking",
       "target": [
@@ -58,7 +61,8 @@
       "background": "build/background.png",
       "icon": "build/icon.icns",
       "iconSize": 100,
-      "contents": [{
+      "contents": [
+        {
           "x": 380,
           "y": 280,
           "type": "link",
@@ -81,13 +85,15 @@
       "allowToChangeInstallationDirectory": "true"
     },
     "win": {
-      "target": [{
-        "target": "nsis",
-        "arch": [
-          "x64",
-          "ia32"
-        ]
-      }],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
       "icon": "build/icon.ico"
     },
     "linux": {
