@@ -61,6 +61,24 @@ window.onload = () => {
       mutations[0].removedNodes &&
       mutations[0].removedNodes[0].id === "startup"
     ) {
+      if (
+        document.querySelectorAll('#pane-side [role="region"] > *').length > 0
+      ) {
+        document
+          .querySelectorAll('#pane-side [role="region"] > *')
+          .forEach((chat) => {
+            let internalInstance =
+              chat[
+                Object.keys(chat).find((key) =>
+                  key.includes("InternalInstance")
+                )
+              ];
+            let id =
+              internalInstance.memoizedProps.children.props.contact.id
+                ._serialized;
+            chat.id = id;
+          });
+      }
       new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (
@@ -694,19 +712,46 @@ ipcRenderer.on("format-text", (_, wrapper) => {
 
 const NotificationProxy = window.Notification;
 
+function dispatchMouseEvent(element, events) {
+  events.forEach(function (eventName) {
+    var event = new MouseEvent(eventName, {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+      button: 0,
+    });
+    element.dispatchEvent(event);
+  });
+}
+
 ipcRenderer.on("toggle-notification", (_, setting) => {
   if (!setting) {
     window.Notification = "";
   } else {
+    // Proxy the original Notification constructor
     let NativeNotification = Notification;
+
+    // Replace the original Notification constructor with custom one
     Notification = function (title, options) {
       var notification = new NativeNotification(title, options);
 
       notification.addEventListener("click", function () {
+        // Maximize the window and activate the tab that the message was in.
         ipcRenderer.send(
           "activate-window-and-tab",
           document.body.dataset.tabid
         );
+
+        // Simulate click on the particular chat element to open it.
+        let chat = document
+          .getElementById(options.tag)
+          .querySelector('[role="option"] > * > :last-child');
+        dispatchMouseEvent(chat, [
+          "mouseover",
+          "mousedown",
+          "mouseup",
+          "click",
+        ]);
       });
 
       notification.addEventListener = function () {
