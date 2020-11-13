@@ -1,59 +1,67 @@
 function addNewTab() {
-    // Create a tab object to use later
-    let tab = {
-        name: null,
-        notifications: null,
-        sound: null,
-        theme: null,
-        id: null,
-        tab_color: null,
-        utility_bar: null,
-    };
+  // Create a tab object to use later
+  let tab = {
+    name: null,
+    notifications: null,
+    sound: null,
+    theme: null,
+    id: null,
+    tab_color: null,
+    utility_bar: null,
+    spellcheck: null,
+  };
 
-    // Get the name (If no name is put by the user, it assigns the name "New Tab")
-    tab.name = (document.querySelector('#tab-name-textbox').value !== "" && document.querySelector('#tab-name-textbox').value !== null) ? document.querySelector('#tab-name-textbox').value : 'New Tab';
+  // Get the name (If no name is put by the user, it assigns the name "New Tab")
+  tab.name =
+    document.querySelector("#tab-name-textbox").value !== "" &&
+    document.querySelector("#tab-name-textbox").value !== null
+      ? document.querySelector("#tab-name-textbox").value
+      : "New Tab";
 
-    // Get notifications setting
-    tab.notifications = document.querySelector('#notification-toggle').checked;
+  // Get notifications setting
+  tab.notifications = document.querySelector("#notification-toggle").checked;
 
-    // Get sound setting
-    tab.sound = document.querySelector('#sound-toggle').checked;
+  // Get sound setting
+  tab.sound = document.querySelector("#sound-toggle").checked;
 
-    // Get utility bar setting
-    tab.utility_bar = document.querySelector('#utility-bar-toggle').checked;
+  // Get utility bar setting
+  tab.utility_bar = document.querySelector("#utility-bar-toggle").checked;
 
-    // Get the theme
-    tab.theme = themeSelect.getValue(true);
+  // Get the theme
+  tab.theme = themeSelect.getValue(true);
 
-    // Get tab color
-    tab.tab_color = document.querySelector('#tab-color').value;
+  // Get tab color
+  tab.tab_color = document.querySelector("#tab-color").value;
 
-    // Assign unique ID to tab
-    tab.id = uuid();
+  tab.spellcheck = document.querySelector("#tab-spellcheck").value;
 
-    // Get the original tabs list
-    let tabsList = Array.from(tabStore.get('tabs'));
+  // Assign unique ID to tab
+  tab.id = uuid();
 
-    // Push the new tab to the list 
-    tabsList.push(tab);
+  // Get the original tabs list
+  let tabsList = Array.from(tabStore.get("tabs"));
 
-    // Set the new list to the store
-    tabStore.set('tabs', tabsList);
+  // Push the new tab to the list
+  tabsList.push(tab);
 
-    // Adds new tab to the DOM
-    addTabToDOM(tab.id, tab.name);
+  // Set the new list to the store
+  tabStore.set("tabs", tabsList);
 
-    tabStore.set("active_tab_id", tab.id)
+  // Adds new tab to the DOM
+  addTabToDOM(tab.id, tab.name);
 
-    // Clears the value of all the inputs after tab is added
-    document.querySelector('#tab-name-textbox').value = '';
-    document.querySelector('#tab-color').value = '';
-    document.querySelector('#notification-toggle').checked = true;
-    document.querySelector('#sound-toggle').checked = true;
-    document.querySelector('#utility-bar-toggle').checked = false;
-    themeSelect.setChoiceByValue('Default');
+  tabStore.set("active_tab_id", tab.id);
+
+  // Clears the value of all the inputs after tab is added
+  document.querySelector("#tab-name-textbox").value = "";
+  document.querySelector("#tab-color").value = "";
+  document.querySelector("#notification-toggle").checked = true;
+  document.querySelector("#sound-toggle").checked = true;
+  document.querySelector("#utility-bar-toggle").checked = false;
+  document.querySelector("#tab-spellcheck").checked = false;
+  themeSelect.setChoiceByValue("Default");
 }
 
 module.exports = {
-    addNewTab
-}
+  addNewTab,
+};

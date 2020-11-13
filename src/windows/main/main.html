@@ -1,76 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Altus</title>
-    <link rel="stylesheet" href="../otherAssets/manrope.css">
-    <link rel="stylesheet" href="../otherAssets/LineIcons.min.css">
-    <link rel="stylesheet" href="../otherAssets/normalize.css">
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="../../node_modules/choices.js/public/assets/styles/choices.min.css">
+    <link rel="stylesheet" href="../otherAssets/manrope.css" />
+    <link rel="stylesheet" href="../otherAssets/LineIcons.min.css" />
+    <link rel="stylesheet" href="../otherAssets/normalize.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link
+      rel="stylesheet"
+      href="../../node_modules/choices.js/public/assets/styles/choices.min.css"
+    />
     <style id="tabbar-style"></style>
-</head>
+  </head>
 
-<body>
+  <body>
     <ul data-tabs id="tabs-list-">
-        <li><a href="#addtab"><span class="lni lni-plus"></span></a></li>
+      <li>
+        <a href="#addtab"><span class="lni lni-plus"></span></a>
+      </li>
     </ul>
 
     <div id="addtab">
-        <div class="flex">
-            <div class="main-container">
-                <div class="title">Add Tab</div>
-                <div class="inputs">
-                    <div class="input-field">
-                        <div class="label">Name:</div>
-                        <div class="input-flex"><input class="textbox" placeholder="Name of tab" id="tab-name-textbox"
-                                type="text"></div>
-                    </div>
-                    <div class="input-field">
-                        <div class="label">Theme:</div>
-                        <select id="theme-select">
-                        </select>
-                    </div>
-                    <div class="toggle-field">
-                        <div class="label">Enable Notifications:</div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="notification-toggle" class="checkbox" checked>
-                            <div class="toggle-bg"></div>
-                        </div>
-                    </div>
-                    <div class="toggle-field">
-                        <div class="label">Enable Sound:</div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="sound-toggle" class="checkbox" checked>
-                            <div class="toggle-bg"></div>
-                        </div>
-                    </div>
-                    <div class="toggle-field">
-                        <div class="label with-help">Enable Utility Bar:
-                            <button class="help tooltip tooltip-top"
-                                data-tooltip="This enables a utility bar above the textbox where you can quickly format your text and save Quick Replies.">?</button>
-                        </div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="utility-bar-toggle" class="checkbox">
-                            <div class="toggle-bg"></div>
-                        </div>
-                    </div>
-                    <div class="toggle-field">
-                        <div class="label">Tab Color:</div>
-                        <div class="input-checkbox">
-                            <input type="color" id="tab-color" class="color-input" value="#2a3440">
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="submit button" id="add-tab-button"><span class="lni lni-plus"></span> Add
-                    Tab</button>
+      <div class="flex">
+        <div class="main-container">
+          <div class="title">Add Tab</div>
+          <div class="inputs">
+            <div class="input-field">
+              <div class="label">Name:</div>
+              <div class="input-flex">
+                <input
+                  class="textbox"
+                  placeholder="Name of tab"
+                  id="tab-name-textbox"
+                  type="text"
+                />
+              </div>
             </div>
+            <div class="input-field">
+              <div class="label">Theme:</div>
+              <select id="theme-select"></select>
+            </div>
+            <div class="toggle-field">
+              <div class="label">Enable Notifications:</div>
+              <div class="input-checkbox">
+                <input
+                  type="checkbox"
+                  id="notification-toggle"
+                  class="checkbox"
+                  checked
+                />
+                <div class="toggle-bg"></div>
+              </div>
+            </div>
+            <div class="toggle-field">
+              <div class="label">Enable Sound:</div>
+              <div class="input-checkbox">
+                <input
+                  type="checkbox"
+                  id="sound-toggle"
+                  class="checkbox"
+                  checked
+                />
+                <div class="toggle-bg"></div>
+              </div>
+            </div>
+            <div class="toggle-field">
+              <div class="label with-help">
+                Enable Utility Bar:
+                <button
+                  class="help tooltip tooltip-top"
+                  data-tooltip="This enables a utility bar above the textbox where you can quickly format your text and save Quick Replies."
+                >
+                  ?
+                </button>
+              </div>
+              <div class="input-checkbox">
+                <input
+                  type="checkbox"
+                  id="utility-bar-toggle"
+                  class="checkbox"
+                />
+                <div class="toggle-bg"></div>
+              </div>
+            </div>
+            <div class="toggle-field">
+              <div class="label">Tab Color:</div>
+              <div class="input-checkbox">
+                <input
+                  type="color"
+                  id="tab-color"
+                  class="color-input"
+                  value="#2a3440"
+                />
+              </div>
+            </div>
+            <div class="toggle-field">
+              <div class="label">Spellchecker:</div>
+              <div class="input-checkbox">
+                <input type="checkbox" id="tab-spellcheck" class="checkbox" />
+                <div class="toggle-bg"></div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="submit button" id="add-tab-button">
+            <span class="lni lni-plus"></span> Add Tab
+          </button>
         </div>
+      </div>
     </div>
     <script id="main-script" src="./main.js"></script>
-</body>
-
+  </body>
 </html>

@@ -621,6 +621,7 @@ if (!singleInstanceLock) {
         // Restores the main window
         mainWindow.restore();
       }
+      mainWindow.show();
       // Focuses the main window
       mainWindow.focus();
       // Opens whatsapp if link there is one
@@ -660,7 +661,6 @@ if (!singleInstanceLock) {
         webviewTag: true,
         // Enable nodeIntegration so window can use node functions
         nodeIntegration: true,
-        spellcheck: true,
       },
       // Hides main window until it is ready to show
       show: false,
