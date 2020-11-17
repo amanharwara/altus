@@ -1,13 +1,13 @@
-const { process, Menu, app } = require("electron").remote;
+const { Menu, app } = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const { checkContrastAndFix } = require("../util/checkContrastAndFix");
 const uuid = require("uuid/v4");
 const customTitlebar = require("custom-electron-titlebar");
 const Store = require("electron-store");
-const usercss_meta = require("usercss-meta");
-const stylus = require("stylus");
 const fs = require("fs-extra");
 const path = require("path");
+const { customizeMetadata, customizeTheme } = require("../util/theme");
+const Color = require("color");
+const fetch = require("node-fetch");
 
 // Load the main settings into settings variable
 let settings = new Store({
@@ -18,10 +18,6 @@ let settings = new Store({
 let themes = new Store({
   name: "themes",
 });
-
-const Color = require("color");
-const { default: fetch } = require("node-fetch");
-const parse = require("usercss-meta/lib/parse");
 
 // Checks if custom titlebar is enabled in settings & the platform isn't a Mac
 if (
@@ -109,25 +105,24 @@ document.querySelector("button").addEventListener("click", async () => {
   let metaIntoText = await fetchMetadata.text();
   console.log("got meta:", metaIntoText);
 
-  metaIntoText = customizeMetadata(metaIntoText, { _bg: bg, _fg: fg, _ac: ac });
+  metaIntoText = customizeMetadata(metaIntoText, { bg, fg, ac });
   console.log("customized meta", metaIntoText);
 
   fs.writeFileSync(
-    path.join(app.getPath("userData"), "metadata.styl"),
+    path.join(app.getPath("userData"), "temp_metadata.styl"),
     metaIntoText
   );
   fs.writeFileSync(
-    path.join(app.getPath("userData"), "userstyle.styl"),
+    path.join(app.getPath("userData"), "temp_userstyle.styl"),
     styleIntoText
   );
   console.log("written to file");
 
-  let css = customizeTheme(styleIntoText, metaIntoText, { bg, fg, ac });
+  let css = customizeTheme(
+    styleIntoText,
+    path.join(app.getPath("userData"), "temp_metadata.styl")
+  );
   if (!css) return;
-  css = css
-    .slice(0, -3)
-    .substring(css.indexOf("@moz"))
-    .replace(/@-moz.*\{/, "");
   console.log("got css", css);
 
   let theme = {
@@ -161,49 +156,7 @@ document.querySelector("button").addEventListener("click", async () => {
 
   ipcRenderer.send("themes-changed", true);
   console.log("sent ipc renderer");
+
+  fs.removeSync(path.join(app.getPath("userData"), "temp_metadata.styl"));
+  fs.removeSync(path.join(app.getPath("userData"), "temp_userstyle.styl"));
 });
-
-/**
- * Customize the theme
- * @param {string} theme
- * @param {string} metadata
- * @param {Object} options
- */
-function customizeTheme(theme, metadata, options) {
-  let customized;
-
-  let opts = {
-    bg: options && options.bg ? options.bg : "#1f232a",
-    fg: options && options.fg ? options.fg : "#eee",
-    ac: options && options.ac ? options.ac : "#7289da",
-  };
-
-  stylus(theme)
-    .import(path.join(app.getPath("userData"), "metadata.styl"))
-    .render((err, css) => {
-      if (err) {
-        console.error(err);
-        return;
-      } else {
-        console.log(css);
-        customized = css;
-      }
-    });
-
-  return customized;
-}
-
-function customizeMetadata(current, opts) {
-  console.log("meta custom start");
-  let metadata;
-
-  metadata = current.replace("theme = 'old'", "theme = 'custom'");
-  console.log("replaced 1");
-
-  for (let key of Object.keys(opts)) {
-    let regex = new RegExp(`${key} = (.*)`);
-    metadata = metadata.replace(regex, `${key} = ${opts[key]}`);
-  }
-
-  return metadata;
-}
