@@ -1,28 +1,12 @@
-// Import custom titlebar module
 const customTitlebar = require("custom-electron-titlebar");
-
-// Import extra electron modules
 const { process, BrowserWindow } = require("electron").remote;
 const { ipcRenderer, remote } = require("electron");
-
-// Import electron store module for settings
 const Store = require("electron-store");
-
-// Import UUIDv4 for creating unique IDs
 const uuid = require("uuid/v4");
-
-// Import SweetAlert2 for modals
 const Swal = require("sweetalert2");
-
-// Load tabbyjs for tabs
 const Tabby = require("tabbyjs");
-
 const choices = require("choices.js");
-
-// Import escape text function
 const { escape } = require("../otherAssets/escapeText");
-
-// Import util functions
 const {
   addTabToDOM,
   removeTab,
