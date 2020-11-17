@@ -15,6 +15,8 @@ const contextMenu = require("electron-context-menu");
 const { createWindow } = require("./js/createWindow");
 const Store = require("electron-store");
 const { defaultSettings } = require("./js/defaultSettings");
+const { customizeTheme, customizeMetadata } = require("./windows/util/theme");
+const { writeFileSync, removeSync, readJSONSync } = require("fs-extra");
 
 // Declaring the window variables to use later
 let mainWindow,
@@ -25,28 +27,6 @@ let mainWindow,
   checkUpdatesWindow;
 
 let trayIcon;
-
-const { generateTheme } = require("./windows/util/generateTheme");
-
-/**
- * Get the Dark Theme CSS and pass it to the createThemesList callback
- * @param {createThemesListCallback} createThemesList
- */
-function getDarkTheme(createThemesList) {
-  fetch(
-    "https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl",
-    {
-      cache: "no-cache",
-    }
-  )
-    .then((res) => res.text())
-    .then((style) => {
-      createThemesList(generateTheme({}, style));
-    })
-    .catch((err) => {
-      throw new Error(err);
-    });
-}
 
 /**
  * Create the default themes list
@@ -75,8 +55,52 @@ function createThemesList(darkThemeCSS) {
   });
 }
 
+function getThemeAndCreateList() {
+  let userDataPath = app.getPath("userData");
+  let tempMetaPath = path.join(userDataPath, "temp_metadata.styl");
+  fetch(
+    "https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/wa.user.styl"
+  )
+    .then((res) => res.text())
+    .then((base_theme) => {
+      console.log("got base theme");
+      fetch(
+        "https://raw.githubusercontent.com/vednoc/dark-whatsapp/master/metadata.styl"
+      )
+        .then((res) => res.text())
+        .then((metadata) => {
+          console.log("got metadata");
+          let customized_meta = customizeMetadata(metadata);
+          writeFileSync(tempMetaPath, customized_meta);
+          let dark_theme = customizeTheme(base_theme, tempMetaPath, true);
+          createThemesList(dark_theme);
+          removeSync(tempMetaPath);
+        })
+        .catch((err) => console.error(err));
+    })
+    .catch((err) => console.error(err));
+}
+
+/**
+ * Get the Dark Theme CSS and pass it to the createThemesList callback
+ */
+function checkThemeInit() {
+  let themes_path = path.join(app.getPath("userData"), "themes.json");
+  try {
+    let current_themes = readJSONSync(themes_path);
+    if (current_themes["themes"].find((theme) => theme.name === "Dark Plus")) {
+      return;
+    } else {
+      throw new Error("Dark Plus Theme not found");
+    }
+  } catch (e) {
+    getThemeAndCreateList();
+    console.error(e);
+  }
+}
+
 // Get the dark theme css using fetch & generate the default themes list
-getDarkTheme(createThemesList);
+checkThemeInit();
 
 // Declaring the fileMenuTemplate variable & creating the template for the 'File' menu
 let fileMenuTemplate = [
