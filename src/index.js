@@ -7,6 +7,7 @@ const {
   shell,
   Tray,
   nativeImage,
+  clipboard,
 } = require("electron");
 const url = require("url");
 const path = require("path");
@@ -20,7 +21,6 @@ const { writeFileSync, removeSync, readJSONSync } = require("fs-extra");
 
 // Declaring the window variables to use later
 let mainWindow,
-  aboutWindow,
   settingsWindow,
   customThemeWindow,
   themeManagerWindow,
@@ -436,49 +436,35 @@ const mainMenuTemplate = [
       {
         label: "About",
         click() {
-          // Checks if about window exists
-          if (typeof aboutWindow === "object") {
-            // Shows about window instead of creating new object
-            aboutWindow.show();
-          } else {
-            // Creates new Browser Window object using createWindow function
-            aboutWindow = createWindow({
-              id: "aboutWindow",
-              title: "About",
-              width: 435,
-              height: 300,
-              resizable: false,
-              mainWindowObject: mainWindow,
-              min: true,
-              max: false,
-              minWidth: "",
-              minHeight: "",
-              maxWidth: "",
-              maxHeight: "",
+          let versionInfo = `Altus: ${app.getVersion()}
+Electron: ${process.versions.electron}
+Chrome: ${process.versions.chrome}
+V8: ${process.versions.v8}`;
+
+          dialog
+            .showMessageBox({
+              type: "info",
+              title: `Altus v${app.getVersion()}`,
+              message: `Made by Aman Harwara.`,
+              detail: `With help from: MarceloZapatta, Dafnik, dmcdo, insign, srevinsaju.
+            
+${versionInfo}`,
+              icon: iconImage,
+              buttons: ["Copy Version Info", "OK"],
+            })
+            .then((res) => {
+              let buttonClicked = res.response;
+              switch (buttonClicked) {
+                case 0:
+                  clipboard.write({
+                    text: versionInfo,
+                  });
+                  break;
+              }
+            })
+            .catch((err) => {
+              console.error(err);
             });
-            // Loads Theme Manager Window HTML
-            aboutWindow.loadURL(
-              url.format({
-                pathname: path.join(
-                  __dirname,
-                  "windows",
-                  "about",
-                  "about.html"
-                ),
-                protocol: "file:",
-                slashes: true,
-              })
-            );
-            aboutWindow.once("ready-to-show", () => {
-              // Shows About window
-              aboutWindow.show();
-            });
-            // Close window event (Hides window when closed, instead of deleting it)
-            aboutWindow.on("close", (e) => {
-              e.preventDefault();
-              aboutWindow.hide();
-            });
-          }
         },
       },
       {
@@ -535,7 +521,6 @@ const mainMenuTemplate = [
               })
             );
             checkUpdatesWindow.once("ready-to-show", () => {
-              // Shows About window
               checkUpdatesWindow.show();
             });
             // Close window event (Hides window when closed, instead of deleting it)
