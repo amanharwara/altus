@@ -30,7 +30,7 @@ function customizeMetadata(current, options) {
   let metadata;
 
   metadata = current.replace("theme = 'old'", "theme = 'custom'");
-  console.log("replaced 1");
+  metadata = current.replace("fullscreen = 0", "fullscreen = 1");
 
   let opts = {
     _bg: options && options.bg ? options.bg : "#1f232a",
