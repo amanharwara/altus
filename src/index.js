@@ -9,6 +9,7 @@ const {
   nativeImage,
   clipboard,
 } = require("electron");
+const os = require("os");
 const url = require("url");
 const path = require("path");
 const fetch = require("node-fetch");
@@ -440,7 +441,8 @@ const mainMenuTemplate = [
           let versionInfo = `Altus: ${app.getVersion()}
 Electron: ${process.versions.electron}
 Chrome: ${process.versions.chrome}
-V8: ${process.versions.v8}`;
+V8: ${process.versions.v8}
+OS: ${os.type()} ${os.arch()} ${os.release()}`;
 
           dialog
             .showMessageBox({
