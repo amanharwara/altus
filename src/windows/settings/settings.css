@@ -8,8 +8,8 @@ body {
 }
 
 body {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border: 1px solid var(--window-border);
   background: linear-gradient(to bottom right, #1a1a1a, #0f1010) !important;
   margin: 0;
@@ -31,7 +31,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #3A4049;
+  background: #3a4049;
   border-radius: 10px;
 }
 
@@ -42,13 +42,13 @@ body {
 }
 
 .title {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   font-weight: 500;
   font-size: 2.25rem;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: #fff;
-  padding-bottom: .15rem;
+  padding-bottom: 0.15rem;
   border-bottom: 3px solid #48484891;
   -webkit-user-select: none;
   position: relative;
@@ -58,7 +58,7 @@ body {
   overflow: hidden;
   max-height: 68vh;
   overflow-y: auto;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
 }
 
 .setting {
@@ -68,7 +68,7 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   border-bottom: 1px solid rgba(80, 80, 80, 0.25);
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 
 .setting:last-child {
@@ -80,15 +80,15 @@ body {
 }
 
 .setting-title {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 700;
   font-size: 1.45rem;
 }
 
 .setting-description {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 0.95rem;
   font-weight: 300;
   margin: 0.35rem 0;
@@ -132,19 +132,19 @@ body {
   z-index: 5;
 }
 
-.checkbox:checked+.toggle-bg::after {
+.checkbox:checked + .toggle-bg::after {
   transition: 0.15s;
   background: #fff;
   left: auto;
   right: 10%;
 }
 
-.checkbox:checked+.toggle-bg {
+.checkbox:checked + .toggle-bg {
   background: linear-gradient(270deg, #09a5d7 0%, #2a71d1 100%);
 }
 
-.checkbox:focus+.toggle-bg,
-.checkbox:active+.toggle-bg {
+.checkbox:focus + .toggle-bg,
+.checkbox:active + .toggle-bg {
   outline: 1px solid #2a71d1;
 }
 
@@ -156,14 +156,15 @@ body {
 }
 
 .footer button {
-  margin: 0 .25rem;
-  border: 1px solid #3A4049;
-  padding: .5rem 1rem;
+  margin: 0 0.25rem;
+  border: 1px solid #3a4049;
+  padding: 0.5rem 1rem;
   font-size: 1.05rem;
   cursor: pointer;
   background: transparent;
   color: #fff;
-  font-family: BlinkMacSystemFont, "Manrope", 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .footer button:focus {
@@ -171,14 +172,14 @@ body {
 }
 
 .footer button:hover {
-  background: #3A4049;
+  background: #3a4049;
 }
 
 .footer button:first-child {
   margin-right: 0;
   background: #1e72e0;
   border: 1px solid #2a71d1;
-  padding: .5em 1.35em;
+  padding: 0.5em 1.35em;
 }
 
 .footer button:first-child:hover {
@@ -199,8 +200,8 @@ body {
   background: #101114;
   border: 1px solid #242525;
   font-size: 1rem;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 300;
   padding: 0.5rem 1rem;
   position: absolute;

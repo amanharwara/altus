@@ -8,8 +8,8 @@ body {
 }
 
 body {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border: 1px solid var(--window-border);
   background: linear-gradient(to bottom right, #1a1a1a, #0f1010) !important;
   color: #fff;
@@ -26,13 +26,13 @@ body {
 }
 
 .title {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   font-weight: 500;
   font-size: 2.25rem;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: #fff;
-  padding-bottom: .15rem;
+  padding-bottom: 0.15rem;
   border-bottom: 3px solid #48484891;
   -webkit-user-select: none;
   position: relative;
@@ -43,7 +43,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #3A4049;
+  background: #3a4049;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -70,10 +70,10 @@ body {
 }
 
 .input input[type="text"] {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 0.9rem;
-  padding: .15rem .35rem;
+  padding: 0.15rem 0.35rem;
 }
 
 .input.color input[type="text"] {
@@ -102,14 +102,15 @@ input[type="color"]::-webkit-color-swatch {
 
 button {
   width: 100%;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   background: #1e72e0;
   border: 1px solid #2a71d1;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1.05rem;
   cursor: pointer;
   color: #fff;
-  font-family: BlinkMacSystemFont, "Manrope", 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 button:hover {

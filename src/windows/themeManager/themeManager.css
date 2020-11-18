@@ -8,8 +8,8 @@ body {
 }
 
 body {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border: 1px solid var(--window-border);
   background: linear-gradient(to bottom right, #1a1a1a, #0f1010) !important;
 }
@@ -33,8 +33,8 @@ body {
 .title {
   font-weight: 700;
   font-size: 2.5rem;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: #fff;
   border-bottom: 4px solid #b9b9b9de;
   position: relative;
@@ -75,8 +75,8 @@ body {
 }
 
 .theme .name {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 400;
   font-size: 1.65rem;
   text-overflow: ellipsis;
@@ -114,8 +114,8 @@ body {
   color: #fff;
   font-size: 1rem;
   border: 0;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -137,8 +137,8 @@ body {
 }
 
 .edit-popup-title {
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: #fff !important;
   margin: 0 !important;
 }
@@ -165,8 +165,8 @@ body {
   color: #fff;
   font-size: 1rem;
   font-weight: 400;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   width: -webkit-fill-available;
 }
 
@@ -214,8 +214,8 @@ body {
   background: #101114;
   border: 1px solid #242525;
   font-size: 1rem;
-  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Manrope", "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 300;
   padding: 0.5rem 1rem;
   position: absolute;
