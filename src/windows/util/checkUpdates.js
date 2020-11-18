@@ -14,7 +14,7 @@ module.exports = {
             title: "New Update Available",
             message: `New Version: v${latest.tag_name}`,
             detail: "Download?",
-            buttons: ["Download", "Cancel"],
+            buttons: ["Download", "Open Changelog", "Cancel"],
           })
           .then(({ response }) => {
             if (response === 0) {
@@ -42,6 +42,10 @@ module.exports = {
                   shell.openExternal(latest.html_url);
                   break;
               }
+            }
+
+            if (response === 1) {
+              shell.openExternal(latest.html_url);
             }
           })
           .catch((err) => console.error(err));
