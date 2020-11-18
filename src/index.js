@@ -18,6 +18,7 @@ const Store = require("electron-store");
 const { defaultSettings } = require("./js/defaultSettings");
 const { customizeTheme, customizeMetadata } = require("./windows/util/theme");
 const { writeFileSync, removeSync, readJSONSync } = require("fs-extra");
+const { checkUpdates } = require("./windows/util/checkUpdates");
 
 // Declaring the window variables to use later
 let mainWindow,
@@ -488,47 +489,20 @@ ${versionInfo}`,
         label: "Check For Updates",
         accelerator: "CmdOrCtrl+Shift+U",
         click() {
-          // Check is window exists already
-          if (typeof checkUpdatesWindow === "object") {
-            // Show window instead of creating new object
-            checkUpdatesWindow.show();
-          } else {
-            // Create new browser window object for the window
-            checkUpdatesWindow = createWindow({
-              id: "checkUpdates",
-              title: "Check Updates",
-              width: 435,
-              height: 340,
-              resizable: true,
-              mainWindowObject: mainWindow,
-              min: false,
-              max: false,
-              minWidth: 435,
-              minHeight: 340,
-              maxWidth: "",
-              maxHeight: "",
-            });
-            checkUpdatesWindow.loadURL(
-              url.format({
-                pathname: path.join(
-                  __dirname,
-                  "windows",
-                  "checkUpdates",
-                  "checkUpdates.html"
-                ),
-                protocol: "file:",
-                slashes: true,
-              })
-            );
-            checkUpdatesWindow.once("ready-to-show", () => {
-              checkUpdatesWindow.show();
-            });
-            // Close window event (Hides window when closed, instead of deleting it)
-            checkUpdatesWindow.on("close", (e) => {
-              e.preventDefault();
-              checkUpdatesWindow.hide();
-            });
-          }
+          dialog
+            .showMessageBox({
+              type: "question",
+              message: "Check for Updates?",
+              detail: `Current version: v${app.getVersion()}`,
+              buttons: ["Yes", "No"],
+            })
+            .then((res) => {
+              let buttonClicked = res.response;
+              if (buttonClicked === 0) {
+                checkUpdates().catch((err) => console.error(err));
+              }
+            })
+            .catch((err) => console.error(err));
         },
       },
       {
