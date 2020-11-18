@@ -6,7 +6,7 @@ const uuid = require("uuid/v4");
 const Swal = require("sweetalert2");
 const Tabby = require("tabbyjs");
 const choices = require("choices.js");
-const { escape } = require("../otherAssets/escapeText");
+const { escape } = require("../util/escapeText");
 const {
   addTabToDOM,
   removeTab,
