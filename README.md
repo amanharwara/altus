@@ -1,6 +1,6 @@
 # Altus
 
-[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues) [![Support](https://img.shields.io/badge/%E2%9D%A4-Support-cc2478?style=for-the-badge)](https://github.com/amanharwara/altus#support) <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>  [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
+[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues) <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a> [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
@@ -19,6 +19,7 @@
 - **Tray icon** so you can minimize the app completely and still receive notifications.
 
 ## Feature Requests
+
 In order to submit a feature request, create a [new issue](https://github.com/amanharwara/altus/issues/new) with the label `enhancement`.
 
 Please make sure that you provide a helpful description of your feature request. If possible, try implementing the feature yourself by forking this repository and then creating a pull request.
@@ -37,64 +38,12 @@ Please make sure that you provide a helpful description of your feature request.
 
 ![Altus Dark Theme](./img/Altus-Dark-Theme.png)
 
-
-## Releases
-
-To download the latest releases, you can [click here](https://github.com/ShadyThGod/altus/#latest-releases). Alternatively, you can visit the [releases page](https://github.com/ShadyThGod/altus/releases) on the repository.
-
-### Installation :-
-
-#### Windows
-
-- Run the `.exe` file provided in the release. E.g.: `Altus-Setup-3.0.0.exe`
-- If Windows displays a warning saying **'Windows protected your PC'**, click on **More info** and then click **Run Anyway**
-- Once the Altus Setup starts, you will be asked to select from two choices which are **Anyone who uses this computer (all users)** and **Only for me (username)**. Select one according to your choice.
-- Choose the destination folder where you want Altus to be installed. The default folder depends on what option you chose previously.
-  - If you chose "_Anyone who uses this computer_", then the default folder will be `C:\Program Files\Altus` which you can change if you want.
-  - If you chose "_Only for me_", then the default folder will be `C:\Users\Username\AppData\Local\Programs\Altus` which you can change if you want.
-- Click **Install**. If it asks for admin privileges (UAC), click **Yes**
-- The installation will Altus will be installed to the path according to what you selected. You can select **Run Altus** if you want to start Altus after closing the setup.
-
-#### Linux
-
-I recommend using the `.AppImage` format since it allows you to use that single executable on the majority of Linux distributions. I am also not going to create `.deb` executables anymore since they aren't universal and are proprietary to Debian distributions unlike `.AppImage` executables which work on almost all of the distributions.
-
-Installing Altus on Linux using AppImage is really easy. Follow these steps:
-
-- Download and move the AppImage file to wherever you want to. E.g: `~/Downloads/Altus 3.0.0.AppImage`
-- You might need to make the file executable using chmod. Use: `chmod a+x ~/Downloads/Altus 3.0.0.AppImage`
-- Then simply run it. Use: `~/Downloads/Altus 3.0.0.AppImage`
-
-#### Mac
-
-One thing to note is that Mac releases most probably will be late than the Windows and Linux releases as I do not own a Mac and my PC runs really slow when I use macOS on a VM.
-
-To install Altus on a Mac, follow these steps:
-
-- Download the `.dmg` file
-- Double-click it i.e. run it
-- Drag the **Altus icon** onto the **Applications folder**
-- Let it copy
-- Done!
-
 ## Support
 
 If you like Altus, consider supporting it by donating using any of the following methods:
 
 - LiberaPay: <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
 - Ko-Fi: [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
-
-## For Developers
-
-Altus is an open-source app and I really appreciate other developers adding new features and/or helping fix bugs. If you want to contribute to Altus, you can fork this repository, make the changes and create a pull request. You can check out [this tutorial](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork) to learn how to create a pull request.
-
-However, please make sure you follow a few rules listed below to ensure that your changes get merged into the main repo. The rules listed below are enforced to make sure the changes made are well-documented and can be easily kept track of.
-
-- Make sure your pull request has a informative title. You should use prefixes like `ADD:`, `FIX:`, etc at the start of the title which describe the changes followed by a one-line description of the changes. Example: `ADD: Added a new feature to Altus`
-
-- Your pull request's description should be in-depth. Make sure you document all the changes you made as in-depth and informative as possible. Dependency changes and major code changes must be thoroughly described and given priority in your description.
-
-- Commits in your fork should be informative, as well. Make sure you don't combine too many changes into a single commit.
 
 ## Acknowledgements
 
@@ -131,6 +80,9 @@ Below is the list of the dependencies that helped me greatly to create this app.
 Below is the list of contributors who have contributed to Altus by creating a feature or helping fix an issue.
 
 #### [Melvin-Abraham](https://github.com/Melvin-Abraham) - Helped fix issues #55, #53
+
 #### [dylanmcdougall](https://github.com/dylanmcdougall) - PR #10 (Added feature - Confirmation Dialog on close)
+
 #### [Dafnik](https://github.com/Dafnik) - PR #5 (Helped fix issue #4)
+
 #### [Marcelo Zapatta](https://github.com/MarceloZapatta) - PR #77 (Fixed #23 by adding tray icon support on Linux)
