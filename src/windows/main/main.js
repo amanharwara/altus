@@ -1,5 +1,5 @@
 const customTitlebar = require("custom-electron-titlebar");
-const { process, BrowserWindow } = require("electron").remote;
+const { process, BrowserWindow, dialog } = require("electron").remote;
 const { ipcRenderer, remote } = require("electron");
 const Store = require("electron-store");
 const uuid = require("uuid/v4");
@@ -69,18 +69,22 @@ tabs.toggle("#addtab");
 // Create variable themesList
 let themesList = [];
 
-// Go through all the items in the themes list
-themes.get("themes").forEach((i) => {
-  themesList.push({
-    value: i.name,
-    label: i.name,
-    ...(i.name === "Default"
-      ? {
-          selected: true,
-        }
-      : {}),
+function createThemesList() {
+  themesList = [];
+  themes.get("themes").forEach((i) => {
+    themesList.push({
+      value: i.name,
+      label: i.name,
+      ...(i.name === "Default"
+        ? {
+            selected: true,
+          }
+        : {}),
+    });
   });
-});
+}
+
+createThemesList();
 
 // Custom select box for themes on the "Add Tab" screen
 let themeSelect = new choices("#theme-select", {
@@ -139,7 +143,8 @@ setupExistingTabs();
 
 // IPC event when a theme is added or removed
 ipcRenderer.on("themes-changed", (e) => {
-  window.location.reload();
+  createThemesList();
+  themeSelect.setChoices(themesList, "value", "label", true);
 });
 
 // IPC event of message indicator
