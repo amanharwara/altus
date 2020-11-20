@@ -22,11 +22,7 @@ const { writeFileSync, removeSync, readJSONSync } = require("fs-extra");
 const { checkUpdates } = require("./windows/util/checkUpdates");
 
 // Declaring the window variables to use later
-let mainWindow,
-  settingsWindow,
-  customThemeWindow,
-  themeManagerWindow,
-  checkUpdatesWindow;
+let mainWindow, settingsWindow, themeManagerWindow;
 
 let trayIcon;
 
@@ -278,55 +274,6 @@ const mainMenuTemplate = [
   {
     label: "Theme",
     submenu: [
-      {
-        label: "Custom Theme",
-        accelerator: "CmdOrCtrl+Shift+T",
-        click() {
-          // Checks if custom theme window exists
-          if (typeof customThemeWindow === "object") {
-            // Shows the custom theme window instead of creating new one
-            customThemeWindow.show();
-          } else {
-            // Creates new Browser Window object using createWindow function
-            customThemeWindow = createWindow({
-              id: "customTheme",
-              title: "Theme Creator",
-              width: 435,
-              height: 350,
-              resizable: false,
-              mainWindowObject: mainWindow,
-              min: true,
-              max: false,
-              minWidth: 435,
-              minHeight: 350,
-              maxWidth: 435,
-              maxHeight: 425,
-            });
-            // Loads Custom Theme Window HTML
-            customThemeWindow.loadURL(
-              url.format({
-                pathname: path.join(
-                  __dirname,
-                  "windows",
-                  "customTheme",
-                  "customTheme.html"
-                ),
-                protocol: "file:",
-                slashes: true,
-              })
-            );
-            customThemeWindow.once("ready-to-show", () => {
-              // Shows the custom theme window
-              customThemeWindow.show();
-            });
-            // Close window event (Hides window when closed, instead of deleting it)
-            customThemeWindow.on("close", (e) => {
-              e.preventDefault();
-              customThemeWindow.hide();
-            });
-          }
-        },
-      },
       {
         label: "Manage Themes",
         accelerator: "CmdOrCtrl+T",
@@ -589,6 +536,21 @@ let settings = new Store({
   },
 });
 
+const handleWhatsappLinks = (argv) => {
+  let arg = argv[argv.findIndex((arg) => arg.includes("whatsapp"))];
+  let url = "https://web.whatsapp.com/";
+
+  if (arg.includes("send/?phone")) {
+    url += arg.split("://")[1].replace("/", "");
+  } else if (arg.includes("chat/?code")) {
+    url += "accept?code=" + arg.split("=")[1];
+  }
+
+  mainWindow.webContents.executeJavaScript(`
+  document.querySelector('[role="tabpanel"]:not([hidden="hidden"]) webview').src = "${url}";
+  `);
+};
+
 // Using singleInstanceLock for making app single instance
 const singleInstanceLock = app.requestSingleInstanceLock();
 
@@ -611,12 +573,7 @@ if (!singleInstanceLock) {
       mainWindow.focus();
       // Opens whatsapp if link there is one
       if (argv.findIndex((arg) => arg.includes("whatsapp")) !== -1) {
-        let code = argv[
-          argv.findIndex((arg) => arg.includes("whatsapp"))
-        ].split("=")[1];
-        mainWindow.webContents.executeJavaScript(`
-        document.querySelector('[role="tabpanel"]:not([hidden="hidden"]) webview').src = "https://web.whatsapp.com/accept?code=${code}";
-        `);
+        handleWhatsappLinks(argv);
       }
     }
   });
@@ -675,12 +632,7 @@ if (!singleInstanceLock) {
     );
 
     if (process.argv.findIndex((arg) => arg.includes("whatsapp")) !== -1) {
-      let code = process.argv[
-        process.argv.findIndex((arg) => arg.includes("whatsapp"))
-      ].split("=")[1];
-      mainWindow.webContents.executeJavaScript(`
-      document.querySelector('[role="tabpanel"]:not([hidden="hidden"]) webview').src = "https://web.whatsapp.com/accept?code=${code}";
-      `);
+      handleWhatsappLinks(process.argv);
     }
 
     // Main Window Close Event
@@ -872,9 +824,10 @@ if (!singleInstanceLock) {
     ipcMain.on("link-open", (e, link) => shell.openExternal(link));
 
     // Refresh main window when a theme is added or removed
-    ipcMain.on("themes-changed", () =>
-      mainWindow.webContents.send("themes-changed", true)
-    );
+    ipcMain.on("themes-changed", () => {
+      mainWindow.webContents.send("themes-changed", true);
+      themeManagerWindow.webContents.send("themes-changed", true);
+    });
 
     ipcMain.on("activate-window-and-tab", (_, tabid) =>
       mainWindow.webContents.send("activate-window-and-tab", tabid)
