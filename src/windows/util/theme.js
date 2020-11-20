@@ -25,12 +25,17 @@ function customizeTheme(theme, metaPath, noLog) {
   return customized;
 }
 
+/**
+ *
+ * @param {string} current
+ * @param {object} options
+ */
 function customizeMetadata(current, options) {
   console.log("meta custom start");
   let metadata;
 
   metadata = current.replace("theme = 'old'", "theme = 'custom'");
-  metadata = current.replace("fullscreen = 0", "fullscreen = 1");
+  metadata = metadata.replace("fullscreen = 0", "fullscreen = 1");
 
   let opts = {
     _bg: options && options.bg ? options.bg : "#1f232a",
