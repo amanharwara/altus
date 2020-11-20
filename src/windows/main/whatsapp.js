@@ -95,11 +95,22 @@ window.onload = () => {
               if (window.utility_bar_enabled) {
                 for (let i = 0; i < mutations.length; i++) {
                   let mutation = mutations[i];
+
+                  console.log(mutation.addedNodes, mutation.removedNodes);
+
+                  const classes = {
+                    emoji_panel: "_3Xjbn",
+                    reply_panel: "_2Efpu",
+                  };
+
                   if (
                     mutation.removedNodes.length > 0 &&
-                    (mutation.removedNodes[0].classList.contains("_1qDvT") ||
-                      mutation.removedNodes[0].classList.contains("_36Lgj") ||
-                      mutation.removedNodes[0].classList.contains("_1x3hh"))
+                    (mutation.removedNodes[0].classList.contains(
+                      classes.emoji_panel
+                    ) ||
+                      mutation.removedNodes[0].classList.contains(
+                        classes.reply_panel
+                      ))
                   ) {
                     if (!document.querySelector("._36Lgj")) {
                       document.querySelector(
@@ -107,19 +118,39 @@ window.onload = () => {
                       ).previousElementSibling.style.height = "47px";
                       document.querySelector(".utility-bar").style.display =
                         "flex";
+                      document.querySelector(".utility-bar").style.bottom =
+                        "100%";
                       break;
                     }
                   }
 
-                  if (
-                    mutation.addedNodes.length > 0 &&
-                    (mutation.addedNodes[0].classList.contains("_1qDvT") ||
-                      mutation.addedNodes[0].classList.contains("_36Lgj") ||
-                      mutation.addedNodes[0].classList.contains("_1x3hh"))
-                  ) {
-                    document.querySelector(".utility-bar").style.display =
-                      "none";
-                    break;
+                  if (mutation.addedNodes.length > 0) {
+                    if (
+                      mutation.addedNodes[0].classList.contains(
+                        classes.emoji_panel
+                      )
+                    ) {
+                      document.querySelector(".utility-bar").style.display =
+                        "none";
+                      break;
+                    }
+
+                    if (
+                      mutation.addedNodes[0].classList.contains(
+                        classes.reply_panel
+                      )
+                    ) {
+                      setTimeout(() => {
+                        document.querySelector(
+                          ".utility-bar"
+                        ).style.bottom = `calc(100% + ${
+                          getComputedStyle(
+                            document.querySelector("footer")
+                              .previousElementSibling
+                          ).height
+                        })`;
+                      }, 1000);
+                    }
                   }
                 }
               }
@@ -376,8 +407,8 @@ function enable_utility_bar() {
   document.querySelector("footer").appendChild(utility_bar);
 
   document
-    .querySelector("._2-aNW")
-    .scroll(0, document.querySelector("._2-aNW").scrollHeight);
+    .querySelector(".tSmQ1")
+    .scroll(0, document.querySelector(".tSmQ1").scrollHeight);
 
   document.querySelector(".utility-bar").addEventListener("click", (e) => {
     if (e.target.classList.contains("ub-remove")) {
