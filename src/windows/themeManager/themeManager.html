@@ -1,31 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Theme Manager</title>
-    <link rel="stylesheet" href="./themeManager.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
-    <link rel="stylesheet" href="../otherAssets/LineIcons.min.css">
-</head>
-
-<body>
-    <div class="container">
-        <div class="title">Themes
-            <button type="button" class="lni lni-reload tooltip tooltip-bottom" data-tooltip="Reload All Themes"
-                id="reload-page"></button>
+    <link rel="stylesheet" href="./themeManager.css" />
+    <link rel="stylesheet" href="../otherAssets/LineIcons.min.css" />
+  </head>
+  <body>
+    <ul data-tabs id="tabs-list">
+      <li>
+        <a href="#themes">Current Themes</a>
+      </li>
+      <li>
+        <a href="#addnew" title="Add New Theme"><i class="lni lni-plus"></i></a>
+      </li>
+    </ul>
+    <div id="themes">
+      <div class="flex-container">
+        <div id="themes-container"></div>
+        <div class="button-container">
+          <button
+            class="button full-width"
+            type="button"
+            id="update-custom-themes"
+            title="Updates the CSS for custom themes and the Dark Plus theme."
+          >
+            <span class="icon lni lni-reload"></span>
+            <div class="label">Update Custom Themes</div>
+          </button>
         </div>
-        <div class="themes">
-        </div>
-        <button type="button" class="button update tooltip tooltip-top"
-            data-tooltip="Use this to check if there are any updates to the base themes i.e. Default & Dark. This is useful if there are issues related to the in-built Dark theme.">
-            <span class="lni lni-reload"></span> Update Base Themes
-        </button>
+      </div>
     </div>
-
+    <div id="addnew">
+      <div class="flex-container">
+        <div class="options-container">
+          <div class="option" id="theme-preset">
+            <label for="theme-preset-input">Preset:</label>
+            <div class="preset-select">
+              <select id="preset-select-input" value="dark-plus">
+                <option value="dark-plus">Dark</option>
+                <option value="dark-mint">Dark Mint</option>
+                <option value="purple-ish">Purple-ish</option>
+              </select>
+            </div>
+          </div>
+          <div class="option" id="theme-name">
+            <label for="theme-name-input">Theme Name:</label>
+            <div class="text-input">
+              <input type="text" id="theme-name-input" />
+            </div>
+          </div>
+          <div class="option" id="theme-bg">
+            <label for="theme-bg-input">Background Color:</label>
+            <div class="color-input">
+              <input type="text" id="theme-bg-input" />
+              <input type="color" id="theme-bg-color" />
+            </div>
+          </div>
+          <div class="option" id="theme-fg">
+            <label for="theme-fg-input">Foreground Color:</label>
+            <div class="color-input">
+              <input type="text" id="theme-fg-input" />
+              <input type="color" id="theme-fg-color" />
+            </div>
+          </div>
+          <div class="option" id="theme-ac">
+            <label for="theme-ac-input">Accent Color:</label>
+            <div class="color-input">
+              <input type="text" id="theme-ac-input" />
+              <input type="color" id="theme-ac-color" />
+            </div>
+          </div>
+          <div class="option" id="theme-id">
+            <label for="theme-id-input">Unique ID:</label>
+            <div class="text-input">
+              <input type="text" id="theme-id-input" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="buttons-container">
+          <button class="full-width button" type="button" id="save-theme">
+            <span class="icon lni lni-checkmark"></span>
+            <div class="label">Save Theme</div>
+          </button>
+          <button class="full-width button" type="button" id="cancel">
+            <div class="label">Cancel</div>
+          </button>
+        </div>
+      </div>
+    </div>
     <script src="./themeManager.js"></script>
-</body>
-
+  </body>
 </html>
