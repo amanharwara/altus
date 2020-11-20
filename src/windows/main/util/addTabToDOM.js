@@ -75,34 +75,23 @@ function addTabToDOM(tab_id, tabName) {
         settings.get("settings").find((s) => s.id === "tabClosePrompt")
           .value === true
       ) {
-        Swal.fire({
-          title: `<h2>Do you really want to close the tab <i>"${escape(
-            tabName
-          )}"</i> ?</h2>`,
-          customClass: {
-            title: "prompt-title",
-            popup: "edit-popup close-popup",
-            confirmButton:
-              "edit-popup-button prompt-confirm-button prompt-button",
-            cancelButton:
-              "edit-popup-button prompt-cancel-button prompt-button",
-            closeButton: "edit-popup-close-button",
-            header: "edit-popup-header",
-          },
-          width: "50%",
-          showCancelButton: true,
-          confirmButtonText: "Close",
-          buttonsStyling: false,
-        }).then((result) => {
-          if (result.value) {
-            // Remove the tab after prompt
-            removeTab(
-              document
-                .querySelector(`[data-tab-id*="${tab_id}"]`)
-                .querySelector(".lni-close")
-            );
-          }
-        });
+        dialog
+          .showMessageBox({
+            type: "question",
+            title: "Close Tab",
+            message: `Do you really want to close the tab "${tabName}"?`,
+            buttons: ["Yes", "No"],
+          })
+          .then(({ response }) => {
+            if (response === 0) {
+              removeTab(
+                document
+                  .querySelector(`[data-tab-id*="${tab_id}"]`)
+                  .querySelector(".lni-close")
+              );
+            }
+          })
+          .catch((err) => console.error(err));
       } else {
         // Remove the tab directly
         removeTab(
