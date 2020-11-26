@@ -245,9 +245,9 @@ css@^2.0.0:
     urix "^0.1.0"
 
 custom-electron-titlebar@^3.0.0:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/custom-electron-titlebar/-/custom-electron-titlebar-3.2.2.tgz#1b1a63b6db7edc0c8413dd46d38aa671bf330157"
-  integrity sha512-xthUHTEh7WPHfZXutlohkdjnHUWMtmdEOVwU0ckwGWaqpXcPcsCclcokDeILnBneZmIgLH/cHijYAUkjhIO7TQ==
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/custom-electron-titlebar/-/custom-electron-titlebar-3.2.5.tgz#0cc98fccc02c7fd67aeaec2abb6c5e88433d7121"
+  integrity sha512-9tzTtvrsBec9lFi9Mg8nfwARn82mVgrYiiCYmBwJFYC0YhsyUYZfPyw4fd6hq+XHQbD+f72i9uqhukl5brhZZw==
 
 debounce-fn@^3.0.1:
   version "3.0.1"
@@ -354,10 +354,10 @@ electron-store@^5.0.0:
     conf "^6.2.1"
     type-fest "^0.7.1"
 
-electron@^9.3.2:
-  version "9.3.2"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-9.3.2.tgz#afa2942e2642ee25b422b90f1497f7d9bbeec550"
-  integrity sha512-0lleEf9msAXGDi2GukAuiGdw3VDgSTlONOnJgqDEz1fuSEVsXz5RX+hNPKDsVDerLTFg/C34RuJf4LwHvkKcBA==
+electron@^10.0.0:
+  version "10.1.6"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-10.1.6.tgz#1b74838fc5f8263dcf198dc16bd6a88b095a59bb"
+  integrity sha512-Wyiq5Fy64KAa51i72m+5zayYKSm9O5lnittUdaElAn3PAzGl3yDifYO2QsXR7k/iKxWVSROOPzf43mXYytL67Q==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
