@@ -56,6 +56,7 @@ module.exports = {
       show: false,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
       },
       icon: nativeImage.createFromPath(
         path.join(__dirname, "/windows/otherAssets/icon.ico")
