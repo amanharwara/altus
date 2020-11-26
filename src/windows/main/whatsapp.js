@@ -85,11 +85,24 @@ window.onload = () => {
             mutation.addedNodes.length > 0 &&
             Array.from(mutation.addedNodes).find((node) => node.id === "main")
           ) {
+            const classes = {
+              emoji_panel: "_3Xjbn",
+              reply_panel: "_2Efpu",
+              chat_panel: "_26MUt",
+            };
+
             if (window.utility_bar_enabled) {
               enable_utility_bar();
             } else {
               disable_utility_bar();
             }
+
+            document
+              .querySelector(`.${classes.chat_panel}`)
+              .scroll(
+                0,
+                document.querySelector(`.${classes.chat_panel}`).scrollHeight
+              );
 
             new MutationObserver((mutations) => {
               if (window.utility_bar_enabled) {
@@ -97,11 +110,6 @@ window.onload = () => {
                   let mutation = mutations[i];
 
                   console.log(mutation.addedNodes, mutation.removedNodes);
-
-                  const classes = {
-                    emoji_panel: "_3Xjbn",
-                    reply_panel: "_2Efpu",
-                  };
 
                   if (
                     mutation.removedNodes.length > 0 &&
