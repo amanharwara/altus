@@ -289,14 +289,10 @@ const mainMenuTemplate = [
               title: "Manage Themes",
               width: 414,
               height: 478,
-              resizable: true,
+              resizable: false,
               mainWindowObject: mainWindow,
               min: true,
               max: false,
-              minWidth: 300,
-              minHeight: 380,
-              maxWidth: "",
-              maxHeight: "",
             });
             // Loads Theme Manager Window HTML
             themeManagerWindow.loadURL(
@@ -603,6 +599,7 @@ if (!singleInstanceLock) {
         webviewTag: true,
         // Enable nodeIntegration so window can use node functions
         nodeIntegration: true,
+        enableRemoteModule: true,
       },
       // Hides main window until it is ready to show
       show: false,
