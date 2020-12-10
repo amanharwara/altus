@@ -456,7 +456,9 @@ ${versionInfo}`,
           {
             label: "Report Bugs/Issues",
             click: () => {
-              shell.openExternal("https://github.com/amanharwara/altus/issues");
+              shell.openExternal(
+                "https://gitlab.com/amanharwara/altus/-/issues"
+              );
             },
           },
           {
@@ -468,7 +470,7 @@ ${versionInfo}`,
           {
             label: "Repository",
             click: () => {
-              shell.openExternal("https://www.github.com/amanharwara/altus");
+              shell.openExternal("https://www.gitlab.com/amanharwara/altus");
             },
           },
           {
