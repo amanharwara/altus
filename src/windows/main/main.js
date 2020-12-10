@@ -21,6 +21,8 @@ const {
   zoom,
   getActiveTab,
 } = require("./util");
+const Dragula = require("dragula");
+const arrayMove = require("../util/arrayMove");
 
 // Load the main settings into settings variable
 let settings = new Store({
@@ -111,6 +113,24 @@ document.addEventListener("DOMContentLoaded", (e) => {
   setTabBarVisibility(
     settings.get("settings").find((s) => s.id === "tabBar").value
   );
+  let tab_drake = Dragula([document.querySelector("[data-tabs]")], {
+    direction: "horizontal",
+    invalid: (el) => el.classList.contains("addtab"),
+    accepts: (el, t, src, sib) => (!sib ? false : true),
+  });
+  tab_drake.on("dragend", (el) => {
+    let id = el.firstChild.getAttribute("data-tab-id");
+    let tabs_array = tabStore.get("tabs");
+    let old_index = tabs_array.findIndex((tab) => tab.id === id);
+    let dom_tabs = Array.from(
+      document.querySelectorAll("[data-tabs] li:not(.addtab) a")
+    ).reverse();
+    let new_index = dom_tabs.findIndex(
+      (tab) => tab.getAttribute("data-tab-id") === id
+    );
+    let new_tabs_array = arrayMove(tabs_array, old_index, new_index);
+    tabStore.set("tabs", new_tabs_array);
+  });
 });
 
 document.addEventListener(
