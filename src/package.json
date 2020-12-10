@@ -1,13 +1,13 @@
 {
   "name": "altus",
-  "version": "3.22.0",
+  "version": "3.23.0",
   "description": "Electron-based desktop wrapper for WhatsApp Web",
   "homepage": "https://altus.amanharwara.xyz",
   "repository": {
-    "url": "https://github.com/amanharwara/altus"
+    "url": "https://gitlab.com/amanharwara/altus"
   },
   "bugs": {
-    "url": "https://github.com/amanharwara/altus/issues"
+    "url": "https://gitlab.com/amanharwara/altus/-/issues"
   },
   "main": "index.js",
   "author": {
@@ -25,6 +25,7 @@
     "choices.js": "^9.0.1",
     "color": "^3.1.2",
     "custom-electron-titlebar": "^3.0.0",
+    "dragula": "^3.7.3",
     "electron-context-menu": "^0.15.0",
     "electron-store": "^5.0.0",
     "escape-string-regexp": "^2.0.0",
