@@ -20,6 +20,7 @@ const { defaultSettings } = require("./js/defaultSettings");
 const { customizeTheme, customizeMetadata } = require("./windows/util/theme");
 const { writeFileSync, removeSync, readJSONSync } = require("fs-extra");
 const { checkUpdates } = require("./windows/util/checkUpdates");
+const AutoLaunch = require("auto-launch");
 
 // Declaring the window variables to use later
 let mainWindow, settingsWindow, themeManagerWindow;
@@ -615,10 +616,22 @@ if (!singleInstanceLock) {
       mainWindow.maximize();
     }
 
+    if (
+      settings.get("settings").find((s) => s.id === "launchMinimized") &&
+      settings.get("settings").find((s) => s.id === "launchMinimized").value
+    ) {
+      mainWindow.minimize();
+    }
+
     // Shows window once ready
     mainWindow.once("ready-to-show", () => {
       mainWindow.setFullScreen(false);
-      mainWindow.show();
+      if (
+        settings.get("settings").find((s) => s.id === "launchMinimized") &&
+        !settings.get("settings").find((s) => s.id === "launchMinimized").value
+      ) {
+        mainWindow.show();
+      }
     });
 
     // Load the main window HTML file
@@ -748,6 +761,9 @@ if (!singleInstanceLock) {
       let closeToTraySetting = settings
         .get("settings")
         .find((s) => s.id === "closeToTray");
+      let autoLaunchSetting = settings
+        .get("settings")
+        .find((s) => s.id === "autoLaunch");
 
       if (exitPromptSetting && exitPromptSetting.value === true) {
         app.showExitPrompt = true;
@@ -765,6 +781,17 @@ if (!singleInstanceLock) {
         app.closeToTray = true;
       } else {
         app.closeToTray = false;
+      }
+
+      if (autoLaunchSetting) {
+        const altusLauncher = new AutoLaunch({
+          name: "Altus",
+        });
+        if (autoLaunchSetting.value) {
+          altusLauncher.enable();
+        } else {
+          altusLauncher.disable();
+        }
       }
     }
 
