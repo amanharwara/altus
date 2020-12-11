@@ -55,10 +55,22 @@ const defaultSettings = [
   },
   {
     value: false,
-    name: "Prevents Default Enter Submit Message",
+    name: "Don't submit message on Enter",
     description:
-      "When enabled, Altus will prevent the default Enter for submitting the message, instead, add a new line. (Control + Enter) became the replacement for submitting.",
+      "When enabled, Altus will prevent sending a message when Enter is pressed, instead it will add a new line. Ctrl+Enter will become the hotkey for send a message.",
     id: "preventEnter",
+  },
+  {
+    value: false,
+    name: "Launch at system startup",
+    description: "When enabled, Altus will launch when the system is booted.",
+    id: "autoLaunch",
+  },
+  {
+    value: false,
+    name: "Start minimized",
+    description: "When enabled, Altus will be minimized when it's launched.",
+    id: "launchMinimized",
   },
 ];
 
