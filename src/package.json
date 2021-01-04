@@ -1,0 +1,91 @@
+{
+  "name": "altus",
+  "version": "4.0.0",
+  "description": "Desktop client for WhatsApp Web with themes & multiple account support.",
+  "homepage": "https://gitlab.com/amanharwara/altus",
+  "repository": {
+    "url": "https://gitlab.com/amanharwara/altus"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/amanharwara/altus/-/issues"
+  },
+  "main": "index.js",
+  "author": {
+    "name": "Aman Harwara",
+    "url": "https://amanharwara.com"
+  },
+  "license": "GPL-3.0",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^11.0.0"
+  },
+  "build": {
+    "appId": "harwara.aman.altus",
+    "productName": "Altus",
+    "afterAllArtifactBuild": "./build/after-all-artifact-build.js",
+    "protocols": [
+      {
+        "name": "whatsapp",
+        "role": "Viewer",
+        "schemes": [
+          "whatsapp"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.social-networking",
+      "target": [
+        "dmg"
+      ]
+    },
+    "dmg": {
+      "background": "build/background.png",
+      "icon": "build/icon.icns",
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 380,
+          "y": 280,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 110,
+          "y": 280,
+          "type": "file"
+        }
+      ],
+      "window": {
+        "width": 500,
+        "height": 400
+      }
+    },
+    "nsis": {
+      "oneClick": "false",
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "allowToChangeInstallationDirectory": "true"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "linux": {
+      "category": "Chat",
+      "target": [
+        "AppImage"
+      ],
+      "icon": "build/icon.png",
+      "asar": false
+    }
+  }
+}
