@@ -4,8 +4,6 @@
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
-![Altus Banner](./img/altus-banner.png)
-
 ## Features
 
 **Altus** uses the GitHub-produced Electron framework to wrap around WhatsApp Web and add extra features to it.
