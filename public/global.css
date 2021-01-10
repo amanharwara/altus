@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./Inter.var.woff2") format("woff2");
+}
+
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 1rem;
+  background: #383c49;
+}
+
+* {
+  box-sizing: border-box;
+}
