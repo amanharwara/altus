@@ -16,6 +16,7 @@ const createMainWindow = () => {
     icon: mainIcon,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
       webviewTag: true,
     },
   });
