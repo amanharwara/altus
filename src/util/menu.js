@@ -7,14 +7,6 @@ let menuTemplate = [
     label: "File",
     submenu: [
       {
-        label: "Add New Tab",
-        accelerator: "CmdOrCtrl+T",
-        click() {
-          let window = BrowserWindow.getFocusedWindow();
-          window.webContents.send("add-new-tab");
-        },
-      },
-      {
         role: "forceReload",
       },
       {
@@ -78,23 +70,20 @@ let menuTemplate = [
     label: "Tab",
     submenu: [
       {
-        label: "Go to Next Tab",
-        accelerator: "CmdOrCtrl+Tab",
+        label: "Add New Tab",
+        accelerator: "CmdOrCtrl+T",
         click() {
           let window = BrowserWindow.getFocusedWindow();
-          window.webContents.send("next-tab");
+          window.webContents.send("add-new-tab");
         },
       },
       {
-        label: "Go to Previous Tab",
-        accelerator: "CmdOrCtrl+Shift+Tab",
+        label: "Edit Active Tab",
+        accelerator: "CmdOrCtrl+E",
         click() {
           let window = BrowserWindow.getFocusedWindow();
-          window.webContents.send("previous-tab");
+          window.webContents.send("edit-tab");
         },
-      },
-      {
-        type: "separator",
       },
       {
         label: "Close Active Tab",
@@ -114,11 +103,41 @@ let menuTemplate = [
         },
       },
       {
-        label: "Edit Active Tab",
-        accelerator: "CmdOrCtrl+E",
+        type: "separator",
+      },
+      {
+        label: "Go to Next Tab",
+        accelerator: "CmdOrCtrl+Tab",
         click() {
           let window = BrowserWindow.getFocusedWindow();
-          window.webContents.send("edit-tab");
+          window.webContents.send("next-tab");
+        },
+      },
+      {
+        label: "Go to Previous Tab",
+        accelerator: "CmdOrCtrl+Shift+Tab",
+        click() {
+          let window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("previous-tab");
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "Go to First Tab",
+        accelerator: "CmdOrCtrl+1",
+        click() {
+          let window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("first-tab");
+        },
+      },
+      {
+        label: "Go to Last Tab",
+        accelerator: "CmdOrCtrl+9",
+        click() {
+          let window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("last-tab");
         },
       },
     ],
@@ -173,18 +192,29 @@ let menuTemplate = [
   },
   {
     label: "Themes",
-    accelerator: "CmdOrCtrl+Shift+T",
-    click() {
-      let window = BrowserWindow.getFocusedWindow();
-      window.webContents.send("open-theme-manager");
-    },
+    submenu: [
+      {
+        label: "Theme Manager",
+        accelerator: "CmdOrCtrl+Shift+T",
+        click() {
+          let window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("open-theme-manager");
+        },
+      },
+    ],
   },
   {
     label: "Settings",
-    click() {
-      let window = BrowserWindow.getFocusedWindow();
-      window.webContents.send("open-settings");
-    },
+    submenu: [
+      {
+        label: "Settings",
+        accelerator: "Ctrl+,",
+        click() {
+          let window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("open-settings");
+        },
+      },
+    ],
   },
   {
     label: "About",
