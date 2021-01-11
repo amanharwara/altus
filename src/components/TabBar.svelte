@@ -1,6 +1,7 @@
 <script lang="ts">
   import Tab from "./Tab.svelte";
-  import { tabs } from "../store/store";
+  import { tabs } from "../store";
+  import Add from "./svg/Add.svelte";
   const { ipcRenderer } = require("electron");
 
   const activateTab = (e) => {
@@ -14,23 +15,25 @@
 
   const removeTab = (e) => {
     let { id } = e.detail;
+    let currentTabIndex = $tabs.findIndex((tab) => tab.id === id);
+    let currentTab = $tabs[currentTabIndex];
+    let nextId = null;
     tabs.update((tabs) => tabs.filter((tab) => tab.id !== id));
-    activateTab({
-      detail: {
-        id: $tabs[0].id,
-      },
-    });
+    if (currentTab.active) {
+      nextId = $tabs[currentTabIndex - 1]
+        ? $tabs[currentTabIndex - 1].id
+        : $tabs[0].id;
+      if (nextId) {
+        activateTab({
+          detail: {
+            id: nextId,
+          },
+        });
+      }
+    }
   };
 
-  ipcRenderer.on("close-tab", () => {
-    removeTab({
-      detail: {
-        id: $tabs.find((tab) => tab.active).id,
-      },
-    });
-  });
-
-  ipcRenderer.on("next-tab", () => {
+  const activateNextTab = () => {
     let activeTabIndex = $tabs.findIndex((tab) => tab.active);
     let nextId = null;
     if ($tabs[activeTabIndex + 1]) {
@@ -46,9 +49,9 @@
         },
       });
     }
-  });
+  };
 
-  ipcRenderer.on("previous-tab", () => {
+  const activatePreviousTab = () => {
     let activeTabIndex = $tabs.findIndex((tab) => tab.active);
     let previousId = null;
     if ($tabs[activeTabIndex - 1]) {
@@ -57,13 +60,48 @@
     if (activeTabIndex === 0) {
       previousId = $tabs[$tabs.length - 1].id;
     }
-    console.log(activeTabIndex, previousId);
     if (previousId) {
       activateTab({
         detail: {
           id: previousId,
         },
       });
+    }
+  };
+
+  ipcRenderer.on("close-tab", () => {
+    removeTab({
+      detail: {
+        id: $tabs.find((tab) => tab.active).id,
+      },
+    });
+  });
+
+  ipcRenderer.on("next-tab", activateNextTab);
+  ipcRenderer.on("previous-tab", activatePreviousTab);
+  ipcRenderer.on("first-tab", () => {
+    activateTab({ detail: { id: $tabs[0].id } });
+  });
+  ipcRenderer.on("last-tab", () => {
+    activateTab({ detail: { id: $tabs[$tabs.length - 1].id } });
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey) {
+      switch (e.key) {
+        case "PageUp":
+          activatePreviousTab();
+          break;
+        case "PageDown":
+          activateNextTab();
+          break;
+      }
+      if (parseInt(e.key)) {
+        let key = parseInt(e.key);
+        if ($tabs[key - 1]) {
+          activateTab({ detail: { id: $tabs[key - 1].id } });
+        }
+      }
     }
   });
 </script>
@@ -73,13 +111,43 @@
     background: #2c2d30;
     display: flex;
   }
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+  }
+  .tabs::-webkit-scrollbar {
+    height: 5px;
+  }
+  .tabs::-webkit-scrollbar-thumb {
+    background: #36475d;
+  }
+  .add-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.65rem;
+    background: #2a333f;
+    fill: #fff;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .add-tab:hover {
+    background: #262e38;
+  }
+  .add-tab :global(svg) {
+    width: 1.35rem;
+  }
 </style>
 
 <div class="tab-bar">
   {#if $tabs.length > 0}
-    {#each $tabs as tab}
-      <Tab {tab} on:activateTab={activateTab} on:removeTab={removeTab} />
-    {/each}
+    <div class="tabs">
+      {#each $tabs as tab}
+        <Tab {tab} on:activateTab={activateTab} on:removeTab={removeTab} />
+      {/each}
+    </div>
   {/if}
-  <div class="add-tab-button" />
+  <div class="add-tab">
+    <Add />
+  </div>
 </div>

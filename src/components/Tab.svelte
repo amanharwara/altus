@@ -33,6 +33,8 @@
     filter: brightness(0.75);
     cursor: pointer;
     user-select: none;
+    transition: filter 0.15s;
+    flex-shrink: 0;
   }
   .tab:not(.active):hover {
     filter: brightness(0.85);
