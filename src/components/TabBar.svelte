@@ -2,7 +2,10 @@
   import Tab from "./Tab.svelte";
   import { tabs } from "../store";
   import Add from "./svg/Add.svelte";
+  import { createEventDispatcher } from "svelte";
   const { ipcRenderer } = require("electron");
+
+  const dispatchEvent = createEventDispatcher();
 
   const activateTab = (e) => {
     let { id } = e.detail;
@@ -126,13 +129,13 @@
     align-items: center;
     justify-content: center;
     padding: 0.5rem 0.65rem;
-    background: #2a333f;
+    background: #383c49;
     fill: #fff;
     cursor: pointer;
     transition: background 0.15s;
   }
   .add-tab:hover {
-    background: #262e38;
+    background: #2d303a;
   }
   .add-tab :global(svg) {
     width: 1.35rem;
@@ -147,7 +150,7 @@
       {/each}
     </div>
   {/if}
-  <div class="add-tab">
+  <div class="add-tab" on:click={() => dispatchEvent('add-tab')}>
     <Add />
   </div>
 </div>
