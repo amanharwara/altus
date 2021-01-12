@@ -3560,6 +3560,11 @@ svelte-preprocess@^4.0.0, svelte-preprocess@^4.6.1:
     detect-indent "^6.0.0"
     strip-indent "^3.0.0"
 
+svelte-select@^3.16.1:
+  version "3.16.1"
+  resolved "https://registry.yarnpkg.com/svelte-select/-/svelte-select-3.16.1.tgz#5234810c6b71d57349f3bfcf09dfa7947216cea2"
+  integrity sha512-y2E1LA50hbOlolaBS0TsWWcWXFIp9TIeCmohMg51pZuJF5ngkPajoKmRjE893P2jIRZDV//qf1gMb6KjrEYIGQ==
+
 svelte@^3.31.2:
   version "3.31.2"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.31.2.tgz#d2ddf6cacbb95e4cc3796207510b660a25586324"
@@ -3806,6 +3811,11 @@ uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
