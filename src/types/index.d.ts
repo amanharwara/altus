@@ -12,4 +12,14 @@ type TabType = {
   };
 };
 
-export { TabType };
+type ThemeType = {
+  name: string;
+  css: string;
+  colors?: {
+    bg: string;
+    fg: string;
+    ac: string;
+  };
+};
+
+export { TabType, ThemeType };

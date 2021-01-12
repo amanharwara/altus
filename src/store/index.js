@@ -2,4 +2,6 @@ import { writable } from "svelte/store";
 
 let tabs = writable([]);
 
-export { tabs };
+let themes = writable([]);
+
+export { tabs, themes };
