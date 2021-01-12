@@ -24,3 +24,8 @@ body {
 * {
   box-sizing: border-box;
 }
+
+input:focus,
+button:focus {
+  outline: 2px solid #2067d1;
+}
