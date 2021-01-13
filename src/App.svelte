@@ -1,13 +1,28 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+	import type { TabType } from "./types";
 	import TabBar from "./components/TabBar.svelte";
 	import TabConfigModal from "./components/TabConfigModal.svelte";
 	import TabContent from "./components/TabContent.svelte";
 	import { tabs, themes } from "./store";
 	const Store = require("electron-store");
+	const { v4: uuid } = require("uuid");
 
-	let tabConfigModalVisible = true;
-	let tabToEdit = null;
+	let defaultTabSettings = {
+		id: uuid(),
+		name: "",
+		active: false,
+		config: {
+			theme: "default",
+			notifications: true,
+			sound: true,
+			utilityBar: false,
+			color: "#2A3440",
+			spellChecker: false,
+		},
+	};
+
+	let tabConfigModalVisible = false;
+	let tabSettings = defaultTabSettings;
 
 	let tabStore = new Store({
 		name: "tabs",
@@ -32,7 +47,27 @@
 		},
 	});
 
-	tabs.set(tabStore.get("tabs"));
+	tabs.set(
+		tabStore.get("tabs").map((tab) => {
+			// Migrate v3 tabs to v4
+			if (!tab.config) {
+				return {
+					id: tab.id,
+					name: tab.name,
+					config: {
+						theme: tab.theme,
+						notifications: tab.notifications,
+						sound: tab.sound,
+						utilityBar: tab.utility_bar,
+						color: tab.tab_color,
+						spellChecker: tab.spellcheck,
+					},
+				};
+			} else {
+				return tab;
+			}
+		})
+	);
 	tabs.subscribe((tabs) => tabStore.set("tabs", tabs));
 
 	themes.set(themeStore.get("themes"));
@@ -68,15 +103,19 @@
 		<TabBar
 			on:add-tab={() => {
 				tabConfigModalVisible = true;
-				tabToEdit = null;
+				tabSettings = defaultTabSettings;
+			}}
+			on:edit-tab={(e) => {
+				tabSettings = e.detail.tabToEdit;
+				tabConfigModalVisible = true;
 			}} />
 		<TabContent />
 		<TabConfigModal
 			visible={tabConfigModalVisible}
-			{tabToEdit}
+			bind:tabSettings
 			on:close-tab-config-modal={() => {
 				tabConfigModalVisible = false;
-				tabToEdit = null;
+				tabSettings = defaultTabSettings;
 			}} />
 	</div>
 </main>
