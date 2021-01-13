@@ -2,6 +2,7 @@
   import type { TabType } from "../types";
   import Close from "./svg/close.svelte";
   import { createEventDispatcher } from "svelte";
+  import Cog from "./svg/Cog.svelte";
   export let tab: TabType;
 
   const dispatch = createEventDispatcher();
@@ -14,6 +15,12 @@
 
   const removeTab = () => {
     dispatch("removeTab", {
+      id: tab.id,
+    });
+  };
+
+  const editTab = () => {
+    dispatch("editTab", {
       id: tab.id,
     });
   };
@@ -53,11 +60,21 @@
     width: 1.25rem;
     height: 1.25rem;
   }
+  .controls > :first-child {
+    margin-right: 0.35rem;
+  }
 </style>
 
-<div class="tab" class:active={tab.active} on:click={activateTab}>
+<div
+  class="tab"
+  class:active={tab.active}
+  on:click={activateTab}
+  style={`background: ${tab.config.color};`}>
   <div class="name">{tab.name}</div>
   <div class="controls">
+    <div class="edit" on:click={editTab} style="stroke: #fff">
+      <Cog />
+    </div>
     <div class="close" on:click={removeTab}>
       <Close />
     </div>
