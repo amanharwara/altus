@@ -36,6 +36,12 @@
     }
   };
 
+  const editTab = (e) => {
+    dispatchEvent("edit-tab", {
+      tabToEdit: $tabs.find((tab) => tab.id === e.detail.id),
+    });
+  };
+
   const activateNextTab = () => {
     let activeTabIndex = $tabs.findIndex((tab) => tab.active);
     let nextId = null;
@@ -146,7 +152,11 @@
   {#if $tabs.length > 0}
     <div class="tabs">
       {#each $tabs as tab}
-        <Tab {tab} on:activateTab={activateTab} on:removeTab={removeTab} />
+        <Tab
+          {tab}
+          on:activateTab={activateTab}
+          on:removeTab={removeTab}
+          on:editTab={editTab} />
       {/each}
     </div>
   {/if}
