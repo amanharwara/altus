@@ -27,8 +27,10 @@
     position: absolute;
     top: 50%;
     left: 10%;
+    right: 100%;
     transform: translateY(-50%);
     z-index: 0;
+    transition: left 0.15s, right 0.15s;
   }
 
   .checkbox {
@@ -45,7 +47,7 @@
   .checkbox:checked + .toggle-bg::after {
     transition: 0.15s;
     background: #fff;
-    left: auto;
+    left: 50%;
     right: 10%;
   }
 
