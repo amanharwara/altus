@@ -7,33 +7,19 @@
   import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
   import Undo from "./svg/Undo.svelte";
-  const { v4: uuid } = require("uuid");
+  import Add from "./svg/Add.svelte";
+  import Check from "./svg/Check.svelte";
 
   export let visible = false;
-  export let tabToEdit: TabType;
+  export let tabSettings: TabType;
+
+  let tabAlreadyExists = false;
+
+  $: tabAlreadyExists = $tabs.find((tab) => tab.id === tabSettings.id);
 
   const dispatchEvent = createEventDispatcher();
   const closeTabConfigModal = () => dispatchEvent("close-tab-config-modal");
-
-  let id = uuid();
-  let name = "";
-  let theme = "default";
-  let notifications = true;
-  let sound = true;
-  let utilityBar = false;
-  let color = "#2A3440";
-  let spellChecker = false;
-
-  if (tabToEdit) {
-    id = tabToEdit.id;
-    name = tabToEdit.name;
-    theme = tabToEdit.config.theme;
-    notifications = tabToEdit.config.notifications;
-    sound = tabToEdit.config.sound;
-    utilityBar = tabToEdit.config.utilityBar;
-    color = tabToEdit.config.color;
-    spellChecker = tabToEdit.config.spellChecker;
-  }
+  const removeErrorClass = (e) => e.target.classList.remove("error");
 
   let themeSelectItems = [
     ...$themes.map((theme: ThemeType) => {
@@ -45,24 +31,23 @@
   ];
 
   const submit = () => {
-    if (tabToEdit) {
-    } else {
-      $tabs = [
-        ...$tabs,
-        {
-          id,
-          name,
-          config: {
-            theme,
-            notifications,
-            sound,
-            utilityBar,
-            color,
-            spellChecker,
-          },
-        },
-      ];
+    let tab = tabSettings;
+
+    if (tab.name.length === 0) {
+      document.getElementById("tab-name").classList.add("error");
+      return;
     }
+
+    if (tabAlreadyExists) {
+      let tabIndex = $tabs.findIndex((tab) => tab.id === tabSettings.id);
+      $tabs[tabIndex] = {
+        ...tab,
+        active: $tabs[tabIndex].active,
+      };
+    } else {
+      $tabs = [...$tabs, tab];
+    }
+
     closeTabConfigModal();
   };
 </script>
@@ -116,7 +101,7 @@
   }
 
   .config {
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .option {
@@ -124,6 +109,7 @@
     align-items: center;
     justify-content: space-between;
     font-size: 1.1rem;
+    position: relative;
   }
 
   .option:not(:last-child) {
@@ -137,6 +123,27 @@
     font-weight: 400;
     padding: 0.4rem 0.5rem;
     border: 0;
+  }
+
+  :global(.error) {
+    outline: 2px solid #d64b4b;
+  }
+
+  :global(.error) + .error-message {
+    display: block;
+  }
+
+  .error-message {
+    position: absolute;
+    top: 100%;
+    left: -2px;
+    width: calc(100% + 4px);
+    background: #d64b4b;
+    color: #fff;
+    z-index: 2;
+    font-size: 0.85rem;
+    padding: 0.15rem;
+    display: none;
   }
 
   .color-input {
@@ -218,6 +225,37 @@
     display: none;
   }
 
+  .submit {
+    display: flex;
+    align-items: center;
+    border: 0;
+    padding: 0.6rem 1.25rem 0.6rem 1rem;
+    font-size: 1.05rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+      Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-weight: 500;
+    background: #2268c4;
+    color: #fff;
+    fill: #fff;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .submit:hover {
+    background: #1c5aaa;
+  }
+
+  .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+  }
+
+  .icon :global(svg path) {
+    width: 100%;
+    height: 100%;
+  }
+
   .overlay {
     position: absolute;
     top: 0;
@@ -234,7 +272,7 @@
     <div class="modal">
       <div class="header">
         <div class="title">
-          {#if tabToEdit}Edit{:else}Add{/if}
+          {#if tabAlreadyExists}Edit{:else}Add{/if}
           Tab
         </div>
         <button class="close" on:click={() => closeTabConfigModal()}>
@@ -244,45 +282,73 @@
       <div class="config">
         <div class="option column">
           <label for="tab-name">Name:</label>
-          <input type="text" id="tab-name" bind:value={name} />
+          <input
+            type="text"
+            id="tab-name"
+            bind:value={tabSettings.name}
+            on:focus={removeErrorClass} />
+          <div class="error-message">Name cannot be empty.</div>
         </div>
         <div class="option column selector">
           <label for="tab-theme">Theme:</label>
           <Select
             bind:items={themeSelectItems}
-            bind:selectedValue={theme}
+            selectedValue={themeSelectItems.find((theme) => theme.value === tabSettings.config.theme)}
             showIndicator={true}
-            isClearable={false} />
+            isClearable={false}
+            on:select={(e) => {
+              tabSettings.config.theme = e.detail.value;
+            }} />
         </div>
         <div class="option">
           <label for="tab-notif">Notifications:</label>
-          <Toggle id="tab-notif" bind:value={notifications} />
+          <Toggle
+            id="tab-notif"
+            bind:value={tabSettings.config.notifications} />
         </div>
         <div class="option">
           <label for="tab-sound">Sound:</label>
-          <Toggle id="tab-sound" bind:value={sound} />
+          <Toggle id="tab-sound" bind:value={tabSettings.config.sound} />
         </div>
         <div class="option">
           <label for="tab-utilityBar">Utility Bar:</label>
-          <Toggle id="tab-utilityBar" bind:value={utilityBar} />
+          <Toggle
+            id="tab-utilityBar"
+            bind:value={tabSettings.config.utilityBar} />
         </div>
         <div class="option">
           <label for="tab-color">Color:</label>
           <div class="color-input">
-            <input type="color" id="tab-color" bind:value={color} />
-            <button class="reset-color" on:click={() => (color = '#2A3440')}>
+            <input
+              type="color"
+              id="tab-color"
+              bind:value={tabSettings.config.color} />
+            <button
+              class="reset-color"
+              on:click={() => (tabSettings.config.color = '#2A3440')}>
               <Undo />
             </button>
           </div>
         </div>
         <div class="option">
           <label for="tab-spellchecker">Spellchecker:</label>
-          <Toggle id="tab-spellchecker" bind:value={spellChecker} />
+          <Toggle
+            id="tab-spellchecker"
+            bind:value={tabSettings.config.spellChecker} />
         </div>
       </div>
       <div class="controls">
-        <button on:click={submit}>
-          {#if tabToEdit}Edit{:else}Add{/if}
+        <button class="submit" on:click={submit}>
+          <div class="icon">
+            {#if tabAlreadyExists}
+              <Check />
+            {:else}
+              <Add />
+            {/if}
+          </div>
+          <div class="label">
+            {#if tabAlreadyExists}Edit{:else}Add{/if}
+          </div>
         </button>
       </div>
     </div>
