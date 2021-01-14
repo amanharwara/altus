@@ -78,6 +78,6 @@
     height: 1.25rem;
   }
   .controls > :first-child {
-    margin-right: 0.35rem;
+    margin-right: 0.45rem;
   }
 </style>
