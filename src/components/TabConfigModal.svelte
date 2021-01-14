@@ -9,6 +9,7 @@
   import Undo from "./svg/Undo.svelte";
   import Add from "./svg/Add.svelte";
   import Check from "./svg/Check.svelte";
+  const { v4: uuid } = require("uuid");
 
   export let visible = false;
   export let tabSettings: TabType;
@@ -18,7 +19,9 @@
   $: tabAlreadyExists = $tabs.find((tab) => tab.id === tabSettings.id);
 
   const dispatchEvent = createEventDispatcher();
-  const closeTabConfigModal = () => dispatchEvent("close-tab-config-modal");
+  const closeTabConfigModal = () => {
+    dispatchEvent("close-tab-config-modal");
+  };
   const removeErrorClass = (e) => e.target.classList.remove("error");
 
   let themeSelectItems = [
@@ -45,61 +48,123 @@
         active: $tabs[tabIndex].active,
       };
     } else {
-      $tabs = [...$tabs, tab];
+      $tabs = [
+        ...$tabs.map((tab) => {
+          return { ...tab, active: false };
+        }),
+        tab,
+      ];
     }
 
     closeTabConfigModal();
   };
 </script>
 
+{#if visible}
+  <div class="modal-container" transition:fade={{ duration: 100 }}>
+    <div class="modal">
+      <div class="header">
+        <div class="title">
+          {#if tabAlreadyExists}Edit{:else}Add{/if}
+          Tab
+        </div>
+        {#if $tabs.length !== 0}
+          <button class="close" on:click={() => closeTabConfigModal()}>
+            <Close />
+          </button>
+        {/if}
+      </div>
+      <div class="config">
+        <div class="option column">
+          <label for="tab-name">Name:</label>
+          <input
+            type="text"
+            id="tab-name"
+            bind:value={tabSettings.name}
+            on:focus={removeErrorClass}
+          />
+          <div class="error-message">Name cannot be empty.</div>
+        </div>
+        <div class="option column selector">
+          <label for="tab-theme">Theme:</label>
+          <Select
+            bind:items={themeSelectItems}
+            selectedValue={themeSelectItems.find(
+              (theme) => theme.value === tabSettings.config.theme
+            )}
+            showIndicator={true}
+            isClearable={false}
+            on:select={(e) => {
+              tabSettings.config.theme = e.detail.value;
+            }}
+          />
+        </div>
+        <div class="option">
+          <label for="tab-notif">Notifications:</label>
+          <Toggle
+            id="tab-notif"
+            bind:value={tabSettings.config.notifications}
+          />
+        </div>
+        <div class="option">
+          <label for="tab-sound">Sound:</label>
+          <Toggle id="tab-sound" bind:value={tabSettings.config.sound} />
+        </div>
+        <div class="option">
+          <label for="tab-utilityBar">Utility Bar:</label>
+          <Toggle
+            id="tab-utilityBar"
+            bind:value={tabSettings.config.utilityBar}
+          />
+        </div>
+        <div class="option">
+          <label for="tab-color">Color:</label>
+          <div class="color-input">
+            <input
+              type="color"
+              id="tab-color"
+              bind:value={tabSettings.config.color}
+            />
+            <button
+              class="reset-color"
+              on:click={() => (tabSettings.config.color = "#2A3440")}>
+              <Undo />
+            </button>
+          </div>
+        </div>
+        <div class="option">
+          <label for="tab-spellchecker">Spellchecker:</label>
+          <Toggle
+            id="tab-spellchecker"
+            bind:value={tabSettings.config.spellChecker}
+          />
+        </div>
+      </div>
+      <div class="controls">
+        <button class="submit" on:click={submit}>
+          <div class="icon">
+            {#if tabAlreadyExists}
+              <Check />
+            {:else}
+              <Add />
+            {/if}
+          </div>
+          <div class="label">
+            {#if tabAlreadyExists}Edit{:else}Add{/if}
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      class="overlay"
+      on:click={() => {
+        if ($tabs.length > 0) closeTabConfigModal();
+      }}
+    />
+  </div>
+{/if}
+
 <style>
-  .modal-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .modal {
-    display: flex;
-    flex-flow: column;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #242a31;
-    color: #fff;
-    z-index: 1;
-    padding: 1.25rem;
-  }
-
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-
-  .title {
-    font-weight: 500;
-    font-size: 1.5rem;
-  }
-
-  .close {
-    width: 1.75rem;
-    height: 1.75rem;
-    padding: 0.15rem 0.2rem;
-    fill: #fff;
-    cursor: pointer;
-    background: transparent;
-    border: 0;
-  }
-
-  .close:hover {
-    background: #2c333b;
-  }
-
   .config {
     margin-bottom: 1.25rem;
   }
@@ -255,103 +320,4 @@
     width: 100%;
     height: 100%;
   }
-
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.65);
-    z-index: 0;
-  }
 </style>
-
-{#if visible}
-  <div class="modal-container" transition:fade={{ duration: 100 }}>
-    <div class="modal">
-      <div class="header">
-        <div class="title">
-          {#if tabAlreadyExists}Edit{:else}Add{/if}
-          Tab
-        </div>
-        <button class="close" on:click={() => closeTabConfigModal()}>
-          <Close />
-        </button>
-      </div>
-      <div class="config">
-        <div class="option column">
-          <label for="tab-name">Name:</label>
-          <input
-            type="text"
-            id="tab-name"
-            bind:value={tabSettings.name}
-            on:focus={removeErrorClass} />
-          <div class="error-message">Name cannot be empty.</div>
-        </div>
-        <div class="option column selector">
-          <label for="tab-theme">Theme:</label>
-          <Select
-            bind:items={themeSelectItems}
-            selectedValue={themeSelectItems.find((theme) => theme.value === tabSettings.config.theme)}
-            showIndicator={true}
-            isClearable={false}
-            on:select={(e) => {
-              tabSettings.config.theme = e.detail.value;
-            }} />
-        </div>
-        <div class="option">
-          <label for="tab-notif">Notifications:</label>
-          <Toggle
-            id="tab-notif"
-            bind:value={tabSettings.config.notifications} />
-        </div>
-        <div class="option">
-          <label for="tab-sound">Sound:</label>
-          <Toggle id="tab-sound" bind:value={tabSettings.config.sound} />
-        </div>
-        <div class="option">
-          <label for="tab-utilityBar">Utility Bar:</label>
-          <Toggle
-            id="tab-utilityBar"
-            bind:value={tabSettings.config.utilityBar} />
-        </div>
-        <div class="option">
-          <label for="tab-color">Color:</label>
-          <div class="color-input">
-            <input
-              type="color"
-              id="tab-color"
-              bind:value={tabSettings.config.color} />
-            <button
-              class="reset-color"
-              on:click={() => (tabSettings.config.color = '#2A3440')}>
-              <Undo />
-            </button>
-          </div>
-        </div>
-        <div class="option">
-          <label for="tab-spellchecker">Spellchecker:</label>
-          <Toggle
-            id="tab-spellchecker"
-            bind:value={tabSettings.config.spellChecker} />
-        </div>
-      </div>
-      <div class="controls">
-        <button class="submit" on:click={submit}>
-          <div class="icon">
-            {#if tabAlreadyExists}
-              <Check />
-            {:else}
-              <Add />
-            {/if}
-          </div>
-          <div class="label">
-            {#if tabAlreadyExists}Edit{:else}Add{/if}
-          </div>
-        </button>
-      </div>
-    </div>
-    <div class="overlay" on:click={() => closeTabConfigModal()} />
-  </div>
-{/if}
