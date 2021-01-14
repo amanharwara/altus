@@ -3,6 +3,16 @@
   import WebView from "./WebView.svelte";
 </script>
 
+<div class="tab-content">
+  {#if $tabs.length > 0}
+    {#each $tabs as tab}
+      <div class="content" class:active={tab.active}>
+        <WebView partition={`persist:${tab.id}`} {tab} />
+      </div>
+    {/each}
+  {/if}
+</div>
+
 <style>
   .tab-content {
     flex-grow: 1;
@@ -17,14 +27,3 @@
     height: 100%;
   }
 </style>
-
-<div class="tab-content">
-  {#if $tabs.length > 0}
-    {#each $tabs as tab}
-      <div class="content" class:active={tab.active}>
-        <!-- <WebView partition={`persist:${tsab.id}`} /> -->
-        hi
-      </div>
-    {/each}
-  {/if}
-</div>

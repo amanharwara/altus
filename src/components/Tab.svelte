@@ -26,6 +26,23 @@
   };
 </script>
 
+<div
+  class="tab"
+  class:active={tab.active}
+  on:click={activateTab}
+  style={`background: ${tab.config.color};`}
+>
+  <div class="name">{tab.name}</div>
+  <div class="controls">
+    <div class="edit" on:click={editTab} style="stroke: #fff">
+      <Cog />
+    </div>
+    <div class="close" on:click={removeTab}>
+      <Close />
+    </div>
+  </div>
+</div>
+
 <style>
   .tab {
     display: flex;
@@ -64,19 +81,3 @@
     margin-right: 0.35rem;
   }
 </style>
-
-<div
-  class="tab"
-  class:active={tab.active}
-  on:click={activateTab}
-  style={`background: ${tab.config.color};`}>
-  <div class="name">{tab.name}</div>
-  <div class="controls">
-    <div class="edit" on:click={editTab} style="stroke: #fff">
-      <Cog />
-    </div>
-    <div class="close" on:click={removeTab}>
-      <Close />
-    </div>
-  </div>
-</div>

@@ -115,6 +115,24 @@
   });
 </script>
 
+<div class="tab-bar">
+  {#if $tabs.length > 0}
+    <div class="tabs">
+      {#each $tabs as tab}
+        <Tab
+          {tab}
+          on:activateTab={activateTab}
+          on:removeTab={removeTab}
+          on:editTab={editTab}
+        />
+      {/each}
+    </div>
+  {/if}
+  <div class="add-tab" on:click={() => dispatchEvent("add-tab")}>
+    <Add />
+  </div>
+</div>
+
 <style>
   .tab-bar {
     background: #2c2d30;
@@ -147,20 +165,3 @@
     width: 1.35rem;
   }
 </style>
-
-<div class="tab-bar">
-  {#if $tabs.length > 0}
-    <div class="tabs">
-      {#each $tabs as tab}
-        <Tab
-          {tab}
-          on:activateTab={activateTab}
-          on:removeTab={removeTab}
-          on:editTab={editTab} />
-      {/each}
-    </div>
-  {/if}
-  <div class="add-tab" on:click={() => dispatchEvent('add-tab')}>
-    <Add />
-  </div>
-</div>

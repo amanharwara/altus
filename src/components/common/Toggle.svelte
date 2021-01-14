@@ -3,6 +3,11 @@
   export let value = false;
 </script>
 
+<div class="toggle">
+  <input type="checkbox" class="checkbox" {id} bind:checked={value} />
+  <div class="toggle-bg" />
+</div>
+
 <style>
   .toggle-bg,
   .toggle {
@@ -60,8 +65,3 @@
     outline: 1px solid #2a71d1;
   }
 </style>
-
-<div class="toggle">
-  <input type="checkbox" class="checkbox" {id} checked={value} />
-  <div class="toggle-bg" />
-</div>
