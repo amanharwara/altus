@@ -234,7 +234,9 @@ OS: ${os.type()} ${os.arch()} ${os.release()}`;
               title: `Altus v${app.getVersion()}`,
               message: `Made by Aman Harwara.`,
               detail: `With help from: MarceloZapatta, Dafnik, dmcdo, insign, srevinsaju.
-            
+
+Thanks to: vednoc for Dark WhatsApp theme.
+
 ${versionInfo}`,
               icon: mainIcon,
               buttons: ["Copy Version Info", "OK"],
