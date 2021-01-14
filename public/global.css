@@ -30,6 +30,10 @@ button:focus {
   outline: 2px solid #2067d1;
 }
 
+button {
+  cursor: pointer;
+}
+
 .modal-container {
   position: absolute;
   top: 0;
@@ -73,7 +77,7 @@ button:focus {
   font-size: 1.5rem;
 }
 
-.close {
+.modal .close {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,11 +90,11 @@ button:focus {
   border: 0;
 }
 
-.close svg {
+.modal .close svg {
   width: 1.25rem;
   height: 1.25rem;
 }
 
-.close:hover {
+.modal .close:hover {
   background: #2c333b;
 }
