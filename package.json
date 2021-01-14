@@ -65,6 +65,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^6.0.1",
     "sirv-cli": "^1.0.10",
+    "stylus": "^0.54.8",
     "svelte-select": "^3.16.1",
     "uuid": "^8.3.2"
   },
