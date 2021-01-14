@@ -24,14 +24,16 @@
   };
   const removeErrorClass = (e) => e.target.classList.remove("error");
 
-  let themeSelectItems = [
-    ...$themes.map((theme: ThemeType) => {
+  let themeSelectItems;
+
+  $: {
+    themeSelectItems = $themes.map((theme: ThemeType) => {
       return {
         value: theme.name.toLowerCase().replace(/\W/, ""),
         label: theme.name,
       };
-    }),
-  ];
+    });
+  }
 
   const submit = () => {
     let tab = tabSettings;
@@ -88,14 +90,21 @@
         <div class="option column selector">
           <label for="tab-theme">Theme:</label>
           <Select
-            bind:items={themeSelectItems}
+            items={themeSelectItems}
             selectedValue={themeSelectItems.find(
-              (theme) => theme.value === tabSettings.config.theme
-            )}
+              (theme) => theme.label === tabSettings.config.theme
+            )
+              ? themeSelectItems.find(
+                  (theme) => theme.label === tabSettings.config.theme
+                )
+              : {
+                  value: "default",
+                  label: "Default",
+                }}
             showIndicator={true}
             isClearable={false}
             on:select={(e) => {
-              tabSettings.config.theme = e.detail.value;
+              tabSettings.config.theme = e.detail.label;
             }}
           />
         </div>
@@ -239,7 +248,6 @@
     background: #2c333b;
     fill: #fff;
     border: 0;
-    cursor: pointer;
   }
 
   .column {
@@ -302,7 +310,6 @@
     background: #2268c4;
     color: #fff;
     fill: #fff;
-    cursor: pointer;
     transition: background 0.15s;
   }
 
