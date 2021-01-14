@@ -22,24 +22,39 @@ window.onload = () => {
   }
 };
 
+const appendTheme = (css) => {
+  if (document.getElementById("altus-style")) {
+    document.getElementById("altus-style").innerHTML = css;
+  } else {
+    let styleEl = document.createElement("style");
+    styleEl.id = "altus-style";
+    styleEl.innerHTML = css;
+    document.head.appendChild(styleEl);
+  }
+};
+
 ipcRenderer.on("set-theme", (e, theme) => {
-  switch (theme) {
-    case "default":
+  let styleEl = document.getElementById("altus-style");
+  switch (theme.name) {
+    case "Default":
       document.body.classList.remove("dark");
+      if (styleEl) styleEl.innerHTML = "";
       break;
-    case "dark":
+    case "Dark":
       document.body.classList.add("dark");
+      if (styleEl) styleEl.innerHTML = "";
+    default:
+      appendTheme(theme.css ? theme.css : "");
       break;
   }
   new MutationObserver((mutations, observer) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === "class") {
-        switch (theme) {
-          case "default":
-            document.body.classList.remove("dark");
-            break;
-          case "dark":
+        switch (theme.name) {
+          case "Dark":
             document.body.classList.add("dark");
+          default:
+            document.body.classList.remove("dark");
             break;
         }
         observer.disconnect();
