@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { afterUpdate, onMount } from "svelte";
+  import { afterUpdate } from "svelte";
   import type { TabType } from "../types";
+  import { themes } from "../store";
   export let partition;
   export let tab: TabType;
 
@@ -8,7 +9,22 @@
   let hasStoppedLoading = false;
 
   const sendWebviewConfig = () => {
-    webviewElement.send("set-theme", tab.config.theme);
+    let currentTheme = $themes.find((theme) => theme.name === tab.config.theme);
+    if (currentTheme) {
+      webviewElement.send("set-theme", {
+        name: tab.config.theme,
+        ...(currentTheme.css
+          ? {
+              css: currentTheme.css,
+            }
+          : {}),
+      });
+    } else {
+      webviewElement.send("set-theme", {
+        name: tab.config.theme,
+        css: "",
+      });
+    }
     webviewElement.setAudioMuted(!tab.config.sound);
   };
 
