@@ -3,7 +3,7 @@
   import TabConfigModal from "./components/TabConfigModal.svelte";
   import TabContent from "./components/TabContent.svelte";
   import ThemeManager from "./components/ThemeManager.svelte";
-  import { tabs, themes } from "./store";
+  import { paths, tabs, themes } from "./store";
   import defaultTabSettings from "./util/defaultTabSettings";
   import migrateTab from "./util/migrateTab";
   const Store = require("electron-store");
@@ -50,6 +50,13 @@
 
   ipcRenderer.on("open-theme-manager", () => {
     themeManagerVisible = true;
+  });
+
+  ipcRenderer.on("userDataPath", (path) => {
+    $paths = {
+      ...$paths,
+      userData: path,
+    };
   });
 
   /* onMount(() => {

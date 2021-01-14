@@ -23,6 +23,8 @@ const createMainWindow = () => {
 
   mainWindow.loadFile(path.join(__dirname, "../public/index.html"));
 
+  mainWindow.webContents.send("userDataPath", app.getPath("userData"));
+
   Menu.setApplicationMenu(mainMenu);
 };
 

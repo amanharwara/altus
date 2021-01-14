@@ -4,4 +4,8 @@ let tabs = writable([]);
 
 let themes = writable([]);
 
-export { tabs, themes };
+let paths = writable({
+  userData: "",
+});
+
+export { tabs, themes, paths };
