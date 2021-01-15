@@ -5,6 +5,8 @@
   import { createEventDispatcher } from "svelte";
   const { ipcRenderer } = require("electron");
 
+  let hidden = false;
+
   const dispatchEvent = createEventDispatcher();
 
   const activateTab = (e) => {
@@ -19,19 +21,21 @@
   const removeTab = (e) => {
     let { id } = e.detail;
     let currentTabIndex = $tabs.findIndex((tab) => tab.id === id);
-    let currentTab = $tabs[currentTabIndex];
-    let nextId = null;
-    tabs.update((tabs) => tabs.filter((tab) => tab.id !== id));
-    if (currentTab.active) {
-      nextId = $tabs[currentTabIndex - 1]
-        ? $tabs[currentTabIndex - 1].id
-        : $tabs[0].id;
-      if (nextId) {
-        activateTab({
-          detail: {
-            id: nextId,
-          },
-        });
+    if (currentTabIndex !== -1) {
+      let currentTab = $tabs[currentTabIndex];
+      let nextId = null;
+      tabs.update((tabs) => tabs.filter((tab) => tab.id !== id));
+      if (currentTab.active && $tabs.length > 0) {
+        nextId = $tabs[currentTabIndex - 1]
+          ? $tabs[currentTabIndex - 1].id
+          : $tabs[0].id;
+        if (nextId) {
+          activateTab({
+            detail: {
+              id: nextId,
+            },
+          });
+        }
       }
     }
   };
@@ -85,7 +89,16 @@
       },
     });
   });
-
+  ipcRenderer.on("add-new-tab", () => {
+    dispatchEvent("add-tab");
+  });
+  ipcRenderer.on("edit-tab", () => {
+    editTab({
+      detail: {
+        id: $tabs.find((tab) => tab.active).id,
+      },
+    });
+  });
   ipcRenderer.on("next-tab", activateNextTab);
   ipcRenderer.on("previous-tab", activatePreviousTab);
   ipcRenderer.on("first-tab", () => {
@@ -93,6 +106,9 @@
   });
   ipcRenderer.on("last-tab", () => {
     activateTab({ detail: { id: $tabs[$tabs.length - 1].id } });
+  });
+  ipcRenderer.on("toggle-tab-bar", () => {
+    hidden = !hidden;
   });
 
   document.addEventListener("keydown", (e) => {
@@ -115,7 +131,7 @@
   });
 </script>
 
-<div class="tab-bar">
+<div class="tab-bar" class:hidden>
   {#if $tabs.length > 0}
     <div class="tabs">
       {#each $tabs as tab}
@@ -163,5 +179,8 @@
   }
   .add-tab :global(svg) {
     width: 1.35rem;
+  }
+  .hidden {
+    display: none;
   }
 </style>
