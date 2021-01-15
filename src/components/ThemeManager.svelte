@@ -5,7 +5,10 @@
   import { paths, themes } from "../store";
   import Download from "./svg/Download.svelte";
   import Spinner from "./svg/Spinner.svelte";
-  import { compileTheme } from "../util/theme";
+  import { compileTheme, themePresets } from "../util/theme";
+  import ColorPicker from "./common/ColorPicker.svelte";
+  import Edit from "./svg/Edit.svelte";
+  const { v4: uuid } = require("uuid");
   export let visible = false;
 
   const dispatchEvent = createEventDispatcher();
@@ -16,6 +19,71 @@
   let active = "themes-list";
   let isEditingTheme = false;
   let isDownloadingDarkTheme = false;
+  let isSavingTheme = false;
+
+  let newTheme = {
+    name: "",
+    id: null,
+    css: "",
+    colors: { ...themePresets["dark"] },
+  };
+
+  const selectThemePreset = (e) => {
+    let value = e.target.value;
+    newTheme = {
+      ...newTheme,
+      colors: { ...themePresets[value] },
+    };
+  };
+
+  const submitTheme = async () => {
+    isSavingTheme = true;
+    let theme = newTheme;
+    if (newTheme.id) {
+      let themeIndex = $themes.findIndex((theme) => theme.id === newTheme.id);
+      let { colors } = $themes[themeIndex];
+      if (
+        colors.bg === newTheme.colors.bg &&
+        colors.fg === newTheme.colors.fg &&
+        colors.ac === newTheme.colors.ac
+      ) {
+        $themes[themeIndex] = newTheme;
+      } else {
+        let themeCSS = await compileTheme(
+          { ...newTheme.colors },
+          $paths.userData
+        );
+        if (themeCSS) {
+          theme.css = themeCSS;
+        }
+        $themes[themeIndex] = theme;
+      }
+    } else {
+      let id = uuid();
+      theme.id = id;
+      let themeNames = $themes.map((theme) => theme.name);
+      if (themeNames.includes(theme.name)) {
+        theme.name = `${theme.name} - 1`;
+      }
+      let themeCSS = await compileTheme(
+        { ...newTheme.colors },
+        $paths.userData
+      );
+      if (themeCSS) {
+        theme.css = themeCSS;
+      }
+      $themes = [...$themes, theme];
+    }
+    active = "themes-list";
+    newTheme = {
+      name: "",
+      id: null,
+      css: "",
+      colors: { ...themePresets["dark"] },
+    };
+    isEditingTheme = false;
+    isSavingTheme = false;
+  };
 </script>
 
 {#if visible}
@@ -51,6 +119,16 @@
                 <div class="name">{theme.name}</div>
                 {#if theme.colors}
                   <div class="controls">
+                    {#if theme.id !== "dark-plus"}
+                      <button
+                        class="edit"
+                        on:click={() => {
+                          newTheme = theme;
+                          active = "theme-creator";
+                          isEditingTheme = true;
+                        }}><Edit /></button
+                      >
+                    {/if}
                     <button
                       class="delete"
                       on:click={() => {
@@ -77,6 +155,7 @@
                           ...$themes,
                           {
                             name: "Dark Plus",
+                            id: "dark-plus",
                             css: darkTheme,
                             colors: {
                               bg: "#1f232a",
@@ -102,22 +181,48 @@
             <div class="options">
               <div class="opt">
                 <label for="theme-preset">Preset:</label>
+                <select id="theme-preset" on:input={selectThemePreset}>
+                  <option value="dark">Dark</option>
+                  <option value="darkMint">Dark Mint</option>
+                  <option value="purplish">Purple-ish</option>
+                </select>
               </div>
               <div class="opt">
                 <label for="theme-name">Name:</label>
-                <input type="text" id="theme-name" />
+                <input type="text" id="theme-name" bind:value={newTheme.name} />
               </div>
               <div class="opt">
                 <label for="theme-bg">Background Color:</label>
-                <input type="text" id="theme-bg" />
+                <div class="colorInput">
+                  <input
+                    type="text"
+                    id="theme-bg"
+                    bind:value={newTheme.colors.bg}
+                  />
+                  <ColorPicker bind:color={newTheme.colors.bg} />
+                </div>
               </div>
               <div class="opt">
                 <label for="theme-fg">Foreground Color:</label>
-                <input type="text" id="theme-fg" />
+                <div class="colorInput">
+                  <input
+                    type="text"
+                    id="theme-fg"
+                    bind:value={newTheme.colors.fg}
+                  />
+                  <ColorPicker bind:color={newTheme.colors.fg} />
+                </div>
               </div>
               <div class="opt">
                 <label for="theme-ac">Accent Color:</label>
-                <input type="text" id="theme-ac" />
+                <div class="colorInput">
+                  <input
+                    type="text"
+                    id="theme-ac"
+                    bind:value={newTheme.colors.ac}
+                  />
+                  <ColorPicker bind:color={newTheme.colors.ac} />
+                </div>
               </div>
             </div>
           </div>
@@ -127,12 +232,16 @@
         {#if active === "themes-list"}
           <button>Update Themes</button>
         {:else}
-          <button>
-            {#if isEditingTheme}
-              Edit
+          <button on:click={submitTheme} class:spinning={isSavingTheme}>
+            {#if isSavingTheme}
+              <Spinner />
             {:else}
-              Add
-            {/if} Theme
+              {#if isEditingTheme}
+                Edit
+              {:else}
+                Add
+              {/if} Theme
+            {/if}
           </button>
         {/if}
       </div>
@@ -146,7 +255,8 @@
     z-index: 2;
   }
   .modal {
-    width: max(350px, 30vw);
+    width: max(375px, 30vw);
+    height: max(400px, 60vh);
   }
   .tabs {
     display: flex;
@@ -159,6 +269,7 @@
     padding: 0.5rem 0.75rem;
     font-size: 0.95rem;
     color: #fff;
+    fill: #fff;
     background: #303b49;
     -webkit-user-select: none;
   }
@@ -170,6 +281,10 @@
   }
   .tabs .active {
     background: #303b49;
+  }
+  .content {
+    flex-grow: 1;
+    overflow-y: auto;
   }
   .themes {
     display: flex;
@@ -186,6 +301,12 @@
   .theme:not(:last-child) {
     border-bottom: 1px solid rgba(44, 53, 66, 0.85);
   }
+  .theme .controls {
+    display: flex;
+  }
+  .theme .controls :not(:last-child) {
+    margin-right: 0.5rem;
+  }
   .theme .controls button {
     display: flex;
     align-items: center;
@@ -194,13 +315,12 @@
     height: 1.55rem;
     padding: 0.3rem;
     background: #303b49;
-    fill: #fff;
     border: 0;
   }
   .theme .controls button:hover {
     background: #2c3542;
   }
-  .theme .controls button :global(svg) {
+  button :global(svg) {
     width: 1.25rem;
     height: 1.25rem;
   }
@@ -214,5 +334,33 @@
     to {
       transform: rotate(360deg);
     }
+  }
+  .options {
+    padding: 0.75rem;
+  }
+  .opt {
+    padding: 0.3rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .opt input,
+  .opt select {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+      Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    padding: 0.35rem 0.4rem;
+    border: 0;
+    width: 40%;
+  }
+  .colorInput {
+    display: flex;
+    align-items: center;
+    width: 40%;
+  }
+  .colorInput > input {
+    flex-grow: 1;
+    margin-right: 0.5rem;
   }
 </style>
