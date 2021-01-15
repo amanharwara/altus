@@ -15,6 +15,7 @@ type TabType = {
 type ThemeType = {
   name: string;
   css: string;
+  id: string;
   colors?: {
     bg: string;
     fg: string;

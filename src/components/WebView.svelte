@@ -9,7 +9,7 @@
   let hasStoppedLoading = false;
 
   const sendWebviewConfig = () => {
-    let currentTheme = $themes.find((theme) => theme.name === tab.config.theme);
+    let currentTheme = $themes.find((theme) => theme.id === tab.config.theme);
     if (currentTheme) {
       webviewElement.send("set-theme", {
         name: tab.config.theme,
