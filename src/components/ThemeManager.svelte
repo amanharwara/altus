@@ -8,6 +8,7 @@
   import { compileTheme, themePresets } from "../util/theme";
   import ColorPicker from "./common/ColorPicker.svelte";
   import Edit from "./svg/Edit.svelte";
+  import type { TabType, ThemeType } from "../types";
   const { v4: uuid } = require("uuid");
   export let visible = false;
 
@@ -20,6 +21,7 @@
   let isEditingTheme = false;
   let isDownloadingDarkTheme = false;
   let isSavingTheme = false;
+  let isUpdatingThemes = false;
 
   let newTheme = {
     name: "",
@@ -83,6 +85,34 @@
     };
     isEditingTheme = false;
     isSavingTheme = false;
+  };
+
+  const cancelEditingTheme = () => {
+    isEditingTheme = false;
+    newTheme = {
+      name: "",
+      id: null,
+      css: "",
+      colors: { ...themePresets["dark"] },
+    };
+    active = "themes-list";
+  };
+
+  const updateThemes = async () => {
+    isUpdatingThemes = true;
+
+    for (let theme of $themes) {
+      if (theme.css.length > 0) {
+        let updatedThemeCSS = await compileTheme(theme.colors, $paths.userData);
+        let themeIndex = $themes.findIndex((t) => t.id === theme.id);
+        $themes[themeIndex] = {
+          ...$themes[themeIndex],
+          css: updatedThemeCSS,
+        };
+      }
+    }
+
+    isUpdatingThemes = false;
   };
 </script>
 
@@ -230,7 +260,13 @@
       </div>
       <div class="main-controls">
         {#if active === "themes-list"}
-          <button>Update Themes</button>
+          <button on:click={updateThemes} class:spinning={isUpdatingThemes}>
+            {#if isUpdatingThemes}
+              <Spinner />
+            {:else}
+              Update Themes
+            {/if}
+          </button>
         {:else}
           <button on:click={submitTheme} class:spinning={isSavingTheme}>
             {#if isSavingTheme}
@@ -243,6 +279,9 @@
               {/if} Theme
             {/if}
           </button>
+          {#if isEditingTheme}
+            <button on:click={cancelEditingTheme}>Cancel</button>
+          {/if}
         {/if}
       </div>
     </div>
