@@ -6,7 +6,7 @@ const defaultTabSettings = () => {
     name: "",
     active: true,
     config: {
-      theme: "Default",
+      theme: "default",
       notifications: true,
       sound: true,
       utilityBar: false,
