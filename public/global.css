@@ -26,7 +26,8 @@ body {
 }
 
 input:focus,
-button:focus {
+button:focus,
+select:focus {
   outline: 2px solid #2067d1;
 }
 
