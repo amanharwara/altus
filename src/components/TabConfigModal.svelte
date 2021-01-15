@@ -9,7 +9,7 @@
   import Undo from "./svg/Undo.svelte";
   import Add from "./svg/Add.svelte";
   import Check from "./svg/Check.svelte";
-  const { v4: uuid } = require("uuid");
+  import ColorPicker from "./common/ColorPicker.svelte";
 
   export let visible = false;
   export let tabSettings: TabType;
@@ -29,7 +29,7 @@
   $: {
     themeSelectItems = $themes.map((theme: ThemeType) => {
       return {
-        value: theme.name.toLowerCase().replace(/\W/, ""),
+        value: theme.id,
         label: theme.name,
       };
     });
@@ -92,19 +92,12 @@
           <Select
             items={themeSelectItems}
             selectedValue={themeSelectItems.find(
-              (theme) => theme.label === tabSettings.config.theme
-            )
-              ? themeSelectItems.find(
-                  (theme) => theme.label === tabSettings.config.theme
-                )
-              : {
-                  value: "default",
-                  label: "Default",
-                }}
+              (theme) => theme.value === tabSettings.config.theme
+            )}
             showIndicator={true}
             isClearable={false}
             on:select={(e) => {
-              tabSettings.config.theme = e.detail.label;
+              tabSettings.config.theme = e.detail.value;
             }}
           />
         </div>
@@ -129,11 +122,7 @@
         <div class="option">
           <label for="tab-color">Color:</label>
           <div class="color-input">
-            <input
-              type="color"
-              id="tab-color"
-              bind:value={tabSettings.config.color}
-            />
+            <ColorPicker bind:color={tabSettings.config.color} />
             <button
               class="reset-color"
               on:click={() => (tabSettings.config.color = "#2A3440")}>
@@ -225,20 +214,8 @@
     align-items: center;
   }
 
-  input[type="color"] {
-    appearance: none;
-    border: none;
-    padding: 0.05rem 0.1rem;
-    margin-right: 0.65rem;
-    cursor: pointer;
-  }
-
-  input[type="color"]::-webkit-color-swatch-wrapper {
-    padding: 0;
-  }
-
-  input[type="color"]::-webkit-color-swatch {
-    border: none;
+  .color-input > :last-child {
+    margin-left: 0.5rem;
   }
 
   .reset-color {
