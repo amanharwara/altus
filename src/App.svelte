@@ -4,8 +4,10 @@
   import TabContent from "./components/TabContent.svelte";
   import ThemeManager from "./components/ThemeManager.svelte";
   import { paths, tabs, themes } from "./store";
+  import type { ThemeType } from "./types";
   import defaultTabSettings from "./util/defaultTabSettings";
   import migrateTab from "./util/migrateTab";
+  import { migrateTheme } from "./util/theme";
   const Store = require("electron-store");
   const { ipcRenderer } = require("electron");
 
@@ -27,10 +29,12 @@
       themes: [
         {
           name: "Default",
+          id: "default",
           css: "",
         },
         {
           name: "Dark",
+          id: "dark",
           css: "",
         },
       ],
@@ -39,14 +43,30 @@
 
   tabs.set(tabStore.get("tabs").map(migrateTab));
   tabs.subscribe((tabs) => {
-    tabStore.set("tabs", tabs);
+    tabStore.set("tabs", tabs.map(migrateTab));
     if (tabs.length === 0) {
       tabConfigModalVisible = true;
     }
   });
 
-  themes.set(themeStore.get("themes"));
-  themes.subscribe((themes) => themeStore.set("themes", themes));
+  themes.set(themeStore.get("themes").map(migrateTheme));
+  themes.subscribe((themes: ThemeType[]) => {
+    themeStore.set("themes", themes.map(migrateTheme));
+    let themeIDs = themes.map((theme) => theme.id);
+    $tabs = $tabs.map((tab) => {
+      if (!themeIDs.includes(tab.config.theme)) {
+        return {
+          ...tab,
+          config: {
+            ...tab.config,
+            theme: "default",
+          },
+        };
+      } else {
+        return tab;
+      }
+    });
+  });
 
   ipcRenderer.on("open-theme-manager", () => {
     themeManagerVisible = true;
