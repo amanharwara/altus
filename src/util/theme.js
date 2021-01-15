@@ -2,6 +2,38 @@ const stylus = require("stylus");
 const path = require("path");
 const { writeFileSync, unlinkSync } = require("fs");
 
+/** Migrate v3 themes to v4 */
+const migrateTheme = (theme) => {
+  if (!theme.id) {
+    let id;
+
+    switch (theme.name) {
+      case "Default":
+        id = "default";
+        break;
+      case "Dark":
+        id = "dark";
+        break;
+      case "Dark Plus":
+        id = "dark-plus";
+        break;
+    }
+
+    return {
+      ...theme,
+      id,
+    };
+  } else {
+    return theme;
+  }
+};
+
+const themePresets = {
+  dark: { bg: "#1f232a", fg: "#eeeeee", ac: "#7289da" },
+  darkMint: { bg: "#10151E", fg: "#eeeeee", ac: "#40C486" },
+  purplish: { bg: "#15192E", fg: "#eeeeee", ac: "#125DBF" },
+};
+
 const compileTheme = async (options, userDataPath) => {
   try {
     let tempMetaPath = path.join(userDataPath, "temp_metadata.styl");
@@ -72,4 +104,10 @@ const customizeMetadata = (current, options) => {
   return metadata;
 };
 
-export { customizeTheme, customizeMetadata, compileTheme };
+export {
+  customizeTheme,
+  customizeMetadata,
+  compileTheme,
+  themePresets,
+  migrateTheme,
+};
