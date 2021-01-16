@@ -1,4 +1,11 @@
-const { app, BrowserWindow, Menu, nativeImage } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  nativeImage,
+  ipcMain,
+  dialog,
+} = require("electron");
 const path = require("path");
 const { mainMenu } = require("./util/menu");
 const { mainIcon } = require("./util/icons");
@@ -46,6 +53,23 @@ if (!singleInstanceLock) {
 
   app.on("ready", () => {
     createMainWindow();
+
+    ipcMain.on("prompt-close-tab", (e, id) => {
+      dialog
+        .showMessageBox({
+          type: "question",
+          buttons: ["OK", "Cancel"],
+          title: "Close Tab",
+          message: "Are you sure you want to close the tab?",
+        })
+        .then((res) => {
+          if (res.response == 0) {
+            let mainWindow = BrowserWindow.getFocusedWindow();
+            mainWindow.webContents.send("close-tab", id);
+            return;
+          }
+        });
+    });
   });
 
   app.on("window-all-closed", () => {

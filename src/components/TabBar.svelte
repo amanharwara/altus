@@ -1,11 +1,13 @@
 <script lang="ts">
   import Tab from "./Tab.svelte";
-  import { tabs } from "../store";
+  import { settings, tabs } from "../store";
   import Add from "./svg/Add.svelte";
   import { createEventDispatcher } from "svelte";
   const { ipcRenderer } = require("electron");
 
   let hidden = false;
+
+  $: hidden = !$settings["tabBar"].value;
 
   const dispatchEvent = createEventDispatcher();
 
@@ -82,12 +84,31 @@
     }
   };
 
-  ipcRenderer.on("close-tab", () => {
-    removeTab({
-      detail: {
-        id: $tabs.find((tab) => tab.active).id,
-      },
-    });
+  const promptBeforeClosingTab = (id) => {
+    if ($settings["tabClosePrompt"].value) {
+      ipcRenderer.send("prompt-close-tab", id);
+    } else {
+      removeTab({ detail: { id } });
+    }
+  };
+
+  ipcRenderer.on("prompt-before-closing-tab", () => {
+    promptBeforeClosingTab($tabs.find((tab) => tab.active).id);
+  });
+  ipcRenderer.on("close-tab", (e, id) => {
+    if (id) {
+      removeTab({
+        detail: {
+          id,
+        },
+      });
+    } else {
+      removeTab({
+        detail: {
+          id: $tabs.find((tab) => tab.active).id,
+        },
+      });
+    }
   });
   ipcRenderer.on("add-new-tab", () => {
     dispatchEvent("add-tab");
@@ -138,7 +159,10 @@
         <Tab
           {tab}
           on:activateTab={activateTab}
-          on:removeTab={removeTab}
+          on:removeTab={(e) => {
+            let { id } = e.detail;
+            promptBeforeClosingTab(id);
+          }}
           on:editTab={editTab}
         />
       {/each}

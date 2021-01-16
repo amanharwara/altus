@@ -90,16 +90,7 @@ let menuTemplate = [
         accelerator: "CmdOrCtrl+W",
         click() {
           let window = BrowserWindow.getFocusedWindow();
-          window.webContents.send("close-tab");
-          /* if (
-            Array.from(settings.get("settings")).find(
-              (s) => s.id === "tabClosePrompt"
-            ).value === true
-          ) {
-            window.webContents.send("close-tab", { confirm: true });
-          } else {
-            window.webContents.send("close-tab", { confirm: false });
-          } */
+          window.webContents.send("prompt-before-closing-tab");
         },
       },
       {
