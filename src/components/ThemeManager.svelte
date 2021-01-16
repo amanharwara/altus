@@ -8,7 +8,6 @@
   import { compileTheme, themePresets } from "../util/theme";
   import ColorPicker from "./common/ColorPicker.svelte";
   import Edit from "./svg/Edit.svelte";
-  import type { TabType, ThemeType } from "../types";
   const { v4: uuid } = require("uuid");
   export let visible = false;
 
@@ -301,20 +300,6 @@
     display: flex;
     border-bottom: 2px solid #303b49;
   }
-  button:not(.close) {
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
-      Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    border: 0;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.95rem;
-    color: #fff;
-    fill: #fff;
-    background: #303b49;
-    -webkit-user-select: none;
-  }
-  button:hover {
-    background: #2c3542;
-  }
   .tabs :not(.active) {
     background: transparent;
   }
@@ -358,21 +343,6 @@
   }
   .theme .controls button:hover {
     background: #2c3542;
-  }
-  button :global(svg) {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-  .spinning :global(svg) {
-    animation: infinite spin 0.5s;
-  }
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
   }
   .options {
     padding: 0.75rem;
