@@ -38,10 +38,10 @@
         {#each Object.keys(currentSettings) as key}
           <div class="setting">
             <div class="info">
-              <div class="name">{currentSettings[key].name}</div>
+              <label class="name" for={key}>{currentSettings[key].name}</label>
               <div class="description">{currentSettings[key].description}</div>
             </div>
-            <Toggle bind:value={currentSettings[key].value} />
+            <Toggle id={key} bind:value={currentSettings[key].value} />
           </div>
         {/each}
       </div>
@@ -71,6 +71,13 @@
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    margin-bottom: 0.75rem;
+  }
+  .settings::-webkit-scrollbar {
+    width: 5px;
+  }
+  .settings::-webkit-scrollbar-thumb {
+    background: #36475d;
   }
   .setting {
     display: flex;
