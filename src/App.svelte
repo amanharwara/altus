@@ -4,11 +4,38 @@
   import TabConfigModal from "./components/TabConfigModal.svelte";
   import TabContent from "./components/TabContent.svelte";
   import ThemeManager from "./components/ThemeManager.svelte";
-  import { paths, modals } from "./store";
+  import { paths, modals, settings } from "./store";
   import defaultTabSettings from "./util/defaultTabSettings";
   const { ipcRenderer } = require("electron");
 
   let tabSettings = defaultTabSettings();
+
+  $: {
+    if ($settings["trayIcon"]) {
+      ipcRenderer.send("toggle-tray-icon", $settings["trayIcon"].value);
+    }
+  }
+
+  $: {
+    if ($settings["exitPrompt"]) {
+      ipcRenderer.send("toggle-exit-prompt", $settings["exitPrompt"].value);
+    }
+  }
+
+  $: {
+    if ($settings["closeToTray"]) {
+      ipcRenderer.send("toggle-close-to-tray", $settings["closeToTray"].value);
+    }
+  }
+
+  $: {
+    if ($settings["preventEnter"]) {
+      ipcRenderer.send(
+        "toggle-prevent-enter-submit",
+        $settings["preventEnter"].value
+      );
+    }
+  }
 
   ipcRenderer.on("open-theme-manager", () => {
     $modals.themeManagerVisible = true;

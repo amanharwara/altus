@@ -1,19 +1,29 @@
-const {
-  app,
-  BrowserWindow,
-  Menu,
-  nativeImage,
-  ipcMain,
-  dialog,
-} = require("electron");
+const { app, BrowserWindow, Menu, ipcMain, dialog, Tray } = require("electron");
 const path = require("path");
-const { mainMenu } = require("./util/menu");
-const { mainIcon } = require("./util/icons");
+const { mainMenu, trayContextMenu } = require("./util/menu");
+const { mainIcon, trayIcon, trayNotifIcon } = require("./util/icons");
 
 if (require("electron-squirrel-startup")) {
   // eslint-disable-line global-require
   app.quit();
 }
+
+const confirmExit = () => {
+  dialog
+    .showMessageBox({
+      type: "question",
+      buttons: ["OK", "Cancel"],
+      title: "Exit",
+      message: "Are you sure you want to exit?",
+    })
+    .then((res) => {
+      if (res.response == 0) {
+        app.showExitPrompt = false;
+        app.quit();
+        return;
+      }
+    });
+};
 
 const createMainWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -31,6 +41,16 @@ const createMainWindow = () => {
   mainWindow.loadFile(path.join(__dirname, "../public/index.html"));
 
   mainWindow.webContents.send("userDataPath", app.getPath("userData"));
+
+  mainWindow.on("close", (e) => {
+    if (app.closeToTray) {
+      e.preventDefault();
+      mainWindow.hide();
+    } else if (app.showExitPrompt) {
+      e.preventDefault();
+      confirmExit();
+    }
+  });
 
   Menu.setApplicationMenu(mainMenu);
 };
@@ -54,6 +74,12 @@ if (!singleInstanceLock) {
   app.on("ready", () => {
     createMainWindow();
 
+    app.showExitPrompt = false;
+    app.closeToTray = false;
+    app.preventEnter = false;
+
+    let tray = null;
+
     ipcMain.on("prompt-close-tab", (e, id) => {
       dialog
         .showMessageBox({
@@ -69,6 +95,61 @@ if (!singleInstanceLock) {
             return;
           }
         });
+    });
+
+    ipcMain.on("toggle-exit-prompt", (e, value) => {
+      app.showExitPrompt = value;
+    });
+
+    ipcMain.on("toggle-close-to-tray", (e, value) => {
+      app.closeToTray = value;
+    });
+
+    ipcMain.on("toggle-prevent-enter-submit", (e, value) => {
+      app.preventEnter = value;
+    });
+
+    ipcMain.on("toggle-tray-icon", (e, enabled) => {
+      if (enabled) {
+        if (process.platform !== "darwin") {
+          tray = new Tray(trayIcon);
+          tray.setToolTip("Altus");
+          tray.setContextMenu(trayContextMenu);
+          tray.on("double-click", () => {
+            BrowserWindow.getAllWindows()[0].show();
+          });
+        } else {
+          app.dock.setMenu(trayContextMenu);
+        }
+      } else {
+        if (tray) {
+          tray.destroy();
+        }
+        tray = null;
+      }
+    });
+  });
+
+  app.on("web-contents-created", (e, context) => {
+    context.on("before-input-event", (e, input) => {
+      if (app.preventEnter) {
+        if (input.key === "Enter" && !input.shift && !input.control) {
+          context.webContents.sendInputEvent({
+            keyCode: "Shift+Return",
+            type: "keyDown",
+          });
+          e.preventDefault();
+          return;
+        }
+
+        if (input.key === "Enter" && input.control) {
+          context.webContents.executeJavaScript(
+            `document.querySelector('[data-icon="send"]').click()`
+          );
+          e.preventDefault();
+          return;
+        }
+      }
     });
   });
 

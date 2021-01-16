@@ -19,6 +19,23 @@ const defaultSettings: () => {
       name: "Prompt When Closing Tab",
       description: "When enabled, you will be prompted when you close a tab.",
     },
+    closeToTray: {
+      value: false,
+      name: "Close to Tray",
+      description:
+        "When enabled, Altus will be minimized to the tray instead of being closed completely.",
+    },
+    exitPrompt: {
+      value: false,
+      name: "Show Exit Prompt",
+      description: "When enabled, you will be prompted when you close the app.",
+    },
+    preventEnter: {
+      value: false,
+      name: "Prevent sending message on Enter",
+      description:
+        "When enabled, pressing Enter while typing will not send the message and add a new line instead.",
+    },
   };
 };
 
