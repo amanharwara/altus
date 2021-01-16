@@ -79,7 +79,7 @@ Below is the list of contributors who have contributed to Altus by creating a fe
 
 #### [Melvin-Abraham](https://github.com/Melvin-Abraham) - Helped fix issues #55, #53
 
-#### [dylanmcdougall](https://github.com/dylanmcdougall) - PR #10 (Added feature - Confirmation Dialog on close)
+#### [Dylan McDougall](https://github.com/dmcdo) - PR #10 (Added feature - Confirmation Dialog on close)
 
 #### [Dafnik](https://github.com/Dafnik) - PR #5 (Helped fix issue #4)
 
