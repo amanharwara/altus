@@ -23,4 +23,10 @@ type ThemeType = {
   };
 };
 
-export { TabType, ThemeType };
+type SettingType = {
+  value: boolean;
+  name: string;
+  description: string;
+};
+
+export { TabType, ThemeType, SettingType };
