@@ -307,12 +307,6 @@ ${versionInfo}`,
               shell.openExternal("https://www.gitlab.com/amanharwara/altus");
             },
           },
-          {
-            label: "Discord Chat",
-            click: () => {
-              shell.openExternal("https://discord.gg/mGxNGP6");
-            },
-          },
         ],
       },
     ],
@@ -321,6 +315,26 @@ ${versionInfo}`,
 
 let mainMenu = Menu.buildFromTemplate(menuTemplate);
 
-module.exports = {
-  mainMenu,
-};
+const trayContextMenu = Menu.buildFromTemplate([
+  {
+    label: "Maximize",
+    click() {
+      BrowserWindow.getAllWindows()[0].show();
+      BrowserWindow.getAllWindows()[0].focus();
+    },
+  },
+  {
+    label: "Minimize to Tray",
+    click() {
+      BrowserWindow.getAllWindows()[0].hide();
+    },
+  },
+  {
+    label: "Exit",
+    click() {
+      app.exit(0);
+    },
+  },
+]);
+
+module.exports = { mainMenu, trayContextMenu };
