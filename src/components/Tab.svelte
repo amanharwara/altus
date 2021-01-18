@@ -32,6 +32,9 @@
   on:click={activateTab}
   style={`background: ${tab.config.color};`}
 >
+  {#if tab.messageCount}
+    <span class="badge" data-count={tab.messageCount} />
+  {/if}
   <div class="name">{tab.name}</div>
   <div class="controls">
     <div class="edit" on:click={editTab} style="stroke: #fff">
@@ -79,5 +82,21 @@
   }
   .controls > :first-child {
     margin-right: 0.45rem;
+  }
+  .badge {
+    background: #c70e0e;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    position: relative;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.5rem;
+  }
+  .badge::after {
+    content: attr(data-count);
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    transform: translate(-50%, -50%);
   }
 </style>

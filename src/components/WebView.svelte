@@ -9,6 +9,7 @@
   let hasStoppedLoading = false;
 
   const sendWebviewConfig = () => {
+    webviewElement.executeJavaScript(`document.body.id = "${tab.id}";`);
     let currentTheme = $themes.find((theme) => theme.id === tab.config.theme);
     if (currentTheme) {
       webviewElement.send("set-theme", {
@@ -47,7 +48,7 @@
   {partition}
   bind:this={webviewElement}
   useragent={window.navigator.userAgent.replace(
-    /(Altus4|Electron)([^\s]+\s)/g,
+    /(Altus|Electron)([^\s]+\s)/g,
     ""
   )}
   webpreferences={`spellcheck=${tab.config.spellChecker ? 1 : 0}`}

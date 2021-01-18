@@ -20,6 +20,25 @@ window.onload = () => {
   if (title_element && title_element.innerHTML.includes("Google Chrome")) {
     window.location.reload();
   }
+
+  new MutationObserver(function (mutations) {
+    let title = mutations[0].target.innerText;
+    let title_regex = /([0-9]+)/;
+    let messageCount = title_regex.exec(title)
+      ? parseInt(title_regex.exec(title)[0])
+        ? parseInt(title_regex.exec(title)[0])
+        : null
+      : null;
+    let tabId = document.body.id;
+    ipcRenderer.send("message-indicator", {
+      messageCount,
+      tabId,
+    });
+  }).observe(document.querySelector("title"), {
+    subtree: true,
+    childList: true,
+    characterData: true,
+  });
 };
 
 const appendTheme = (css) => {

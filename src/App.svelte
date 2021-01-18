@@ -4,7 +4,7 @@
   import TabConfigModal from "./components/TabConfigModal.svelte";
   import TabContent from "./components/TabContent.svelte";
   import ThemeManager from "./components/ThemeManager.svelte";
-  import { paths, modals, settings } from "./store";
+  import { paths, modals, settings, tabs } from "./store";
   import defaultTabSettings from "./util/defaultTabSettings";
   const { ipcRenderer } = require("electron");
 
@@ -33,6 +33,15 @@
       ipcRenderer.send(
         "toggle-prevent-enter-submit",
         $settings["preventEnter"].value
+      );
+    }
+  }
+
+  $: {
+    if ($settings["notificationBadge"]) {
+      ipcRenderer.send(
+        "toggle-notification-badge",
+        $settings["notificationBadge"].value
       );
     }
   }

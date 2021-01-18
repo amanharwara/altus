@@ -131,6 +131,19 @@
   ipcRenderer.on("toggle-tab-bar", () => {
     hidden = !hidden;
   });
+  ipcRenderer.on("message-indicator", (e, detail) => {
+    let { messageCount, tabId } = detail;
+    $tabs = $tabs.map((tab) => {
+      if (tab.id === tabId) {
+        return {
+          ...tab,
+          messageCount,
+        };
+      } else {
+        return tab;
+      }
+    });
+  });
 
   document.addEventListener("keydown", (e) => {
     if (e.ctrlKey) {
