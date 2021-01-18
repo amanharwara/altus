@@ -1,7 +1,19 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog, Tray } = require("electron");
 const path = require("path");
 const { mainMenu, trayContextMenu } = require("./util/menu");
-const { mainIcon, trayIcon, trayNotifIcon } = require("./util/icons");
+const {
+  mainIcon,
+  trayIcon,
+  trayNotifIcon,
+  mainNotifIcon,
+} = require("./util/icons");
+const fs = require("fs");
+const Store = require("electron-store");
+const AutoLaunch = require("auto-launch");
+
+let settings = new Store({
+  name: "settings",
+});
 
 if (require("electron-squirrel-startup")) {
   // eslint-disable-line global-require
@@ -36,6 +48,7 @@ const createMainWindow = () => {
       enableRemoteModule: true,
       webviewTag: true,
     },
+    show: false,
   });
 
   mainWindow.loadFile(path.join(__dirname, "../public/index.html"));
@@ -74,11 +87,125 @@ if (!singleInstanceLock) {
   app.on("ready", () => {
     createMainWindow();
 
-    app.showExitPrompt = false;
-    app.closeToTray = false;
-    app.preventEnter = false;
+    let mainWindow = BrowserWindow.getAllWindows()[0];
+
+    app.showExitPrompt = settings.get("exitPrompt")
+      ? settings.get("exitPrompt").value
+      : false;
+    app.closeToTray = settings.get("closeToTray")
+      ? settings.get("closeToTray").value
+      : false;
+    app.preventEnter = settings.get("preventEnter")
+      ? settings.get("preventEnter").value
+      : false;
+    app.notificationBadge = settings.get("notificationBadge")
+      ? settings.get("notificationBadge").value
+      : false;
+    app.startMinimized = settings.get("launchMinimized")
+      ? settings.get("launchMinimized").value
+      : false;
+    app.autoLaunch = settings.get("autoLaunch")
+      ? settings.get("autoLaunch").value
+      : false;
+
+    if (!app.startMinimized) {
+      mainWindow.show();
+      mainWindow.focus();
+    } else {
+      mainWindow.minimize();
+      mainWindow.blur();
+    }
+
+    const altusAutoLauncher = new AutoLaunch({ name: "Altus" });
+
+    if (app.autoLaunch) {
+      altusAutoLauncher.enable();
+    } else {
+      altusAutoLauncher.disable();
+    }
 
     let tray = null;
+
+    ipcMain.on("import-settings", () => {
+      dialog
+        .showOpenDialog({
+          title: "Import Settings",
+          filters: [
+            {
+              name: "JSON",
+              extensions: ["json"],
+            },
+          ],
+          properties: ["openFile"],
+        })
+        .then((result) => {
+          if (!result.canceled) {
+            fs.readFile(result.filePaths[0], (err, data) => {
+              if (!err) {
+                const imported = JSON.parse(data.toString());
+                mainWindow.webContents.send("import-settings", imported);
+              }
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+
+    ipcMain.on("export-settings", (e, settings) => {
+      dialog
+        .showSaveDialog({
+          title: "Export Settings",
+          filters: [
+            {
+              name: "JSON",
+              extensions: ["json"],
+            },
+          ],
+        })
+        .then((result) => {
+          const { filePath, canceled } = result;
+          if (!canceled) {
+            const data = new Uint8Array(
+              Buffer.from(JSON.stringify(settings, null, "\t"))
+            );
+            fs.writeFile(filePath, data, (err) => {
+              if (err) throw err;
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+
+    ipcMain.on("message-indicator", (e, detail) => {
+      mainWindow.webContents.send("message-indicator", detail);
+      if (app.notificationBadge) {
+        if (detail.messageCount) {
+          switch (process.platform) {
+            case "darwin":
+              app.dock.setBadge("·");
+              break;
+            default:
+              if (tray) tray.setImage(trayNotifIcon);
+              mainWindow.setOverlayIcon(mainNotifIcon, "Notification badge");
+              break;
+          }
+        } else {
+          switch (process.platform) {
+            case "darwin":
+              app.dock.setBadge("");
+              break;
+            default:
+              if (tray) tray.setImage(trayIcon);
+              mainWindow.setOverlayIcon(null, "Notification badge empty");
+              break;
+          }
+        }
+      }
+    });
 
     ipcMain.on("prompt-close-tab", (e, id) => {
       dialog
@@ -90,7 +217,6 @@ if (!singleInstanceLock) {
         })
         .then((res) => {
           if (res.response == 0) {
-            let mainWindow = BrowserWindow.getFocusedWindow();
             mainWindow.webContents.send("close-tab", id);
             return;
           }
@@ -109,15 +235,25 @@ if (!singleInstanceLock) {
       app.preventEnter = value;
     });
 
+    ipcMain.on("toggle-notification-badge", (e, value) => {
+      app.notificationBadge = value;
+      if (!app.notificationBadge) {
+        if (tray) tray.setImage(trayIcon);
+        mainWindow.setOverlayIcon(null, "Notification badge empty");
+      }
+    });
+
     ipcMain.on("toggle-tray-icon", (e, enabled) => {
       if (enabled) {
         if (process.platform !== "darwin") {
-          tray = new Tray(trayIcon);
-          tray.setToolTip("Altus");
-          tray.setContextMenu(trayContextMenu);
-          tray.on("double-click", () => {
-            BrowserWindow.getAllWindows()[0].show();
-          });
+          if (!tray) {
+            tray = new Tray(trayIcon);
+            tray.setToolTip("Altus");
+            tray.setContextMenu(trayContextMenu);
+            tray.on("double-click", () => {
+              BrowserWindow.getAllWindows()[0].show();
+            });
+          }
         } else {
           app.dock.setMenu(trayContextMenu);
         }
