@@ -1,6 +1,6 @@
 {
-  "name": "altus4",
-  "productName": "Altus4",
+  "name": "altus",
+  "productName": "Altus",
   "version": "4.0.0",
   "description": "Desktop client for WhatsApp Web with themes & multiple account support.",
   "main": "src/index.js",
@@ -13,10 +13,8 @@
   },
   "scripts": {
     "start": "concurrently \"npm:svelte-dev\" \"electron-forge start\"",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\"",
+    "package": "electron-builder --dir",
+    "build": "electron-builder",
     "svelte-build": "rollup -c",
     "svelte-dev": "rollup -c -w",
     "svelte-start": "sirv public"
@@ -33,33 +31,80 @@
   "license": "GPL-3.0",
   "config": {
     "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "altus"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
+      "packagerConfig": {
+        "icon": "src/icons/icon.ico",
+        "appCopyright": "Copyright (C) 2021 Aman Harwara",
+        "appCategoryType": "public.app-category.social-networking"
+      }
+    }
+  },
+  "build": {
+    "appId": "harwara.aman.altus",
+    "productName": "Altus",
+    "protocols": [
+      {
+        "name": "whatsapp",
+        "role": "Viewer",
+        "schemes": [
+          "whatsapp"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.social-networking",
+      "target": [
+        "dmg"
       ]
+    },
+    "dmg": {
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 380,
+          "y": 280,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 110,
+          "y": 280,
+          "type": "file"
+        }
+      ],
+      "window": {
+        "width": 500,
+        "height": 400
+      }
+    },
+    "nsis": {
+      "oneClick": "false",
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "allowToChangeInstallationDirectory": "true"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "src/icons/icon.ico"
+    },
+    "linux": {
+      "category": "Chat",
+      "target": [
+        "AppImage"
+      ],
+      "icon": "src/icons/icon.png",
+      "asar": false
     }
   },
   "dependencies": {
     "@rollup/plugin-json": "^4.1.0",
+    "auto-launch": "^5.0.5",
     "concurrently": "^5.3.0",
     "electron-reload": "^1.5.0",
     "electron-squirrel-startup": "^1.0.0",
@@ -71,16 +116,14 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "6.0.0-beta.52",
-    "@electron-forge/maker-deb": "6.0.0-beta.52",
-    "@electron-forge/maker-rpm": "6.0.0-beta.52",
     "@electron-forge/maker-squirrel": "6.0.0-beta.52",
-    "@electron-forge/maker-zip": "6.0.0-beta.52",
     "@rollup/plugin-commonjs": "17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.1",
     "@rollup/plugin-typescript": "^8.1.0",
     "@tsconfig/svelte": "^1.0.10",
     "@types/node": "^14.14.21",
     "electron": "11.1.1",
+    "electron-builder": "^22.9.1",
     "rollup": "^2.36.1",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
