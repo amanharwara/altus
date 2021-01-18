@@ -36,6 +36,7 @@ button {
 }
 
 button:not(.close) {
+  display: inline-flex;
   font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   border: 0;
@@ -45,6 +46,12 @@ button:not(.close) {
   fill: #fff;
   background: #303b49;
   -webkit-user-select: none;
+  transition: background 0.15s;
+}
+
+button.outlined {
+  background: transparent;
+  border: 1px solid #303b49;
 }
 
 button:hover {
