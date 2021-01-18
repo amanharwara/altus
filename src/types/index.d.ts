@@ -2,6 +2,7 @@ type TabType = {
   id: string;
   name: string;
   active: boolean;
+  messageCount?: number;
   config: {
     theme: string;
     notifications: boolean;
@@ -29,4 +30,6 @@ type SettingType = {
   description: string;
 };
 
-export { TabType, ThemeType, SettingType };
+type Settings = { [k: string]: SettingType };
+
+export { TabType, ThemeType, SettingType, Settings };
