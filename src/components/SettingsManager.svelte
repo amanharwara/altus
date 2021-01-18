@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
-  import Close from "./svg/close.svelte";
+  import Close from "./svg/Close.svelte";
   import Spinner from "./svg/Spinner.svelte";
   import Toggle from "./common/Toggle.svelte";
   import { settings } from "../store";

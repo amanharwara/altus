@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { TabType, ThemeType } from "../types";
   import Toggle from "./common/Toggle.svelte";
-  import Close from "./svg/close.svelte";
+  import Close from "./svg/Close.svelte";
   import { tabs, themes } from "../store";
   import Select from "svelte-select";
   import { createEventDispatcher } from "svelte";

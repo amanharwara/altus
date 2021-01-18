@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { TabType } from "../types";
-  import Close from "./svg/close.svelte";
+  import Close from "./svg/Close.svelte";
   import { createEventDispatcher } from "svelte";
   import Cog from "./svg/Cog.svelte";
   export let tab: TabType;
