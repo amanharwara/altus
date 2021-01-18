@@ -3,7 +3,7 @@ const Store = require("electron-store");
 import type { ThemeType } from "../types";
 import migrateTab from "../util/migrateTab";
 import { migrateTheme } from "../util/theme";
-import { defaultSettings, migrateSettings } from "./settings";
+import { defaultSettings, migrateSettings, validateSettings } from "./settings";
 
 let modals = writable({
   tabConfigModalVisible: false,
@@ -40,7 +40,12 @@ let tabs = writable([]);
 
 tabs.set(tabStore.get("tabs").map(migrateTab));
 tabs.subscribe((tabs) => {
-  tabStore.set("tabs", tabs.map(migrateTab));
+  tabStore.set(
+    "tabs",
+    tabs.map((tab) => {
+      return { ...tab, messageCount: 0 };
+    })
+  );
   if (tabs.length === 0) {
     modals.update((modals) => {
       return {
@@ -88,11 +93,11 @@ let settingsStore = new Store({
 let settings = writable({});
 if (settingsStore.get("settings")) {
   let settingsArray = settingsStore.get("settings");
-  settingsStore.store = { ...migrateSettings(settingsArray) };
+  settingsStore.store = validateSettings(migrateSettings(settingsArray));
 }
-settings.set(settingsStore.store);
+settings.set(validateSettings(settingsStore.store));
 settings.subscribe((settings) => {
-  settingsStore.store = settings;
+  settingsStore.store = validateSettings(settings);
 });
 
 export { tabs, themes, paths, modals, settings };
