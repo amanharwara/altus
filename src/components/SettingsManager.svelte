@@ -6,6 +6,10 @@
   import Toggle from "./common/Toggle.svelte";
   import { settings } from "../store";
   import { get } from "svelte/store";
+  import Import from "./svg/Import.svelte";
+  import Export from "./svg/Export.svelte";
+  import { migrateSettings } from "../store/settings";
+  const { ipcRenderer } = require("electron");
   export let visible = false;
 
   const dispatchEvent = createEventDispatcher();
@@ -19,6 +23,17 @@
     isSavingSettings = false;
     closeSettingsManager();
   };
+
+  const importSettings = () => ipcRenderer.send("import-settings");
+  const exportSettings = () => ipcRenderer.send("export-settings", $settings);
+
+  ipcRenderer.on("import-settings", (e, imported) => {
+    if (imported.settings) {
+      $settings = migrateSettings(imported.settings);
+    } else {
+      $settings = imported;
+    }
+  });
 
   const closeSettingsManager = () => {
     dispatchEvent("close-settings-manager");
@@ -53,6 +68,18 @@
             Save
           {/if}
         </button>
+        <button
+          title="Import Settings"
+          class="outlined"
+          on:click={importSettings}>
+          <Import />
+        </button>
+        <button
+          title="Export Settings"
+          class="outlined"
+          on:click={exportSettings}>
+          <Export />
+        </button>
       </div>
     </div>
     <div class="overlay" on:click={() => closeSettingsManager()} />
@@ -82,20 +109,27 @@
   .setting {
     display: flex;
     justify-content: space-between;
-    padding: 0.1rem 0.1rem 0 0rem;
+    padding: 0.1rem 0.45rem 0 0rem;
     width: 100%;
     margin-bottom: 1rem;
   }
   .info {
-    width: 65%;
+    width: 70%;
   }
   .name {
+    display: block;
     font-size: 1.25rem;
     font-weight: 550;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
   }
   .description {
     font-size: 0.9rem;
     font-weight: 300;
+  }
+  .controls {
+    display: flex;
+  }
+  .controls > * {
+    margin-right: 0.5rem;
   }
 </style>
