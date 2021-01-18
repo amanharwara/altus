@@ -87,6 +87,7 @@ typings/
 
 # Electron-Forge
 out/
+dist/
 
 # Svelte
 public/build/
