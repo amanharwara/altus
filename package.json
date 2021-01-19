@@ -52,6 +52,7 @@
     ],
     "mac": {
       "category": "public.app-category.social-networking",
+      "icon": "src/icons/icon.icns",
       "target": [
         "dmg"
       ]
@@ -74,8 +75,8 @@
         }
       ],
       "window": {
-        "width": 500,
-        "height": 305
+        "width": 305,
+        "height": 500
       }
     },
     "nsis": {
