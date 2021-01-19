@@ -1,7 +1,7 @@
 {
   "name": "altus",
   "productName": "Altus",
-  "version": "4.0.0",
+  "version": "4.0.0-beta-2",
   "description": "Desktop client for WhatsApp Web with themes & multiple account support.",
   "main": "src/index.js",
   "homepage": "https://gitlab.com/amanharwara/altus",
@@ -57,26 +57,29 @@
       ]
     },
     "dmg": {
+      "background": "img/background.png",
+      "icon": "src/icons/icon.icns",
       "iconSize": 100,
       "contents": [
         {
-          "x": 380,
-          "y": 280,
+          "x": 331,
+          "y": 163,
           "type": "link",
           "path": "/Applications"
         },
         {
-          "x": 110,
-          "y": 280,
+          "x": 69,
+          "y": 163,
           "type": "file"
         }
       ],
       "window": {
         "width": 500,
-        "height": 400
+        "height": 305
       }
     },
     "nsis": {
+      "installerSidebar": "img/installerSiderbar.bmp",
       "oneClick": "false",
       "artifactName": "${productName}-Setup-${version}.${ext}",
       "allowToChangeInstallationDirectory": "true"
@@ -98,8 +101,7 @@
       "target": [
         "AppImage"
       ],
-      "icon": "src/icons/icon.png",
-      "asar": false
+      "icon": "src/icons/icon.png"
     }
   },
   "dependencies": {
