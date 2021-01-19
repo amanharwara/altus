@@ -15,7 +15,33 @@ let tabStore = new Store({
   name: "tabs",
   defaults: {
     tabs: [],
+    previouslyClosedTab: null,
   },
+});
+
+let tabs = writable([]);
+let previouslyClosedTab = writable(null);
+
+tabs.set(tabStore.get("tabs").map(migrateTab));
+previouslyClosedTab.set(tabStore.get("previouslyClosedTab"));
+tabs.subscribe((tabs) => {
+  tabStore.set(
+    "tabs",
+    tabs.map((tab) => {
+      return { ...tab, messageCount: 0 };
+    })
+  );
+  if (tabs.length === 0) {
+    modals.update((modals) => {
+      return {
+        ...modals,
+        tabConfigModalVisible: true,
+      };
+    });
+  }
+});
+previouslyClosedTab.subscribe((tab) => {
+  tabStore.set("previouslyClosedTab", tab);
 });
 
 let themeStore = new Store({
@@ -34,26 +60,6 @@ let themeStore = new Store({
       },
     ],
   },
-});
-
-let tabs = writable([]);
-
-tabs.set(tabStore.get("tabs").map(migrateTab));
-tabs.subscribe((tabs) => {
-  tabStore.set(
-    "tabs",
-    tabs.map((tab) => {
-      return { ...tab, messageCount: 0 };
-    })
-  );
-  if (tabs.length === 0) {
-    modals.update((modals) => {
-      return {
-        ...modals,
-        tabConfigModalVisible: true,
-      };
-    });
-  }
 });
 
 let themes = writable([]);
@@ -100,4 +106,4 @@ settings.subscribe((settings) => {
   settingsStore.store = validateSettings(settings);
 });
 
-export { tabs, themes, paths, modals, settings };
+export { tabs, themes, paths, modals, settings, previouslyClosedTab };

@@ -1,6 +1,6 @@
 <script lang="ts">
   import Tab from "./Tab.svelte";
-  import { settings, tabs } from "../store";
+  import { modals, previouslyClosedTab, settings, tabs } from "../store";
   import Add from "./svg/Add.svelte";
   import { createEventDispatcher } from "svelte";
   const { ipcRenderer } = require("electron");
@@ -27,6 +27,7 @@
       let currentTab = $tabs[currentTabIndex];
       let nextId = null;
       tabs.update((tabs) => tabs.filter((tab) => tab.id !== id));
+      previouslyClosedTab.set(currentTab);
       if (currentTab.active && $tabs.length > 0) {
         nextId = $tabs[currentTabIndex - 1]
           ? $tabs[currentTabIndex - 1].id
@@ -95,6 +96,19 @@
   ipcRenderer.on("prompt-before-closing-tab", () => {
     promptBeforeClosingTab($tabs.find((tab) => tab.active).id);
   });
+
+  ipcRenderer.on("add-new-tab", () => {
+    dispatchEvent("add-tab");
+  });
+
+  ipcRenderer.on("edit-tab", () => {
+    editTab({
+      detail: {
+        id: $tabs.find((tab) => tab.active).id,
+      },
+    });
+  });
+
   ipcRenderer.on("close-tab", (e, id) => {
     if (id) {
       removeTab({
@@ -110,27 +124,45 @@
       });
     }
   });
-  ipcRenderer.on("add-new-tab", () => {
-    dispatchEvent("add-tab");
+
+  ipcRenderer.on("restore-tab", (e) => {
+    if (previouslyClosedTab) {
+      tabs.update((tabs) =>
+        tabs
+          .map((tab) => {
+            return { ...tab, active: false };
+          })
+          .concat([
+            {
+              ...$previouslyClosedTab,
+              active: true,
+            },
+          ])
+      );
+      previouslyClosedTab.set(null);
+      modals.update((modals) => {
+        return {
+          ...modals,
+          tabConfigModalVisible: false,
+        };
+      });
+    }
   });
-  ipcRenderer.on("edit-tab", () => {
-    editTab({
-      detail: {
-        id: $tabs.find((tab) => tab.active).id,
-      },
-    });
-  });
+
   ipcRenderer.on("next-tab", activateNextTab);
   ipcRenderer.on("previous-tab", activatePreviousTab);
+
   ipcRenderer.on("first-tab", () => {
     activateTab({ detail: { id: $tabs[0].id } });
   });
   ipcRenderer.on("last-tab", () => {
     activateTab({ detail: { id: $tabs[$tabs.length - 1].id } });
   });
+
   ipcRenderer.on("toggle-tab-bar", () => {
     hidden = !hidden;
   });
+
   ipcRenderer.on("message-indicator", (e, detail) => {
     let { messageCount, tabId } = detail;
     $tabs = $tabs.map((tab) => {

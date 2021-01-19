@@ -84,6 +84,14 @@ let menuTemplate = [
         },
       },
       {
+        label: "Restore Tab",
+        accelerator: "CmdOrCtrl+Shift+T",
+        click() {
+          let window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("restore-tab");
+        },
+      },
+      {
         type: "separator",
       },
       {
@@ -176,7 +184,7 @@ let menuTemplate = [
     submenu: [
       {
         label: "Theme Manager",
-        accelerator: "CmdOrCtrl+Shift+T",
+        accelerator: "Alt+T",
         click() {
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("open-theme-manager");
