@@ -72,6 +72,7 @@ ipcRenderer.on("set-theme", (e, theme) => {
         switch (theme.name) {
           case "Dark":
             document.body.classList.add("dark");
+            break;
           default:
             document.body.classList.remove("dark");
             break;
