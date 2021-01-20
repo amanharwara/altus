@@ -63,14 +63,14 @@
       "iconSize": 100,
       "contents": [
         {
-          "x": 331,
-          "y": 163,
+          "x": 380,
+          "y": 280,
           "type": "link",
           "path": "/Applications"
         },
         {
-          "x": 69,
-          "y": 163,
+          "x": 110,
+          "y": 280,
           "type": "file"
         }
       ],
