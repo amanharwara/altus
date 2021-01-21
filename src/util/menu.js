@@ -135,33 +135,6 @@ let menuTemplate = [
     label: "View",
     submenu: [
       {
-        label: "Zoom In",
-        accelerator: "CmdOrCtrl+numadd",
-        click() {
-          let window = BrowserWindow.getFocusedWindow();
-          window.webContents.send("zoom-in");
-        },
-      },
-      {
-        label: "Zoom Out",
-        accelerator: "CmdOrCtrl+numsub",
-        click() {
-          let window = BrowserWindow.getFocusedWindow();
-          window.webContents.send("zoom-out");
-        },
-      },
-      {
-        label: "Reset Zoom",
-        accelerator: "CmdOrCtrl+num0",
-        click() {
-          let window = BrowserWindow.getFocusedWindow();
-          window.webContents.send("reset-zoom");
-        },
-      },
-      {
-        type: "separator",
-      },
-      {
         label: "Toggle Fullscreen",
         accelerator: "F11",
         click() {
