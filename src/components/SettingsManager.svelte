@@ -30,8 +30,10 @@
   ipcRenderer.on("import-settings", (e, imported) => {
     if (imported.settings) {
       $settings = migrateSettings(imported.settings);
+      currentSettings = get(settings);
     } else {
       $settings = imported;
+      currentSettings = get(settings);
     }
   });
 
