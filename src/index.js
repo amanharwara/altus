@@ -17,11 +17,12 @@ const {
 } = require("./util/icons");
 const Store = require("electron-store");
 const AutoLaunch = require("auto-launch");
-const { importSettings } = require("./ipcHandlers/main/importSettings");
-const { exportSettings } = require("./ipcHandlers/main/exportSettings");
-const { promptCloseTab } = require("./ipcHandlers/main/promptCloseTab");
-const { flushSessionData } = require("./ipcHandlers/main/flushSessionData");
-const { zoom } = require("./ipcHandlers/main/zoom");
+const importSettings = require("./ipcHandlers/main/importSettings");
+const exportSettings = require("./ipcHandlers/main/exportSettings");
+const promptCloseTab = require("./ipcHandlers/main/promptCloseTab");
+const flushSessionData = require("./ipcHandlers/main/flushSessionData");
+const zoom = require("./ipcHandlers/main/zoom");
+const contextMenu = require("electron-context-menu");
 
 let settings = new Store({
   name: "settings",
@@ -98,6 +99,7 @@ if (!singleInstanceLock) {
 
   app.on("ready", () => {
     createMainWindow();
+    contextMenu();
 
     let mainWindow = BrowserWindow.getAllWindows()[0];
 
@@ -223,6 +225,46 @@ if (!singleInstanceLock) {
   });
 
   app.on("web-contents-created", (e, context) => {
+    if (context.getType() === "webview") {
+      contextMenu({
+        window: {
+          webContents: context,
+          inspectElement: context.inspectElement.bind(context),
+        },
+        showSaveImageAs: true,
+        append: (def, params, window) => [
+          {
+            label: "Bold",
+            visible: params.isEditable,
+            click: () => {
+              window.webContents.send("format-text", "*");
+            },
+          },
+          {
+            label: "Italic",
+            visible: params.isEditable,
+            click: () => {
+              window.webContents.send("format-text", "_");
+            },
+          },
+          {
+            label: "Strike",
+            visible: params.isEditable,
+            click: () => {
+              window.webContents.send("format-text", "~");
+            },
+          },
+          {
+            label: "Monospaced",
+            visible: params.isEditable,
+            click: () => {
+              window.webContents.send("format-text", "```");
+            },
+          },
+        ],
+      });
+    }
+
     context.on("before-input-event", (e, input) => {
       if (app.preventEnter) {
         if (input.key === "Enter" && !input.shift && !input.control) {
