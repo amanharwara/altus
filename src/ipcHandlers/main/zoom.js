@@ -13,4 +13,4 @@ const zoom = ({ sender }, type) => {
   }
 };
 
-module.exports = { zoom };
+module.exports = zoom;

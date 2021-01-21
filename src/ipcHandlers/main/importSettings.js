@@ -31,6 +31,4 @@ const importSettings = () => {
     });
 };
 
-module.exports = {
-  importSettings,
-};
+module.exports = importSettings;

@@ -12,6 +12,4 @@ const flushSessionData = ({ sender }) => {
   });
 };
 
-module.exports = {
-  flushSessionData,
-};
+module.exports = flushSessionData;

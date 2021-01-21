@@ -28,6 +28,4 @@ const exportSettings = (e, settings) => {
     });
 };
 
-module.exports = {
-  exportSettings,
-};
+module.exports = exportSettings;

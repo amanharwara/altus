@@ -16,4 +16,4 @@ const promptCloseTab = (e, id) => {
     });
 };
 
-module.exports = { promptCloseTab };
+module.exports = promptCloseTab;
