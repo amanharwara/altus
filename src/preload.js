@@ -1,4 +1,7 @@
 const { ipcRenderer } = require("electron");
+const dispatchMouseEvents = require("./util/webview/dispatchMouseEvents");
+const addChatIDs = require("./util/webview/addChatIDs");
+const formatSelectedText = require("./util/webview/formatSelectedText");
 
 ipcRenderer.send("flush-session-data");
 
@@ -9,34 +12,6 @@ if (window.navigator.serviceWorker) {
     }
   });
 }
-
-const dispatchMouseEvent = (element, events) => {
-  events.forEach(function (eventName) {
-    var event = new MouseEvent(eventName, {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-      button: 0,
-    });
-    element.dispatchEvent(event);
-  });
-};
-
-const addChatIDs = () => {
-  if (document.querySelectorAll('#pane-side [role="region"] > *').length > 0) {
-    document
-      .querySelectorAll('#pane-side [role="region"] > *')
-      .forEach((chat) => {
-        let internalInstance =
-          chat[
-            Object.keys(chat).find((key) => key.includes("InternalInstance"))
-          ];
-        let id =
-          internalInstance.memoizedProps.children.props.contact.id._serialized;
-        chat.id = id;
-      });
-  }
-};
 
 window.onload = () => {
   const title_element = document.querySelector(".landing-title");
@@ -197,7 +172,7 @@ ipcRenderer.on("toggle-notifications", (_, setting) => {
         let chat = document
           .getElementById(options.tag)
           .querySelector('[role="option"] > * > :last-child');
-        dispatchMouseEvent(chat, [
+        dispatchMouseEvents(chat, [
           "mouseover",
           "mousedown",
           "mouseup",
@@ -224,4 +199,8 @@ ipcRenderer.on("toggle-notifications", (_, setting) => {
       Notification
     );
   }
+});
+
+ipcRenderer.on("format-text", (e, wrapper) => {
+  formatSelectedText(wrapper);
 });
