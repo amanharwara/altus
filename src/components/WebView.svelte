@@ -26,6 +26,8 @@
         css: "",
       });
     }
+    webviewElement.send("toggle-notifications", tab.config.notifications);
+    webviewElement.send("set-utility-bar", tab.config.utilityBar);
     webviewElement.setAudioMuted(!tab.config.sound);
   };
 
