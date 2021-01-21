@@ -125,7 +125,7 @@
     }
   });
 
-  ipcRenderer.on("restore-tab", (e) => {
+  ipcRenderer.on("restore-tab", () => {
     if (previouslyClosedTab) {
       tabs.update((tabs) =>
         tabs
