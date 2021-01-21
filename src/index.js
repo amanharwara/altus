@@ -1,4 +1,12 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog, Tray } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  ipcMain,
+  dialog,
+  Tray,
+  shell,
+} = require("electron");
 const path = require("path");
 const { mainMenu, trayContextMenu } = require("./util/menu");
 const {
@@ -7,9 +15,13 @@ const {
   trayNotifIcon,
   mainNotifIcon,
 } = require("./util/icons");
-const fs = require("fs");
 const Store = require("electron-store");
 const AutoLaunch = require("auto-launch");
+const { importSettings } = require("./ipcHandlers/main/importSettings");
+const { exportSettings } = require("./ipcHandlers/main/exportSettings");
+const { promptCloseTab } = require("./ipcHandlers/main/promptCloseTab");
+const { flushSessionData } = require("./ipcHandlers/main/flushSessionData");
+const { zoom } = require("./ipcHandlers/main/zoom");
 
 let settings = new Store({
   name: "settings",
@@ -126,101 +138,18 @@ if (!singleInstanceLock) {
 
     let tray = null;
 
-    ipcMain.on("import-settings", () => {
-      dialog
-        .showOpenDialog({
-          title: "Import Settings",
-          filters: [
-            {
-              name: "JSON",
-              extensions: ["json"],
-            },
-          ],
-          properties: ["openFile"],
-        })
-        .then((result) => {
-          if (!result.canceled) {
-            fs.readFile(result.filePaths[0], (err, data) => {
-              if (!err) {
-                const imported = JSON.parse(data.toString());
-                mainWindow.webContents.send("import-settings", imported);
-              }
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    });
+    ipcMain.on("import-settings", importSettings);
 
-    ipcMain.on("export-settings", (e, settings) => {
-      dialog
-        .showSaveDialog({
-          title: "Export Settings",
-          filters: [
-            {
-              name: "JSON",
-              extensions: ["json"],
-            },
-          ],
-        })
-        .then((result) => {
-          const { filePath, canceled } = result;
-          if (!canceled) {
-            const data = new Uint8Array(
-              Buffer.from(JSON.stringify(settings, null, "\t"))
-            );
-            fs.writeFile(filePath, data, (err) => {
-              if (err) throw err;
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    });
+    ipcMain.on("export-settings", exportSettings);
 
-    ipcMain.on("message-indicator", (e, detail) => {
-      mainWindow.webContents.send("message-indicator", detail);
-      if (app.notificationBadge) {
-        if (detail.messageCount) {
-          switch (process.platform) {
-            case "darwin":
-              app.dock.setBadge("·");
-              break;
-            default:
-              if (tray) tray.setImage(trayNotifIcon);
-              mainWindow.setOverlayIcon(mainNotifIcon, "Notification badge");
-              break;
-          }
-        } else {
-          switch (process.platform) {
-            case "darwin":
-              app.dock.setBadge("");
-              break;
-            default:
-              if (tray) tray.setImage(trayIcon);
-              mainWindow.setOverlayIcon(null, "Notification badge empty");
-              break;
-          }
-        }
-      }
-    });
+    ipcMain.on("prompt-close-tab", promptCloseTab);
 
-    ipcMain.on("prompt-close-tab", (e, id) => {
-      dialog
-        .showMessageBox({
-          type: "question",
-          buttons: ["OK", "Cancel"],
-          title: "Close Tab",
-          message: "Are you sure you want to close the tab?",
-        })
-        .then((res) => {
-          if (res.response == 0) {
-            mainWindow.webContents.send("close-tab", id);
-            return;
-          }
-        });
+    ipcMain.on("flush-session-data", flushSessionData);
+
+    ipcMain.on("zoom", zoom);
+
+    ipcMain.on("open-link", (e, url) => {
+      shell.openExternal(url);
     });
 
     ipcMain.on("toggle-exit-prompt", (e, value) => {
@@ -264,13 +193,40 @@ if (!singleInstanceLock) {
         tray = null;
       }
     });
+
+    ipcMain.on("message-indicator", (e, detail) => {
+      mainWindow.webContents.send("message-indicator", detail);
+      if (app.notificationBadge) {
+        if (detail.messageCount) {
+          switch (process.platform) {
+            case "darwin":
+              app.dock.setBadge("·");
+              break;
+            default:
+              if (tray) tray.setImage(trayNotifIcon);
+              mainWindow.setOverlayIcon(mainNotifIcon, "Notification badge");
+              break;
+          }
+        } else {
+          switch (process.platform) {
+            case "darwin":
+              app.dock.setBadge("");
+              break;
+            default:
+              if (tray) tray.setImage(trayIcon);
+              mainWindow.setOverlayIcon(null, "Notification badge empty");
+              break;
+          }
+        }
+      }
+    });
   });
 
   app.on("web-contents-created", (e, context) => {
     context.on("before-input-event", (e, input) => {
       if (app.preventEnter) {
         if (input.key === "Enter" && !input.shift && !input.control) {
-          context.webContents.sendInputEvent({
+          context.sendInputEvent({
             keyCode: "Shift+Return",
             type: "keyDown",
           });
