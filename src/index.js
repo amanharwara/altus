@@ -23,15 +23,11 @@ const promptCloseTab = require("./ipcHandlers/main/promptCloseTab");
 const flushSessionData = require("./ipcHandlers/main/flushSessionData");
 const zoom = require("./ipcHandlers/main/zoom");
 const contextMenu = require("electron-context-menu");
+const handleWhatsappLinks = require("./util/handleWhatsappLinks");
 
 let settings = new Store({
   name: "settings",
 });
-
-if (require("electron-squirrel-startup")) {
-  // eslint-disable-line global-require
-  app.quit();
-}
 
 const confirmExit = () => {
   dialog
@@ -94,12 +90,22 @@ if (!singleInstanceLock) {
       }
       mainWindow.show();
       mainWindow.focus();
+      if (argv.find((arg) => arg.includes("whatsapp"))) {
+        handleWhatsappLinks(argv);
+      }
     }
   });
 
   app.on("ready", () => {
+    if (app.isPackaged) app.setAsDefaultProtocolClient("whatsapp");
+
     createMainWindow();
+
     contextMenu();
+
+    if (process.argv.findIndex((arg) => arg.includes("whatsapp")) !== -1) {
+      handleWhatsappLinks(process.argv);
+    }
 
     let mainWindow = BrowserWindow.getAllWindows()[0];
 
