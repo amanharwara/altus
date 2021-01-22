@@ -29,6 +29,8 @@ let settings = new Store({
   name: "settings",
 });
 
+let tray = null;
+
 const confirmExit = () => {
   dialog
     .showMessageBox({
@@ -40,6 +42,7 @@ const confirmExit = () => {
     .then((res) => {
       if (res.response == 0) {
         app.showExitPrompt = false;
+        if (tray) tray.destroy();
         app.quit();
         return;
       }
@@ -71,6 +74,8 @@ const createMainWindow = () => {
     } else if (app.showExitPrompt) {
       e.preventDefault();
       confirmExit();
+    } else {
+      if (tray) tray.destroy();
     }
   });
 
@@ -143,8 +148,6 @@ if (!singleInstanceLock) {
     } else {
       altusAutoLauncher.disable();
     }
-
-    let tray = null;
 
     ipcMain.on("import-settings", importSettings);
 
@@ -293,20 +296,16 @@ if (!singleInstanceLock) {
     });
   });
 
-  app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-      app.quit();
-    }
-  });
-
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createMainWindow();
     }
   });
 
-  require("electron-reload")(__dirname, {
-    electron: path.join(__dirname, "../node_modules", ".bin", "electron"),
-    awaitWriteFinish: true,
-  });
+  if (!app.isPackaged) {
+    require("electron-reload")(__dirname, {
+      electron: path.join(__dirname, "../node_modules", ".bin", "electron"),
+      awaitWriteFinish: true,
+    });
+  }
 }
