@@ -1,4 +1,11 @@
-const { Menu, BrowserWindow, app, shell, dialog } = require("electron");
+const {
+  Menu,
+  BrowserWindow,
+  app,
+  shell,
+  dialog,
+  clipboard,
+} = require("electron");
 const os = require("os");
 const { mainIcon } = require("./icons");
 
