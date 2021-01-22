@@ -31,6 +31,7 @@
   class:active={tab.active}
   on:click={activateTab}
   style={`background: ${tab.config.color};`}
+  id={tab.id}
 >
   {#if tab.messageCount}
     <span class="badge" data-count={tab.messageCount} />

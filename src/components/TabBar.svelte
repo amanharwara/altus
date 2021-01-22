@@ -2,8 +2,15 @@
   import Tab from "./Tab.svelte";
   import { modals, previouslyClosedTab, settings, tabs } from "../store";
   import Add from "./svg/Add.svelte";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
+  import arrayMove from "../util/arrayMove";
   const { ipcRenderer } = require("electron");
+  const Dragula = require("dragula");
+  const Store = require("electron-store");
+
+  let tabStore = new Store({
+    name: "tabs",
+  });
 
   let hidden = false;
 
@@ -195,11 +202,32 @@
       }
     }
   });
+
+  let tabsContainerRef;
+
+  onMount(() => {
+    let tabDrake = Dragula([tabsContainerRef], {
+      direction: "horizontal",
+    });
+    tabDrake.on("dragend", (element) => {
+      let id = element.id;
+      let tabsArray = tabStore.get("tabs");
+      if (tabsArray) {
+        let oldIndex = tabsArray.findIndex((tab) => tab.id === id);
+        let domTabs = Array.from(document.querySelectorAll(".tab")).reverse();
+        let newIndex = domTabs.findIndex(
+          (tab) => tab.getAttribute("data-tab-id") === id
+        );
+        let newTabsArray = arrayMove(tabsArray, oldIndex, newIndex);
+        tabStore.set("tabs", newTabsArray);
+      }
+    });
+  });
 </script>
 
 <div class="tab-bar" class:hidden>
   {#if $tabs.length > 0}
-    <div class="tabs">
+    <div class="tabs" bind:this={tabsContainerRef}>
       {#each $tabs as tab}
         <Tab
           {tab}
