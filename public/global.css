@@ -1,0 +1,142 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./Inter.var.woff2") format("woff2");
+}
+
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 1rem;
+  background: #383c49;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input:focus,
+button:focus,
+select:focus {
+  outline: 2px solid #2067d1;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:not(.close) {
+  display: inline-flex;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  border: 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  color: #fff;
+  fill: #fff;
+  background: #303b49;
+  -webkit-user-select: none;
+  transition: background 0.15s;
+}
+
+button.outlined {
+  background: transparent;
+  border: 1px solid #303b49;
+}
+
+button:hover {
+  background: #2c3542;
+}
+
+button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.spinning svg {
+  animation: infinite spin 0.5s;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal {
+  display: flex;
+  flex-flow: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #242a31;
+  color: #fff;
+  z-index: 1;
+  padding: 1.25rem;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+.modal .close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0.15rem 0.2rem;
+  fill: #fff;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+
+.modal .close svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.modal .close:hover {
+  background: #2c333b;
+}

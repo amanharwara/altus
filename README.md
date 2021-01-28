@@ -4,8 +4,6 @@
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
-![Altus Banner](./img/altus-banner.png)
-
 ## Features
 
 **Altus** uses the GitHub-produced Electron framework to wrap around WhatsApp Web and add extra features to it.
@@ -30,11 +28,11 @@ Please make sure that you provide a helpful description of your feature request.
 
 ![Altus First Start](./img/Altus-First-Start.png)
 
-### Default WhatsApp Theme
+### Default Theme
 
 ![Altus Default Theme](./img/Altus-Default-Theme.png)
 
-### Dark WhatsApp Theme
+### "Dark Plus" Theme
 
 ![Altus Dark Theme](./img/Altus-Dark-Theme.png)
 
@@ -49,27 +47,11 @@ If you like Altus, consider supporting it by donating using any of the following
 
 Below is the list of the dependencies that helped me greatly to create this app.
 
-#### Onyx [(vednoc/onyx)](https://github.com/vednoc/onyx) - used as the base for the dark theme. A really cool project, you should definitely check it out!
+#### Dark-Whatsapp [(vednoc/dark-whatsapp)](https://github.com/vednoc/dark-whatsapp) - used as the base for the dark theme. A really cool project, you should definitely check it out!
 
 ---
 
-#### Tabby [(cferdinandi/tabby)](https://github.com/cferdinandi/tabby) - used to implement the tabs system.
-
----
-
-#### SweetAlert2 [(https://sweetalert2.github.io/)](https://sweetalert2.github.io/) - used to implement pop-ups.
-
----
-
-#### Manrope [https://manropefont.com/](https://manropefont.com/) - The font used in Altus.
-
----
-
-#### pickr [(Simonwep/pickr)](https://github.com/Simonwep/pickr) - used to implement color pickers.
-
----
-
-#### custom-electron-titlebar [(AlexTorresSk/custom-electron-titlebar)](https://github.com/AlexTorresSk/custom-electron-titlebar) - used to create a custom titlebar instead of the plain titlebar that Electron has by default
+#### Inter [rsms/inter](https://github.com/rsms/inter) - The font used in Altus.
 
 ---
 
@@ -81,7 +63,7 @@ Below is the list of contributors who have contributed to Altus by creating a fe
 
 #### [Melvin-Abraham](https://github.com/Melvin-Abraham) - Helped fix issues #55, #53
 
-#### [dylanmcdougall](https://github.com/dylanmcdougall) - PR #10 (Added feature - Confirmation Dialog on close)
+#### [Dylan McDougall](https://github.com/dmcdo) - PR #10 (Added feature - Confirmation Dialog on close)
 
 #### [Dafnik](https://github.com/Dafnik) - PR #5 (Helped fix issue #4)
 
