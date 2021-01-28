@@ -57,7 +57,6 @@ const createMainWindow = () => {
     icon: mainIcon,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true,
       webviewTag: true,
     },
     show: false,
@@ -105,6 +104,8 @@ if (!singleInstanceLock) {
     if (app.isPackaged) app.setAsDefaultProtocolClient("whatsapp");
 
     createMainWindow();
+
+    Store.initRenderer();
 
     contextMenu();
 
