@@ -214,10 +214,8 @@
       let tabsArray = tabStore.get("tabs");
       if (tabsArray) {
         let oldIndex = tabsArray.findIndex((tab) => tab.id === id);
-        let domTabs = Array.from(document.querySelectorAll(".tab")).reverse();
-        let newIndex = domTabs.findIndex(
-          (tab) => tab.getAttribute("data-tab-id") === id
-        );
+        let domTabs = Array.from(document.querySelectorAll(".tab"));
+        let newIndex = domTabs.findIndex((tab) => tab.id === id);
         let newTabsArray = arrayMove(tabsArray, oldIndex, newIndex);
         tabStore.set("tabs", newTabsArray);
       }
