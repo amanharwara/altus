@@ -2,6 +2,14 @@ const { ipcRenderer } = require("electron");
 const dispatchMouseEvents = require("./util/webview/dispatchMouseEvents");
 const addChatIDs = require("./util/webview/addChatIDs");
 const formatSelectedText = require("./util/webview/formatSelectedText");
+const enableUtilityBar = require("./util/webview/utilityBar/enableUtilityBar");
+const disableUtilityBar = require("./util/webview/utilityBar/disableUtilityBar");
+const Store = require("electron-store");
+
+let quickRepliesStore = new Store({
+  name: "quick_replies",
+  defaults: {},
+});
 
 ipcRenderer.send("flush-session-data");
 
@@ -18,6 +26,13 @@ window.onload = () => {
   if (title_element && title_element.innerHTML.includes("Google Chrome")) {
     window.location.reload();
   }
+
+  document.body.querySelectorAll("script").forEach((script) => {
+    if (script.innerHTML.includes("systemThemeDark")) {
+      script.remove();
+    }
+  });
+  document.body.className = "web";
 
   document.body.addEventListener("click", (e) => {
     if (
@@ -98,6 +113,28 @@ window.onload = () => {
         })
       );
     }
+
+    if (document.querySelector(".two")) {
+      new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (
+            mutation.addedNodes.length > 0 &&
+            Array.from(mutation.addedNodes).find((node) => node.id === "main")
+          ) {
+            if (window.utilityBar) {
+              if (document.querySelector(".utility-bar"))
+                document.querySelector(".utility-bar").remove();
+              if (!document.querySelector(".utility-bar")) enableUtilityBar();
+            } else {
+              if (document.querySelector(".utility-bar")) disableUtilityBar();
+            }
+          }
+        });
+      }).observe(document.querySelector(".two"), {
+        subtree: true,
+        childList: true,
+      });
+    }
   }).observe(document.querySelector("#app"), {
     subtree: true,
     childList: true,
@@ -115,40 +152,43 @@ const appendTheme = (css) => {
   }
 };
 
-ipcRenderer.on("set-theme", (e, theme) => {
-  let styleEl = document.getElementById("altus-style");
-  switch (theme.name) {
-    case "Default":
-      document.body.classList.remove("dark");
-      if (styleEl) styleEl.innerHTML = "";
-      break;
-    case "Dark":
-      document.body.classList.add("dark");
-      if (styleEl) styleEl.innerHTML = "";
-    default:
-      appendTheme(theme.css ? theme.css : "");
-      break;
+ipcRenderer.on("set-id", (e, id) => {
+  document.body.id = id;
+  let quickReplies = quickRepliesStore.get(id);
+  if (!quickReplies || quickReplies.length === 0) {
+    quickRepliesStore.set(id, []);
   }
-  new MutationObserver((mutations, observer) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName === "class") {
-        switch (theme.name) {
-          case "Dark":
-            document.body.classList.add("dark");
-            break;
-          default:
-            document.body.classList.remove("dark");
-            break;
-        }
-        observer.disconnect();
-      }
-    });
-  }).observe(document.body, {
-    attributes: true,
-  });
 });
 
-ipcRenderer.on("set-utility-bar", (e, value) => {});
+ipcRenderer.on("set-theme", (e, theme) => {
+  // Reset classes
+  document.body.className = "web";
+  document.body.dataset.theme = "default";
+
+  // Apply theme classes
+  document.body.classList.add(theme.name);
+  document.body.dataset.theme = theme.name;
+
+  if (document.querySelector("footer"))
+    document.querySelector("footer").dataset.theme = theme.name;
+
+  // Reset CSS
+  let styleEl = document.getElementById("altus-style");
+  if (styleEl) styleEl.innerHTML = "";
+
+  // Apply CSS
+  appendTheme(theme.css ? theme.css : "");
+});
+
+ipcRenderer.on("set-utility-bar", (e, utilityBarEnabled) => {
+  if (utilityBarEnabled) {
+    window.utilityBar = true;
+    if (!document.querySelector(".utility-bar")) enableUtilityBar();
+  } else {
+    window.utilityBar = false;
+    disableUtilityBar();
+  }
+});
 
 ipcRenderer.on("toggle-notifications", (_, setting) => {
   if (!setting) {
