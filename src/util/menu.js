@@ -8,6 +8,7 @@ const {
 } = require("electron");
 const os = require("os");
 const { mainIcon } = require("./icons");
+const checkUpdates = require("./checkUpdates");
 
 let menuTemplate = [
   {
