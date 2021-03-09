@@ -5,6 +5,7 @@
 name: Continuous
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "*.*"
