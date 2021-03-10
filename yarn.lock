@@ -521,9 +521,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^12.0.12":
-  version: 12.19.12
-  resolution: "@types/node@npm:12.19.12"
-  checksum: f123e7544879959bb7951feaec6191843f7137a153c10e03290aad79c6a5d8cee7da723b36d36c929d6e22d48cd752b50cc7b96f957556646e66feedbfeede88
+  version: 12.20.4
+  resolution: "@types/node@npm:12.20.4"
+  checksum: 16d002434239f11379819fc3d2a85f0c2652cf9fb0dcaf581e8652b85aef3816bba915552388d7db72f4f6d079822ab0f16a571980eeedb2acceedf2a9e5c940
   languageName: node
   linkType: hard
 
@@ -659,6 +659,7 @@ __metadata:
     rollup-plugin-livereload: ^2.0.0
     rollup-plugin-svelte: ^7.0.0
     rollup-plugin-terser: ^7.0.2
+    sass: ^1.32.8
     sirv-cli: ^1.0.10
     stylus: ^0.54.8
     svelte: ^3.31.2
@@ -1228,6 +1229,25 @@ __metadata:
   version: 0.7.0
   resolution: "chardet@npm:0.7.0"
   checksum: b71a4ee4648489291af86418b96247824a8c1ee4f4f95d6268967fb40e9fbf70500e72fb737d5186a23cf98c8a02b91d68cb2f426d7428e92883af9d31a037ec
+  languageName: node
+  linkType: hard
+
+"chokidar@npm:>=2.0.0 <4.0.0":
+  version: 3.5.1
+  resolution: "chokidar@npm:3.5.1"
+  dependencies:
+    anymatch: ~3.1.1
+    braces: ~3.0.2
+    fsevents: ~2.3.1
+    glob-parent: ~5.1.0
+    is-binary-path: ~2.1.0
+    is-glob: ~4.0.1
+    normalize-path: ~3.0.0
+    readdirp: ~3.5.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  checksum: 61b3f710f9e7dc69d76f638d8b0d37bad586497444165125ca8062f7192695f35403b5f622cbd7dfdd06805201ceaba40ff90e53ea2974df9a8087861192a99b
   languageName: node
   linkType: hard
 
@@ -2080,15 +2100,15 @@ __metadata:
   linkType: hard
 
 "electron@npm:^11.2.1":
-  version: 11.2.1
-  resolution: "electron@npm:11.2.1"
+  version: 11.3.0
+  resolution: "electron@npm:11.3.0"
   dependencies:
     "@electron/get": ^1.0.1
     "@types/node": ^12.0.12
     extract-zip: ^1.0.3
   bin:
     electron: cli.js
-  checksum: 5b3850fc6e6a6fb59c4b3661aec68cb15eae49dd363b8e6955dd94f8acfdb04b0d65986add99cc0f63f116fca4f25cd42b1844d4e66d06e774fcbdc6c6421526
+  checksum: 8c46be2f5969d796ca0cde3d9f9cb8e21ea05edee0840676a97f2ddaa80e0d1a493ebb658383dd35ba26aaea6f036851f2a7627cd58db6444f4e4cb2ac249067
   languageName: node
   linkType: hard
 
@@ -5035,6 +5055,17 @@ fsevents@~2.3.1:
   dependencies:
     truncate-utf8-bytes: ^1.0.0
   checksum: 3e15159360c46fe1846eaeff92a6139c1b0873337cd12c7df0aa8a8978dce0524f37510cc1814c2e82fd7663ec7a15147321b2e5dc0ed426dfa31f1ea93e3691
+  languageName: node
+  linkType: hard
+
+"sass@npm:^1.32.8":
+  version: 1.32.8
+  resolution: "sass@npm:1.32.8"
+  dependencies:
+    chokidar: ">=2.0.0 <4.0.0"
+  bin:
+    sass: sass.js
+  checksum: d319b3d7459451b6532b492984e3cbb37381e6c6379622f668900b196c0d545f5a2c32819cf02b5405fb2ef79720fe1f8f16b7614a2fef3fb7af8dfec83a6597
   languageName: node
   linkType: hard
 
