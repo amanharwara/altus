@@ -13,7 +13,7 @@ const getReleases = async () => {
     );
     let releases;
     if (releasesPromise.ok) {
-      releases = releasesPromise.json();
+      releases = await releasesPromise.json();
       return [true, releases];
     } else {
       throw new Error(response.status);
