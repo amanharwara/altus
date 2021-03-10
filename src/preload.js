@@ -72,6 +72,18 @@ window.onload = () => {
         case "0":
           ipcRenderer.send("zoom", "reset");
           break;
+        case "b":
+          formatSelectedText("*");
+          break;
+        case "i":
+          formatSelectedText("_");
+          break;
+        case "s":
+          formatSelectedText("~");
+          break;
+        case "m":
+          formatSelectedText("```");
+          break;
       }
     }
   });
