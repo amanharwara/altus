@@ -51,8 +51,9 @@ const confirmExit = () => {
 
 const createMainWindow = () => {
   const mainWindow = new BrowserWindow({
-    minWidth: 800,
-    minHeight: 600,
+    minWidth: 400,
+    minHeight: 200,
+    backgroundColor: "#383c49",
     title: `Altus ${app.getVersion()}`,
     icon: mainIcon,
     webPreferences: {
@@ -242,6 +243,7 @@ if (!singleInstanceLock) {
           inspectElement: context.inspectElement.bind(context),
         },
         showSaveImageAs: true,
+        showInspectElement: true,
         append: (def, params, window) => [
           {
             label: "Bold",
