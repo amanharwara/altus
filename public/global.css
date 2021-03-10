@@ -27,7 +27,8 @@ body {
 
 input:focus,
 button:focus,
-select:focus {
+select:focus,
+textarea:focus {
   outline: 2px solid #2067d1;
 }
 
@@ -45,7 +46,7 @@ button:not(.close) {
   color: #fff;
   fill: #fff;
   background: #303b49;
-  -webkit-user-select: none;
+  user-select: none;
   transition: background 0.15s;
 }
 
