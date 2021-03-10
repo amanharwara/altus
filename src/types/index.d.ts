@@ -17,6 +17,8 @@ type ThemeType = {
   name: string;
   css: string;
   id: string;
+  customCSS?: boolean;
+  preset?: string;
   colors?: {
     bg: string;
     fg: string;
