@@ -60,6 +60,12 @@
 
     closeTabConfigModal();
   };
+
+  const openTabDevTools = (e) => {
+    (document as any)
+      .getElementById(`webview-${tabSettings.id}`)
+      .openDevTools();
+  };
 </script>
 
 {#if visible}
@@ -125,7 +131,8 @@
             <ColorPicker bind:color={tabSettings.config.color} />
             <button
               class="reset-color"
-              on:click={() => (tabSettings.config.color = "#2A3440")}>
+              on:click={() => (tabSettings.config.color = "#2A3440")}
+            >
               <Undo />
             </button>
           </div>
@@ -151,6 +158,11 @@
             {#if tabAlreadyExists}Edit{:else}Add{/if}
           </div>
         </button>
+        {#if tabAlreadyExists}
+          <button class="open-devtools" on:click={openTabDevTools}
+            >Open DevTools</button
+          >
+        {/if}
       </div>
     </div>
     <div
@@ -273,6 +285,12 @@
 
   .selector :global(input):focus + :global(.selectedItem) {
     display: none;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .submit {

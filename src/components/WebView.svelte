@@ -44,7 +44,7 @@
 </script>
 
 <webview
-  id={`webview-${partition}`}
+  id={`webview-${tab.id}`}
   src="https://web.whatsapp.com"
   preload="../src/preload.js"
   {partition}
