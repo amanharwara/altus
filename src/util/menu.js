@@ -187,7 +187,7 @@ let menuTemplate = [
     ],
   },
   {
-    label: "About",
+    label: "Help",
     submenu: [
       {
         label: "About",
@@ -288,32 +288,19 @@ ${versionInfo}`,
           },
         ],
       },
+      {
+        label: "Open DevTools",
+        accelerator: "CmdOrCtrl+Shift+I",
+        click() {
+          let window = BrowserWindow.getFocusedWindow();
+          window.webContents.openDevTools();
+        },
+      },
     ],
   },
 ];
 
-let mainMenu = Menu.buildFromTemplate(
-  menuTemplate.map((item) => {
-    if (item.label === "File" && !app.isPackaged) {
-      return {
-        ...item,
-        submenu: [
-          ...item.submenu,
-          {
-            label: "Open DevTools",
-            accelerator: "CmdOrCtrl+Shift+I",
-            click() {
-              let window = BrowserWindow.getFocusedWindow();
-              window.webContents.openDevTools();
-            },
-          },
-        ],
-      };
-    } else {
-      return item;
-    }
-  })
-);
+let mainMenu = Menu.buildFromTemplate(menuTemplate);
 
 const trayContextMenu = Menu.buildFromTemplate([
   {
