@@ -61,7 +61,7 @@
     closeTabConfigModal();
   };
 
-  const openTabDevTools = (e) => {
+  const openTabDevTools = () => {
     (document as any)
       .getElementById(`webview-${tabSettings.id}`)
       .openDevTools();
