@@ -46,6 +46,12 @@ const checkUpdates = async () => {
           }
         })
         .catch((err) => console.error(err));
+    } else {
+      dialog.showMessageBox({
+        title: "No Update Available.",
+        message: "Looks like you're already on the latest version.",
+        buttons: ["OK"],
+      });
     }
   } else {
     dialog.showErrorBox("Error while checking updates", response[1]);
