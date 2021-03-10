@@ -51,6 +51,12 @@ const defaultSettings: () => Settings = () => {
       description:
         "When enabled, Altus will launch whenever you start your system.",
     },
+    autoHideMenuBar: {
+      value: false,
+      name: "Auto-hide Menu Bar",
+      description:
+        "Whether the window menu bar should hide itself automatically. Once set the menu bar will only show when you press the Alt key.",
+    },
   };
 };
 

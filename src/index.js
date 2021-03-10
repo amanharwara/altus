@@ -177,6 +177,11 @@ if (!singleInstanceLock) {
       app.preventEnter = value;
     });
 
+    ipcMain.on("toggle-auto-hide-menu-bar", (e, value) => {
+      mainWindow.setAutoHideMenuBar(value);
+      mainWindow.setMenuBarVisibility(!value);
+    });
+
     ipcMain.on("toggle-notification-badge", (e, value) => {
       app.notificationBadge = value;
       if (!app.notificationBadge) {

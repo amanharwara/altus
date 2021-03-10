@@ -46,6 +46,15 @@
     }
   }
 
+  $: {
+    if ($settings["autoHideMenuBar"]) {
+      ipcRenderer.send(
+        "toggle-auto-hide-menu-bar",
+        $settings["autoHideMenuBar"].value
+      );
+    }
+  }
+
   ipcRenderer.on("open-theme-manager", () => {
     $modals.themeManagerVisible = true;
   });
