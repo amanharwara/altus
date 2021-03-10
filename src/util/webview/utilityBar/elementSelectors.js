@@ -1,8 +1,7 @@
 const elementSelectors = {
-  messageContainer: ".tSmQ1",
-  emojiPanel: "._3Xjbn",
-  replyPanel: "._2Efpu",
-  chatPanel: "._26MUt",
+  emojiPanel: "_1C2Q3",
+  replyPanel: "_3_5OP",
+  chatPanel: "._1gL0z",
 };
 
 module.exports = elementSelectors;
