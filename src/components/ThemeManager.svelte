@@ -6,8 +6,9 @@
   import Download from "./svg/Download.svelte";
   import Spinner from "./svg/Spinner.svelte";
   import { compileTheme, themePresets } from "../util/theme";
-  import ColorPicker from "./common/ColorPicker.svelte";
   import Edit from "./svg/Edit.svelte";
+  import ThemeCreator from "./ThemeCreator.svelte";
+  import type { ThemeType } from "../types";
   const { v4: uuid } = require("uuid");
   export let visible = false;
 
@@ -22,19 +23,29 @@
   let isSavingTheme = false;
   let isUpdatingThemes = false;
 
-  let newTheme = {
+  let newTheme: ThemeType = {
     name: "",
     id: null,
     css: "",
     colors: { ...themePresets["dark"] },
   };
 
-  const selectThemePreset = (e) => {
+  const selectThemePreset = ({ detail: e }) => {
     let value = e.target.value;
-    newTheme = {
-      ...newTheme,
-      colors: { ...themePresets[value] },
-    };
+    if (value !== "customCSS") {
+      newTheme = {
+        ...newTheme,
+        colors: { ...themePresets[value] },
+        preset: value,
+      };
+    } else {
+      newTheme = {
+        ...newTheme,
+        customCSS: true,
+        colors: null,
+        preset: value,
+      };
+    }
   };
 
   const submitTheme = async () => {
@@ -42,22 +53,25 @@
     let theme = newTheme;
     if (newTheme.id) {
       let themeIndex = $themes.findIndex((theme) => theme.id === newTheme.id);
-      let { colors } = $themes[themeIndex];
-      if (
-        colors.bg === newTheme.colors.bg &&
-        colors.fg === newTheme.colors.fg &&
-        colors.ac === newTheme.colors.ac
-      ) {
-        $themes[themeIndex] = newTheme;
-      } else {
-        let themeCSS = await compileTheme(
-          { ...newTheme.colors },
-          $paths.userData
-        );
-        if (themeCSS) {
-          theme.css = themeCSS;
+      let theme = $themes[themeIndex];
+      if (!theme.customCSS) {
+        let { colors } = $themes[themeIndex];
+        if (
+          colors.bg === newTheme.colors.bg &&
+          colors.fg === newTheme.colors.fg &&
+          colors.ac === newTheme.colors.ac
+        ) {
+          $themes[themeIndex] = newTheme;
+        } else {
+          let themeCSS = await compileTheme(
+            { ...newTheme.colors },
+            $paths.userData
+          );
+          if (themeCSS) {
+            theme.css = themeCSS;
+          }
+          $themes[themeIndex] = theme;
         }
-        $themes[themeIndex] = theme;
       }
     } else {
       let id = uuid();
@@ -66,12 +80,14 @@
       if (themeNames.includes(theme.name)) {
         theme.name = `${theme.name} - 1`;
       }
-      let themeCSS = await compileTheme(
-        { ...newTheme.colors },
-        $paths.userData
-      );
-      if (themeCSS) {
-        theme.css = themeCSS;
+      if (!newTheme.customCSS) {
+        let themeCSS = await compileTheme(
+          { ...newTheme.colors },
+          $paths.userData
+        );
+        if (themeCSS) {
+          theme.css = themeCSS;
+        }
       }
       $themes = [...$themes, theme];
     }
@@ -128,11 +144,15 @@
         <button
           class="theme-list-tab"
           class:active={active === "themes-list"}
-          on:click={() => (active = "themes-list")}> Themes </button>
+          on:click={() => (active = "themes-list")}
+        >
+          Themes
+        </button>
         <button
           class="theme-creator-tab"
           class:active={active === "theme-creator"}
-          on:click={() => (active = "theme-creator")}>
+          on:click={() => (active = "theme-creator")}
+        >
           {#if isEditingTheme}
             Edit
           {:else}
@@ -146,7 +166,7 @@
             {#each $themes as theme}
               <div class="theme">
                 <div class="name">{theme.name}</div>
-                {#if theme.colors}
+                {#if theme.colors || theme.customCSS}
                   <div class="controls">
                     {#if theme.id !== "dark-plus"}
                       <button
@@ -194,7 +214,8 @@
                           },
                         ];
                       }
-                    }}>
+                    }}
+                  >
                     {#if isDownloadingDarkTheme}
                       <Spinner />
                     {:else}
@@ -206,55 +227,7 @@
             {/if}
           </div>
         {:else}
-          <div class="theme-creator">
-            <div class="options">
-              <div class="opt">
-                <label for="theme-preset">Preset:</label>
-                <select id="theme-preset" on:input={selectThemePreset}>
-                  <option value="dark">Dark</option>
-                  <option value="darkMint">Dark Mint</option>
-                  <option value="purplish">Purple-ish</option>
-                </select>
-              </div>
-              <div class="opt">
-                <label for="theme-name">Name:</label>
-                <input type="text" id="theme-name" bind:value={newTheme.name} />
-              </div>
-              <div class="opt">
-                <label for="theme-bg">Background Color:</label>
-                <div class="colorInput">
-                  <input
-                    type="text"
-                    id="theme-bg"
-                    bind:value={newTheme.colors.bg}
-                  />
-                  <ColorPicker bind:color={newTheme.colors.bg} />
-                </div>
-              </div>
-              <div class="opt">
-                <label for="theme-fg">Foreground Color:</label>
-                <div class="colorInput">
-                  <input
-                    type="text"
-                    id="theme-fg"
-                    bind:value={newTheme.colors.fg}
-                  />
-                  <ColorPicker bind:color={newTheme.colors.fg} />
-                </div>
-              </div>
-              <div class="opt">
-                <label for="theme-ac">Accent Color:</label>
-                <div class="colorInput">
-                  <input
-                    type="text"
-                    id="theme-ac"
-                    bind:value={newTheme.colors.ac}
-                  />
-                  <ColorPicker bind:color={newTheme.colors.ac} />
-                </div>
-              </div>
-            </div>
-          </div>
+          <ThemeCreator on:select-preset={selectThemePreset} bind:newTheme />
         {/if}
       </div>
       <div class="main-controls">
@@ -343,33 +316,5 @@
   }
   .theme .controls button:hover {
     background: #2c3542;
-  }
-  .options {
-    padding: 0.75rem;
-  }
-  .opt {
-    padding: 0.3rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .opt input,
-  .opt select {
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
-      Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    font-size: 0.85rem;
-    font-weight: 400;
-    padding: 0.35rem 0.4rem;
-    border: 0;
-    width: 40%;
-  }
-  .colorInput {
-    display: flex;
-    align-items: center;
-    width: 40%;
-  }
-  .colorInput > input {
-    flex-grow: 1;
-    margin-right: 0.5rem;
   }
 </style>
