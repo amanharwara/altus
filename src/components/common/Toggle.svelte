@@ -1,10 +1,27 @@
 <script lang="ts">
   export let id = "toggle";
   export let value = false;
+
+  import { createEventDispatcher } from "svelte";
+
+  const dispatchEvent = createEventDispatcher();
+
+  const onToggle = () => {
+    dispatchEvent("toggle", {
+      id,
+      value,
+    });
+  };
 </script>
 
 <div class="toggle">
-  <input type="checkbox" class="checkbox" {id} bind:checked={value} />
+  <input
+    type="checkbox"
+    class="checkbox"
+    {id}
+    bind:checked={value}
+    on:change={onToggle}
+  />
   <div class="toggle-bg" />
 </div>
 
