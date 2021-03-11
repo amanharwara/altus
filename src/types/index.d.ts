@@ -27,7 +27,7 @@ type ThemeType = {
 };
 
 type SettingType = {
-  value: boolean;
+  value: boolean | string;
   name: string;
   description: string;
 };

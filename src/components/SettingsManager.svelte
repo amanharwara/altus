@@ -102,11 +102,19 @@
               <label class="name" for={setting.id}>{setting.name}</label>
               <div class="description">{setting.description}</div>
             </div>
-            <Toggle
-              id={setting.id}
-              bind:value={currentSettings[setting.id].value}
-              on:toggle={settingToggled}
-            />
+            {#if typeof setting.value === "boolean"}
+              <Toggle
+                id={setting.id}
+                bind:value={currentSettings[setting.id].value}
+                on:toggle={settingToggled}
+              />
+            {:else}
+              <input
+                type="text"
+                id={setting.id}
+                bind:value={currentSettings[setting.id].value}
+              />
+            {/if}
           </div>
         {/each}
       </div>
@@ -143,25 +151,24 @@
     z-index: 3;
   }
   .modal {
-    width: max(385px, 40vw);
+    width: max(385px, 60vw);
     height: max(400px, 60vh);
   }
   .header {
     margin-bottom: 0.5rem;
   }
+  input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 400;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: transparent;
+    color: #fff;
+  }
   .search-box {
     margin-bottom: 0.5rem;
-
-    input {
-      width: 100%;
-      font-family: inherit;
-      font-size: 0.85rem;
-      font-weight: 400;
-      padding: 0.4rem 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background: transparent;
-      color: #fff;
-    }
   }
   .settings {
     flex-grow: 1;
@@ -177,13 +184,19 @@
   }
   .setting {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
     padding: 0.1rem 0.45rem 0 0rem;
     width: 100%;
     margin-bottom: 1rem;
+
+    input[type="text"] {
+      width: 50%;
+      margin-left: 2rem;
+    }
   }
   .info {
-    width: 70%;
+    width: max(200px, 50%);
   }
   .name {
     display: block;
