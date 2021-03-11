@@ -651,6 +651,7 @@ __metadata:
     electron: ^11.2.1
     electron-builder: ^22.9.1
     electron-context-menu: ^2.4.0
+    electron-dl: ^3.2.0
     electron-reload: ^1.5.0
     electron-store: ^7.0.0
     node-fetch: ^2.6.1
@@ -1968,6 +1969,17 @@ __metadata:
     pupa: ^2.0.1
     unused-filename: ^2.1.0
   checksum: 93d00dbd1aef83a7917534beccc4b186599b3c201d1abae5829c72428802f43c574ab281184c4255b1c658bedaaa29077b0bda59adfa442902eb3b48c09ccd73
+  languageName: node
+  linkType: hard
+
+"electron-dl@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "electron-dl@npm:3.2.0"
+  dependencies:
+    ext-name: ^5.0.0
+    pupa: ^2.0.1
+    unused-filename: ^2.1.0
+  checksum: f7b62fc57ce3317814ee7e3fb57eda5a659362c417cae3f5cc51b94e8e8c216173fd75faedbfb6350cf633d22838305acbacac1250deb7ce42ffb1fef6ab825c
   languageName: node
   linkType: hard
 
