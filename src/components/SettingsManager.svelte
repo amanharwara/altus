@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import { fade } from "svelte/transition";
   import Close from "./svg/Close.svelte";
   import Spinner from "./svg/Spinner.svelte";
@@ -17,10 +17,26 @@
   let isSavingSettings = false;
   let currentSettings = get(settings);
 
+  let search = "";
+  let searchBoxRef;
+
+  $: {
+    if (searchBoxRef && visible) {
+      searchBoxRef.focus();
+    }
+  }
+
+  let changedSettings = [];
+
+  const settingToggled = ({ detail }) => {
+    changedSettings.push(detail);
+  };
+
   const saveSettings = () => {
     isSavingSettings = true;
     $settings = currentSettings;
     isSavingSettings = false;
+    dispatchEvent("settings-changed", changedSettings);
     closeSettingsManager();
   };
 
@@ -38,8 +54,18 @@
   });
 
   const closeSettingsManager = () => {
+    changedSettings = [];
     dispatchEvent("close-settings-manager");
   };
+
+  onMount(() => {
+    dispatchEvent(
+      "settings-changed",
+      Object.keys($settings).map((id) => {
+        return { id, value: $settings[id].value };
+      })
+    );
+  });
 </script>
 
 {#if visible}
@@ -51,14 +77,36 @@
           <Close />
         </button>
       </div>
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="Search..."
+          bind:value={search}
+          bind:this={searchBoxRef}
+        />
+      </div>
       <div class="settings">
-        {#each Object.keys(currentSettings) as key}
+        {#each Object.keys(currentSettings)
+          .map((key) => {
+            return { id: key, ...currentSettings[key] };
+          })
+          .filter((setting) => setting.name
+                .toLowerCase()
+                .includes(
+                  search
+                ) || setting.description
+                .toLowerCase()
+                .includes(search)) as setting}
           <div class="setting">
             <div class="info">
-              <label class="name" for={key}>{currentSettings[key].name}</label>
-              <div class="description">{currentSettings[key].description}</div>
+              <label class="name" for={setting.id}>{setting.name}</label>
+              <div class="description">{setting.description}</div>
             </div>
-            <Toggle id={key} bind:value={currentSettings[key].value} />
+            <Toggle
+              id={setting.id}
+              bind:value={currentSettings[setting.id].value}
+              on:toggle={settingToggled}
+            />
           </div>
         {/each}
       </div>
@@ -73,13 +121,15 @@
         <button
           title="Import Settings"
           class="outlined"
-          on:click={importSettings}>
+          on:click={importSettings}
+        >
           <Import />
         </button>
         <button
           title="Export Settings"
           class="outlined"
-          on:click={exportSettings}>
+          on:click={exportSettings}
+        >
           <Export />
         </button>
       </div>
@@ -88,13 +138,30 @@
   </div>
 {/if}
 
-<style>
+<style lang="scss">
   .modal-container {
     z-index: 3;
   }
   .modal {
-    width: max(385px, 35vw);
+    width: max(385px, 40vw);
     height: max(400px, 60vh);
+  }
+  .header {
+    margin-bottom: 0.5rem;
+  }
+  .search-box {
+    margin-bottom: 0.5rem;
+
+    input {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 400;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: transparent;
+      color: #fff;
+    }
   }
   .settings {
     flex-grow: 1;
