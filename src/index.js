@@ -24,6 +24,7 @@ const flushSessionData = require("./ipcHandlers/main/flushSessionData");
 const zoom = require("./ipcHandlers/main/zoom");
 const contextMenu = require("electron-context-menu");
 const handleWhatsappLinks = require("./util/handleWhatsappLinks");
+const electronDL = require("electron-dl");
 
 let settings = new Store({
   name: "settings",
@@ -134,6 +135,14 @@ if (!singleInstanceLock) {
     app.autoLaunch = settings.get("autoLaunch")
       ? settings.get("autoLaunch").value
       : false;
+    app.showSaveDialog = settings.get("showSaveDialog")
+      ? settings.get("showSaveDialog").value
+      : true;
+
+    electronDL({
+      saveAs: app.showSaveDialog,
+      directory: "/home/someone/Pictures",
+    });
 
     if (!app.startMinimized) {
       mainWindow.show();
@@ -165,24 +174,28 @@ if (!singleInstanceLock) {
       shell.openExternal(url);
     });
 
-    ipcMain.on("toggle-exit-prompt", (e, value) => {
+    ipcMain.on("exitPrompt", (e, value) => {
       app.showExitPrompt = value;
     });
 
-    ipcMain.on("toggle-close-to-tray", (e, value) => {
+    ipcMain.on("closeToTray", (e, value) => {
       app.closeToTray = value;
     });
 
-    ipcMain.on("toggle-prevent-enter-submit", (e, value) => {
+    ipcMain.on("preventEnter", (e, value) => {
       app.preventEnter = value;
     });
 
-    ipcMain.on("toggle-auto-hide-menu-bar", (e, value) => {
+    ipcMain.on("showSaveDialog", (e, value) => {
+      app.showSaveDialog = value;
+    });
+
+    ipcMain.on("autoHideMenuBar", (e, value) => {
       mainWindow.setAutoHideMenuBar(value);
       mainWindow.setMenuBarVisibility(!value);
     });
 
-    ipcMain.on("toggle-notification-badge", (e, value) => {
+    ipcMain.on("notificationBadge", (e, value) => {
       app.notificationBadge = value;
       if (!app.notificationBadge) {
         if (tray) tray.setImage(trayIcon);
@@ -190,7 +203,7 @@ if (!singleInstanceLock) {
       }
     });
 
-    ipcMain.on("toggle-tray-icon", (e, enabled) => {
+    ipcMain.on("trayIcon", (e, enabled) => {
       if (enabled) {
         if (process.platform !== "darwin") {
           if (!tray) {

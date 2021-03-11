@@ -10,50 +10,11 @@
 
   let tabSettings = defaultTabSettings();
 
-  $: {
-    if ($settings["trayIcon"]) {
-      ipcRenderer.send("toggle-tray-icon", $settings["trayIcon"].value);
-    }
-  }
-
-  $: {
-    if ($settings["exitPrompt"]) {
-      ipcRenderer.send("toggle-exit-prompt", $settings["exitPrompt"].value);
-    }
-  }
-
-  $: {
-    if ($settings["closeToTray"]) {
-      ipcRenderer.send("toggle-close-to-tray", $settings["closeToTray"].value);
-    }
-  }
-
-  $: {
-    if ($settings["preventEnter"]) {
-      ipcRenderer.send(
-        "toggle-prevent-enter-submit",
-        $settings["preventEnter"].value
-      );
-    }
-  }
-
-  $: {
-    if ($settings["notificationBadge"]) {
-      ipcRenderer.send(
-        "toggle-notification-badge",
-        $settings["notificationBadge"].value
-      );
-    }
-  }
-
-  $: {
-    if ($settings["autoHideMenuBar"]) {
-      ipcRenderer.send(
-        "toggle-auto-hide-menu-bar",
-        $settings["autoHideMenuBar"].value
-      );
-    }
-  }
+  const settingsChanged = ({ detail }) => {
+    detail.forEach((setting) => {
+      ipcRenderer.send(setting.id, setting.value);
+    });
+  };
 
   ipcRenderer.on("open-theme-manager", () => {
     $modals.themeManagerVisible = true;
@@ -86,6 +47,7 @@
     <TabContent />
     <SettingsManager
       visible={$modals.settingsManagerVisible}
+      on:settings-changed={settingsChanged}
       on:close-settings-manager={() => {
         $modals.settingsManagerVisible = false;
       }}
