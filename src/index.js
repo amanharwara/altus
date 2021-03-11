@@ -138,10 +138,13 @@ if (!singleInstanceLock) {
     app.showSaveDialog = settings.get("showSaveDialog")
       ? settings.get("showSaveDialog").value
       : true;
+    app.defaultDownloadDir = settings.get("defaultDownloadDir")
+      ? settings.get("defaultDownloadDir").value
+      : app.getPath("downloads");
 
     electronDL({
       saveAs: app.showSaveDialog,
-      directory: "/home/someone/Pictures",
+      directory: app.defaultDownloadDir,
     });
 
     if (!app.startMinimized) {
@@ -184,10 +187,6 @@ if (!singleInstanceLock) {
 
     ipcMain.on("preventEnter", (e, value) => {
       app.preventEnter = value;
-    });
-
-    ipcMain.on("showSaveDialog", (e, value) => {
-      app.showSaveDialog = value;
     });
 
     ipcMain.on("autoHideMenuBar", (e, value) => {
