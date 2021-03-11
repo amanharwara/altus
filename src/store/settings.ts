@@ -57,6 +57,12 @@ const defaultSettings: () => Settings = () => {
       description:
         "Whether the window menu bar should hide itself automatically. Once set the menu bar will only show when you press the Alt key.",
     },
+    showSaveDialog: {
+      value: true,
+      name: "Show Save Dialog",
+      description:
+        "Whether to ask where to save each file before downloading. (NOTE: Requires restarting the app for changes to apply.)",
+    },
   };
 };
 
