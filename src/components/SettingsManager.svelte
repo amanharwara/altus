@@ -151,7 +151,7 @@
     z-index: 3;
   }
   .modal {
-    width: max(385px, 60vw);
+    width: max(385px, 40vw);
     height: max(400px, 60vh);
   }
   .header {
