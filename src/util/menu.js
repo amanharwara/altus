@@ -92,6 +92,14 @@ let menuTemplate = [
         },
       },
       {
+        label: "Open Tab DevTools",
+        accelerator: "CmdOrCtrl+Shift+D",
+        click() {
+          let window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("open-tab-devtools");
+        },
+      },
+      {
         label: "Restore Tab",
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
@@ -238,7 +246,21 @@ ${versionInfo}`,
           {
             label: "Ko-Fi",
             click() {
-              shell.openExternal("ko-fi.com/amanharwara");
+              shell.openExternal("https://ko-fi.com/amanharwara");
+            },
+          },
+          {
+            label: "Buy Me a Coffee",
+            click() {
+              shell.openExternal("https://buymeacoffee.com/amanharwara");
+            },
+          },
+          {
+            label: "Other Links",
+            click() {
+              shell.openExternal(
+                "https://github.com/amanharwara/altus#support"
+              );
             },
           },
         ],
