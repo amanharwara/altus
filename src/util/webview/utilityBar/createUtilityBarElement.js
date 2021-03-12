@@ -11,7 +11,8 @@ const createUtilityBarElement = () => {
   padding: 0.5rem;
   display: flex;
   justify-content: flex-start;
-  align-items: center;`;
+  align-items: center;
+  z-index: -1;`;
   let styleElement = document.createElement("style");
   styleElement.innerHTML = `
   :not([data-theme="default"]) > .utility-bar {
