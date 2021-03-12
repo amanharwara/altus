@@ -116,6 +116,10 @@
     });
   });
 
+  ipcRenderer.on("open-tab-devtools", () => {
+    (document as any).querySelector(".content.active webview").openDevTools();
+  });
+
   ipcRenderer.on("close-tab", (e, id) => {
     if (id) {
       removeTab({
@@ -133,7 +137,7 @@
   });
 
   ipcRenderer.on("restore-tab", () => {
-    if (previouslyClosedTab) {
+    if ($previouslyClosedTab && $previouslyClosedTab.id) {
       tabs.update((tabs) =>
         tabs
           .map((tab) => {
