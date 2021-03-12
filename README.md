@@ -40,8 +40,13 @@ Please make sure that you provide a helpful description of your feature request.
 
 If you like Altus, consider supporting it by donating using any of the following methods:
 
-- LiberaPay: <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
-- Ko-Fi: [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
+- [LiberaPay](https://liberapay.com/aman_harwara/donate)
+- [Ko-Fi](https://ko-fi.com/U7U3114IH)
+- [Buy Me a Coffee](https://buymeacoffee.com/amanharwara)
+- Bitcoin (BTC): 3B1sPK1casTLbCEiLtkaBM82ZZi4XspWzy
+- Ethereum (ETH): 0xC9CF5bCD07aD9f7F0ae4C63B3A64f1F2dAC347Fa
+- Litecoin (LTC): MPixZutg3dJz23sG32gUE51hJvd5wF2fp4
+- Zcash: t1dz1ptuyjmCu1peVjNPxjBEDYn3Z53TnT9
 
 ## Acknowledgements
 
