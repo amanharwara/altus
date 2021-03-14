@@ -12,13 +12,13 @@ const checkUpdates = require("./checkUpdates");
 
 let menuTemplate = [
   {
-    label: "File",
+    label: "&File",
     submenu: [
       {
         role: "forceReload",
       },
       {
-        label: "Quit",
+        label: "&Quit",
         accelerator: "CmdOrCtrl+Q",
         click() {
           app.exit(0);
@@ -27,7 +27,7 @@ let menuTemplate = [
     ],
   },
   {
-    label: "Edit",
+    label: "&Edit",
     submenu: [
       {
         label: "Undo",
@@ -148,7 +148,7 @@ let menuTemplate = [
     ],
   },
   {
-    label: "View",
+    label: "&View",
     submenu: [
       {
         label: "Toggle Fullscreen",
@@ -182,10 +182,10 @@ let menuTemplate = [
     ],
   },
   {
-    label: "Settings",
+    label: "&Settings",
     submenu: [
       {
-        label: "Settings",
+        label: "&Settings",
         accelerator: "Ctrl+,",
         click() {
           let window = BrowserWindow.getFocusedWindow();
@@ -195,10 +195,10 @@ let menuTemplate = [
     ],
   },
   {
-    label: "Help",
+    label: "&Help",
     submenu: [
       {
-        label: "About",
+        label: "&About",
         click() {
           let versionInfo = `Altus: ${app.getVersion()}
 Electron: ${process.versions.electron}
@@ -266,7 +266,7 @@ ${versionInfo}`,
         ],
       },
       {
-        label: "Check For Updates",
+        label: "Check For &Updates",
         accelerator: "CmdOrCtrl+Shift+U",
         click() {
           dialog
@@ -311,7 +311,7 @@ ${versionInfo}`,
         ],
       },
       {
-        label: "Open DevTools",
+        label: "Open &DevTools",
         accelerator: "CmdOrCtrl+Shift+I",
         click() {
           let window = BrowserWindow.getFocusedWindow();
