@@ -129,7 +129,7 @@
     "@rollup/plugin-typescript": "^8.1.0",
     "@tsconfig/svelte": "^1.0.10",
     "@types/node": "^14.14.21",
-    "electron": "^11.2.1",
+    "electron": "^11.3.0",
     "electron-builder": "^22.9.1",
     "rollup": "^2.36.1",
     "rollup-plugin-css-only": "^3.1.0",

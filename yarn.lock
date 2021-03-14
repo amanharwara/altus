@@ -521,9 +521,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^12.0.12":
-  version: 12.20.4
-  resolution: "@types/node@npm:12.20.4"
-  checksum: 16d002434239f11379819fc3d2a85f0c2652cf9fb0dcaf581e8652b85aef3816bba915552388d7db72f4f6d079822ab0f16a571980eeedb2acceedf2a9e5c940
+  version: 12.20.5
+  resolution: "@types/node@npm:12.20.5"
+  checksum: d94e5418588be39df12ad3088f922d6ce53dec286f69f517dd1c4e39fc64ae84b65c107053a2076c744fefdb5d53c22f30b5ce67665ae040665196b157ccdbd7
   languageName: node
   linkType: hard
 
@@ -648,7 +648,7 @@ __metadata:
     auto-launch: ^5.0.5
     concurrently: ^5.3.0
     dragula: ^3.7.3
-    electron: ^11.2.1
+    electron: ^11.3.0
     electron-builder: ^22.9.1
     electron-context-menu: ^2.4.0
     electron-dl: ^3.2.0
@@ -2111,7 +2111,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^11.2.1":
+"electron@npm:^11.3.0":
   version: 11.3.0
   resolution: "electron@npm:11.3.0"
   dependencies:
@@ -3905,11 +3905,11 @@ fsevents@~2.3.1:
   linkType: hard
 
 "node-abi@npm:^2.11.0":
-  version: 2.19.3
-  resolution: "node-abi@npm:2.19.3"
+  version: 2.21.0
+  resolution: "node-abi@npm:2.21.0"
   dependencies:
     semver: ^5.4.1
-  checksum: 503acaa092dbf3e1d4cd96fb8496f726d6d0b3f441e37c8e8be8a622fe88d9fcda495e2016a687c1c147a28c2a9b24bd9ce39f5ae5ac8223c30ab20aece376d8
+  checksum: c4932878cb278a029982434bcb9ec393f177cc9356086f013e5f4a8226dc925852a4fea897fbfa0cad60470a117841c18ca2e7b550380322adaecb0a326c5c36
   languageName: node
   linkType: hard
 
