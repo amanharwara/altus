@@ -124,6 +124,7 @@ jobs:
         files: |
           altus-continuous-x86_64.AppImage
           altus-continuous-x86_64.exe
+          altus-continuous-x86_64.dmg
 
         repo_token: ${{ secrets.GITHUB_TOKEN }}
  
