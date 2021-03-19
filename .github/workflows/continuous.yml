@@ -27,6 +27,7 @@ jobs:
       - name: Build Altus
         run: |
           yarn install
+          yarn run svelte-build
           yarn add electron-builder --dev
           yarn run electron-builder -l appimage --publish never
           ls dist
@@ -65,6 +66,7 @@ jobs:
       - name: Build Altus
         run: |
           yarn install
+          yarn run svelte-build
           yarn add electron-builder --dev
           yarn run electron-builder --mac --publish never
           ls dist
@@ -93,6 +95,7 @@ jobs:
       - name: Build Altus
         run: |
           yarn install
+          yarn run svelte-build
           yarn add electron-builder --dev
           yarn run electron-builder --windows --publish never
           ls dist
