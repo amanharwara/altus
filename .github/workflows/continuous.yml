@@ -115,7 +115,7 @@ jobs:
     - uses: actions/download-artifact@v2
 
     - name: Release
-      uses: marvinpinto/action-automatic-releases@latest
+      uses: marvinpinto/action-automatic-releases@v1.1.0
       with:
         prerelease: false
         files: |
