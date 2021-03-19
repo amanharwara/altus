@@ -14,7 +14,7 @@
   "scripts": {
     "start": "concurrently \"npm:svelte-dev\" \"electron-forge start\"",
     "package": "electron-builder --dir",
-    "build": "electron-builder",
+    "build": "yarn svelte-build && electron-builder",
     "svelte-build": "rollup -c",
     "svelte-dev": "rollup -c -w",
     "svelte-start": "sirv public"
