@@ -116,11 +116,8 @@ jobs:
 
     - name: Release
       uses: marvinpinto/action-automatic-releases@latest
-      if: github.ref == 'refs/heads/master'
       with:
-        automatic_release_tag: continuous
-        title: Continuous
-        prerelease: true
+        prerelease: false
         files: |
           altus-continuous-x86_64.AppImage
           altus-continuous-x86_64.exe
