@@ -12,7 +12,7 @@
     "url": "https://gitlab.com/amanharwara/altus/-/issues"
   },
   "scripts": {
-    "start": "concurrently \"npm:svelte-dev\" \"electron-forge start\"",
+    "start": "concurrently \"npm:svelte-dev\" \"electron .\"",
     "package": "electron-builder --dir",
     "build": "yarn svelte-build && electron-builder",
     "svelte-build": "rollup -c",
@@ -29,15 +29,6 @@
     "email": "amanharwara@protonmail.com"
   },
   "license": "GPL-3.0",
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "icon": "src/icons/icon.ico",
-        "appCopyright": "Copyright (C) 2021 Aman Harwara",
-        "appCategoryType": "public.app-category.social-networking"
-      }
-    }
-  },
   "build": {
     "appId": "harwara.aman.altus",
     "productName": "Altus",
@@ -106,11 +97,10 @@
     }
   },
   "dependencies": {
-    "@rollup/plugin-json": "^4.1.0",
     "auto-launch": "^5.0.5",
-    "concurrently": "^5.3.0",
+    "concurrently": "^6.0.0",
     "dragula": "^3.7.3",
-    "electron-context-menu": "^2.4.0",
+    "electron-context-menu": "^2.5.0",
     "electron-dl": "^3.2.0",
     "electron-reload": "^1.5.0",
     "electron-store": "^7.0.0",
@@ -118,27 +108,27 @@
     "sass": "^1.32.8",
     "sirv-cli": "^1.0.10",
     "stylus": "^0.54.8",
-    "svelte-select": "^3.16.1",
+    "svelte-select": "^3.17.0",
+    "tslib": "^2.1.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@electron-forge/cli": "6.0.0-beta.52",
-    "@electron-forge/maker-squirrel": "6.0.0-beta.52",
-    "@rollup/plugin-commonjs": "17.0.0",
-    "@rollup/plugin-node-resolve": "^11.0.1",
-    "@rollup/plugin-typescript": "^8.1.0",
+    "@rollup/plugin-commonjs": "17.1.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "@rollup/plugin-typescript": "^8.2.0",
     "@tsconfig/svelte": "^1.0.10",
-    "@types/node": "^14.14.21",
+    "@types/node": "^14.14.36",
     "electron": "^11.3.0",
-    "electron-builder": "^22.9.1",
-    "rollup": "^2.36.1",
+    "electron-builder": "^22.10.5",
+    "rollup": "^2.42.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
-    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.2",
-    "svelte": "^3.31.2",
-    "svelte-check": "^1.1.26",
-    "svelte-preprocess": "^4.6.1",
-    "typescript": "^4.1.3"
+    "svelte": "^3.35.0",
+    "svelte-check": "^1.3.0",
+    "svelte-preprocess": "^4.7.0",
+    "typescript": "^4.2.3"
   }
 }
