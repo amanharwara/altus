@@ -61,13 +61,19 @@ const defaultSettings: () => Settings = () => {
       value: true,
       name: "Show Save Dialog",
       description:
-        "Whether to ask where to save each file before downloading. (NOTE: Requires restarting the app for changes to apply.)",
+        "Whether to ask where to save each file before downloading. (NOTE: Requires a restart for changes to apply.)",
     },
     defaultDownloadDir: {
       value: "",
       name: "Default Download Directory",
       description:
         "The directory where you want to save the downloads. (NOTE: Requires an absolute path)",
+    },
+    customTitlebar: {
+      value: false,
+      name: "Custom Titlebar",
+      description:
+        "When enabled, Altus will use a custom titlebar instead of the one provided by the system. (NOTE: Requires a restart for changes to apply.)",
     },
   };
 };
