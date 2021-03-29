@@ -7,12 +7,6 @@
   height="1em"
   style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
   preserveAspectRatio="xMidYMid meet"
-  viewBox="0 0 16 16"
-  ><g>
-    <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      d="M7.116 8l-4.558 4.558l.884.884L8 8.884l4.558 4.558l.884-.884L8.884 8l4.558-4.558l-.884-.884L8 7.116L3.442 2.558l-.884.884L7.116 8z"
-    />
-  </g></svg
+  viewBox="0 0 24 24"
+  ><path d="M4 8h4V4h12v12h-4v4H4V8m12 0v6h2V6h-8v2h6M6 12v6h8v-6H6z" /></svg
 >
