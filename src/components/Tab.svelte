@@ -47,7 +47,7 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .tab {
     display: flex;
     background: #2a3440;
@@ -80,6 +80,11 @@
   .controls > * {
     width: 1.25rem;
     height: 1.25rem;
+
+    :global(svg) {
+      width: 100%;
+      height: 100%;
+    }
   }
   .controls > :first-child {
     margin-right: 0.45rem;
