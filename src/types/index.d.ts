@@ -34,4 +34,13 @@ type SettingType = {
 
 type Settings = { [k: string]: SettingType };
 
-export { TabType, ThemeType, SettingType, Settings };
+type CloneableMenuItem = {
+  commandId?: number;
+  accelerator?: string;
+  type?: string;
+  submenu?: CloneableMenuItem[];
+  label?: string;
+  id?: any;
+};
+
+export { TabType, ThemeType, SettingType, Settings, CloneableMenuItem };
