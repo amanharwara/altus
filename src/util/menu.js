@@ -16,9 +16,11 @@ let menuTemplate = [
     submenu: [
       {
         role: "forceReload",
+        id: "forceReload",
       },
       {
         label: "&Quit",
+        id: "quit",
         accelerator: "CmdOrCtrl+Q",
         click() {
           app.exit(0);
@@ -33,11 +35,13 @@ let menuTemplate = [
         label: "Undo",
         accelerator: "CmdOrCtrl+Z",
         selector: "undo:",
+        id: "undo",
       },
       {
         label: "Redo",
         accelerator: "Shift+CmdOrCtrl+Z",
         selector: "redo:",
+        id: "redo",
       },
       {
         type: "separator",
@@ -46,21 +50,25 @@ let menuTemplate = [
         label: "Cut",
         accelerator: "CmdOrCtrl+X",
         selector: "cut:",
+        id: "cut",
       },
       {
         label: "Copy",
         accelerator: "CmdOrCtrl+C",
         selector: "copy:",
+        id: "copy",
       },
       {
         label: "Paste",
         accelerator: "CmdOrCtrl+V",
         selector: "paste:",
+        id: "paste",
       },
       {
         label: "Select All",
         accelerator: "CmdOrCtrl+A",
         selector: "selectAll:",
+        id: "selectAll",
       },
     ],
   },
@@ -74,6 +82,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("add-new-tab");
         },
+        id: "addNewTab",
       },
       {
         label: "Edit Active Tab",
@@ -82,6 +91,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("edit-tab");
         },
+        id: "editActiveTab",
       },
       {
         label: "Close Active Tab",
@@ -90,6 +100,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("prompt-before-closing-tab");
         },
+        id: "closeActiveTab",
       },
       {
         label: "Open Tab DevTools",
@@ -98,6 +109,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("open-tab-devtools");
         },
+        id: "openDevTools",
       },
       {
         label: "Restore Tab",
@@ -106,6 +118,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("restore-tab");
         },
+        id: "restoreTab",
       },
       {
         type: "separator",
@@ -117,6 +130,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("next-tab");
         },
+        id: "gotoNextTab",
       },
       {
         label: "Go to Previous Tab",
@@ -125,6 +139,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("previous-tab");
         },
+        id: "gotoPreviousTab",
       },
       {
         type: "separator",
@@ -136,6 +151,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("first-tab");
         },
+        id: "gotoFirstTab",
       },
       {
         label: "Go to Last Tab",
@@ -144,6 +160,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("last-tab");
         },
+        id: "gotoLastTab",
       },
     ],
   },
@@ -157,6 +174,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.setFullScreen(!window.fullScreen);
         },
+        id: "toggleFullscreen",
       },
       {
         label: "Toggle Tab Bar",
@@ -165,6 +183,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("toggle-tab-bar");
         },
+        id: "toggleTabBar",
       },
     ],
   },
@@ -178,6 +197,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("open-theme-manager");
         },
+        id: "themeManager",
       },
     ],
   },
@@ -191,6 +211,7 @@ let menuTemplate = [
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.send("open-settings");
         },
+        id: "settings",
       },
     ],
   },
@@ -233,6 +254,7 @@ ${versionInfo}`,
               console.error(err);
             });
         },
+        id: "about",
       },
       {
         label: "Donate",
@@ -264,6 +286,7 @@ ${versionInfo}`,
             },
           },
         ],
+        id: "donate",
       },
       {
         label: "Check For &Updates",
@@ -284,6 +307,7 @@ ${versionInfo}`,
             })
             .catch((err) => console.error(err));
         },
+        id: "checkForUpdates",
       },
       {
         label: "Links",
@@ -309,6 +333,7 @@ ${versionInfo}`,
             },
           },
         ],
+        id: "links",
       },
       {
         label: "Open &DevTools",
@@ -317,6 +342,7 @@ ${versionInfo}`,
           let window = BrowserWindow.getFocusedWindow();
           window.webContents.openDevTools();
         },
+        id: "openWindowDevTools",
       },
     ],
   },
