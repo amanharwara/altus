@@ -25,6 +25,7 @@ const zoom = require("./ipcHandlers/main/zoom");
 const contextMenu = require("electron-context-menu");
 const handleWhatsappLinks = require("./util/handleWhatsappLinks");
 const electronDL = require("electron-dl");
+const createCloneableMenuItem = require("./util/createCloneableMenuItem");
 
 let settings = new Store({
   name: "settings",
@@ -51,6 +52,13 @@ const confirmExit = () => {
 };
 
 const createMainWindow = () => {
+  let hasFrame =
+    process.platform !== "darwin"
+      ? settings.get("customTitlebar")
+        ? !settings.get("customTitlebar").value
+        : true
+      : true;
+
   const mainWindow = new BrowserWindow({
     minWidth: 400,
     minHeight: 200,
@@ -62,6 +70,8 @@ const createMainWindow = () => {
       webviewTag: true,
     },
     show: false,
+    frame: hasFrame,
+    titleBarStyle: hasFrame,
   });
 
   mainWindow.loadFile(path.join(__dirname, "../public/index.html"));
@@ -163,6 +173,10 @@ if (!singleInstanceLock) {
       altusAutoLauncher.disable();
     }
 
+    mainWindow.on("blur", () => mainWindow.send("window-blurred"));
+
+    mainWindow.on("focus", () => mainWindow.send("window-focused"));
+
     ipcMain.on("import-settings", importSettings);
 
     ipcMain.on("export-settings", exportSettings);
@@ -172,6 +186,26 @@ if (!singleInstanceLock) {
     ipcMain.on("flush-session-data", flushSessionData);
 
     ipcMain.on("zoom", zoom);
+
+    ipcMain.on("click-menu-item", (e, id) => {
+      Menu.getApplicationMenu().getMenuItemById(id).click();
+    });
+
+    ipcMain.on("minimize-window", () => {
+      mainWindow.minimize();
+    });
+
+    ipcMain.on("maximize-window", () => {
+      mainWindow.maximize();
+    });
+
+    ipcMain.on("restore-window", () => {
+      mainWindow.restore();
+    });
+
+    ipcMain.on("close-window", () => {
+      mainWindow.close();
+    });
 
     ipcMain.on("open-link", (e, url) => {
       shell.openExternal(url);
@@ -249,6 +283,13 @@ if (!singleInstanceLock) {
           }
         }
       }
+    });
+
+    ipcMain.handle("getMenu", () => {
+      let menu = Menu.getApplicationMenu().items.map((item) =>
+        createCloneableMenuItem(item)
+      );
+      return menu;
     });
   });
 

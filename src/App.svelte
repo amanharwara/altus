@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
+  import CustomTitlebar from "./components/CustomTitlebar.svelte";
   import SettingsManager from "./components/SettingsManager.svelte";
   import TabBar from "./components/TabBar.svelte";
   import TabConfigModal from "./components/TabConfigModal.svelte";
@@ -30,9 +33,28 @@
       userData: path,
     };
   });
+
+  let showTitlebar = false;
+
+  onMount(() => {
+    if ($settings["customTitlebar"]?.value) {
+      document.body.style.border = "1px solid #1f1f20e7";
+      document.body.style.overflow = "hidden";
+      document.querySelector("main").classList.add("hasTitlebar");
+      showTitlebar = true;
+    } else {
+      document.body.style.border = "";
+      document.body.style.overflow = "";
+      document.querySelector("main").classList.remove("hasTitlebar");
+      showTitlebar = false;
+    }
+  });
 </script>
 
 <main>
+  {#if showTitlebar}
+    <CustomTitlebar />
+  {/if}
   <div class="container">
     <TabBar
       on:add-tab={() => {
@@ -70,13 +92,18 @@
 </main>
 
 <style>
-  main {
-    height: 100%;
-  }
+  main,
   .container {
+    height: 100%;
     display: flex;
     flex-flow: column;
-    height: 100%;
-    position: relative;
+  }
+  .container {
+    flex-grow: 1;
+  }
+  :global(.hasTitlebar .modal-container .overlay) {
+    top: auto;
+    bottom: 0;
+    height: calc(100% - 32px);
   }
 </style>
