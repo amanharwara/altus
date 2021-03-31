@@ -13,6 +13,7 @@ const checkUpdates = require("./checkUpdates");
 let menuTemplate = [
   {
     label: "&File",
+    id: "file",
     submenu: [
       {
         role: "forceReload",
@@ -30,6 +31,7 @@ let menuTemplate = [
   },
   {
     label: "&Edit",
+    id: "edit",
     submenu: [
       {
         label: "Undo",
@@ -74,6 +76,7 @@ let menuTemplate = [
   },
   {
     label: "Tab",
+    id: "tab",
     submenu: [
       {
         label: "Add New Tab",
@@ -166,6 +169,7 @@ let menuTemplate = [
   },
   {
     label: "&View",
+    id: "view",
     submenu: [
       {
         label: "Toggle Fullscreen",
@@ -189,6 +193,7 @@ let menuTemplate = [
   },
   {
     label: "Themes",
+    id: "themes",
     submenu: [
       {
         label: "Theme Manager",
@@ -203,6 +208,7 @@ let menuTemplate = [
   },
   {
     label: "&Settings",
+    id: "settingsMenu",
     submenu: [
       {
         label: "&Settings",
@@ -217,6 +223,7 @@ let menuTemplate = [
   },
   {
     label: "&Help",
+    id: "help",
     submenu: [
       {
         label: "&About",
@@ -261,24 +268,28 @@ ${versionInfo}`,
         submenu: [
           {
             label: "Liberapay",
+            id: "liberapay",
             click() {
               shell.openExternal("https://liberapay.com/aman_harwara/");
             },
           },
           {
             label: "Ko-Fi",
+            id: "kofi",
             click() {
               shell.openExternal("https://ko-fi.com/amanharwara");
             },
           },
           {
             label: "Buy Me a Coffee",
+            id: "buymeacoffee",
             click() {
               shell.openExternal("https://buymeacoffee.com/amanharwara");
             },
           },
           {
             label: "Other Links",
+            id: "otherlinks",
             click() {
               shell.openExternal(
                 "https://github.com/amanharwara/altus#support"

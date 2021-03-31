@@ -98,10 +98,13 @@
     display: flex;
     flex-flow: column;
   }
+  main {
+    z-index: 0;
+  }
   .container {
     flex-grow: 1;
   }
-  :global(.hasTitlebar .modal-container .overlay) {
+  :global(.hasTitlebar .modal-container) {
     top: auto;
     bottom: 0;
     height: calc(100% - 32px);

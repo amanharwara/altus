@@ -36,7 +36,7 @@ button {
   cursor: pointer;
 }
 
-button:not(.close) {
+button:not(.close):not(.menu-item):not(.window-button) {
   display: inline-flex;
   font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;

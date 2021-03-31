@@ -1,55 +1,116 @@
 <script lang="ts">
+  let focused;
+  let menubarElement;
+  let menu;
+
   import type { CloneableMenuItem } from "../../types";
+  import MenuItem from "./MenuItem.svelte";
+  import { createEventDispatcher } from "svelte";
   const { ipcRenderer } = require("electron");
+  const dispatchEvent = createEventDispatcher();
 
   async function getMenu() {
-    const menu: CloneableMenuItem[] | undefined = await ipcRenderer.invoke(
+    const appMenu: CloneableMenuItem[] | undefined = await ipcRenderer.invoke(
       "getMenu"
     );
 
-    if (menu) {
-      return menu;
+    menu = appMenu;
+
+    if (appMenu) {
+      return null;
     } else {
       throw new Error("Could not get menu.");
     }
   }
 
-  const submenuItemClick = (item) => {
-    if (item.type === "normal") {
-      ipcRenderer.send("click-menu-item", item.id);
+  $: {
+    if (focused) {
+      dispatchEvent("focused", true);
     } else {
-      return;
+      dispatchEvent("focused", false);
+    }
+  }
+
+  const closeAllMenus = () => {
+    menu = menu.map((item) => {
+      return { ...item, focused: false };
+    });
+    focused = false;
+  };
+
+  const onClick = () => {
+    focused = true;
+  };
+
+  const closeWhenBlurred = (e) => {
+    if (!e.target.closest("#menubar")) {
+      menu = menu.map((item) => {
+        return {
+          ...item,
+          focused: false,
+        };
+      });
+      focused = false;
+    }
+  };
+
+  const onHover = (e) => {
+    if (focused && e.target.id) {
+      menu = menu.map((item) => {
+        return {
+          ...item,
+          focused: item.id === e.target.id ? true : false,
+        };
+      });
+    }
+  };
+
+  const onItemClick = () => {
+    closeAllMenus();
+  };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.altKey) {
+      if (focused) {
+        closeAllMenus();
+      } else {
+        focused = true;
+      }
+    }
+    if (focused) {
+      if (e.key === "Escape") {
+        closeAllMenus();
+      }
+      if (e.key === "ArrowRight") {
+        let indexToFocus = menu.findIndex((item) => item.focused) + 1;
+        if (indexToFocus === menu.length) indexToFocus = 0;
+        menu = menu.map((item, index) => {
+          return { ...item, focused: index === indexToFocus ? true : false };
+        });
+      }
+      if (e.key === "ArrowLeft") {
+        let indexToFocus = menu.findIndex((item) => item.focused) - 1;
+        if (indexToFocus === -1) indexToFocus = menu.length - 1;
+        menu = menu.map((item, index) => {
+          return { ...item, focused: index === indexToFocus ? true : false };
+        });
+      }
     }
   };
 </script>
 
-<div id="menubar">
-  {#await getMenu()}
-    Menu
-  {:then menu}
+<svelte:window on:click={closeWhenBlurred} on:keydown={onKeyDown} />
+
+<div
+  id="menubar"
+  bind:this={menubarElement}
+  on:mouseover={onHover}
+  on:click={onClick}
+  on:blur={() => closeAllMenus()}
+>
+  {#await getMenu() then _}
     {#each menu as menuItem}
-      <div class="menu-item">
-        <div class="label">{menuItem.label.replace("&", "")}</div>
-        {#if menuItem.submenu}
-          <div class="submenu">
-            {#each menuItem.submenu as submenuItem}
-              <div
-                class={`submenu-item ${submenuItem.type}`}
-                on:click={() => submenuItemClick(submenuItem)}
-              >
-                {#if submenuItem.type !== "separator"}
-                  <div class="label">{submenuItem.label.replace("&", "")}</div>
-                  {#if submenuItem.accelerator}
-                    <div class="accelerator">{submenuItem.accelerator}</div>
-                  {/if}
-                {:else}
-                  <hr />
-                {/if}
-              </div>
-            {/each}
-          </div>
-        {/if}
-      </div>
+      <MenuItem {menuItem} on:item-clicked={onItemClick} />
     {/each}
   {/await}
 </div>
@@ -60,65 +121,7 @@
     grid-column: 2;
     margin-left: 8px;
     font-family: inherit;
-    font-size: 14px;
     -webkit-app-region: no-drag;
     user-select: none;
-  }
-
-  .menu-item {
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 0 8px;
-    height: 100%;
-
-    &:hover {
-      background: #303336;
-
-      & > .submenu {
-        display: flex;
-      }
-    }
-  }
-
-  .menu-item > .submenu {
-    display: none;
-    flex-flow: column nowrap;
-    width: max-content;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #202224;
-    color: #fff;
-  }
-
-  .submenu-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 12px 16px;
-
-    .label {
-      margin-right: 2rem;
-    }
-
-    .accelerator {
-      color: #c3c3c3;
-    }
-
-    &:hover {
-      background: #1c2028;
-    }
-
-    &.separator {
-      padding: 4px 8px;
-
-      hr {
-        width: 100%;
-        border-color: rgba(255, 255, 255, 0.25);
-        margin: 0;
-      }
-    }
   }
 </style>

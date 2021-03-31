@@ -19,6 +19,7 @@ const createCloneableMenuItem = ({
     ...(type ? { type } : {}),
     ...(accelerator ? { accelerator } : {}),
     ...(commandId ? { commandId } : {}),
+    focused: false,
   };
 };
 

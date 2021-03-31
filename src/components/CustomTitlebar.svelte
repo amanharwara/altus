@@ -60,13 +60,22 @@
     fill: #fff;
     font-family: "Segoe UI", "Inter", Roboto, Oxygen, Ubuntu, Cantarell,
       "Open Sans", "Helvetica Neue", sans-serif;
-    z-index: 1;
+    z-index: 3;
+
+    &.maximized {
+      padding: 0;
+    }
   }
   #drag-region {
     display: flex;
     width: 100%;
     height: 100%;
     -webkit-app-region: drag;
+    user-select: none;
+
+    & > :global(:not(#window-controls)) {
+      font-size: 13px;
+    }
 
     .blurred & {
       opacity: 0.75;
@@ -91,7 +100,6 @@
     flex-grow: 1;
     overflow: hidden;
     font-family: inherit;
-    font-size: 14px;
 
     span {
       line-height: 1.5;

@@ -41,6 +41,7 @@ type CloneableMenuItem = {
   submenu?: CloneableMenuItem[];
   label?: string;
   id?: any;
+  focused?: boolean;
 };
 
 export { TabType, ThemeType, SettingType, Settings, CloneableMenuItem };

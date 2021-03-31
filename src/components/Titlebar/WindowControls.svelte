@@ -11,33 +11,41 @@
 </script>
 
 <div id="window-controls">
-  <div
-    class="button"
+  <button
+    type="button"
+    class="window-button"
     id="min-button"
     on:click={() => dispatchEvent("minimize")}
   >
     <Minimize />
-  </div>
+  </button>
   {#if maximized}
-    <div
-      class="button"
+    <button
+      type="button"
+      class="window-button"
       id="restore-button"
       on:click={() => dispatchEvent("restore")}
     >
       <Restore />
-    </div>
+    </button>
   {:else}
-    <div
-      class="button"
+    <button
+      type="button"
+      class="window-button"
       id="max-button"
       on:click={() => dispatchEvent("maximize")}
     >
       <Maximize />
-    </div>
+    </button>
   {/if}
-  <div class="button" id="close-button" on:click={() => dispatchEvent("close")}>
+  <button
+    type="button"
+    class="window-button"
+    id="close-button"
+    on:click={() => dispatchEvent("close")}
+  >
     <Close />
-  </div>
+  </button>
 </div>
 
 <style lang="scss">
@@ -47,7 +55,7 @@
     height: 100%;
     -webkit-app-region: no-drag;
   }
-  .button {
+  .window-button {
     grid-row: 1 / span 1;
     display: flex;
     justify-content: center;
@@ -55,6 +63,12 @@
     width: 100%;
     height: 100%;
     user-select: none;
+    background: transparent;
+    border: 0;
+
+    &:focus {
+      outline: none;
+    }
 
     &:hover {
       background: rgba(255, 255, 255, 0.1);
