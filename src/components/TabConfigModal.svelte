@@ -66,6 +66,12 @@
       .getElementById(`webview-${tabSettings.id}`)
       .openDevTools();
   };
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeTabConfigModal();
+    }
+  });
 </script>
 
 {#if visible}
@@ -97,7 +103,7 @@
           <label for="tab-theme">Theme:</label>
           <Select
             items={themeSelectItems}
-            selectedValue={themeSelectItems.find(
+            value={themeSelectItems.find(
               (theme) => theme.value === tabSettings.config.theme
             )}
             showIndicator={true}
@@ -155,7 +161,7 @@
             {/if}
           </div>
           <div class="label">
-            {#if tabAlreadyExists}Edit{:else}Add{/if}
+            {#if tabAlreadyExists}Save{:else}Add{/if}
           </div>
         </button>
         {#if tabAlreadyExists}
@@ -233,7 +239,7 @@
   .reset-color {
     width: 1.65rem;
     height: 1.65rem;
-    padding: 0.2rem;
+    padding: 0.2rem !important;
     background: #2c333b;
     fill: #fff;
     border: 0;
@@ -270,7 +276,8 @@
     --padding: 0 0.5rem !important;
   }
 
-  .selector :global(.selectedItem, .item) {
+  .selector :global(.selectedItem),
+  .selector :global(.item) {
     font-size: 1rem;
   }
 
