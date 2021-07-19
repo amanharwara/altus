@@ -66,6 +66,12 @@
       })
     );
   });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeSettingsManager();
+    }
+  });
 </script>
 
 {#if visible}
@@ -92,9 +98,7 @@
           })
           .filter((setting) => setting.name
                 .toLowerCase()
-                .includes(
-                  search
-                ) || setting.description
+                .includes(search) || setting.description
                 .toLowerCase()
                 .includes(search)) as setting}
           <div class="setting">
