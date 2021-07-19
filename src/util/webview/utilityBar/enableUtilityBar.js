@@ -15,16 +15,22 @@ const enableUtilityBar = () => {
   utilityBar.appendChild(formattingContainer);
   utilityBar.appendChild(quickReplyContainer);
 
-  document.querySelector("footer").previousElementSibling.style.height = "47px";
-  document.querySelector("footer").dataset.theme = document.body.dataset.theme;
-  document.querySelector("footer").appendChild(utilityBar);
+  if (document.querySelector("footer")) {
+    document.querySelector("footer").previousElementSibling.style.height =
+      "47px";
+    document.querySelector("footer").dataset.theme =
+      document.body.dataset.theme;
+    document.querySelector("footer").appendChild(utilityBar);
+  }
 
   let chatPanel = document.querySelector(elementSelectors.chatPanel);
-  chatPanel.scroll(0, chatPanel.scrollHeight);
+  if (chatPanel) chatPanel.scroll(0, chatPanel.scrollHeight);
 
-  document
-    .querySelector(".utility-bar")
-    .addEventListener("click", clickHandler);
+  if (document.querySelector(".utility-bar")) {
+    document
+      .querySelector(".utility-bar")
+      .addEventListener("click", clickHandler);
+  }
 
   console.log("Utility Bar Enabled");
 };
