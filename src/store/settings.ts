@@ -75,6 +75,18 @@ const defaultSettings: () => Settings = () => {
       description:
         "When enabled, Altus will use a custom titlebar instead of the one provided by the system. (NOTE: Requires a restart for changes to apply.)",
     },
+    rememberWindowSize: {
+      value: false,
+      name: "Remember Window Size",
+      description:
+        "When enabled, Altus will remember the size of the window from previous use.",
+    },
+    rememberWindowPosition: {
+      value: false,
+      name: "Remember Window Position",
+      description:
+        "When enabled, Altus will remember the position of the window from previous use.",
+    },
   };
 };
 

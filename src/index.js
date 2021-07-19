@@ -31,6 +31,16 @@ let settings = new Store({
   name: "settings",
 });
 
+let windowState = new Store({
+  name: "windowState",
+  defaults: {
+    width: null,
+    height: null,
+    x: null,
+    y: null,
+  },
+});
+
 let tray = null;
 
 const confirmExit = () => {
@@ -59,15 +69,27 @@ const createMainWindow = () => {
         : true
       : true;
 
+  let rememberWindowSize = settings.get("rememberWindowSize")
+    ? settings.get("rememberWindowSize").value
+    : false;
+  let rememberWindowPosition = settings.get("rememberWindowPosition")
+    ? settings.get("rememberWindowPosition").value
+    : false;
+
   const mainWindow = new BrowserWindow({
     minWidth: 400,
     minHeight: 200,
+    width: rememberWindowSize ? windowState.get("width") : null,
+    height: rememberWindowSize ? windowState.get("height") : null,
+    x: rememberWindowPosition ? windowState.get("x") : null,
+    y: rememberWindowPosition ? windowState.get("y") : null,
     backgroundColor: "#383c49",
     title: `Altus ${app.getVersion()}`,
     icon: mainIcon,
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true,
+      contextIsolation: false,
     },
     show: false,
     frame: hasFrame,
@@ -88,6 +110,14 @@ const createMainWindow = () => {
     } else {
       if (tray) tray.destroy();
     }
+  });
+
+  mainWindow.on("resize", () => {
+    windowState.store = mainWindow.getBounds();
+  });
+
+  mainWindow.on("move", () => {
+    windowState.store = mainWindow.getBounds();
   });
 
   Menu.setApplicationMenu(mainMenu);
