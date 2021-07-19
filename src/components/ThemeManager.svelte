@@ -129,6 +129,12 @@
 
     isUpdatingThemes = false;
   };
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeThemeManager();
+    }
+  });
 </script>
 
 {#if visible}
