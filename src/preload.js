@@ -111,7 +111,7 @@ window.onload = () => {
   new MutationObserver((mutations) => {
     // Check when WhatsApp is done loading
     if (
-      mutations[0].removedNodes &&
+      mutations[0].removedNodes.length > 0 &&
       mutations[0].removedNodes[0].id === "startup"
     ) {
       addChatIDs();
@@ -125,6 +125,13 @@ window.onload = () => {
           childList: true,
         })
       );
+
+      // Remove "Update available" message
+      if (
+        document.querySelector("._3z9_h").innerText.includes("Update available")
+      ) {
+        document.querySelector("._3z9_h").style.display = "none";
+      }
     }
 
     if (document.querySelector(".two")) {
@@ -144,16 +151,22 @@ window.onload = () => {
             }
 
             if (
-              Array.from(mutation.addedNodes).find((node) =>
-                node.classList.contains(elementSelectors.emojiPanel)
+              Array.from(mutation.addedNodes).find(
+                (node) =>
+                  node.classList &&
+                  node.classList.length > 0 &&
+                  node.classList.contains(elementSelectors.emojiPanel)
               )
             ) {
               if (document.querySelector(".utility-bar")) disableUtilityBar();
             }
 
             if (
-              Array.from(mutation.addedNodes).find((node) =>
-                node.classList.contains(elementSelectors.replyPanel)
+              Array.from(mutation.addedNodes).find(
+                (node) =>
+                  node.classList &&
+                  node.classList.length > 0 &&
+                  node.classList.contains(elementSelectors.replyPanel)
               )
             ) {
               let replyHeight = document.querySelector(
@@ -172,7 +185,9 @@ window.onload = () => {
             if (
               Array.from(mutation.removedNodes).find(
                 (node) =>
-                  node.classList.contains(elementSelectors.emojiPanel) ||
+                  (node.classList &&
+                    node.classList.length > 0 &&
+                    node.classList.contains(elementSelectors.emojiPanel)) ||
                   node.classList.contains(elementSelectors.replyPanel)
               )
             ) {
@@ -292,9 +307,8 @@ ipcRenderer.on("toggle-notifications", (_, setting) => {
 
     Notification.prototype = NativeNotification.prototype;
     Notification.permission = NativeNotification.permission;
-    Notification.requestPermission = NativeNotification.requestPermission.bind(
-      Notification
-    );
+    Notification.requestPermission =
+      NativeNotification.requestPermission.bind(Notification);
   }
 });
 
