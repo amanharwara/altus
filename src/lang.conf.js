@@ -1,5 +1,5 @@
 module.exports = {
-  languages: ["en", "hi"],
+  languages: ["en", "hi", "it"],
   fallbackLang: "en",
   namespace: "translation",
 };
