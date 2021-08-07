@@ -456,7 +456,7 @@ __metadata:
     auto-launch: ^5.0.5
     concurrently: ^6.2.0
     dragula: ^3.7.3
-    electron: ^13.0.0
+    electron: ^13.1.7
     electron-builder: ^22.11.7
     electron-context-menu: ^3.1.1
     electron-dl: ^3.2.1
@@ -1753,16 +1753,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^13.0.0":
-  version: 13.1.7
-  resolution: "electron@npm:13.1.7"
+"electron@npm:^13.1.7":
+  version: 13.1.8
+  resolution: "electron@npm:13.1.8"
   dependencies:
     "@electron/get": ^1.0.1
     "@types/node": ^14.6.2
     extract-zip: ^1.0.3
   bin:
     electron: cli.js
-  checksum: 0d7bf9a3bf98730e2a2acac8531f0f5942afc9d584867f1a8a7d6198ba7d9861fe9e412ac62d0a7c924dbc85e40dae541000acfeefe28e6a0b840fda0ba2f8af
+  checksum: a20b49e752530fd75a9e0c5bc52ea19dcec21ef35c4bc03203155b1fa332ba09c588adeb1ef7b866c5c12f437cf5ede8bc4fccb497d45f4bcef44676cf8bb999
   languageName: node
   linkType: hard
 

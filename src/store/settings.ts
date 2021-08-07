@@ -4,8 +4,14 @@ const defaultSettings: () => Settings = () => {
   return {
     tabBar: {
       value: true,
-      name: "Tab Bar",
+      name: "Show Tab Bar",
       description: "Controls whether the tab bar is visible or not.",
+    },
+    tabBarPosition: {
+      value: "top",
+      name: "Tab Bar Position",
+      description: "Controls the position of the tab bar.",
+      options: ["top", "bottom"],
     },
     trayIcon: {
       value: true,

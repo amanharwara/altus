@@ -30,6 +30,7 @@ type SettingType = {
   value: boolean | string;
   name: string;
   description: string;
+  options?: string[];
 };
 
 type Settings = { [k: string]: SettingType };

@@ -56,17 +56,25 @@
     <CustomTitlebar />
   {/if}
   <div class="container">
-    <TabBar
-      on:add-tab={() => {
-        $modals.tabConfigModalVisible = true;
-        tabSettings = defaultTabSettings();
-      }}
-      on:edit-tab={(e) => {
-        tabSettings = e.detail.tabToEdit;
-        $modals.tabConfigModalVisible = true;
-      }}
-    />
-    <TabContent />
+    <div
+      class={`flex ${
+        $settings["tabBarPosition"].value === "top"
+          ? "flex-col"
+          : "flex-col-reverse"
+      }`}
+    >
+      <TabBar
+        on:add-tab={() => {
+          $modals.tabConfigModalVisible = true;
+          tabSettings = defaultTabSettings();
+        }}
+        on:edit-tab={(e) => {
+          tabSettings = e.detail.tabToEdit;
+          $modals.tabConfigModalVisible = true;
+        }}
+      />
+      <TabContent />
+    </div>
     <SettingsManager
       visible={$modals.settingsManagerVisible}
       on:settings-changed={settingsChanged}
@@ -103,6 +111,16 @@
   }
   .container {
     flex-grow: 1;
+  }
+  .flex {
+    display: flex;
+    flex-grow: 1;
+  }
+  .flex-col {
+    flex-direction: column;
+  }
+  .flex-col-reverse {
+    flex-direction: column-reverse;
   }
   :global(.hasTitlebar .modal-container) {
     top: auto;

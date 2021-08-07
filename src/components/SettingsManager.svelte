@@ -112,6 +112,16 @@
                 bind:value={currentSettings[setting.id].value}
                 on:toggle={settingToggled}
               />
+            {:else if setting.options}
+              <select
+                id={setting.id}
+                name={setting.id}
+                bind:value={currentSettings[setting.id].value}
+              >
+                {#each setting.options as option}
+                  <option value={option}>{option}</option>
+                {/each}
+              </select>
             {:else}
               <input
                 type="text"
