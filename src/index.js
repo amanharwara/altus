@@ -26,6 +26,7 @@ const contextMenu = require("electron-context-menu");
 const handleWhatsappLinks = require("./util/handleWhatsappLinks");
 const electronDL = require("electron-dl");
 const createCloneableMenuItem = require("./util/createCloneableMenuItem");
+const { i18n, i18nOptions } = require("./i18next.conf");
 
 let settings = new Store({
   name: "settings",
@@ -120,7 +121,18 @@ const createMainWindow = () => {
     windowState.store = mainWindow.getBounds();
   });
 
-  Menu.setApplicationMenu(mainMenu);
+  if (!i18n.isInitialized) {
+    i18n.init(i18nOptions, (err, _) => {
+      i18n.on("loaded", () => {
+        i18n.changeLanguage(app.getLocale());
+        i18n.off("loaded");
+      });
+
+      i18n.on("languageChanged", (lang) => {
+        Menu.setApplicationMenu(mainMenu(i18n));
+      });
+    });
+  }
 };
 
 const singleInstanceLock = app.requestSingleInstanceLock();
