@@ -389,7 +389,7 @@ if (!singleInstanceLock) {
         }
 
         if (input.key === "Enter" && input.control) {
-          context.webContents.executeJavaScript(
+          context.executeJavaScript(
             `document.querySelector('[data-icon="send"]').click()`
           );
           e.preventDefault();
