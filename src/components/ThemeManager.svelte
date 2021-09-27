@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
-  import { fade } from "svelte/transition";
   import Close from "./svg/Close.svelte";
   import { paths, themes } from "../store";
   import Download from "./svg/Download.svelte";
@@ -9,13 +7,9 @@
   import Edit from "./svg/Edit.svelte";
   import ThemeCreator from "./ThemeCreator.svelte";
   import type { ThemeType } from "../types";
+  import Modal from "./common/Modal.svelte";
   const { v4: uuid } = require("uuid");
   export let visible = false;
-
-  const dispatchEvent = createEventDispatcher();
-  const closeThemeManager = () => {
-    dispatchEvent("close-theme-manager");
-  };
 
   let active = "themes-list";
   let isEditingTheme = false;
@@ -129,152 +123,133 @@
 
     isUpdatingThemes = false;
   };
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      closeThemeManager();
-    }
-  });
 </script>
 
-{#if visible}
-  <div class="modal-container" transition:fade={{ duration: 100 }}>
-    <div class="modal">
-      <div class="header">
-        <div class="title">Theme Manager</div>
-        <button class="close" on:click={() => closeThemeManager()}>
-          <Close />
-        </button>
+<Modal
+  modalTitle="Theme Manager"
+  {visible}
+  width="max(375px, 30vw)"
+  height="max(400px, 60vh)"
+>
+  <div class="tabs">
+    <button
+      class="theme-list-tab"
+      class:active={active === "themes-list"}
+      on:click={() => (active = "themes-list")}
+    >
+      Themes
+    </button>
+    <button
+      class="theme-creator-tab"
+      class:active={active === "theme-creator"}
+      on:click={() => (active = "theme-creator")}
+    >
+      {#if isEditingTheme}
+        Edit
+      {:else}
+        Add
+      {/if} Theme
+    </button>
+  </div>
+  <div class="content">
+    {#if active === "themes-list"}
+      <div class="themes">
+        {#each $themes as theme}
+          <div class="theme">
+            <div class="name">{theme.name}</div>
+            {#if theme.colors || theme.customCSS}
+              <div class="controls">
+                {#if theme.id !== "dark-plus"}
+                  <button
+                    class="edit"
+                    on:click={() => {
+                      newTheme = theme;
+                      active = "theme-creator";
+                      isEditingTheme = true;
+                    }}><Edit /></button
+                  >
+                {/if}
+                <button
+                  class="delete"
+                  on:click={() => {
+                    $themes = $themes.filter((t) => t.name !== theme.name);
+                  }}><Close /></button
+                >
+              </div>
+            {/if}
+          </div>
+        {/each}
+        {#if !$themes.find((theme) => theme.name === "Dark Plus")}
+          <div class="theme">
+            <div class="name">Dark Plus</div>
+            <div class="controls">
+              <button
+                class="download"
+                class:spinning={isDownloadingDarkTheme}
+                on:click={async () => {
+                  isDownloadingDarkTheme = true;
+                  let darkTheme = await compileTheme(null, $paths.userData);
+                  if (darkTheme) {
+                    isDownloadingDarkTheme = false;
+                    $themes = [
+                      ...$themes,
+                      {
+                        name: "Dark Plus",
+                        id: "dark-plus",
+                        css: darkTheme,
+                        colors: {
+                          bg: "#1f232a",
+                          fg: "#eee",
+                          ac: "#7289da",
+                        },
+                      },
+                    ];
+                  }
+                }}
+              >
+                {#if isDownloadingDarkTheme}
+                  <Spinner />
+                {:else}
+                  <Download />
+                {/if}
+              </button>
+            </div>
+          </div>
+        {/if}
       </div>
-      <div class="tabs">
-        <button
-          class="theme-list-tab"
-          class:active={active === "themes-list"}
-          on:click={() => (active = "themes-list")}
-        >
-          Themes
-        </button>
-        <button
-          class="theme-creator-tab"
-          class:active={active === "theme-creator"}
-          on:click={() => (active = "theme-creator")}
-        >
+    {:else}
+      <ThemeCreator on:select-preset={selectThemePreset} bind:newTheme />
+    {/if}
+  </div>
+  <div class="main-controls">
+    {#if active === "themes-list"}
+      <button on:click={updateThemes} class:spinning={isUpdatingThemes}>
+        {#if isUpdatingThemes}
+          <Spinner />
+        {:else}
+          Update Themes
+        {/if}
+      </button>
+    {:else}
+      <button on:click={submitTheme} class:spinning={isSavingTheme}>
+        {#if isSavingTheme}
+          <Spinner />
+        {:else}
           {#if isEditingTheme}
             Edit
           {:else}
             Add
           {/if} Theme
-        </button>
-      </div>
-      <div class="content">
-        {#if active === "themes-list"}
-          <div class="themes">
-            {#each $themes as theme}
-              <div class="theme">
-                <div class="name">{theme.name}</div>
-                {#if theme.colors || theme.customCSS}
-                  <div class="controls">
-                    {#if theme.id !== "dark-plus"}
-                      <button
-                        class="edit"
-                        on:click={() => {
-                          newTheme = theme;
-                          active = "theme-creator";
-                          isEditingTheme = true;
-                        }}><Edit /></button
-                      >
-                    {/if}
-                    <button
-                      class="delete"
-                      on:click={() => {
-                        $themes = $themes.filter((t) => t.name !== theme.name);
-                      }}><Close /></button
-                    >
-                  </div>
-                {/if}
-              </div>
-            {/each}
-            {#if !$themes.find((theme) => theme.name === "Dark Plus")}
-              <div class="theme">
-                <div class="name">Dark Plus</div>
-                <div class="controls">
-                  <button
-                    class="download"
-                    class:spinning={isDownloadingDarkTheme}
-                    on:click={async () => {
-                      isDownloadingDarkTheme = true;
-                      let darkTheme = await compileTheme(null, $paths.userData);
-                      if (darkTheme) {
-                        isDownloadingDarkTheme = false;
-                        $themes = [
-                          ...$themes,
-                          {
-                            name: "Dark Plus",
-                            id: "dark-plus",
-                            css: darkTheme,
-                            colors: {
-                              bg: "#1f232a",
-                              fg: "#eee",
-                              ac: "#7289da",
-                            },
-                          },
-                        ];
-                      }
-                    }}
-                  >
-                    {#if isDownloadingDarkTheme}
-                      <Spinner />
-                    {:else}
-                      <Download />
-                    {/if}
-                  </button>
-                </div>
-              </div>
-            {/if}
-          </div>
-        {:else}
-          <ThemeCreator on:select-preset={selectThemePreset} bind:newTheme />
         {/if}
-      </div>
-      <div class="main-controls">
-        {#if active === "themes-list"}
-          <button on:click={updateThemes} class:spinning={isUpdatingThemes}>
-            {#if isUpdatingThemes}
-              <Spinner />
-            {:else}
-              Update Themes
-            {/if}
-          </button>
-        {:else}
-          <button on:click={submitTheme} class:spinning={isSavingTheme}>
-            {#if isSavingTheme}
-              <Spinner />
-            {:else}
-              {#if isEditingTheme}
-                Edit
-              {:else}
-                Add
-              {/if} Theme
-            {/if}
-          </button>
-          {#if isEditingTheme}
-            <button on:click={cancelEditingTheme}>Cancel</button>
-          {/if}
-        {/if}
-      </div>
-    </div>
-    <div class="overlay" on:click={() => closeThemeManager()} />
+      </button>
+      {#if isEditingTheme}
+        <button on:click={cancelEditingTheme}>Cancel</button>
+      {/if}
+    {/if}
   </div>
-{/if}
+</Modal>
 
 <style>
-  .modal-container {
-    z-index: 2;
-  }
-  .modal {
-    width: max(375px, 30vw);
-    height: max(400px, 60vh);
-  }
   .tabs {
     display: flex;
     border-bottom: 2px solid #303b49;

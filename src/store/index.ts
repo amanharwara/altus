@@ -5,11 +5,14 @@ import migrateTab from "../util/migrateTab";
 import { migrateTheme } from "../util/theme";
 import { defaultSettings, migrateSettings, validateSettings } from "./settings";
 
-let modals = writable({
-  tabConfigModalVisible: false,
-  themeManagerVisible: false,
-  settingsManagerVisible: false,
-});
+enum ModalType {
+  SettingsManager,
+  ThemeManager,
+  TabConfig,
+  NewChatModal,
+}
+
+let currentModal = writable<ModalType | null>(null);
 
 let tabStore = new Store({
   name: "tabs",
@@ -32,12 +35,7 @@ tabs.subscribe((tabs) => {
     })
   );
   if (tabs.length === 0) {
-    modals.update((modals) => {
-      return {
-        ...modals,
-        tabConfigModalVisible: true,
-      };
-    });
+    currentModal.set(ModalType.TabConfig);
   }
 });
 previouslyClosedTab.subscribe((tab) => {
@@ -106,4 +104,12 @@ settings.subscribe((settings) => {
   settingsStore.store = validateSettings(settings);
 });
 
-export { tabs, themes, paths, modals, settings, previouslyClosedTab };
+export {
+  tabs,
+  themes,
+  paths,
+  currentModal,
+  ModalType,
+  settings,
+  previouslyClosedTab,
+};

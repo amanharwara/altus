@@ -1,6 +1,12 @@
 <script lang="ts">
   import Tab from "./Tab.svelte";
-  import { modals, previouslyClosedTab, settings, tabs } from "../store";
+  import {
+    currentModal,
+    ModalType,
+    previouslyClosedTab,
+    settings,
+    tabs,
+  } from "../store";
   import Add from "./svg/Add.svelte";
   import { createEventDispatcher, onMount } from "svelte";
   import arrayMove from "../util/arrayMove";
@@ -151,12 +157,7 @@
           ])
       );
       previouslyClosedTab.set(null);
-      modals.update((modals) => {
-        return {
-          ...modals,
-          tabConfigModalVisible: false,
-        };
-      });
+      currentModal.set(null);
     }
   });
 

@@ -2,12 +2,13 @@
   import { onMount } from "svelte";
 
   import CustomTitlebar from "./components/CustomTitlebar.svelte";
+  import NewChatModal from "./components/NewChatModal.svelte";
   import SettingsManager from "./components/SettingsManager.svelte";
   import TabBar from "./components/TabBar.svelte";
   import TabConfigModal from "./components/TabConfigModal.svelte";
   import TabContent from "./components/TabContent.svelte";
   import ThemeManager from "./components/ThemeManager.svelte";
-  import { paths, modals, settings, tabs } from "./store";
+  import { paths, currentModal, ModalType, settings } from "./store";
   import defaultTabSettings from "./util/defaultTabSettings";
   const { ipcRenderer } = require("electron");
 
@@ -19,18 +20,22 @@
     });
   };
 
+  ipcRenderer.on("new-chat", () => {
+    currentModal.set(ModalType.NewChatModal);
+  });
+
   ipcRenderer.on("open-theme-manager", () => {
-    $modals.themeManagerVisible = true;
+    currentModal.set(ModalType.ThemeManager);
   });
 
   ipcRenderer.on("open-settings", () => {
-    $modals.settingsManagerVisible = true;
+    currentModal.set(ModalType.SettingsManager);
   });
 
   ipcRenderer.on("userDataPath", (path) => {
     $paths = {
       ...$paths,
-      userData: path,
+      userData: path as any,
     };
   });
 
@@ -65,37 +70,30 @@
     >
       <TabBar
         on:add-tab={() => {
-          $modals.tabConfigModalVisible = true;
+          currentModal.set(ModalType.TabConfig);
           tabSettings = defaultTabSettings();
         }}
         on:edit-tab={(e) => {
           tabSettings = e.detail.tabToEdit;
-          $modals.tabConfigModalVisible = true;
+          currentModal.set(ModalType.TabConfig);
         }}
       />
       <TabContent />
     </div>
     <SettingsManager
-      visible={$modals.settingsManagerVisible}
+      visible={$currentModal === ModalType.SettingsManager}
       on:settings-changed={settingsChanged}
-      on:close-settings-manager={() => {
-        $modals.settingsManagerVisible = false;
-      }}
     />
-    <ThemeManager
-      visible={$modals.themeManagerVisible}
-      on:close-theme-manager={() => {
-        $modals.themeManagerVisible = false;
-      }}
-    />
+    <ThemeManager visible={$currentModal === ModalType.ThemeManager} />
     <TabConfigModal
-      visible={$modals.tabConfigModalVisible}
+      visible={$currentModal === ModalType.TabConfig}
       {tabSettings}
-      on:close-tab-config-modal={() => {
-        $modals.tabConfigModalVisible = false;
+      on:close-modal={() => {
+        currentModal.set(null);
         tabSettings = defaultTabSettings();
       }}
     />
+    <NewChatModal visible={$currentModal === ModalType.NewChatModal} />
   </div>
 </main>
 
