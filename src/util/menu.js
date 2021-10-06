@@ -258,7 +258,7 @@ const mainMenu = (i18n) => {
                 type: "info",
                 title: `Altus v${app.getVersion()}`,
                 message: `Made by Aman Harwara.`,
-                detail: `With help from: MarceloZapatta, Dafnik, dmcdo, insign, srevinsaju.
+                detail: `With help from: MarceloZapatta, Dafnik, dmcdo, insign, srevinsaju, maicol07, ngmoviedo.
   
   Thanks to: vednoc for Dark WhatsApp theme.
   

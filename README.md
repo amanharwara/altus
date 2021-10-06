@@ -73,3 +73,8 @@ Below is the list of contributors who have contributed to Altus by creating a fe
 #### [Dafnik](https://github.com/Dafnik) - PR #5 (Helped fix issue #4)
 
 #### [Marcelo Zapatta](https://github.com/MarceloZapatta) - PR #77 (Fixed #23 by adding tray icon support on Linux)
+
+#### [Maicol Battistini](https://github.com/maicol07) - PR #153 (Added Italian translation)
+
+#### [Nicolás González Meneses](https://github.com/ngmoviedo) - PR #163 (Added Spanish translation)
+
