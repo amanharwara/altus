@@ -78,9 +78,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron/get@npm:^1.0.1":
-  version: 1.12.2
-  resolution: "@electron/get@npm:1.12.2"
+"@electron/get@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "@electron/get@npm:1.13.0"
   dependencies:
     debug: ^4.1.1
     env-paths: ^2.2.0
@@ -89,14 +89,14 @@ __metadata:
     global-tunnel-ng: ^2.7.1
     got: ^9.6.0
     progress: ^2.0.3
-    sanitize-filename: ^1.6.2
+    semver: ^6.2.0
     sumchecker: ^3.0.1
   dependenciesMeta:
     global-agent:
       optional: true
     global-tunnel-ng:
       optional: true
-  checksum: 0d79fdb38fabb7467c7219d86142ccaf21329ecdf3c394371dbc3cc37e54026ac654e30339b50535289a0592294330f330d2cd9f3a315da403230bd9a0bdbb07
+  checksum: 53e93eb2070deb6988fe33a494d89ca1c690a1bb10b8f28239887a2dddf7ff9fa77968ed6f3accc66515a75ee73fb557884f57f6e312acdb4f8fe97b552a1eeb
   languageName: node
   linkType: hard
 
@@ -465,7 +465,7 @@ __metadata:
     auto-launch: ^5.0.5
     concurrently: ^6.2.0
     dragula: ^3.7.3
-    electron: ^13.1.7
+    electron: ^15.0.0
     electron-builder: ^22.11.7
     electron-context-menu: ^3.1.1
     electron-dl: ^3.2.1
@@ -1773,16 +1773,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^13.1.7":
-  version: 13.1.8
-  resolution: "electron@npm:13.1.8"
+"electron@npm:^15.0.0":
+  version: 15.1.1
+  resolution: "electron@npm:15.1.1"
   dependencies:
-    "@electron/get": ^1.0.1
+    "@electron/get": ^1.13.0
     "@types/node": ^14.6.2
     extract-zip: ^1.0.3
   bin:
     electron: cli.js
-  checksum: a20b49e752530fd75a9e0c5bc52ea19dcec21ef35c4bc03203155b1fa332ba09c588adeb1ef7b866c5c12f437cf5ede8bc4fccb497d45f4bcef44676cf8bb999
+  checksum: be8b977cb611e403185d056d3037e35964b737ba43d34ef5394061516301978150b5f477663ec6023cd74b988a2114c1be283e8b2b00e4fb2b70a5593018b9af
   languageName: node
   linkType: hard
 
@@ -3858,7 +3858,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"sanitize-filename@npm:^1.6.2, sanitize-filename@npm:^1.6.3":
+"sanitize-filename@npm:^1.6.3":
   version: 1.6.3
   resolution: "sanitize-filename@npm:1.6.3"
   dependencies:
