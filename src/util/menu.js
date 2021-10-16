@@ -396,6 +396,15 @@ const trayContextMenu = Menu.buildFromTemplate([
     },
   },
   {
+    label: "Open Settings",
+    click() {
+      const mainWindow = BrowserWindow.getAllWindows()[0];
+      mainWindow.webContents.send("open-settings");
+      mainWindow.show();
+      mainWindow.focus();
+    }
+  },
+  {
     label: "Exit",
     click() {
       app.exit(0);

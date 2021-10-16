@@ -93,7 +93,7 @@
         tabSettings = defaultTabSettings();
       }}
     />
-    <NewChatModal visible={$currentModal === ModalType.NewChatModal} />
+    <!-- <NewChatModal visible={$currentModal === ModalType.NewChatModal} /> -->
   </div>
 </main>
 
