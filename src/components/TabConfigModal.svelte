@@ -9,6 +9,7 @@
   import Check from "./svg/Check.svelte";
   import ColorPicker from "./common/ColorPicker.svelte";
   import Modal from "./common/Modal.svelte";
+  const { ipcRenderer } = require("electron");
 
   export let visible = false;
   export let tabSettings: TabType;
@@ -67,6 +68,10 @@
     (document as any)
       .getElementById(`webview-${tabSettings.id}`)
       .openDevTools();
+  };
+
+  const clearTabCache = () => {
+    ipcRenderer.send("clear-cache", tabSettings.id);
   };
 </script>
 
@@ -133,7 +138,7 @@
       />
     </div>
   </div>
-  <div class="controls">
+  <div class={`controls ${tabAlreadyExists ? "vertical-controls" : ""}`}>
     <button class="submit" on:click={submit}>
       <div class="icon">
         {#if tabAlreadyExists}
@@ -147,14 +152,17 @@
       </div>
     </button>
     {#if tabAlreadyExists}
-      <button class="open-devtools" on:click={openTabDevTools}
-        >Open DevTools</button
-      >
+      <div>
+        <button class="open-devtools" on:click={openTabDevTools}
+          >Open DevTools</button
+        >
+        <button on:click={clearTabCache}>Clear Cache</button>
+      </div>
     {/if}
   </div>
 </Modal>
 
-<style>
+<style lang="scss">
   .config {
     margin-bottom: 1.25rem;
   }
@@ -302,5 +310,14 @@
   .icon :global(svg path) {
     width: 100%;
     height: 100%;
+  }
+
+  .vertical-controls {
+    flex-flow: column;
+    align-items: flex-start;
+
+    & > :first-child {
+      margin-bottom: 0.5rem;
+    }
   }
 </style>
