@@ -21,6 +21,7 @@ const importSettings = require("./ipcHandlers/main/importSettings");
 const exportSettings = require("./ipcHandlers/main/exportSettings");
 const promptCloseTab = require("./ipcHandlers/main/promptCloseTab");
 const pruneUnusedPartitions = require("./util/pruneUnusedPartitions");
+const clearCache = require("./util/clearCache");
 const flushSessionData = require("./ipcHandlers/main/flushSessionData");
 const zoom = require("./ipcHandlers/main/zoom");
 const contextMenu = require("electron-context-menu");
@@ -220,7 +221,11 @@ if (!singleInstanceLock) {
       altusAutoLauncher.disable();
     }
 
-    pruneUnusedPartitions(tabStore.get("tabs"), tabStore.get("previouslyClosedTab"), app.getPath("userData"));
+    pruneUnusedPartitions(
+      tabStore.get("tabs"),
+      tabStore.get("previouslyClosedTab"),
+      app.getPath("userData")
+    );
 
     mainWindow.on("blur", () => mainWindow.send("window-blurred"));
 
@@ -235,6 +240,15 @@ if (!singleInstanceLock) {
     ipcMain.on("flush-session-data", flushSessionData);
 
     ipcMain.on("zoom", zoom);
+
+    ipcMain.on("clear-cache", (_, tabId) =>
+      clearCache(
+        tabId,
+        app.getPath("userData"),
+        tabStore.get("tabs"),
+        mainWindow
+      )
+    );
 
     ipcMain.on("click-menu-item", (e, id) => {
       Menu.getApplicationMenu().getMenuItemById(id).click();

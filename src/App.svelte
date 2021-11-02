@@ -39,6 +39,14 @@
     };
   });
 
+  ipcRenderer.on("cleared-tab-cache", () => {
+    alert("Cleared tab cache.");
+  });
+
+  ipcRenderer.on("cleared-all-cache", () => {
+    alert("Cleared all cache.");
+  });
+
   let showTitlebar = false;
 
   onMount(() => {

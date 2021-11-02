@@ -41,6 +41,7 @@
 
   const importSettings = () => ipcRenderer.send("import-settings");
   const exportSettings = () => ipcRenderer.send("export-settings", $settings);
+  const clearAllCache = () => ipcRenderer.send("clear-cache");
 
   ipcRenderer.on("import-settings", (e, imported) => {
     if (imported.settings) {
@@ -124,19 +125,34 @@
     {/each}
   </div>
   <div class="controls">
-    <button on:click={saveSettings} class:spinning={isSavingSettings}>
-      {#if isSavingSettings}
-        <Spinner />
-      {:else}
-        Save
-      {/if}
-    </button>
-    <button title="Import Settings" class="outlined" on:click={importSettings}>
-      <Import />
-    </button>
-    <button title="Export Settings" class="outlined" on:click={exportSettings}>
-      <Export />
-    </button>
+    <div class="left">
+      <button on:click={saveSettings} class:spinning={isSavingSettings}>
+        {#if isSavingSettings}
+          <Spinner />
+        {:else}
+          Save
+        {/if}
+      </button>
+      <button
+        title="Import Settings"
+        class="outlined"
+        on:click={importSettings}
+      >
+        <Import />
+      </button>
+      <button
+        title="Export Settings"
+        class="outlined"
+        on:click={exportSettings}
+      >
+        <Export />
+      </button>
+    </div>
+    <div class="right">
+      <button class="outlined" on:click={clearAllCache}>
+        Clear All Cache
+      </button>
+    </div>
   </div>
 </Modal>
 
@@ -194,8 +210,13 @@
   }
   .controls {
     display: flex;
+    justify-content: space-between;
   }
-  .controls > * {
-    margin-right: 0.5rem;
+  .left {
+    display: flex;
+
+    & > * {
+      margin-right: 0.5rem;
+    }
   }
 </style>
