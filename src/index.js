@@ -20,6 +20,7 @@ const AutoLaunch = require("auto-launch");
 const importSettings = require("./ipcHandlers/main/importSettings");
 const exportSettings = require("./ipcHandlers/main/exportSettings");
 const promptCloseTab = require("./ipcHandlers/main/promptCloseTab");
+const pruneUnusedPartitions = require("./util/pruneUnusedPartitions");
 const flushSessionData = require("./ipcHandlers/main/flushSessionData");
 const zoom = require("./ipcHandlers/main/zoom");
 const contextMenu = require("electron-context-menu");
@@ -30,6 +31,10 @@ const { i18n, i18nOptions } = require("./i18next.conf");
 
 let settings = new Store({
   name: "settings",
+});
+
+const tabStore = new Store({
+  name: "tabs",
 });
 
 let windowState = new Store({
@@ -214,6 +219,8 @@ if (!singleInstanceLock) {
     } else {
       altusAutoLauncher.disable();
     }
+
+    pruneUnusedPartitions(tabStore.get("tabs"), tabStore.get("previouslyClosedTab"), app.getPath("userData"));
 
     mainWindow.on("blur", () => mainWindow.send("window-blurred"));
 
