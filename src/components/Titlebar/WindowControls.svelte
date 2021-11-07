@@ -54,6 +54,7 @@
     grid-template-columns: repeat(3, 46px);
     height: 100%;
     -webkit-app-region: no-drag;
+    margin-left: auto;
   }
   .window-button {
     grid-row: 1 / span 1;

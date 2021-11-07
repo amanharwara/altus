@@ -94,15 +94,10 @@
     }
   }
   #window-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-family: inherit;
-
-    span {
-      line-height: 1.5;
-    }
   }
 </style>
