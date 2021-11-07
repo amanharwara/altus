@@ -1,7 +1,7 @@
 {
   "name": "altus",
   "productName": "Altus",
-  "version": "4.5.0",
+  "version": "4.5.1",
   "description": "Desktop client for WhatsApp Web with themes & multiple account support.",
   "main": "src/index.js",
   "homepage": "https://gitlab.com/amanharwara/altus",
@@ -121,7 +121,7 @@
     "@rollup/plugin-typescript": "^8.2.3",
     "@tsconfig/svelte": "^2.0.1",
     "@types/node": "^16.3.3",
-    "electron": "^15.0.0",
+    "electron": "^15.3.0",
     "electron-builder": "^22.11.7",
     "rollup": "^2.53.2",
     "rollup-plugin-css-only": "^3.1.0",
