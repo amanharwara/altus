@@ -11,21 +11,23 @@ const path = require("path");
  */
 const pruneUnusedPartitions = (tabs, previouslyClosedTab, userDataPath) => {
   const partitionsDirPath = path.join(userDataPath, "Partitions");
-  const partitions = fs.readdirSync(partitionsDirPath);
-  const tabIds = [];
-  tabs.forEach((tab) => {
-    tabIds.push(tab.id);
-  });
-  if (previouslyClosedTab) {
-    tabIds.push(previouslyClosedTab.id);
-  }
-  partitions
-    .filter((id) => !tabIds.includes(id))
-    .forEach((partition) => {
-      fs.rmSync(path.join(partitionsDirPath, partition), {
-        recursive: true,
-      });
+  if (fs.existsSync(partitionsDirPath)) {
+    const partitions = fs.readdirSync(partitionsDirPath);
+    const tabIds = [];
+    tabs.forEach((tab) => {
+      tabIds.push(tab.id);
     });
+    if (previouslyClosedTab) {
+      tabIds.push(previouslyClosedTab.id);
+    }
+    partitions
+      .filter((id) => !tabIds.includes(id))
+      .forEach((partition) => {
+        fs.rmSync(path.join(partitionsDirPath, partition), {
+          recursive: true,
+        });
+      });
+  }
 };
 
 module.exports = pruneUnusedPartitions;
