@@ -14,14 +14,6 @@ let quickRepliesStore = new Store({
 
 ipcRenderer.send("flush-session-data");
 
-if (window.navigator.serviceWorker) {
-  window.navigator.serviceWorker.getRegistrations().then((registrations) => {
-    for (let registration of registrations) {
-      registration.unregister();
-    }
-  });
-}
-
 window.onload = () => {
   const title_element = document.querySelector(".landing-title");
   if (title_element && title_element.innerHTML.includes("Google Chrome")) {
