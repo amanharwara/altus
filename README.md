@@ -42,11 +42,6 @@ If you like Altus, consider supporting it by donating using any of the following
 
 - [LiberaPay](https://liberapay.com/aman_harwara/donate)
 - [Ko-Fi](https://ko-fi.com/U7U3114IH)
-- [Buy Me a Coffee](https://buymeacoffee.com/amanharwara)
-- Bitcoin (BTC): 3B1sPK1casTLbCEiLtkaBM82ZZi4XspWzy
-- Ethereum (ETH): 0xC9CF5bCD07aD9f7F0ae4C63B3A64f1F2dAC347Fa
-- Litecoin (LTC): MPixZutg3dJz23sG32gUE51hJvd5wF2fp4
-- Zcash: t1dz1ptuyjmCu1peVjNPxjBEDYn3Z53TnT9
 
 ## Acknowledgements
 
