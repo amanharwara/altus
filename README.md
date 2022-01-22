@@ -73,3 +73,5 @@ Below is the list of contributors who have contributed to Altus by creating a fe
 
 #### [Nicolás González Meneses](https://github.com/ngmoviedo) - PR #163 (Added Spanish translation)
 
+#### [Hugo Rocha de Moura](https://github.com/hugorochaffs) - PR #185 (Added Portuguese(pt) translation)
+
