@@ -1,5 +1,5 @@
 const i18n = require("i18next");
-const backend = require("i18next-node-fs-backend");
+const backend = require("i18next-fs-backend");
 const langConf = require("./lang.conf");
 
 const i18nOptions = {
