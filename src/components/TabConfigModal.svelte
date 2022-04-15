@@ -21,7 +21,6 @@
   const dispatchEvent = createEventDispatcher();
   const closeModal = () => {
     if ($tabs.length > 0) {
-      console.log("tab config modal");
       dispatchEvent("close-modal");
     }
   };
