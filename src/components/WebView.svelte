@@ -5,6 +5,11 @@
   export let partition;
   export let tab: TabType;
 
+  const userAgent = window.navigator.userAgent.replace(
+    /(Altus|Electron)([^\s]+\s)/g,
+    ""
+  );
+
   let webviewElement;
   let hasStoppedLoading = false;
 
@@ -49,9 +54,6 @@
   preload="../src/preload.js"
   {partition}
   bind:this={webviewElement}
-  useragent={window.navigator.userAgent.replace(
-    /(Altus|Electron)([^\s]+\s)/g,
-    ""
-  )}
+  useragent={userAgent}
   webpreferences={`spellcheck=${tab.config.spellChecker ? 1 : 0}`}
 />
