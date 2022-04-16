@@ -44,7 +44,7 @@ jobs:
           rm -rf squashfs-root
 
       - name: Upload Appimage
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v3.0.0
         with:
           name: altus-continuous-x86_64.AppImage
           path: 'dist/appimage/'
@@ -74,7 +74,7 @@ jobs:
           mv dist/*.dmg dist/darwin/.
 
       - name: Upload DMG
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v3.0.0
         with:
           name: altus-continuous-x86_64.dmg
           path: 'dist/darwin/'
@@ -105,7 +105,7 @@ jobs:
           
 
       - name: Upload Exe
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v3.0.0
         with:
           name: altus-continuous-x86_64.exe
           path: 'dist/windows/'
