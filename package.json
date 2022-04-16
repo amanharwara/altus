@@ -44,9 +44,13 @@
     "mac": {
       "category": "public.app-category.social-networking",
       "icon": "src/icons/icon.icns",
-      "target": [
-        "dmg"
-      ]
+      "target": {
+        "target": "dmg",
+        "arch": [
+          "arm64",
+          "x64"
+        ]
+      }
     },
     "dmg": {
       "background": "img/background.png",
