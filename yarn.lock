@@ -218,9 +218,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-typescript@npm:^8.3.3":
-  version: 8.3.3
-  resolution: "@rollup/plugin-typescript@npm:8.3.3"
+"@rollup/plugin-typescript@npm:^8.3.4":
+  version: 8.3.4
+  resolution: "@rollup/plugin-typescript@npm:8.3.4"
   dependencies:
     "@rollup/pluginutils": ^3.1.0
     resolve: ^1.17.0
@@ -231,7 +231,7 @@ __metadata:
   peerDependenciesMeta:
     tslib:
       optional: true
-  checksum: c255f8bc3b4d94b81a96d7bf5ba426e4e0a9dc68b96be48d97c6646c1c7dcd08319d08805d93306adfa57f87b080ff4a05198e581592ecf6aba06b752006b5f5
+  checksum: 3a86664a1c8a00d715bd61fb3b2d739e1a3eb8c7a8e695a2ac9846e0d93872e8db0aa5695f952635bdbea8f1a5c79bdb643ce0d0eaa244e6cbfadce3f50ab8d9
   languageName: node
   linkType: hard
 
@@ -360,10 +360,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.0.0":
-  version: 18.0.0
-  resolution: "@types/node@npm:18.0.0"
-  checksum: aab2b325727a2599f6d25ebe0dedf58c40fb66a51ce4ca9c0226ceb70fcda2d3afccdca29db5942eb48b158ee8585a274a1e3750c718bbd5399d7f41d62dfdcc
+"@types/node@npm:^18.6.2":
+  version: 18.6.2
+  resolution: "@types/node@npm:18.6.2"
+  checksum: 644c460baedb1fbbd55369ab621167cb39ddaa727fd4fcf4bc7080183cf936d7ff8c2c886ba93ff42768d6f7a579a540e6d1e63d3adba4e5758fb13671ae68ce
   languageName: node
   linkType: hard
 
@@ -525,30 +525,30 @@ __metadata:
     "@rollup/plugin-commonjs": 22.0.1
     "@rollup/plugin-json": ^4.1.0
     "@rollup/plugin-node-resolve": ^13.3.0
-    "@rollup/plugin-typescript": ^8.3.3
+    "@rollup/plugin-typescript": ^8.3.4
     "@tsconfig/svelte": ^3.0.0
-    "@types/node": ^18.0.0
+    "@types/node": ^18.6.2
     auto-launch: ^5.0.5
-    concurrently: ^7.2.2
+    concurrently: ^7.3.0
     dragula: ^3.7.3
-    electron: ^19.0.6
+    electron: ^19.0.10
     electron-builder: ^23.1.0
     electron-context-menu: ^3.3.0
     electron-dl: ^3.3.1
     electron-reload: ^1.5.0
     electron-store: ^8.0.2
-    i18next: ^21.8.11
+    i18next: ^21.8.14
     i18next-fs-backend: ^1.1.4
     node-fetch: ^2.6.7
-    rollup: ^2.75.7
+    rollup: ^2.77.2
     rollup-plugin-css-only: ^3.1.0
     rollup-plugin-livereload: ^2.0.5
     rollup-plugin-svelte: ^7.1.0
     rollup-plugin-terser: ^7.0.2
-    sass: ^1.53.0
+    sass: ^1.54.0
     sirv-cli: ^2.0.2
     stylus: ^0.58.1
-    svelte: ^3.48.0
+    svelte: ^3.49.0
     svelte-check: ^2.8.0
     svelte-preprocess: ^4.10.7
     svelte-select: ^4.4.7
@@ -1314,9 +1314,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^7.2.2":
-  version: 7.2.2
-  resolution: "concurrently@npm:7.2.2"
+"concurrently@npm:^7.3.0":
+  version: 7.3.0
+  resolution: "concurrently@npm:7.3.0"
   dependencies:
     chalk: ^4.1.0
     date-fns: ^2.16.1
@@ -1329,7 +1329,7 @@ __metadata:
     yargs: ^17.3.1
   bin:
     concurrently: dist/bin/concurrently.js
-  checksum: ae9604032d971a49a11c6797ed057380e53bde0ec79d1dcbd23bdbe578961867289089e9729e802520297d8f410e3085333719a3f7a4ce1c2ed167b68c740247
+  checksum: 5de845e4947c550a6ff74ecc80e1897109abe339fe8a7fa117e7b8978362566ac4ee070e4475bdaa6fc453f780fadb9089739a02606e27e04affaa7dd8905d2d
   languageName: node
   linkType: hard
 
@@ -1850,16 +1850,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^19.0.6":
-  version: 19.0.6
-  resolution: "electron@npm:19.0.6"
+"electron@npm:^19.0.10":
+  version: 19.0.10
+  resolution: "electron@npm:19.0.10"
   dependencies:
     "@electron/get": ^1.14.1
     "@types/node": ^16.11.26
     extract-zip: ^1.0.3
   bin:
     electron: cli.js
-  checksum: 19aac7f2051a41877ba16aa5bd7e53cb1cfcb60e724b8edc33823a8efb9c4e312eb26f8c5efef7eafb1079bdc7b433938cbdbdfe82eed567535fb6f1ebdc3da7
+  checksum: 828198c09cf1f9900e6f6a850761ee24d23e5bf157b1ef1960c2353d0c8d686177019df0082a5e08fe0ee7559a4327794e45022a769f45a0738a7a862dd77840
   languageName: node
   linkType: hard
 
@@ -2532,12 +2532,12 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"i18next@npm:^21.8.11":
-  version: 21.8.11
-  resolution: "i18next@npm:21.8.11"
+"i18next@npm:^21.8.14":
+  version: 21.8.14
+  resolution: "i18next@npm:21.8.14"
   dependencies:
     "@babel/runtime": ^7.17.2
-  checksum: 94b9de3811456c2720b96d54febb89fe66cef3146044cdba9cc35543f93bf04843ccffb191ff4dbed614e7d4a64f2e29391dd514e054331738f2411c1936d85f
+  checksum: 83b1a57d761c3d29b90f4e87eb9945902fa13d7750f11bc7f22e8c9999f7e5bf9b2a30c44a9b47569c8ea704573b02a562c2678cf2281073197ace07657d21be
   languageName: node
   linkType: hard
 
@@ -3942,9 +3942,9 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.75.7":
-  version: 2.75.7
-  resolution: "rollup@npm:2.75.7"
+"rollup@npm:^2.77.2":
+  version: 2.77.2
+  resolution: "rollup@npm:2.77.2"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -3952,7 +3952,7 @@ fsevents@~2.3.2:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: a6331d46b01062b184efdcb42ce12caf2e1575f989963944534b02f5855f6f3bc239ed0c1a18893572d7695af6d83166f3aef59dbd0365084e1531cb67824674
+  checksum: 5a84fb98a6f858906bceba091430442f6c1f362b07c5fa9123b708f87e39f52640e34a189cd9a1776ceae61300055c78ba648205fa03188451539ebeb19797df
   languageName: node
   linkType: hard
 
@@ -4025,16 +4025,16 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.53.0":
-  version: 1.53.0
-  resolution: "sass@npm:1.53.0"
+"sass@npm:^1.54.0":
+  version: 1.54.0
+  resolution: "sass@npm:1.54.0"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 4bcb0617d6a4d1f2c089a1cb5c32f65a9ee874b23559f2742fab07cf8478fb74ad20c0730cf9f93915d7dbfc258901f89970674228c3ac91c3883a0a62a0ddab
+  checksum: 7d3acf124d771e8811fce876ad37f786faafa9edce64b20dcf32bf6aed5116802c863d3311fd79e7e7682fcccc4dc684960be1365cffa7dad045be7251c40d70
   languageName: node
   linkType: hard
 
@@ -4632,10 +4632,10 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"svelte@npm:^3.48.0":
-  version: 3.48.0
-  resolution: "svelte@npm:3.48.0"
-  checksum: d72587582b6967bf083ff7dc254f8067c22b57d4678182b48ca51010e0f3a1d98a33a00365046aee0c70ed3ffc716b73141207ec5ac6c44f1f5e34c5477e61ea
+"svelte@npm:^3.49.0":
+  version: 3.49.0
+  resolution: "svelte@npm:3.49.0"
+  checksum: 5b7cb8dbf6b6581b50fab1de63cbcb81816081a1240b03e234b299268fff2f3237bf8f92b683a848f95453353b5694dfe26fa05a55da185a4bb0cd8b80d87dd4
   languageName: node
   linkType: hard
 
