@@ -102,27 +102,26 @@ window.onload = () => {
 
   new MutationObserver((mutations) => {
     // Check when WhatsApp is done loading
-    if (
-      mutations[0].removedNodes.length > 0 &&
-      mutations[0].removedNodes[0].id === "startup"
-    ) {
+
+    if (mutations[0].removedNodes[0]?.innerHTML.includes("progress")) {
+
       addChatIDs();
 
       // Update chat IDs when a chat is added/removed.
       new MutationObserver(() => {
         addChatIDs();
       }).observe(
-        document.querySelector('#pane-side [role="region"]', {
+        document.querySelector('#pane-side div[class][role]'), {
           subtree: true,
           childList: true,
-        })
+        }
       );
 
       // Remove "Update available" message
       if (
         document.querySelector("._3z9_h").innerText.includes("Update available")
       ) {
-        document.querySelector("._3z9_h").style.display = "none";
+        document.querySelector("._3z9_h").firstChild.delete()
       }
     }
 

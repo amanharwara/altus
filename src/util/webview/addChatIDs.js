@@ -1,14 +1,16 @@
 const addChatIDs = () => {
-  if (document.querySelectorAll('#pane-side [role="region"] > *').length > 0) {
+  const section = document.querySelector("#pane-side div[class][role]")
+
+  if (section.childNodes.length > 0) {
     document
-      .querySelectorAll('#pane-side [role="region"] > *')
+      .childNodes
       .forEach((chat) => {
-        let internalInstance =
+        let Fiber =
           chat[
-            Object.keys(chat).find((key) => key.includes("InternalInstance"))
+            Object.keys(chat).find((key) => key.includes("Fiber"))
           ];
         let id =
-          internalInstance.memoizedProps.children.props.contact.id._serialized;
+          Fiber.memoizedProps.children.props.chat.contact.__x_id._serialized;
         chat.id = id;
       });
   }
