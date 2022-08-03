@@ -120,7 +120,7 @@ window.onload = () => {
       if (
         document.querySelector("._3z9_h").innerText.includes("Update available")
       ) {
-        document.querySelector("._3z9_h").firstChild.delete()
+        document.querySelector("._3z9_h").firstChild.remove()
       }
     }
 
