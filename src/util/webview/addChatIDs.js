@@ -2,7 +2,7 @@ const addChatIDs = () => {
   const section = document.querySelector("#pane-side div[class][role]")
 
   if (section.childNodes.length > 0) {
-    document
+    section
       .childNodes
       .forEach((chat) => {
         let Fiber =
