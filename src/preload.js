@@ -104,7 +104,6 @@ window.onload = () => {
     // Check when WhatsApp is done loading
 
     if (mutations[0].removedNodes[0]?.innerHTML.includes("progress")) {
-
       addChatIDs();
 
       // Update chat IDs when a chat is added/removed.
