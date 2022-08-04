@@ -110,7 +110,7 @@ window.onload = () => {
       new MutationObserver(() => {
         addChatIDs();
       }).observe(
-        document.querySelector('#pane-side div[class][role]'), {
+        document.querySelector('#pane-side div[class][aria-rowcount]'), {
           subtree: true,
           childList: true,
         }
