@@ -1,5 +1,5 @@
 const addChatIDs = () => {
-  const section = document.querySelector("#pane-side div[class][role]")
+  const section = document.querySelector("#pane-side div[class][aria-rowcount]")
 
   if (section.childNodes.length > 0) {
     section
