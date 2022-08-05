@@ -104,18 +104,6 @@ window.onload = () => {
     // Check when WhatsApp is done loading
 
     if (mutations[0].removedNodes[0]?.innerHTML.includes("progress")) {
-      addChatIDs();
-
-      // Update chat IDs when a chat is added/removed.
-      new MutationObserver(() => {
-        addChatIDs();
-      }).observe(
-        document.querySelector('#pane-side div[class][aria-rowcount]'), {
-          subtree: true,
-          childList: true,
-        }
-      );
-
       // Remove "Update available" message
       if (
         document.querySelector("._3z9_h").innerText.includes("Update available")
