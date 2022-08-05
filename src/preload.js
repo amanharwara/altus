@@ -1,6 +1,5 @@
 const { ipcRenderer } = require("electron");
 const dispatchMouseEvents = require("./util/webview/dispatchMouseEvents");
-const addChatIDs = require("./util/webview/addChatIDs");
 const formatSelectedText = require("./util/webview/formatSelectedText");
 const enableUtilityBar = require("./util/webview/utilityBar/enableUtilityBar");
 const disableUtilityBar = require("./util/webview/utilityBar/disableUtilityBar");
@@ -108,7 +107,7 @@ window.onload = () => {
       if (
         document.querySelector("._3z9_h").innerText.includes("Update available")
       ) {
-        document.querySelector("._3z9_h").firstChild.remove()
+        document.querySelector("._3z9_h").firstChild.remove();
       }
     }
 
