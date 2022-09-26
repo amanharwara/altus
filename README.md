@@ -1,7 +1,5 @@
 # Altus
 
-[![GitHub All Releases](https://img.shields.io/github/downloads/amanharwara/altus/total.svg?logo=github&logoColor=lime&style=for-the-badge)](https://github.com/amanharwara/altus/releases) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/altus.svg?logo=github&style=for-the-badge)](https://github.com/amanharwara/altus/issues) <a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a> [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
-
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
 ## Features
@@ -35,13 +33,6 @@ Please make sure that you provide a helpful description of your feature request.
 ### "Dark Plus" Theme
 
 ![Altus Dark Theme](./img/Altus-Dark-Theme.png)
-
-## Support
-
-If you like Altus, consider supporting it by donating using any of the following methods:
-
-- [LiberaPay](https://liberapay.com/aman_harwara/donate)
-- [Ko-Fi](https://ko-fi.com/U7U3114IH)
 
 ## Acknowledgements
 
