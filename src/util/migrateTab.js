@@ -8,7 +8,6 @@ const migrateTab = (tab) => {
         theme: tab.theme,
         notifications: tab.notifications,
         sound: tab.sound,
-        utilityBar: tab.utility_bar,
         color: tab.tab_color,
         spellChecker: tab.spellcheck,
       },

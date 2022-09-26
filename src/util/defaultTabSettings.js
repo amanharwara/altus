@@ -9,7 +9,6 @@ const defaultTabSettings = () => {
       theme: "default",
       notifications: true,
       sound: true,
-      utilityBar: false,
       color: "#2A3440",
       spellChecker: false,
     },

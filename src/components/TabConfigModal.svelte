@@ -114,10 +114,6 @@
       <Toggle id="tab-sound" bind:value={tabSettings.config.sound} />
     </div>
     <div class="option">
-      <label for="tab-utilityBar">Utility Bar:</label>
-      <Toggle id="tab-utilityBar" bind:value={tabSettings.config.utilityBar} />
-    </div>
-    <div class="option">
       <label for="tab-color">Color:</label>
       <div class="color-input">
         <ColorPicker bind:color={tabSettings.config.color} />

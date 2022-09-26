@@ -7,7 +7,6 @@ type TabType = {
     theme: string;
     notifications: boolean;
     sound: boolean;
-    utilityBar: boolean;
     color: string;
     spellChecker: boolean;
   };

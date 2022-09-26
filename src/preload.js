@@ -1,15 +1,6 @@
 const { ipcRenderer } = require("electron");
 const dispatchMouseEvents = require("./util/webview/dispatchMouseEvents");
 const formatSelectedText = require("./util/webview/formatSelectedText");
-const enableUtilityBar = require("./util/webview/utilityBar/enableUtilityBar");
-const disableUtilityBar = require("./util/webview/utilityBar/disableUtilityBar");
-const Store = require("electron-store");
-const elementSelectors = require("./util/webview/utilityBar/elementSelectors");
-
-let quickRepliesStore = new Store({
-  name: "quick_replies",
-  defaults: {},
-});
 
 ipcRenderer.send("flush-session-data");
 
@@ -101,7 +92,6 @@ window.onload = () => {
 
   new MutationObserver((mutations) => {
     // Check when WhatsApp is done loading
-
     if (mutations[0].removedNodes[0]?.innerHTML.includes("progress")) {
       // Remove "Update available" message
       if (
@@ -109,80 +99,6 @@ window.onload = () => {
       ) {
         document.querySelector("._3z9_h").firstChild.remove();
       }
-    }
-
-    if (document.querySelector(".two")) {
-      new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.addedNodes.length > 0) {
-            if (
-              Array.from(mutation.addedNodes).find((node) => node.id === "main")
-            ) {
-              if (window.utilityBar) {
-                if (document.querySelector(".utility-bar"))
-                  document.querySelector(".utility-bar").remove();
-                if (!document.querySelector(".utility-bar")) enableUtilityBar();
-              } else {
-                if (document.querySelector(".utility-bar")) disableUtilityBar();
-              }
-            }
-
-            if (
-              Array.from(mutation.addedNodes).find(
-                (node) =>
-                  node.classList &&
-                  node.classList.length > 0 &&
-                  node.classList.contains(elementSelectors.emojiPanel)
-              )
-            ) {
-              if (document.querySelector(".utility-bar")) disableUtilityBar();
-            }
-
-            if (
-              Array.from(mutation.addedNodes).find(
-                (node) =>
-                  node.classList &&
-                  node.classList.length > 0 &&
-                  node.classList.contains(elementSelectors.replyPanel)
-              )
-            ) {
-              let replyHeight = document.querySelector(
-                `.${elementSelectors.replyPanel}`
-              ).scrollHeight;
-              document.querySelector(
-                "footer"
-              ).previousElementSibling.style.height = `${replyHeight + 47}px`;
-              document.querySelector(
-                ".utility-bar"
-              ).style.transform = `translateY(-${replyHeight}px)`;
-            }
-          }
-
-          if (mutation.removedNodes.length > 0) {
-            if (
-              Array.from(mutation.removedNodes).find(
-                (node) =>
-                  (node.classList &&
-                    node.classList.length > 0 &&
-                    node.classList.contains(elementSelectors.emojiPanel)) ||
-                  node.classList.contains(elementSelectors.replyPanel)
-              )
-            ) {
-              if (!document.querySelector(".utility-bar")) {
-                enableUtilityBar();
-              } else {
-                document.querySelector(
-                  "footer"
-                ).previousElementSibling.style.height = "47px";
-                document.querySelector(".utility-bar").style.transform = "";
-              }
-            }
-          }
-        });
-      }).observe(document.querySelector(".two"), {
-        subtree: true,
-        childList: true,
-      });
     }
   }).observe(document.querySelector("#app"), {
     subtree: true,
@@ -200,14 +116,6 @@ const appendTheme = (css) => {
     document.head.appendChild(styleEl);
   }
 };
-
-ipcRenderer.on("set-id", (e, id) => {
-  document.body.id = id;
-  let quickReplies = quickRepliesStore.get(id);
-  if (!quickReplies || quickReplies.length === 0) {
-    quickRepliesStore.set(id, []);
-  }
-});
 
 ipcRenderer.on("set-theme", (e, theme) => {
   // Reset classes
@@ -227,16 +135,6 @@ ipcRenderer.on("set-theme", (e, theme) => {
 
   // Apply CSS
   appendTheme(theme.css ? theme.css : "");
-});
-
-ipcRenderer.on("set-utility-bar", (e, utilityBarEnabled) => {
-  if (utilityBarEnabled) {
-    window.utilityBar = true;
-    if (!document.querySelector(".utility-bar")) enableUtilityBar();
-  } else {
-    window.utilityBar = false;
-    disableUtilityBar();
-  }
 });
 
 ipcRenderer.on("toggle-notifications", (_, setting) => {
