@@ -56,4 +56,5 @@
   bind:this={webviewElement}
   useragent={userAgent}
   webpreferences={`spellcheck=${tab.config.spellChecker ? 1 : 0}`}
+  nodeintegration
 />
