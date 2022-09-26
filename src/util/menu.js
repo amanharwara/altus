@@ -283,42 +283,6 @@ const mainMenu = (i18n) => {
           id: "about",
         },
         {
-          label: i18n.t("Donate"),
-          submenu: [
-            {
-              label: "Liberapay",
-              id: "liberapay",
-              click() {
-                shell.openExternal("https://liberapay.com/aman_harwara/");
-              },
-            },
-            {
-              label: "Ko-Fi",
-              id: "kofi",
-              click() {
-                shell.openExternal("https://ko-fi.com/amanharwara");
-              },
-            },
-            {
-              label: "Buy Me a Coffee",
-              id: "buymeacoffee",
-              click() {
-                shell.openExternal("https://buymeacoffee.com/amanharwara");
-              },
-            },
-            {
-              label: "Other Links",
-              id: "otherlinks",
-              click() {
-                shell.openExternal(
-                  "https://github.com/amanharwara/altus#support"
-                );
-              },
-            },
-          ],
-          id: "donate",
-        },
-        {
           label: i18n.t("Check For &Updates"),
           accelerator: "CmdOrCtrl+Shift+U",
           click() {
@@ -402,7 +366,7 @@ const trayContextMenu = Menu.buildFromTemplate([
       mainWindow.webContents.send("open-settings");
       mainWindow.show();
       mainWindow.focus();
-    }
+    },
   },
   {
     label: "Exit",
