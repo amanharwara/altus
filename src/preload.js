@@ -2,8 +2,6 @@ const { ipcRenderer } = require("electron");
 const dispatchMouseEvents = require("./util/webview/dispatchMouseEvents");
 const formatSelectedText = require("./util/webview/formatSelectedText");
 
-ipcRenderer.send("flush-session-data");
-
 window.onload = () => {
   const title_element = document.querySelector(".landing-title");
   if (title_element && title_element.innerHTML.includes("Google Chrome")) {

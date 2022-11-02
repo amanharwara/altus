@@ -22,7 +22,6 @@ const exportSettings = require("./ipcHandlers/main/exportSettings");
 const promptCloseTab = require("./ipcHandlers/main/promptCloseTab");
 const pruneUnusedPartitions = require("./util/pruneUnusedPartitions");
 const clearCache = require("./util/clearCache");
-const flushSessionData = require("./ipcHandlers/main/flushSessionData");
 const zoom = require("./ipcHandlers/main/zoom");
 const contextMenu = require("electron-context-menu");
 const handleWhatsappLinks = require("./util/handleWhatsappLinks");
@@ -161,6 +160,12 @@ if (!singleInstanceLock) {
   });
 
   app.on("ready", () => {
+    const userAgentFallback = app.userAgentFallback;
+    app.userAgentFallback = userAgentFallback.replace(
+      /(Altus|Electron)([^\s]+\s)/g,
+      ""
+    );
+
     if (app.isPackaged) app.setAsDefaultProtocolClient("whatsapp");
 
     createMainWindow();
@@ -236,8 +241,6 @@ if (!singleInstanceLock) {
     ipcMain.on("export-settings", exportSettings);
 
     ipcMain.on("prompt-close-tab", promptCloseTab);
-
-    ipcMain.on("flush-session-data", flushSessionData);
 
     ipcMain.on("zoom", zoom);
 
