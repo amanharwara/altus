@@ -105,8 +105,8 @@
   "dependencies": {
     "auto-launch": "^5.0.5",
     "dragula": "^3.7.3",
-    "electron-context-menu": "^3.5.0",
-    "electron-dl": "^3.3.1",
+    "electron-context-menu": "^3.6.0",
+    "electron-dl": "^3.4.1",
     "electron-reload": "^1.5.0",
     "electron-store": "^8.1.0",
     "i18next": "^21.9.2",
@@ -118,25 +118,25 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "22.0.2",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^14.1.0",
-    "@rollup/plugin-typescript": "^8.5.0",
+    "@rollup/plugin-commonjs": "23.0.2",
+    "@rollup/plugin-json": "^5.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^9.0.2",
     "@tsconfig/svelte": "^3.0.0",
-    "@types/node": "^18.7.21",
-    "concurrently": "^7.4.0",
-    "electron": "^20.0.3",
-    "electron-builder": "^23.3.3",
+    "@types/node": "^18.11.9",
+    "concurrently": "^7.5.0",
+    "electron": "^21.2.2",
+    "electron-builder": "^23.6.0",
     "rollup": "^2.79.1",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.2",
     "sirv-cli": "^2.0.2",
-    "svelte": "^3.50.1",
-    "svelte-check": "^2.9.0",
+    "svelte": "^3.52.0",
+    "svelte-check": "^2.9.2",
     "svelte-preprocess": "^4.10.7",
-    "tslib": "^2.4.0",
-    "typescript": "^4.8.3"
+    "tslib": "^2.4.1",
+    "typescript": "^4.8.4"
   }
 }
