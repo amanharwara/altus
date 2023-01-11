@@ -16,7 +16,7 @@
     "package": "electron-builder --dir",
     "build": "yarn svelte-build && electron-builder",
     "svelte-build": "rollup -c",
-    "svelte-dev": "rollup -c -w",
+    "svelte-dev": "rollup -c -w --strictDeprecations",
     "svelte-start": "sirv public"
   },
   "keywords": [
@@ -118,10 +118,10 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "23.0.2",
-    "@rollup/plugin-json": "^5.0.1",
+    "@rollup/plugin-commonjs": "24.0.0",
+    "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-typescript": "^9.0.2",
+    "@rollup/plugin-typescript": "^11.0.0",
     "@tsconfig/svelte": "^3.0.0",
     "@types/node": "^18.11.9",
     "concurrently": "^7.5.0",

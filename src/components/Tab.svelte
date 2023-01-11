@@ -26,7 +26,7 @@
   };
 </script>
 
-<div
+<button
   class="tab"
   class:active={tab.active}
   on:click={activateTab}
@@ -38,14 +38,14 @@
   {/if}
   <div class="name">{tab.name}</div>
   <div class="controls">
-    <div class="edit" on:click={editTab} style="stroke: #fff">
+    <button class="edit" on:click={editTab} style="stroke: #fff">
       <Cog />
-    </div>
-    <div class="close" on:click={removeTab}>
+    </button>
+    <button class="close" on:click={removeTab}>
       <Close />
-    </div>
+    </button>
   </div>
-</div>
+</button>
 
 <style lang="scss">
   .tab {
@@ -80,6 +80,10 @@
   .controls > * {
     width: 1.25rem;
     height: 1.25rem;
+    padding: 0 !important;
+    margin: 0;
+    background: transparent !important;
+    border: none;
 
     :global(svg) {
       width: 100%;
