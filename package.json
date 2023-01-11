@@ -128,7 +128,7 @@
     "electron": "^21.2.2",
     "electron-builder": "^23.6.0",
     "rollup": "^2.79.1",
-    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-css-only": "^4.3.0",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.2",

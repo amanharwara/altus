@@ -252,17 +252,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/pluginutils@npm:4":
-  version: 4.2.1
-  resolution: "@rollup/pluginutils@npm:4.2.1"
-  dependencies:
-    estree-walker: ^2.0.1
-    picomatch: ^2.2.2
-  checksum: 6bc41f22b1a0f1efec3043899e4d3b6b1497b3dea4d94292d8f83b4cf07a1073ecbaedd562a22d11913ff7659f459677b01b09e9598a98936e746780ecc93a12
-  languageName: node
-  linkType: hard
-
-"@rollup/pluginutils@npm:^5.0.1":
+"@rollup/pluginutils@npm:5, @rollup/pluginutils@npm:^5.0.1":
   version: 5.0.2
   resolution: "@rollup/pluginutils@npm:5.0.2"
   dependencies:
@@ -566,7 +556,7 @@ __metadata:
     i18next-fs-backend: ^1.1.5
     node-fetch: ^2.6.7
     rollup: ^2.79.1
-    rollup-plugin-css-only: ^3.1.0
+    rollup-plugin-css-only: ^4.3.0
     rollup-plugin-livereload: ^2.0.5
     rollup-plugin-svelte: ^7.1.0
     rollup-plugin-terser: ^7.0.2
@@ -1866,7 +1856,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"estree-walker@npm:^2.0.1, estree-walker@npm:^2.0.2":
+"estree-walker@npm:^2.0.2":
   version: 2.0.2
   resolution: "estree-walker@npm:2.0.2"
   checksum: 6151e6f9828abe2259e57f5fd3761335bb0d2ebd76dc1a01048ccee22fabcfef3c0859300f6d83ff0d1927849368775ec5a6d265dde2f6de5a1be1721cd94efc
@@ -3371,7 +3361,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.2.2, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
+"picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 050c865ce81119c4822c45d3c84f1ced46f93a0126febae20737bd05ca20589c564d6e9226977df859ed5e03dc73f02584a2b0faad36e896936238238b0446cf
@@ -3686,14 +3676,14 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"rollup-plugin-css-only@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "rollup-plugin-css-only@npm:3.1.0"
+"rollup-plugin-css-only@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "rollup-plugin-css-only@npm:4.3.0"
   dependencies:
-    "@rollup/pluginutils": 4
+    "@rollup/pluginutils": 5
   peerDependencies:
-    rollup: 1 || 2
-  checksum: ea64ccb19f91ccefd6bcf5975d84c9da776028146ab1d485586c8bf67a0ba294ca8105b287cd9d3589ac427db7b1b3a4e83f6f01026369776dba2298df59b292
+    rollup: <4
+  checksum: c56228cf9108e4df3bef6babbc5d18c285d7b3ad1e2b461362c0f6d6e73c1291cd2bea4c8ed9d3e157a577429e40726099b911e90d918e35df1c67c385a56fa0
   languageName: node
   linkType: hard
 
