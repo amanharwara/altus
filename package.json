@@ -105,8 +105,8 @@
   "dependencies": {
     "auto-launch": "^5.0.5",
     "dragula": "^3.7.3",
-    "electron-context-menu": "^3.6.0",
-    "electron-dl": "^3.4.1",
+    "electron-context-menu": "^3.6.1",
+    "electron-dl": "^3.5.0",
     "electron-reload": "^1.5.0",
     "electron-store": "^8.1.0",
     "i18next": "^21.9.2",

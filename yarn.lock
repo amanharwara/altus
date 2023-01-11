@@ -580,8 +580,8 @@ __metadata:
     dragula: ^3.7.3
     electron: ^22.0.1
     electron-builder: ^23.6.0
-    electron-context-menu: ^3.6.0
-    electron-dl: ^3.4.1
+    electron-context-menu: ^3.6.1
+    electron-dl: ^3.5.0
     electron-reload: ^1.5.0
     electron-store: ^8.1.0
     i18next: ^21.9.2
@@ -1695,14 +1695,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-context-menu@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "electron-context-menu@npm:3.6.0"
+"electron-context-menu@npm:^3.6.1":
+  version: 3.6.1
+  resolution: "electron-context-menu@npm:3.6.1"
   dependencies:
     cli-truncate: ^2.1.0
     electron-dl: ^3.2.1
     electron-is-dev: ^2.0.0
-  checksum: 99f8ebb09b319fa55a37b315701fc79c567c3edadaa55bdd354917d841e9941f078b12bde1e3ea797a8c54e64c79711906a23c98ebd04f62525a895efd4752fa
+  checksum: b967151089f4b43431713f505942c9cf00069dfb158a87a41e3b924d8e7bff7a53595a9277fb232baa7f9d4d08b1e0b522cfacec0d5d6f06e23bfaf9792075ee
   languageName: node
   linkType: hard
 
@@ -1717,14 +1717,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-dl@npm:^3.4.1":
-  version: 3.4.1
-  resolution: "electron-dl@npm:3.4.1"
+"electron-dl@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "electron-dl@npm:3.5.0"
   dependencies:
     ext-name: ^5.0.0
     pupa: ^2.0.1
     unused-filename: ^2.1.0
-  checksum: ed55a803488af903312edc0a181e0b78e7e637f91a5ab47e0cbc4e47b76d93ef505f8bdc14bf822c9d4ca3697a17c5a85d2c2c08566320b14000a3d4e2f4ec87
+  checksum: 70534c4e61e1f7e2c83cf78adde77a3f24ce955cb2273e8614d23d6d3f5920a3153065c192becf22535bec73948b10ac5523e920b58891286d18a7894deaa501
   languageName: node
   linkType: hard
 
