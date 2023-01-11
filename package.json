@@ -114,7 +114,7 @@
     "node-fetch": "^2.6.7",
     "sass": "^1.55.0",
     "stylus": "^0.59.0",
-    "svelte-select": "^4.4.7",
+    "svelte-select": "^5.1.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -123,8 +123,8 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-typescript": "^11.0.0",
     "@tsconfig/svelte": "^3.0.0",
-    "@types/node": "^18.11.9",
-    "concurrently": "^7.5.0",
+    "@types/node": "^18.11.18",
+    "concurrently": "^7.6.0",
     "electron": "^22.0.1",
     "electron-builder": "^23.6.0",
     "rollup": "^3.9.1",
