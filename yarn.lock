@@ -587,7 +587,7 @@ __metadata:
     i18next: ^22.4.9
     i18next-fs-backend: ^2.1.1
     node-fetch: ^2.6.7
-    rollup: ^3.9.1
+    rollup: ^2.79.1
     rollup-plugin-css-only: ^4.3.0
     rollup-plugin-livereload: ^2.0.5
     rollup-plugin-svelte: ^7.1.0
@@ -3732,9 +3732,9 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"rollup@npm:^3.9.1":
-  version: 3.9.1
-  resolution: "rollup@npm:3.9.1"
+"rollup@npm:^2.79.1":
+  version: 2.79.1
+  resolution: "rollup@npm:2.79.1"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -3742,7 +3742,7 @@ fsevents@~2.3.2:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 929cfab6b8bb2e20c28d7a4c3909b53729f4a63d8cc14f3b1a217d5f8e550737ee0903124ba58a1f2e7efd45c596e044a968aa379411731d0e76c910621d7d3f
+  checksum: 6a2bf167b3587d4df709b37d149ad0300692cc5deb510f89ac7bdc77c8738c9546ae3de9322b0968e1ed2b0e984571f5f55aae28fa7de4cfcb1bc5402a4e2be6
   languageName: node
   linkType: hard
 
