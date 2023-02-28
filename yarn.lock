@@ -4759,11 +4759,11 @@ fsevents@~2.3.2:
   linkType: hard
 
 "ws@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "ws@npm:6.2.1"
+  version: 6.2.2
+  resolution: "ws@npm:6.2.2"
   dependencies:
     async-limiter: ~1.0.0
-  checksum: 82f7512bb74ad6e94002b5016944aee2aeefd1c480477b5f55a03ee010d4a1bd5bb4a688e07695f0a727227a0591a1a7c70e31f97baad826e3c48f85be4db6a9
+  checksum: aec3154ec51477c094ac2cb5946a156e17561a581fa27005cbf22c53ac57f8d4e5f791dd4bbba6a488602cb28778c8ab7df06251d590507c3c550fd8ebeee949
   languageName: node
   linkType: hard
 
