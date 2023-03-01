@@ -70,14 +70,14 @@ window.onload = () => {
   });
 
   new MutationObserver(function (mutations) {
-    let title = mutations[0].target.innerText;
+    let title = document.querySelector("title").textContent;
     let title_regex = /([0-9]+)/;
     let messageCount = title_regex.exec(title)
       ? parseInt(title_regex.exec(title)[0])
         ? parseInt(title_regex.exec(title)[0])
         : null
       : null;
-    let tabId = document.body.id;
+    let tabId = document.body.dataset.tabId;
     ipcRenderer.send("message-indicator", {
       messageCount,
       tabId,
@@ -92,10 +92,12 @@ window.onload = () => {
     // Check when WhatsApp is done loading
     if (mutations[0].removedNodes[0]?.innerHTML.includes("progress")) {
       // Remove "Update available" message
+      const updateAvailableElement = document.querySelector("._3z9_h");
       if (
-        document.querySelector("._3z9_h").innerText.includes("Update available")
+        updateAvailableElement &&
+        updateAvailableElement.innerText.includes("Update available")
       ) {
-        document.querySelector("._3z9_h").firstChild.remove();
+        updateAvailableElement.firstChild.remove();
       }
     }
   }).observe(document.querySelector("#app"), {
@@ -114,6 +116,10 @@ const appendTheme = (css) => {
     document.head.appendChild(styleEl);
   }
 };
+
+ipcRenderer.on("set-id", (e, id) => {
+  document.body.dataset.tabId = id;
+});
 
 ipcRenderer.on("set-theme", (e, theme) => {
   // Reset classes
