@@ -101,7 +101,16 @@
         tabSettings = defaultTabSettings();
       }}
     />
-    <!-- <NewChatModal visible={$currentModal === ModalType.NewChatModal} /> -->
+    <NewChatModal
+      visible={$currentModal === ModalType.NewChatModal}
+      on:start-new-chat={({ detail }) => {
+        document.querySelector(
+          ".active webview"
+          // @ts-ignore
+        ).src = `https://web.whatsapp.com/send/?phone=${detail}`;
+        currentModal.set(null);
+      }}
+    />
   </div>
 </main>
 

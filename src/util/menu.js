@@ -18,6 +18,13 @@ const mainMenu = (i18n) => {
       id: "file",
       submenu: [
         {
+          label: i18n.t("Start &New Chat"),
+          click() {
+            let window = BrowserWindow.getFocusedWindow();
+            window.webContents.send("new-chat");
+          },
+        },
+        {
           label: i18n.t("Force &Reload"),
           role: "forceReload",
           id: "forceReload",
