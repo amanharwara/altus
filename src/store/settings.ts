@@ -81,6 +81,12 @@ const defaultSettings: () => Settings = () => {
       description:
         "When enabled, Altus will use a custom titlebar instead of the one provided by the system. (NOTE: Requires a restart for changes to apply.)",
     },
+    systemScrollbars: {
+      value: false,
+      name: "Use system scrollbars for UI",
+      description:
+        "When enabled, Altus will use the system scrollbar style instead of a custom style. This does not apply to the WhatsApp UI, use a custom theme for that.",
+    },
     rememberWindowSize: {
       value: false,
       name: "Remember Window Size",

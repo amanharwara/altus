@@ -258,10 +258,10 @@
     display: flex;
     overflow-x: auto;
   }
-  .tabs::-webkit-scrollbar {
+  :global(.custom-scrollbar) .tabs::-webkit-scrollbar {
     height: 5px;
   }
-  .tabs::-webkit-scrollbar-thumb {
+  :global(.custom-scrollbar) .tabs::-webkit-scrollbar-thumb {
     background: #36475d;
   }
   .add-tab {

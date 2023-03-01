@@ -176,10 +176,10 @@
     overflow-x: hidden;
     margin-bottom: 0.75rem;
   }
-  .settings::-webkit-scrollbar {
+  :global(.custom-scrollbar) .settings::-webkit-scrollbar {
     width: 5px;
   }
-  .settings::-webkit-scrollbar-thumb {
+  :global(.custom-scrollbar) .settings::-webkit-scrollbar-thumb {
     background: #36475d;
   }
   .setting {

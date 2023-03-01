@@ -64,7 +64,7 @@
   });
 </script>
 
-<main>
+<main class:custom-scrollbar={!$settings["systemScrollbars"]?.value}>
   {#if showTitlebar}
     <CustomTitlebar />
   {/if}
