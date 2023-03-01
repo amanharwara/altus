@@ -244,9 +244,9 @@
       {/each}
     </div>
   {/if}
-  <div class="add-tab" on:click={() => dispatchEvent("add-tab")}>
+  <button class="add-tab" on:click={() => dispatchEvent("add-tab")}>
     <Add />
-  </div>
+  </button>
 </div>
 
 <style>
