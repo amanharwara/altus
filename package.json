@@ -1,7 +1,7 @@
 {
   "name": "altus",
   "productName": "Altus",
-  "version": "4.8.3",
+  "version": "4.8.5",
   "description": "Desktop client for WhatsApp Web with themes & multiple account support.",
   "main": "src/index.js",
   "homepage": "https://gitlab.com/amanharwara/altus",
