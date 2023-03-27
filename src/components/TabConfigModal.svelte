@@ -98,9 +98,9 @@
         value={themeSelectItems.find(
           (theme) => theme.value === tabSettings.config.theme
         )}
-        showIndicator={true}
-        isClearable={false}
-        on:select={(e) => {
+        showChevron={true}
+        clearable={false}
+        on:change={(e) => {
           tabSettings.config.theme = e.detail.value;
         }}
       />
@@ -233,24 +233,19 @@
   }
 
   .selector {
-    --borderRadius: 0;
-    --listBorderRadius: 0;
-    --itemFirstBorderRadius: 0;
-    --inputColor: #000;
-    --inputPadding: 0.35rem 0.5rem;
-    --inputFontSize: 1rem;
-    --itemColor: #000;
-    --itemPadding: 0 0.5rem;
-    --itemFontSize: 0.95rem;
+    --border-radius: 0;
+    --list-border-radius: 0;
+    --item-first-border-radius: 0;
+    --input-color: #000;
+    --input-font-size: 1rem;
+    --item-color: #000;
+    --item-padding: 0 0.5rem;
+    --item-font-size: 0.95rem;
     --height: calc(1rem + 0.55rem * 2);
-    --indicatorTop: calc(var(--height) - 88%);
-    --indicatorRight: 0.5rem;
+    --indicator-top: calc(var(--height) - 88%);
+    --indicator-right: 0.25rem;
     color: #000;
     margin-bottom: 0.75rem !important;
-  }
-
-  .selector :global(.selectContainer) {
-    --padding: 0 0.5rem !important;
   }
 
   .selector :global(.selectedItem),
