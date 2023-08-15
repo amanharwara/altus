@@ -1,4 +1,4 @@
-# (c) Srevin Saju 2020. All rights reserved 
+# (c) Srevin Saju 2020. All rights reserved
 # Licensed under MIT License
 # Continuous Integration to release configured AppImages for Altus
 
@@ -17,13 +17,13 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 15
+          node-version: 18
 
       - name: Current Directory Structure
         run: |
           ls 
           git describe --tags --always
-      
+
       - name: Build Altus
         run: |
           yarn install
@@ -47,9 +47,8 @@ jobs:
         uses: actions/upload-artifact@v3.0.0
         with:
           name: altus-continuous-x86_64.AppImage
-          path: 'dist/appimage/'
-          
- 
+          path: "dist/appimage/"
+
   Darwin:
     runs-on: macos-latest
     steps:
@@ -62,7 +61,7 @@ jobs:
         run: |
           ls 
           git describe --tags --always
-      
+
       - name: Build Altus
         run: |
           yarn install
@@ -77,8 +76,8 @@ jobs:
         uses: actions/upload-artifact@v3.0.0
         with:
           name: altus-continuous-x86_64.dmg
-          path: 'dist/darwin/'
- 
+          path: "dist/darwin/"
+
   Windows:
     runs-on: windows-latest
     steps:
@@ -91,7 +90,7 @@ jobs:
         run: |
           ls 
           git describe --tags --always
-      
+
       - name: Build Altus
         run: |
           yarn install
@@ -102,29 +101,27 @@ jobs:
           mkdir -p dist/windows
           mv dist/*.exe dist/windows/.
           cd dist/windows
-          
 
       - name: Upload Exe
         uses: actions/upload-artifact@v3.0.0
         with:
           name: altus-continuous-x86_64.exe
-          path: 'dist/windows/'
+          path: "dist/windows/"
 
   Release:
     needs: [AppImage, Windows, Darwin]
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v2
 
-    - name: Release
-      uses: marvinpinto/action-automatic-releases@v1.2.1
-      with:
-        prerelease: false
-        files: |
-          altus-continuous-x86_64.AppImage
-          altus-continuous-x86_64.exe
-          altus-continuous-x86_64.dmg
+      - name: Release
+        uses: marvinpinto/action-automatic-releases@v1.2.1
+        with:
+          prerelease: false
+          files: |
+            altus-continuous-x86_64.AppImage
+            altus-continuous-x86_64.exe
+            altus-continuous-x86_64.dmg
 
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
- 
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
