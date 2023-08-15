@@ -30,27 +30,23 @@
 </script>
 
 <header id="titlebar" class:blurred class:maximized>
-  <div id="drag-region">
-    <div id="window-icon">
-      <img src="./icon.png" alt="Altus Icon" />
-    </div>
-    <Menubar />
-    <div id="window-title">
-      <span>Altus</span>
-    </div>
-    <WindowControls
-      on:close={close}
-      on:maximize={maximize}
-      on:minimize={minimize}
-      on:restore={restore}
-      {maximized}
-    />
+  <div id="window-icon">
+    <img src="./icon.png" alt="Altus Icon" />
   </div>
+  <Menubar />
+  <div id="window-title">Altus</div>
+  <WindowControls
+    on:close={close}
+    on:maximize={maximize}
+    on:minimize={minimize}
+    on:restore={restore}
+    {maximized}
+  />
 </header>
 
 <style lang="scss">
   #titlebar {
-    display: block;
+    display: flex;
     height: 32px;
     width: 100%;
     position: relative;
@@ -61,26 +57,20 @@
     font-family: "Segoe UI", "Inter", Roboto, Oxygen, Ubuntu, Cantarell,
       "Open Sans", "Helvetica Neue", sans-serif;
     z-index: 3;
+    user-select: none;
 
     &.maximized {
       padding: 0;
     }
-  }
-  #drag-region {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    -webkit-app-region: drag;
-    user-select: none;
+    &.blurred {
+      opacity: 0.75;
+    }
 
     & > :global(:not(#window-controls)) {
       font-size: 13px;
     }
-
-    .blurred & {
-      opacity: 0.75;
-    }
   }
+
   #window-icon {
     display: flex;
     align-items: center;
@@ -94,10 +84,16 @@
     }
   }
   #window-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    flex-grow: 1;
     font-family: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 1rem;
+  }
+
+  #window-icon,
+  #window-title {
+    -webkit-app-region: drag;
   }
 </style>

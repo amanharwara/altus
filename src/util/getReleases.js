@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 const getReleases = async () => {
   try {
     let releasesPromise = await fetch(

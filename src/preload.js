@@ -90,7 +90,7 @@ window.onload = () => {
 
   new MutationObserver((mutations) => {
     // Check when WhatsApp is done loading
-    if (mutations[0].removedNodes[0]?.innerHTML.includes("progress")) {
+    if (mutations[0].removedNodes[0]?.innerHTML?.includes("progress")) {
       // Remove "Update available" message
       const updateAvailableElement = document.querySelector("._3z9_h");
       if (
