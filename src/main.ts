@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from "electron";
 import path from "path";
+import { isDev } from "./utils/isDev";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -23,8 +24,7 @@ const createWindow = () => {
     );
   }
 
-  // @ts-expect-error - import.meta.env works fine but TS throws an error
-  if (import.meta.env.DEV) {
+  if (isDev) {
     mainWindow.webContents.openDevTools();
   }
 };
