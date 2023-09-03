@@ -2,8 +2,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { isDev } from "./utils/isDev";
 import { electronTabStore } from "./stores/tabs/electron";
-
-console.log(app.getPath("userData"));
+import { Tab } from "./stores/tabs/common";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -37,6 +36,14 @@ const createWindow = () => {
 
   ipcMain.handle("get-previously-closed-tab", () => {
     return electronTabStore.get("previouslyClosedTab");
+  });
+
+  ipcMain.handle("set-tabs", (_event, tabs: Tab[]) => {
+    return electronTabStore.set("tabs", tabs);
+  });
+
+  ipcMain.handle("set-previously-closed-tab", (_event, tab: Tab) => {
+    return electronTabStore.set("previouslyClosedTab", tab);
   });
 };
 

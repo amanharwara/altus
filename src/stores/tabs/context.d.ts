@@ -1,10 +1,7 @@
-import { type Tab } from "./common";
+import { type ElectronTabStoreIpcApi } from "./common";
 
 declare global {
   interface Window {
-    electronTabStore: {
-      getTabs: () => Promise<Tab[]>;
-      getPreviouslyClosedTab: () => Promise<Tab | null>;
-    };
+    electronTabStore: ElectronTabStoreIpcApi;
   }
 }

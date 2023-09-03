@@ -21,3 +21,10 @@ export const TabStoreDefaults = (): TabStore => ({
   tabs: [],
   previouslyClosedTab: null,
 });
+
+export type ElectronTabStoreIpcApi = {
+  getTabs: () => Promise<Tab[]>;
+  getPreviouslyClosedTab: () => Promise<Tab | null>;
+  setTabs: (tabs: Tab[]) => Promise<void>;
+  setPreviouslyClosedTab: (tab: Tab | null) => Promise<void>;
+};
