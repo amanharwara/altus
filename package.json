@@ -1,23 +1,15 @@
 {
   "name": "altus",
   "productName": "Altus",
-  "version": "4.8.7",
+  "version": "5.0.0",
   "description": "Desktop client for WhatsApp Web with themes & multiple account support.",
-  "main": "src/index.js",
-  "homepage": "https://gitlab.com/amanharwara/altus",
-  "repository": {
-    "url": "https://gitlab.com/amanharwara/altus"
-  },
-  "bugs": {
-    "url": "https://gitlab.com/amanharwara/altus/-/issues"
-  },
+  "main": ".vite/build/main.js",
   "scripts": {
-    "start": "concurrently \"npm:svelte-dev\" \"electron .\"",
-    "package": "electron-builder --dir",
-    "build": "yarn svelte-build && electron-builder",
-    "svelte-build": "rollup -c",
-    "svelte-dev": "rollup -c -w --strictDeprecations",
-    "svelte-start": "sirv public"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts,.tsx ."
   },
   "keywords": [
     "whatsapp",
@@ -29,113 +21,23 @@
     "email": "amanharwara@protonmail.com"
   },
   "license": "GPL-3.0",
-  "build": {
-    "appId": "harwara.aman.altus",
-    "productName": "Altus",
-    "protocols": [
-      {
-        "name": "whatsapp",
-        "role": "Viewer",
-        "schemes": [
-          "whatsapp"
-        ]
-      }
-    ],
-    "mac": {
-      "category": "public.app-category.social-networking",
-      "icon": "src/icons/icon.icns",
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "arm64",
-            "x64"
-          ]
-        }
-      ]
-    },
-    "dmg": {
-      "background": "img/background.png",
-      "icon": "src/icons/icon.icns",
-      "iconSize": 100,
-      "contents": [
-        {
-          "x": 380,
-          "y": 260,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 110,
-          "y": 260,
-          "type": "file"
-        }
-      ],
-      "window": {
-        "width": 500,
-        "height": 400
-      }
-    },
-    "nsis": {
-      "installerSidebar": "img/installerSidebar.bmp",
-      "oneClick": "false",
-      "artifactName": "${productName}-Setup-${version}.${ext}",
-      "allowToChangeInstallationDirectory": "true"
-    },
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ],
-      "icon": "src/icons/icon.ico"
-    },
-    "linux": {
-      "category": "Chat",
-      "target": [
-        "AppImage"
-      ],
-      "icon": "src/icons/icon.png"
-    }
+  "devDependencies": {
+    "@electron-forge/cli": "^6.4.1",
+    "@electron-forge/maker-deb": "^6.4.1",
+    "@electron-forge/maker-rpm": "^6.4.1",
+    "@electron-forge/maker-squirrel": "^6.4.1",
+    "@electron-forge/maker-zip": "^6.4.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.4.1",
+    "@electron-forge/plugin-vite": "^6.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "electron": "26.1.0",
+    "eslint": "^8.0.1",
+    "eslint-plugin-import": "^2.25.0",
+    "ts-node": "^10.0.0",
+    "typescript": "~4.5.4"
   },
   "dependencies": {
-    "auto-launch": "^5.0.6",
-    "dragula": "^3.7.3",
-    "electron-context-menu": "^3.6.1",
-    "electron-dl": "^3.5.0",
-    "electron-reload": "^1.5.0",
-    "electron-store": "^8.1.0",
-    "i18next": "^23.4.4",
-    "i18next-fs-backend": "^2.1.5",
-    "sass": "^1.65.1",
-    "stylus": "^0.59.0",
-    "svelte-select": "^5.6.1",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "25.0.4",
-    "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "@rollup/plugin-typescript": "^11.1.2",
-    "@tsconfig/svelte": "^5.0.0",
-    "@types/node": "^20.5.0",
-    "concurrently": "^8.2.0",
-    "electron": "^26.0.0",
-    "electron-builder": "^24.6.3",
-    "rollup": "^3.28.0",
-    "rollup-plugin-css-only": "^4.3.0",
-    "rollup-plugin-livereload": "^2.0.5",
-    "rollup-plugin-svelte": "^7.1.6",
-    "rollup-plugin-terser": "^7.0.2",
-    "sirv-cli": "^2.0.2",
-    "svelte": "^4.2.0",
-    "svelte-check": "^3.5.0",
-    "svelte-preprocess": "^5.0.4",
-    "tslib": "^2.6.1",
-    "typescript": "^5.1.6"
+    "electron-squirrel-startup": "^1.0.0"
   }
 }
