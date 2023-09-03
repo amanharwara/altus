@@ -3,3 +3,14 @@
 // whether you're running in development or production).
 declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string;
 declare const MAIN_WINDOW_VITE_NAME: string;
+
+// vite import meta env
+interface ImportMeta {
+  env: {
+    BASE_URL: string;
+    DEV: boolean;
+    MODE: string;
+    PROD: boolean;
+    SSR: boolean;
+  };
+}
