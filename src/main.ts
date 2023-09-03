@@ -15,6 +15,7 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      webviewTag: true,
     },
   });
 
@@ -47,7 +48,15 @@ const createWindow = () => {
   });
 };
 
-app.on("ready", createWindow);
+app.on("ready", () => {
+  const userAgentFallback = app.userAgentFallback;
+  app.userAgentFallback = userAgentFallback.replace(
+    /(Altus|Electron)([^\s]+\s)/g,
+    ""
+  );
+
+  createWindow();
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
