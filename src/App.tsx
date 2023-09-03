@@ -1,4 +1,5 @@
-import type { Component } from "solid-js";
+import { createEffect, type Component } from "solid-js";
+import { tabStore } from "./stores/tabs/store";
 
 const App: Component = () => {
   return (

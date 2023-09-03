@@ -13,6 +13,7 @@
     "resolveJsonModule": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
+    "strict": true,
   },
   "include": [
     "src"

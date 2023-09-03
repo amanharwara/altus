@@ -1,2 +1,7 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+import { contextBridge, ipcRenderer } from "electron";
+
+contextBridge.exposeInMainWorld("electronTabStore", {
+  getTabs: async () => await ipcRenderer.invoke("get-tabs"),
+  getPreviouslyClosedTab: async () =>
+    await ipcRenderer.invoke("get-previously-closed-tab"),
+});
