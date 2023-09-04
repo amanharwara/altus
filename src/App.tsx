@@ -1,13 +1,29 @@
-import { For, type Component } from "solid-js";
+import { For, type Component, onMount } from "solid-js";
 import { Tabs } from "@kobalte/core";
-import { tabStore } from "./stores/tabs/store";
+import { setTabActive, tabStore } from "./stores/tabs/store";
 import { type Tab } from "./stores/tabs/common";
+import { WebviewTag } from "electron";
 
 const WebView: Component<{ tab: Tab }> = (props) => {
   const { tab } = props;
 
+  let webviewRef: WebviewTag | undefined;
+
+  onMount(() => {
+    const webview = webviewRef;
+
+    if (!webview) {
+      return;
+    }
+
+    webview.addEventListener("dom-ready", () => {
+      //
+    });
+  });
+
   return (
     <webview
+      ref={webviewRef}
       class="w-full h-full"
       id={`webview-${tab.id}`}
       src="https://web.whatsapp.com"
@@ -19,7 +35,11 @@ const WebView: Component<{ tab: Tab }> = (props) => {
 const App: Component = () => {
   return (
     <>
-      <Tabs.Root class="h-full flex flex-col">
+      <Tabs.Root
+        value={tabStore.selectedTabId}
+        onChange={setTabActive}
+        class="h-full flex flex-col"
+      >
         <Tabs.List class="flex bg-zinc-800">
           <For each={tabStore.tabs}>
             {(tab) => (

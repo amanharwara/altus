@@ -7,6 +7,7 @@ declare module "solid-js" {
     interface IntrinsicElements {
       webview: Partial<WebviewTag> & {
         class?: string;
+        ref?: WebviewTag | ((el: WebviewTag) => void);
       };
     }
   }

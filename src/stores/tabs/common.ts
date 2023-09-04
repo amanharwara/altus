@@ -1,7 +1,6 @@
 export type Tab = {
   id: string;
   name: string;
-  active: boolean;
   messageCount?: number;
   config: {
     theme: string;
@@ -15,16 +14,18 @@ export type Tab = {
 export type TabStore = {
   tabs: Tab[];
   previouslyClosedTab: Tab | null;
+  selectedTabId: string | undefined;
 };
 
 export const TabStoreDefaults = (): TabStore => ({
   tabs: [],
   previouslyClosedTab: null,
+  selectedTabId: undefined,
 });
 
 export type ElectronTabStoreIpcApi = {
-  getTabs: () => Promise<Tab[]>;
-  getPreviouslyClosedTab: () => Promise<Tab | null>;
+  getStore: () => Promise<TabStore>;
   setTabs: (tabs: Tab[]) => Promise<void>;
   setPreviouslyClosedTab: (tab: Tab | null) => Promise<void>;
+  setSelectedTabId: (id: string | undefined) => Promise<void>;
 };

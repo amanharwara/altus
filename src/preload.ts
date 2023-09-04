@@ -2,12 +2,13 @@ import { contextBridge, ipcRenderer } from "electron";
 import { ElectronTabStoreIpcApi, Tab } from "./stores/tabs/common";
 
 const electronTabStoreIpcApi: ElectronTabStoreIpcApi = {
-  getTabs: async () => await ipcRenderer.invoke("get-tabs"),
-  getPreviouslyClosedTab: async () =>
-    await ipcRenderer.invoke("get-previously-closed-tab"),
-  setTabs: async (tabs: Tab[]) => ipcRenderer.invoke("set-tabs", tabs),
+  getStore: async () => await ipcRenderer.invoke("tab-store-get"),
+  setTabs: async (tabs: Tab[]) =>
+    ipcRenderer.invoke("tab-store-set", "tabs", tabs),
   setPreviouslyClosedTab: async (tab: Tab | null) =>
-    ipcRenderer.invoke("set-previously-closed-tab", tab),
+    ipcRenderer.invoke("tab-store-set", "previouslyClosedTab", tab),
+  setSelectedTabId: async (id: string | undefined) =>
+    ipcRenderer.invoke("tab-store-set", "selectedTabId", id),
 };
 
 contextBridge.exposeInMainWorld("electronTabStore", electronTabStoreIpcApi);
