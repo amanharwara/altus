@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+
 export type Tab = {
   id: string;
   name: string;
@@ -6,7 +8,7 @@ export type Tab = {
     theme: string;
     notifications: boolean;
     sound: boolean;
-    color: string;
+    color: string | null;
     spellChecker: boolean;
   };
 };
@@ -16,6 +18,19 @@ export type TabStore = {
   previouslyClosedTab: Tab | null;
   selectedTabId: string | undefined;
 };
+
+export const getDefaultTab = (): Tab => ({
+  id: nanoid(),
+  name: "New Tab",
+  messageCount: 0,
+  config: {
+    theme: "dark",
+    notifications: true,
+    sound: true,
+    color: null,
+    spellChecker: true,
+  },
+});
 
 export const TabStoreDefaults = (): TabStore => ({
   tabs: [],

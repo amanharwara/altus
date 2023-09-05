@@ -1,6 +1,6 @@
 import { createStore, unwrap } from "solid-js/store";
 import { TabStoreDefaults, type TabStore, type Tab } from "./common";
-import { createEffect } from "solid-js";
+import { createEffect, on } from "solid-js";
 
 // get whole store from ipc initially
 
@@ -15,10 +15,18 @@ createEffect(() => {
   window.electronTabStore.setTabs(tabs);
 });
 
-createEffect(() => {
-  const previouslyClosedTab = unwrap(tabStore.previouslyClosedTab);
-  window.electronTabStore.setPreviouslyClosedTab(previouslyClosedTab);
-});
+createEffect(
+  on(
+    () => tabStore.previouslyClosedTab,
+    () => {
+      const previouslyClosedTab = unwrap(tabStore.previouslyClosedTab);
+      window.electronTabStore.setPreviouslyClosedTab(previouslyClosedTab);
+    },
+    {
+      defer: true,
+    }
+  )
+);
 
 createEffect(() => {
   const selectedTabId = unwrap(tabStore.selectedTabId);
@@ -27,6 +35,7 @@ createEffect(() => {
 
 export function addTab(tab: Tab) {
   updateTabStore("tabs", (tabs) => [...tabs, tab]);
+  updateTabStore("selectedTabId", tab.id);
 }
 
 export function updateTab(tab: Tab) {
