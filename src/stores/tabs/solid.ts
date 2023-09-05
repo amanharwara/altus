@@ -40,6 +40,14 @@ export function removeTab(tab: Tab) {
   updateTabStore("previouslyClosedTab", tab);
 }
 
+export function restoreTab() {
+  const previouslyClosedTab = tabStore.previouslyClosedTab;
+  if (previouslyClosedTab) {
+    addTab(previouslyClosedTab);
+    updateTabStore("previouslyClosedTab", null);
+  }
+}
+
 export function setTabActive(id: string) {
   updateTabStore("selectedTabId", id);
 }

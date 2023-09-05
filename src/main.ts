@@ -31,6 +31,11 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools();
   }
 
+  ipcMain.handle("get-whatsapp-preload-path", () => {
+    // @ts-expect-error ImportMeta works correctly
+    return import.meta.url.replace("main.js", "whatsapp.preload.js");
+  });
+
   ipcMain.handle("tab-store-get", () => {
     return electronTabStore.store;
   });

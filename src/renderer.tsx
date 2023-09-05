@@ -3,14 +3,15 @@ import "./index.css";
 import { render } from "solid-js/web";
 
 import App from "./App";
-import { isDev } from "./utils/isDev";
 
-const root = document.getElementById("root");
+let root: HTMLDivElement | null = document.getElementById(
+  "root"
+) as HTMLDivElement | null;
 
-if (isDev && !(root instanceof HTMLElement)) {
-  throw new Error(
-    "Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?"
-  );
+if (!root) {
+  root = document.createElement("div");
+  root.id = "root";
+  document.body.appendChild(root);
 }
 
 render(() => <App />, root);

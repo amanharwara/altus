@@ -44,6 +44,7 @@
   "dependencies": {
     "@kobalte/core": "^0.11.0",
     "@kobalte/tailwindcss": "^0.8.0",
+    "@kobalte/utils": "^0.9.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
     "solid-js": "^1.7.11"

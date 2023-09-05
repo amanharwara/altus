@@ -5,5 +5,6 @@ import { type ElectronTabStoreIpcApi } from "./stores/tabs/common";
 declare global {
   interface Window {
     electronTabStore: ElectronTabStoreIpcApi;
+    whatsappPreloadPath: string;
   }
 }

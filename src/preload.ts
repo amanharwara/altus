@@ -1,6 +1,14 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { ElectronTabStoreIpcApi, Tab } from "./stores/tabs/common";
 
+ipcRenderer.invoke("get-whatsapp-preload-path").then((preloadPath) => {
+  contextBridge.exposeInMainWorld("whatsappPreloadPath", preloadPath);
+});
+
+ipcRenderer.on("update-message-count", (_event, { messageCount, tabId }) => {
+  console.log("update-message-count", messageCount, tabId);
+});
+
 const electronTabStoreIpcApi: ElectronTabStoreIpcApi = {
   getStore: async () => await ipcRenderer.invoke("tab-store-get"),
   setTabs: async (tabs: Tab[]) =>
