@@ -3,6 +3,8 @@ import path from "path";
 import { isDev } from "./utils/isDev";
 import { electronTabStore } from "./stores/tabs/electron";
 import { TabStore } from "./stores/tabs/common";
+import { electronThemeStore } from "./stores/themes/electron";
+import { ThemeStore } from "./stores/themes/common";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -45,6 +47,18 @@ const createWindow = () => {
     (_event, key: keyof TabStore, value: unknown) => {
       if (value === undefined) return electronTabStore.delete(key);
       return electronTabStore.set(key, value);
+    }
+  );
+
+  ipcMain.handle("theme-store-get", () => {
+    return electronThemeStore.store;
+  });
+
+  ipcMain.handle(
+    "theme-store-set",
+    (_event, key: keyof ThemeStore, value: unknown) => {
+      if (value === undefined) return electronThemeStore.delete(key);
+      return electronThemeStore.set(key, value);
     }
   );
 };
