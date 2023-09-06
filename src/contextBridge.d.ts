@@ -8,5 +8,6 @@ declare global {
     electronTabStore: ElectronTabStoreIpcApi;
     electronThemeStore: ElectronThemeStoreIpcApi;
     whatsappPreloadPath: string;
+    toggleNotifications: (enabled: boolean, partition: string) => Promise<void>;
   }
 }

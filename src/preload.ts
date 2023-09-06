@@ -22,5 +22,10 @@ const electronThemeStoreIpcApi: ElectronThemeStoreIpcApi = {
     ipcRenderer.invoke("theme-store-set", "themes", themes),
 };
 
+const toggleNotifications = async (enabled: boolean, partition: string) => {
+  await ipcRenderer.invoke("toggle-notifications", enabled, partition);
+};
+
 contextBridge.exposeInMainWorld("electronTabStore", electronTabStoreIpcApi);
 contextBridge.exposeInMainWorld("electronThemeStore", electronThemeStoreIpcApi);
+contextBridge.exposeInMainWorld("toggleNotifications", toggleNotifications);

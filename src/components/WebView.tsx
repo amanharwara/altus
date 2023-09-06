@@ -36,6 +36,13 @@ const WebView: Component<{ tab: Tab }> = (props) => {
     webviewRef.setAudioMuted(!tab.config.sound);
   });
 
+  createEffect(() => {
+    if (!webviewRef) return;
+    if (!didStopLoading()) return;
+
+    window.toggleNotifications(tab.config.notifications, `persist:${tab.id}`);
+  });
+
   onMount(() => {
     const webview = webviewRef;
 

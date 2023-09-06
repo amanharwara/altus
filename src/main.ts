@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, session } from "electron";
 import path from "path";
 import { isDev } from "./utils/isDev";
 import { electronTabStore } from "./stores/tabs/electron";
@@ -59,6 +59,19 @@ const createWindow = () => {
     (_event, key: keyof ThemeStore, value: unknown) => {
       if (value === undefined) return electronThemeStore.delete(key);
       return electronThemeStore.set(key, value);
+    }
+  );
+
+  ipcMain.handle(
+    "toggle-notifications",
+    (_event, enabled: boolean, partition: string) => {
+      session
+        .fromPartition(partition)
+        .setPermissionRequestHandler((webContents, permission, callback) => {
+          if (permission === "notifications") {
+            callback(enabled);
+          }
+        });
     }
   );
 };
