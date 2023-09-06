@@ -96,7 +96,7 @@ const TabEditDialog: Component<{
               itemComponent={(props) => (
                 <Select.Item
                   item={props.item}
-                  class="flex items-center justify-between outline-none border border-transparent focus:border-zinc-500 focus:bg-zinc-800/50 rounded py-1 px-2 ui-selected:bg-zinc-800"
+                  class="flex items-center justify-between outline-none border border-transparent focus:border-zinc-500 focus:bg-zinc-800/50 rounded py-1.5 px-2 ui-selected:bg-zinc-800"
                 >
                   <Select.ItemLabel>
                     {props.item.rawValue.name}
@@ -123,7 +123,7 @@ const TabEditDialog: Component<{
               </Select.Trigger>
               <Select.Portal>
                 <Select.Content class="z-50 text-sm text-left py-1 px-1 bg-zinc-700 border rounded border-zinc-600 text-white">
-                  <Select.Listbox class="space-y-1" />
+                  <Select.Listbox class="space-y-0.5" />
                 </Select.Content>
               </Select.Portal>
             </Select.Root>
