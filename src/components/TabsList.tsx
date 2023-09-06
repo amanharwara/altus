@@ -18,7 +18,7 @@ const TabComponent: Component<TabComponentProps> = (props) => {
 
   return (
     <div
-      class="group flex items-center gap-2 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
+      class="group flex items-center gap-1.5 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
       style={
         tab.config.color
           ? {
@@ -30,7 +30,7 @@ const TabComponent: Component<TabComponentProps> = (props) => {
     >
       <span>{tab.name}</span>
       <button
-        class="p-1 hover:bg-zinc-800/50 rounded group-data-[selected]:hover:bg-zinc-800/50"
+        class="flex items-center justify-center ml-0.5 w-6 h-6 hover:bg-zinc-800/50 rounded group-data-[selected]:hover:bg-zinc-800/50"
         onClick={(event) => {
           event.stopImmediatePropagation();
           event.stopPropagation();
@@ -42,7 +42,7 @@ const TabComponent: Component<TabComponentProps> = (props) => {
         <SettingsIcon class="w-4 h-4" />
       </button>
       <button
-        class="p-1 hover:bg-zinc-800/50 rounded group-data-[selected]:hover:bg-zinc-800/50"
+        class="flex items-center justify-center w-6 h-6 hover:bg-zinc-800/50 rounded group-data-[selected]:hover:bg-zinc-800/50"
         onClick={(event) => {
           event.stopImmediatePropagation();
           event.preventDefault();
@@ -50,7 +50,7 @@ const TabComponent: Component<TabComponentProps> = (props) => {
         }}
         tabIndex={(rest.tabIndex as number) + 1}
       >
-        <CloseIcon class="w-4 h-4" />
+        <CloseIcon class="w-5 h-5" />
       </button>
     </div>
   );
