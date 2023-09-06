@@ -1,29 +1,22 @@
 import { ipcRenderer } from "electron";
-
-const titleRegex = /([0-9]+)/;
+import { Theme } from "./stores/themes/common";
 
 window.onload = () => {
-  const titleElement = document.querySelector("title") as HTMLTitleElement;
-
-  new MutationObserver(function () {
-    const title = titleElement.textContent;
-    if (!title) return;
-
-    const executed = titleRegex.exec(title);
-    if (!executed) return;
-
-    const messageCount = parseInt(executed[0]);
-    console.log(executed, messageCount);
-    if (!messageCount || isNaN(messageCount)) return;
-
-    const tabId = document.body.dataset.tabId;
-    ipcRenderer.send("update-message-count", {
-      messageCount,
-      tabId,
-    });
-  }).observe(titleElement, {
-    subtree: true,
-    childList: true,
-    characterData: true,
+  // Reset initial theme
+  document.body.querySelectorAll("script").forEach((script) => {
+    if (script.innerHTML.includes("systemThemeDark")) {
+      console.log(script.innerHTML);
+      script.remove();
+    }
   });
+  document.body.className = "web";
 };
+
+ipcRenderer.on("set-theme", (event, theme: Theme) => {
+  console.log(theme);
+  if (theme.id === "dark") {
+    document.body.classList.add("dark");
+  } else if (theme.id === "default") {
+    document.body.classList.remove("dark");
+  }
+});
