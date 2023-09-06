@@ -19,13 +19,21 @@ const TabComponent: Component<TabComponentProps> = (props) => {
   return (
     <div
       class="group flex items-center gap-2 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
+      style={
+        tab.config.color
+          ? {
+              background: tab.config.color,
+            }
+          : {}
+      }
       {...rest}
     >
       <span>{tab.name}</span>
       <button
-        class="p-1 hover:bg-zinc-800 rounded group-data-[selected]:hover:bg-zinc-800"
+        class="p-1 hover:bg-zinc-800/50 rounded group-data-[selected]:hover:bg-zinc-800/50"
         onClick={(event) => {
           event.stopImmediatePropagation();
+          event.stopPropagation();
           event.preventDefault();
           props.setTabToEdit(tab);
         }}
@@ -34,7 +42,7 @@ const TabComponent: Component<TabComponentProps> = (props) => {
         <SettingsIcon class="w-4 h-4" />
       </button>
       <button
-        class="p-1 hover:bg-zinc-800 rounded group-data-[selected]:hover:bg-zinc-800"
+        class="p-1 hover:bg-zinc-800/50 rounded group-data-[selected]:hover:bg-zinc-800/50"
         onClick={(event) => {
           event.stopImmediatePropagation();
           event.preventDefault();
