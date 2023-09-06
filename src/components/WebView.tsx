@@ -44,8 +44,8 @@ const WebView: Component<{ tab: Tab }> = (props) => {
     }
 
     webview.addEventListener("did-stop-loading", () => {
+      setDidStopLoading(false);
       setDidStopLoading(true);
-      webview.send("set-theme", selectedTheme());
     });
   });
 
@@ -57,6 +57,7 @@ const WebView: Component<{ tab: Tab }> = (props) => {
       src="https://web.whatsapp.com"
       partition={`persist:${tab.id}`}
       preload={window.whatsappPreloadPath}
+      webpreferences={`spellcheck=${tab.config.spellChecker}`}
     />
   );
 };
