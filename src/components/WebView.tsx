@@ -23,15 +23,17 @@ const WebView: Component<{ tab: Tab }> = (props) => {
   });
 
   createEffect(() => {
-    if (!webviewRef) {
-      return;
-    }
-
-    if (!didStopLoading()) {
-      return;
-    }
+    if (!webviewRef) return;
+    if (!didStopLoading()) return;
 
     webviewRef.send("set-theme", selectedTheme());
+  });
+
+  createEffect(() => {
+    if (!webviewRef) return;
+    if (!didStopLoading()) return;
+
+    webviewRef.setAudioMuted(!tab.config.sound);
   });
 
   onMount(() => {
