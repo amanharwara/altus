@@ -23,7 +23,7 @@ const TabComponent: Component<TabComponentProps> = (props) => {
     >
       <span>{tab.name}</span>
       <button
-        class="p-1 bg-zinc-700/25 hover:bg-zinc-800 rounded group-data-[selected]:bg-zinc-600/25 group-data-[selected]:hover:bg-zinc-800"
+        class="p-1 hover:bg-zinc-800 rounded group-data-[selected]:hover:bg-zinc-800"
         onClick={(event) => {
           event.stopImmediatePropagation();
           event.preventDefault();
@@ -34,7 +34,7 @@ const TabComponent: Component<TabComponentProps> = (props) => {
         <SettingsIcon class="w-4 h-4" />
       </button>
       <button
-        class="p-1 bg-zinc-700/25 hover:bg-zinc-800 rounded group-data-[selected]:bg-zinc-600/25 group-data-[selected]:hover:bg-zinc-800"
+        class="p-1 hover:bg-zinc-800 rounded group-data-[selected]:hover:bg-zinc-800"
         onClick={(event) => {
           event.stopImmediatePropagation();
           event.preventDefault();
