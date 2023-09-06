@@ -9,7 +9,19 @@ window.electronTabStore.getStore().then((store) => {
 });
 
 createEffect(() => {
-  const tabs = unwrap(tabStore.tabs);
+  const tabs = unwrap(
+    tabStore.tabs.filter((tab) => {
+      // Hack to get solid to subscribe to changes in objects in store arrays
+      // while keeping fine-grained reactivity for the UI
+      tab.name,
+        tab.config.theme,
+        tab.config.spellChecker,
+        tab.config.sound,
+        tab.config.notifications,
+        tab.config.color;
+      return true;
+    })
+  );
   window.electronTabStore.setTabs(tabs);
 });
 

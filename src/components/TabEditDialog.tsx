@@ -1,11 +1,5 @@
 import { Dialog, Select, Switch, TextField } from "@kobalte/core";
-import {
-  Accessor,
-  Component,
-  Setter,
-  createMemo,
-  createSignal,
-} from "solid-js";
+import { Accessor, Component, Setter, createMemo } from "solid-js";
 import { Tab } from "../stores/tabs/common";
 import CloseIcon from "../icons/CloseIcon";
 import { themeStore } from "../stores/themes/solid";
@@ -128,7 +122,7 @@ const TabEditDialog: Component<{
                 </Select.Icon>
               </Select.Trigger>
               <Select.Portal>
-                <Select.Content class="z-50 text-sm text-left py-1.5 px-1.5 bg-zinc-700 border rounded border-zinc-600 text-white">
+                <Select.Content class="z-50 text-sm text-left py-1 px-1 bg-zinc-700 border rounded border-zinc-600 text-white">
                   <Select.Listbox class="space-y-1" />
                 </Select.Content>
               </Select.Portal>
