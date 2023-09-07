@@ -40,7 +40,5 @@ export const TabStoreDefaults = (): TabStore => ({
 
 export type ElectronTabStoreIpcApi = {
   getStore: () => Promise<TabStore>;
-  setTabs: (tabs: Tab[]) => Promise<void>;
-  setPreviouslyClosedTab: (tab: Tab | null) => Promise<void>;
-  setSelectedTabId: (id: string | undefined) => Promise<void>;
+  set: <T extends keyof TabStore>(key: T, value: TabStore[T]) => Promise<void>;
 };

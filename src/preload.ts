@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron";
-import { ElectronTabStoreIpcApi, Tab } from "./stores/tabs/common";
+import { ElectronTabStoreIpcApi } from "./stores/tabs/common";
 import { ElectronThemeStoreIpcApi } from "./stores/themes/common";
 
 ipcRenderer.invoke("get-whatsapp-preload-path").then((preloadPath) => {
@@ -8,12 +8,8 @@ ipcRenderer.invoke("get-whatsapp-preload-path").then((preloadPath) => {
 
 const electronTabStoreIpcApi: ElectronTabStoreIpcApi = {
   getStore: async () => await ipcRenderer.invoke("tab-store-get"),
-  setTabs: async (tabs: Tab[]) =>
-    ipcRenderer.invoke("tab-store-set", "tabs", tabs),
-  setPreviouslyClosedTab: async (tab: Tab | null) =>
-    ipcRenderer.invoke("tab-store-set", "previouslyClosedTab", tab),
-  setSelectedTabId: async (id: string | undefined) =>
-    ipcRenderer.invoke("tab-store-set", "selectedTabId", id),
+  set: async (key, value) =>
+    await ipcRenderer.invoke("tab-store-set", key, value),
 };
 
 const electronThemeStoreIpcApi: ElectronThemeStoreIpcApi = {

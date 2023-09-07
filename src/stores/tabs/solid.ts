@@ -22,7 +22,7 @@ createEffect(() => {
       return true;
     })
   );
-  window.electronTabStore.setTabs(tabs);
+  window.electronTabStore.set("tabs", tabs);
 });
 
 createEffect(
@@ -30,7 +30,7 @@ createEffect(
     () => tabStore.previouslyClosedTab,
     () => {
       const previouslyClosedTab = unwrap(tabStore.previouslyClosedTab);
-      window.electronTabStore.setPreviouslyClosedTab(previouslyClosedTab);
+      window.electronTabStore.set("previouslyClosedTab", previouslyClosedTab);
     },
     {
       defer: true,
@@ -40,7 +40,7 @@ createEffect(
 
 createEffect(() => {
   const selectedTabId = unwrap(tabStore.selectedTabId);
-  window.electronTabStore.setSelectedTabId(selectedTabId);
+  window.electronTabStore.set("selectedTabId", selectedTabId);
 });
 
 export function addTab(tab: Tab) {

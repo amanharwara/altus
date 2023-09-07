@@ -14,7 +14,6 @@ export const pruneUnusedPartitions = (
 
   const partitions = fs.readdirSync(partitionsDirectoryPath);
 
-  // @TODO check why previous version did not require lowercase
   const tabIds = tabs.map((tab) => tab.id.toLowerCase());
   if (previouslyClosedTab) {
     tabIds.push(previouslyClosedTab.id);
