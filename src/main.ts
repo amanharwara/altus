@@ -6,6 +6,7 @@ import { TabStore } from "./stores/tabs/common";
 import { electronThemeStore } from "./stores/themes/electron";
 import { ThemeStore } from "./stores/themes/common";
 import { pruneUnusedPartitions } from "./utils/pruneUnusedPartitions";
+import { handleWhatsappLinks } from "./utils/handleWhatsappLinks";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -91,7 +92,7 @@ if (!singleInstanceLock) {
     mainWindow.focus();
 
     if (argv.find((arg) => arg.includes("whatsapp"))) {
-      // @TODO handle opening whatsapp:// links
+      handleWhatsappLinks(argv);
     }
   });
 
@@ -104,7 +105,7 @@ if (!singleInstanceLock) {
 
     if (app.isPackaged) app.setAsDefaultProtocolClient("whatsapp");
     if (process.argv.some((arg) => arg.includes("whatsapp"))) {
-      // handleWhatsappLinks(process.argv);
+      handleWhatsappLinks(process.argv);
     }
 
     createWindow();
