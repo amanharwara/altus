@@ -5,6 +5,7 @@ import { electronTabStore } from "./stores/tabs/electron";
 import { TabStore } from "./stores/tabs/common";
 import { electronThemeStore } from "./stores/themes/electron";
 import { ThemeStore } from "./stores/themes/common";
+import { pruneUnusedPartitions } from "./utils/pruneUnusedPartitions";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -107,6 +108,12 @@ if (!singleInstanceLock) {
     }
 
     createWindow();
+
+    pruneUnusedPartitions(
+      electronTabStore.get("tabs"),
+      electronTabStore.get("previouslyClosedTab"),
+      app.getPath("userData")
+    );
   });
 
   app.on("window-all-closed", () => {
