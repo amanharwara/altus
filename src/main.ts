@@ -76,24 +76,43 @@ const createWindow = () => {
   );
 };
 
-app.on("ready", () => {
-  const userAgentFallback = app.userAgentFallback;
-  app.userAgentFallback = userAgentFallback.replace(
-    /(Altus|Electron)([^\s]+\s)/g,
-    ""
-  );
+const singleInstanceLock = app.requestSingleInstanceLock();
 
-  createWindow();
-});
+if (!singleInstanceLock) {
+  app.exit();
+} else {
+  app.on("second-instance", (event, argv) => {
+    if (BrowserWindow.getAllWindows().length === 0) return;
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
+    const mainWindow = BrowserWindow.getAllWindows()[0];
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.show();
+    mainWindow.focus();
 
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
+    if (argv.find((arg) => arg.includes("whatsapp"))) {
+      // @TODO handle opening whatsapp:// links
+    }
+  });
+
+  app.on("ready", () => {
+    const userAgentFallback = app.userAgentFallback;
+    app.userAgentFallback = userAgentFallback.replace(
+      /(Altus|Electron)([^\s]+\s)/g,
+      ""
+    );
+
     createWindow();
-  }
-});
+  });
+
+  app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+      app.quit();
+    }
+  });
+
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+}
