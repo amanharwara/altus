@@ -1,5 +1,6 @@
 import { ipcRenderer } from "electron";
 import { Theme } from "./stores/themes/common";
+import { formatSelectedText } from "./utils/webview/formatSelectedText";
 
 window.onload = () => {
   // Reset initial theme
@@ -9,6 +10,27 @@ window.onload = () => {
     }
   });
   document.body.className = "web";
+
+  document.body.addEventListener("keydown", (event) => {
+    if (!event.ctrlKey) return;
+
+    switch (event.key) {
+      case "b":
+        formatSelectedText("*");
+        break;
+      case "i":
+        formatSelectedText("_");
+        break;
+      case "s":
+        formatSelectedText("~");
+        break;
+      case "m":
+        formatSelectedText("```");
+        break;
+      default:
+        break;
+    }
+  });
 };
 
 function setThemeCSS(css: string) {

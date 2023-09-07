@@ -1,12 +1,11 @@
 import { app, BrowserWindow, ipcMain, session } from "electron";
+import fs from "fs";
 import path from "path";
 import { isDev } from "./utils/isDev";
 import { electronTabStore } from "./stores/tabs/electron";
-import { TabStore } from "./stores/tabs/common";
+import { Tab, TabStore } from "./stores/tabs/common";
 import { electronThemeStore } from "./stores/themes/electron";
 import { ThemeStore } from "./stores/themes/common";
-import { pruneUnusedPartitions } from "./utils/pruneUnusedPartitions";
-import { handleWhatsappLinks } from "./utils/handleWhatsappLinks";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -128,4 +127,49 @@ if (!singleInstanceLock) {
       createWindow();
     }
   });
+}
+
+function handleWhatsappLinks(argv: string[]) {
+  const arg = argv.find((arg) => arg.includes("whatsapp"));
+  if (!arg) return;
+
+  let url = "https://web.whatsapp.com/";
+
+  if (arg.includes("send/?phone")) {
+    url += arg.split("://")[1].replace("/", "");
+  } else if (arg.includes("chat/?code")) {
+    url += "accept?code=" + arg.split("=")[1];
+  }
+
+  const mainWindow = BrowserWindow.getAllWindows()[0];
+  mainWindow.webContents.executeJavaScript(
+    `document.querySelector("webview").src = "${url}";`
+  );
+}
+
+function pruneUnusedPartitions(
+  tabs: Tab[],
+  previouslyClosedTab: Tab | null,
+  userDataPath: string
+) {
+  const partitionsDirectoryPath = path.join(userDataPath, "Partitions");
+
+  const doesPartitionsDirectoryExist = fs.existsSync(partitionsDirectoryPath);
+  if (!doesPartitionsDirectoryExist) return;
+
+  const partitions = fs.readdirSync(partitionsDirectoryPath);
+
+  const tabIds = tabs.map((tab) => tab.id.toLowerCase());
+  if (previouslyClosedTab) {
+    tabIds.push(previouslyClosedTab.id);
+  }
+
+  partitions
+    .filter((id) => !tabIds.includes(id))
+    .forEach((id) => {
+      const partitionPath = path.join(partitionsDirectoryPath, id);
+      fs.rmSync(partitionPath, {
+        recursive: true,
+      });
+    });
 }
