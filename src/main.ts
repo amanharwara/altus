@@ -101,6 +101,11 @@ if (!singleInstanceLock) {
       ""
     );
 
+    if (app.isPackaged) app.setAsDefaultProtocolClient("whatsapp");
+    if (process.argv.some((arg) => arg.includes("whatsapp"))) {
+      // handleWhatsappLinks(process.argv);
+    }
+
     createWindow();
   });
 
