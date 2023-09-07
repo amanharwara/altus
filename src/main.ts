@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, session } from "electron";
+import { app, BrowserWindow, ipcMain, session, shell } from "electron";
 import fs from "fs";
 import path from "path";
 import { isDev } from "./utils/isDev";
@@ -75,6 +75,10 @@ const createWindow = () => {
         });
     }
   );
+
+  ipcMain.on("open-link", (_event, url: string) => {
+    shell.openExternal(url);
+  });
 };
 
 const singleInstanceLock = app.requestSingleInstanceLock();

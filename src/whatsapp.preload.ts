@@ -31,6 +31,16 @@ window.onload = () => {
         break;
     }
   });
+
+  document.body.addEventListener("click", (event) => {
+    if (!(event.target instanceof HTMLAnchorElement)) return;
+    if (
+      event.target.tagName === "A" &&
+      event.target.getAttribute("target") === "_blank"
+    ) {
+      ipcRenderer.send("open-link", event.target.href);
+    }
+  });
 };
 
 function setThemeCSS(css: string) {
