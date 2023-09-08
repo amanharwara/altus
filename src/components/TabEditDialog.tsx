@@ -29,8 +29,10 @@ const StyledSwitch: Component<{
         {props.label}
       </Switch.Label>
       <Switch.Input class="peer" />
-      <Switch.Control class="inline-flex items-center h-6 w-11 px-px bg-zinc-700/50 rounded-xl border border-zinc-600 peer-focus:border-zinc-300 ui-checked:bg-zinc-300 transition-colors duration-75">
-        <Switch.Thumb class="h-5 w-5 rounded-full bg-white ui-checked:translate-x-[calc(100%_-_1px)] ui-checked:bg-zinc-800 transition-all duration-75" />
+      <Switch.Control class="inline-flex items-center h-6 w-10 px-px bg-zinc-700/50 rounded-xl border border-zinc-600 peer-focus:border-zinc-300 ui-checked:bg-zinc-900 transition-colors duration-75">
+        <Switch.Thumb class="h-5 w-5 flex items-center justify-center rounded-full bg-white group ui-checked:translate-x-[calc(100%_-_0.275rem)]  transition-all duration-75">
+          <CheckIcon class="w-4 h-4 opacity-0 group-data-[checked]:opacity-100 transition-opacity duration-75 text-black" />
+        </Switch.Thumb>
       </Switch.Control>
     </Switch.Root>
   );
