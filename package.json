@@ -47,6 +47,8 @@
     "@kobalte/utils": "^0.9.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
+    "i18next": "^23.5.1",
+    "i18next-fs-backend": "^2.1.5",
     "nanoid": "^4.0.2",
     "solid-js": "^1.7.11"
   }
