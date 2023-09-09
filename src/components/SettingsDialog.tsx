@@ -14,14 +14,14 @@ const SettingsDialog: Component<{
       <Dialog.Portal>
         <Dialog.Overlay class="fixed inset-0 z-50 bg-black/30" />
         <div class="fixed inset-0 z-50 flex items-center justify-center">
-          <Dialog.Content class="z-50 bg-zinc-800 text-white border rounded border-zinc-600 min-w-[30rem] px-3.5 pt-3 pb-2 max-w-[min(calc(100vw_-_1rem),32rem)]">
+          <Dialog.Content class="flex flex-col z-50 bg-zinc-800 text-white border rounded border-zinc-600 min-w-[30rem] px-3.5 pt-3 pb-2 max-w-[min(calc(100vw_-_1rem),32rem)] max-h-[70vh] overflow-hidden">
             <div class="flex items-center justify-between mb-3">
               <Dialog.Title class="font-semibold">Settings</Dialog.Title>
               <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
                 <CloseIcon class="w-4 h-4" />
               </Dialog.CloseButton>
             </div>
-            <Dialog.Description>
+            <Dialog.Description class="overflow-y-auto">
               <div class="py-2.5">
                 <StyledSwitch
                   checked={getSettingValue("tabBar")}
@@ -90,6 +90,40 @@ const SettingsDialog: Component<{
                     <div class="font-semibold">Start minimized</div>
                     <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
                       When enabled, Altus will start minimized
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
+              <div class="py-2.5">
+                <StyledSwitch
+                  checked={getSettingValue("rememberWindowSize")}
+                  onChange={(checked) =>
+                    setSettingValue("rememberWindowSize", checked)
+                  }
+                  class="items-start"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">Remember window size</div>
+                    <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
+                      When enabled, Altus will remember the size of the window
+                      from previous use
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
+              <div class="py-2.5">
+                <StyledSwitch
+                  checked={getSettingValue("rememberWindowPosition")}
+                  onChange={(checked) =>
+                    setSettingValue("rememberWindowPosition", checked)
+                  }
+                  class="items-start"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">Remember window position</div>
+                    <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
+                      When enabled, Altus will remember the position of the
+                      window from previous use
                     </div>
                   </div>
                 </StyledSwitch>

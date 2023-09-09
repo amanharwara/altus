@@ -20,16 +20,41 @@ import { i18n, i18nOptions } from "./i18n/i18next.config";
 import { languages } from "./i18n/langauges.config";
 import os from "os";
 import { SettingsStore } from "./stores/settings/common";
+import Store from "electron-store";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
+const windowState = new Store<{
+  width: number | null;
+  height: number | null;
+  x: number | null;
+  y: number | null;
+}>({
+  name: "windowState",
+  defaults: {
+    width: null,
+    height: null,
+    x: null,
+    y: null,
+  },
+});
+
 const createWindow = () => {
+  const rememberWindowSize =
+    electronSettingsStore.get("settings").rememberWindowSize.value;
+  const rememberWindowPosition =
+    electronSettingsStore.get("settings").rememberWindowPosition.value;
+
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    minWidth: 520,
+    minHeight: 395,
+    width: rememberWindowSize ? windowState.get("width") || 800 : undefined,
+    height: rememberWindowSize ? windowState.get("height") || 600 : undefined,
+    x: rememberWindowPosition ? windowState.get("x") || undefined : undefined,
+    y: rememberWindowPosition ? windowState.get("y") || undefined : undefined,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       webviewTag: true,
@@ -58,6 +83,14 @@ const createWindow = () => {
       mainWindow.focus();
     });
   }
+
+  mainWindow.on("resize", () => {
+    windowState.store = mainWindow.getBounds();
+  });
+
+  mainWindow.on("move", () => {
+    windowState.store = mainWindow.getBounds();
+  });
 
   return mainWindow;
 };
