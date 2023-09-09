@@ -1,6 +1,5 @@
 import { For, type Component, createSignal } from "solid-js";
-import { Tabs } from "@kobalte/core";
-import { setTabActive, tabStore } from "./stores/tabs/solid";
+import { tabStore } from "./stores/tabs/solid";
 import WebView from "./components/WebView";
 import TabsList from "./components/TabsList";
 import SettingsDialog from "./components/SettingsDialog";
@@ -16,9 +15,7 @@ const App: Component = () => {
 
   return (
     <>
-      <Tabs.Root
-        value={tabStore.selectedTabId}
-        onChange={setTabActive}
+      <div
         class={twJoin(
           "h-full flex",
           getSettingValue("tabBarPosition") === "top"
@@ -29,12 +26,17 @@ const App: Component = () => {
         <TabsList />
         <For each={tabStore.tabs}>
           {(tab) => (
-            <Tabs.Content class="min-h-0 flex-grow" value={tab.id}>
+            <div
+              class={twJoin(
+                "min-h-0 flex-grow",
+                tabStore.selectedTabId !== tab.id && "hidden"
+              )}
+            >
               <WebView tab={tab} />
-            </Tabs.Content>
+            </div>
           )}
         </For>
-      </Tabs.Root>
+      </div>
       <SettingsDialog isOpen={isSettingsOpen} setIsOpen={setIsSettingsOpen} />
     </>
   );

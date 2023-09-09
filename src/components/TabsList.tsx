@@ -1,6 +1,5 @@
-import { As, Dialog, Tabs } from "@kobalte/core";
-import { OverrideComponentProps } from "@kobalte/utils";
-import { Component, For, Show, createSignal, splitProps } from "solid-js";
+import { Dialog } from "@kobalte/core";
+import { Component, For, Show, createSignal } from "solid-js";
 import {
   addTab,
   removeTab,
@@ -16,49 +15,40 @@ import { twJoin } from "tailwind-merge";
 import { getSettingValue } from "../stores/settings/solid";
 import { WebviewTag } from "electron";
 
-interface TabComponentProps
-  extends OverrideComponentProps<"div", Tabs.TabsTriggerOptions> {
+interface TabComponentProps {
   tab: Tab;
   setTabToEdit: (tab: Tab | null) => void;
   removeTab: (tab: Tab) => void;
 }
 
 const TabComponent: Component<TabComponentProps> = (props) => {
-  const [{ tab }, rest] = splitProps(props, ["tab"]);
-
   return (
     <div
       class="group flex items-center gap-1.5 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
       style={
-        tab.config.color
+        props.tab.config.color
           ? {
-              background: tab.config.color,
+              background: props.tab.config.color,
             }
           : {}
       }
-      {...rest}
+      onClick={() => setTabActive(props.tab.id)}
+      data-selected={props.tab.id === tabStore.selectedTabId ? "" : undefined}
     >
-      <span>{tab.name}</span>
+      <span>{props.tab.name}</span>
       <button
         class="flex items-center justify-center ml-0.5 w-6 h-6 hover:bg-zinc-800/50 rounded group-data-[selected]:hover:bg-zinc-800/50"
-        onClick={(event) => {
-          event.stopImmediatePropagation();
-          event.stopPropagation();
-          event.preventDefault();
-          props.setTabToEdit(tab);
+        onClick={() => {
+          props.setTabToEdit(props.tab);
         }}
-        tabIndex={(rest.tabIndex as number) + 1}
       >
         <SettingsIcon class="w-4 h-4" />
       </button>
       <button
         class="flex items-center justify-center w-6 h-6 hover:bg-zinc-800/50 rounded group-data-[selected]:hover:bg-zinc-800/50"
-        onClick={(event) => {
-          event.stopImmediatePropagation();
-          event.preventDefault();
-          props.removeTab(tab);
+        onClick={() => {
+          props.removeTab(props.tab);
         }}
-        tabIndex={(rest.tabIndex as number) + 1}
       >
         <CloseIcon class="w-5 h-5" />
       </button>
@@ -97,6 +87,7 @@ const TabsList: Component = () => {
     );
     if (activeTabIndex === -1) return;
     const nextIndex = activeTabIndex + 1;
+    console.log(nextIndex);
     if (nextIndex >= tabStore.tabs.length) {
       setTabActive(tabStore.tabs[0].id);
       return;
@@ -171,7 +162,7 @@ const TabsList: Component = () => {
 
   return (
     <>
-      <Tabs.List
+      <div
         class={twJoin(
           "bg-zinc-800 divide-x divide-zinc-700/20",
           getSettingValue("tabBar") ? "flex" : "hidden"
@@ -179,14 +170,11 @@ const TabsList: Component = () => {
       >
         <For each={tabStore.tabs}>
           {(tab) => (
-            <Tabs.Trigger value={tab.id} asChild>
-              <As
-                component={TabComponent}
-                tab={tab}
-                setTabToEdit={setTabToEdit}
-                removeTab={removeTabWithPrompt}
-              />
-            </Tabs.Trigger>
+            <TabComponent
+              tab={tab}
+              setTabToEdit={setTabToEdit}
+              removeTab={removeTabWithPrompt}
+            />
           )}
         </For>
         <button
@@ -196,7 +184,7 @@ const TabsList: Component = () => {
           <div class="sr-only">Add new tab</div>
           <CloseIcon class="w-4 h-4 rotate-45" />
         </button>
-      </Tabs.List>
+      </div>
       <Dialog.Root
         open={canShowDialog()}
         onOpenChange={(open) => {
