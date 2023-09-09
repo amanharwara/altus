@@ -120,9 +120,7 @@ function handleWhatsappLinks(argv: string[]) {
   }
 
   const mainWindow = BrowserWindow.getAllWindows()[0];
-  mainWindow.webContents.executeJavaScript(
-    `document.querySelector("webview").src = "${url}";`
-  );
+  mainWindow.webContents.send("open-whatsapp-link", url);
 }
 
 function pruneUnusedPartitions(

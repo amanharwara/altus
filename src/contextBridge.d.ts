@@ -17,6 +17,9 @@ declare global {
       onCloseActiveTab: (callback: () => void) => Electron.IpcRenderer;
       onAddNewTab: (callback: () => void) => Electron.IpcRenderer;
       onRestoreTab: (callback: () => void) => Electron.IpcRenderer;
+      onOpenWhatsappLink: (
+        callback: (url: string) => void
+      ) => Electron.IpcRenderer;
     };
     showMessageBox: (
       options: Electron.MessageBoxOptions

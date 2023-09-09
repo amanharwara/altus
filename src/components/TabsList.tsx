@@ -8,6 +8,7 @@ import SettingsIcon from "../icons/SettingsIcon";
 import TabEditDialog from "./TabEditDialog";
 import { twJoin } from "tailwind-merge";
 import { getSettingValue } from "../stores/settings/solid";
+import { WebviewTag } from "electron";
 
 interface TabComponentProps
   extends OverrideComponentProps<"div", Tabs.TabsTriggerOptions> {
@@ -83,6 +84,14 @@ const TabsList: Component = () => {
       removeTab(tab);
     }
   };
+
+  window.electronIPCHandlers.onOpenWhatsappLink((url) => {
+    const activeWebview = document.querySelector(
+      "webview"
+    ) as WebviewTag | null;
+    if (!activeWebview) return;
+    activeWebview.src = url;
+  });
 
   window.electronIPCHandlers.onEditActiveTab(() => {
     const activeTab = tabStore.tabs.find(
