@@ -1,4 +1,4 @@
-import { Dialog, Select, TextField } from "@kobalte/core";
+import { Dialog, TextField } from "@kobalte/core";
 import {
   Accessor,
   Component,
@@ -9,11 +9,9 @@ import {
 import { Tab } from "../stores/tabs/common";
 import CloseIcon from "../icons/CloseIcon";
 import { themeStore } from "../stores/themes/solid";
-import { Theme } from "../stores/themes/common";
-import CaretSortIcon from "../icons/CaretSortIcon";
-import CheckIcon from "../icons/CheckIcon";
 import { updateTabStore } from "../stores/tabs/solid";
 import { StyledSwitch } from "./StyledSwitch";
+import StyledSelect from "./StyledSelect";
 
 const TabEditDialog: Component<{
   tabToEdit: Accessor<Tab>;
@@ -67,10 +65,13 @@ const TabEditDialog: Component<{
                 }}
               />
             </TextField.Root>
-            <Select.Root
+            <StyledSelect
+              rootClass="flex-col py-2"
+              multiple={false}
               options={availableThemes()}
               optionValue="id"
               optionTextValue="name"
+              label="Theme"
               placeholder="Select a theme..."
               value={theme()}
               onChange={(theme) => {
@@ -83,40 +84,9 @@ const TabEditDialog: Component<{
                 );
               }}
               class="flex flex-col gap-1.5 py-2"
-              itemComponent={(props) => (
-                <Select.Item
-                  item={props.item}
-                  class="flex items-center justify-between outline-none border border-transparent focus:border-zinc-500 focus:bg-zinc-800/50 rounded py-1.5 px-2 ui-selected:bg-zinc-800"
-                >
-                  <Select.ItemLabel>
-                    {props.item.rawValue.name}
-                  </Select.ItemLabel>
-                  <Select.ItemIndicator>
-                    <CheckIcon class="w-4 h-4" />
-                  </Select.ItemIndicator>
-                </Select.Item>
-              )}
-            >
-              <Select.Label class=" text-[0.95rem] leading-none">
-                Theme
-              </Select.Label>
-              <Select.Trigger
-                class="flex items-center justify-between text-sm text-left py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300"
-                aria-label="Theme"
-              >
-                <Select.Value<Theme>>
-                  {(state) => state.selectedOption().name}
-                </Select.Value>
-                <Select.Icon>
-                  <CaretSortIcon class="w-4 h-4" />
-                </Select.Icon>
-              </Select.Trigger>
-              <Select.Portal>
-                <Select.Content class="z-50 text-sm text-left py-1 px-1 bg-zinc-700 border rounded border-zinc-600 text-white">
-                  <Select.Listbox class="space-y-0.5" />
-                </Select.Content>
-              </Select.Portal>
-            </Select.Root>
+              valueRender={(state) => state.selectedOption().name}
+              itemLabelRender={(item) => item.rawValue.name}
+            />
             <div class="py-2">
               <StyledSwitch
                 checked={props.tabToEdit().config.notifications}
