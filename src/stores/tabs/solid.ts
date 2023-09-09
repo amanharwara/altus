@@ -1,10 +1,18 @@
 import { createStore, unwrap } from "solid-js/store";
-import { TabStoreDefaults, type TabStore, type Tab } from "./common";
+import {
+  TabStoreDefaults,
+  type TabStore,
+  type Tab,
+  getDefaultTab,
+} from "./common";
 import { createEffect, on } from "solid-js";
 
 const [tabStore, updateTabStore] = createStore<TabStore>(TabStoreDefaults());
 
 window.electronTabStore.getStore().then((store) => {
+  if (store.tabs.length === 0) {
+    store.tabs.push(getDefaultTab());
+  }
   updateTabStore(store);
 });
 

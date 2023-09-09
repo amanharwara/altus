@@ -1,7 +1,7 @@
 import { As, Dialog, Tabs } from "@kobalte/core";
 import { OverrideComponentProps } from "@kobalte/utils";
 import { Component, For, Show, createSignal, splitProps } from "solid-js";
-import { addTab, removeTab, tabStore } from "../stores/tabs/solid";
+import { addTab, removeTab, restoreTab, tabStore } from "../stores/tabs/solid";
 import { Tab, getDefaultTab } from "../stores/tabs/common";
 import CloseIcon from "../icons/CloseIcon";
 import SettingsIcon from "../icons/SettingsIcon";
@@ -13,6 +13,7 @@ interface TabComponentProps
   extends OverrideComponentProps<"div", Tabs.TabsTriggerOptions> {
   tab: Tab;
   setTabToEdit: (tab: Tab | null) => void;
+  removeTab: (tab: Tab) => void;
 }
 
 const TabComponent: Component<TabComponentProps> = (props) => {
@@ -48,7 +49,7 @@ const TabComponent: Component<TabComponentProps> = (props) => {
         onClick={(event) => {
           event.stopImmediatePropagation();
           event.preventDefault();
-          removeTab(tab);
+          props.removeTab(tab);
         }}
         tabIndex={(rest.tabIndex as number) + 1}
       >
@@ -61,6 +62,35 @@ const TabComponent: Component<TabComponentProps> = (props) => {
 const TabsList: Component = () => {
   const [tabToEdit, setTabToEdit] = createSignal<Tab | null>(null);
   const canShowDialog = () => tabToEdit() !== null;
+
+  const removeTabWithPrompt = async (tab: Tab) => {
+    const requiresPrompt = getSettingValue("tabClosePrompt");
+    if (!requiresPrompt) {
+      removeTab(tab);
+      return;
+    }
+    const result = await window.showMessageBox({
+      type: "question",
+      buttons: ["OK", "Cancel"],
+      title: "Close Tab",
+      message: "Are you sure you want to close the tab?",
+    });
+    if (result.response === 0) {
+      removeTab(tab);
+    }
+  };
+
+  window.electronIPCHandlers.onCloseActiveTab(() => {
+    const activeTab = tabStore.tabs.find(
+      (tab) => tab.id === tabStore.selectedTabId
+    );
+    if (!activeTab) return;
+    removeTabWithPrompt(activeTab);
+  });
+
+  window.electronIPCHandlers.onRestoreTab(() => {
+    restoreTab();
+  });
 
   return (
     <>
@@ -77,12 +107,13 @@ const TabsList: Component = () => {
                 component={TabComponent}
                 tab={tab}
                 setTabToEdit={setTabToEdit}
+                removeTab={removeTabWithPrompt}
               />
             </Tabs.Trigger>
           )}
         </For>
         <button
-          class="group flex items-center gap-2.5 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
+          class="group flex items-center gap-2.5 bg-zinc-800 px-3 py-2 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
           onClick={() => {
             addTab(getDefaultTab());
           }}

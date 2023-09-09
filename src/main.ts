@@ -210,6 +210,13 @@ function addIPCHandlers() {
   ipcMain.on("open-link", (_event, url: string) => {
     shell.openExternal(url);
   });
+
+  ipcMain.handle(
+    "show-message-box",
+    (_event, options: Electron.MessageBoxOptions) => {
+      return dialog.showMessageBox(options);
+    }
+  );
 }
 
 function initializeI18N() {
@@ -343,7 +350,7 @@ function getLocalizedMainMenu() {
           accelerator: "CmdOrCtrl+W",
           click() {
             const window = BrowserWindow.getFocusedWindow();
-            if (window) window.webContents.send("prompt-before-closing-tab");
+            if (window) window.webContents.send("close-active-tab");
           },
           id: "closeActiveTab",
         },

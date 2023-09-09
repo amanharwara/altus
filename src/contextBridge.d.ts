@@ -15,6 +15,15 @@ declare global {
       onOpenSettings: (
         callback: Parameters<typeof ipcRenderer.on>[1]
       ) => Electron.IpcRenderer;
+      onCloseActiveTab: (
+        callback: Parameters<typeof ipcRenderer.on>[1]
+      ) => Electron.IpcRenderer;
+      onRestoreTab: (
+        callback: Parameters<typeof ipcRenderer.on>[1]
+      ) => Electron.IpcRenderer;
     };
+    showMessageBox: (
+      options: Electron.MessageBoxOptions
+    ) => Promise<Electron.MessageBoxReturnValue>;
   }
 }
