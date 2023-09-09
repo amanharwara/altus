@@ -5,6 +5,7 @@ import {
   dialog,
   ipcMain,
   Menu,
+  MenuItem,
   session,
   shell,
 } from "electron";
@@ -266,6 +267,49 @@ function addIPCHandlers() {
       return dialog.showMessageBox(options);
     }
   );
+
+  ipcMain.handle("get-app-menu", () => {
+    const menu = Menu.getApplicationMenu();
+    if (!menu) return;
+    const cloneableMenu = getCloneableMenu(menu);
+    return cloneableMenu;
+  });
+
+  ipcMain.handle("menu-item-click", (_event, id: string) => {
+    const menu = Menu.getApplicationMenu();
+    if (!menu) return;
+    const item = menu.items.find(
+      (item) => item.id === id || item.commandId.toString() === id
+    );
+    console.log(id, item);
+    if (!item) return;
+    item.click();
+  });
+}
+
+type CloneableMenuItem = Omit<MenuItem, "menu" | "submenu" | "click"> & {
+  submenu?: CloneableMenu;
+};
+export type CloneableMenu = CloneableMenuItem[];
+
+function getCloneableMenu(menu: Menu) {
+  return menu.items.map(getCloneableMenuItem);
+}
+
+function getCloneableMenuItem(item: MenuItem): CloneableMenuItem {
+  const cloneableItem = { ...item } as CloneableMenuItem & {
+    menu?: Menu;
+    submenu?: Menu;
+    click?: () => void;
+  };
+  delete cloneableItem["menu"];
+  delete cloneableItem["click"];
+  if (cloneableItem.submenu) {
+    (cloneableItem as CloneableMenuItem).submenu = getCloneableMenu(
+      cloneableItem.submenu as Menu
+    );
+  }
+  return cloneableItem;
 }
 
 function initializeI18N() {
@@ -293,7 +337,6 @@ function getLocalizedMainMenu() {
   )[] = [
     {
       label: i18n.t("&File"),
-      id: "file",
       submenu: [
         {
           label: i18n.t("Start &New Chat"),
@@ -305,11 +348,9 @@ function getLocalizedMainMenu() {
         {
           label: i18n.t("Force &Reload"),
           role: "forceReload",
-          id: "forceReload",
         },
         {
           label: i18n.t("&Quit"),
-          id: "quit",
           accelerator: "CmdOrCtrl+Q",
           click() {
             app.exit(0);
@@ -319,17 +360,14 @@ function getLocalizedMainMenu() {
     },
     {
       label: i18n.t("&Edit"),
-      id: "edit",
       submenu: [
         {
           label: i18n.t("Undo"),
-          accelerator: "CmdOrCtrl+Z",
-          id: "undo",
+          role: "undo",
         },
         {
           label: i18n.t("Redo"),
-          accelerator: "Shift+CmdOrCtrl+Z",
-          id: "redo",
+          role: "redo",
         },
         {
           type: "separator",
@@ -337,22 +375,18 @@ function getLocalizedMainMenu() {
         {
           label: i18n.t("Cut"),
           accelerator: "CmdOrCtrl+X",
-          id: "cut",
         },
         {
           label: i18n.t("Copy"),
           accelerator: "CmdOrCtrl+C",
-          id: "copy",
         },
         {
           label: i18n.t("Paste"),
           accelerator: "CmdOrCtrl+V",
-          id: "paste",
         },
         {
           label: i18n.t("Select All"),
           accelerator: "CmdOrCtrl+A",
-          id: "selectAll",
         },
         {
           type: "separator",
@@ -374,7 +408,6 @@ function getLocalizedMainMenu() {
     },
     {
       label: i18n.t("Tab"),
-      id: "tab",
       submenu: [
         {
           label: i18n.t("Add New Tab"),
@@ -383,7 +416,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("add-new-tab");
           },
-          id: "addNewTab",
         },
         {
           label: i18n.t("Edit Active Tab"),
@@ -392,7 +424,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("edit-active-tab");
           },
-          id: "editActiveTab",
         },
         {
           label: i18n.t("Close Active Tab"),
@@ -401,7 +432,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("close-active-tab");
           },
-          id: "closeActiveTab",
         },
         {
           label: i18n.t("Open Tab DevTools"),
@@ -410,7 +440,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("open-tab-devtools");
           },
-          id: "openDevTools",
         },
         {
           label: i18n.t("Restore Tab"),
@@ -419,7 +448,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("restore-tab");
           },
-          id: "restoreTab",
         },
         {
           type: "separator",
@@ -431,7 +459,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("next-tab");
           },
-          id: "gotoNextTab",
         },
         {
           label: i18n.t("Go to Previous Tab"),
@@ -440,7 +467,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("previous-tab");
           },
-          id: "gotoPreviousTab",
         },
         {
           type: "separator",
@@ -452,7 +478,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("first-tab");
           },
-          id: "gotoFirstTab",
         },
         {
           label: i18n.t("Go to Last Tab"),
@@ -461,13 +486,11 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("last-tab");
           },
-          id: "gotoLastTab",
         },
       ],
     },
     {
       label: i18n.t("&View"),
-      id: "view",
       submenu: [
         {
           label: i18n.t("Toggle Fullscreen"),
@@ -476,7 +499,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.setFullScreen(!window.fullScreen);
           },
-          id: "toggleFullscreen",
         },
         {
           label: i18n.t("Toggle Tab Bar"),
@@ -485,13 +507,11 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("toggle-tab-bar");
           },
-          id: "toggleTabBar",
         },
       ],
     },
     {
       label: i18n.t("Themes"),
-      id: "themes",
       submenu: [
         {
           label: i18n.t("Theme Manager"),
@@ -500,13 +520,11 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("open-theme-manager");
           },
-          id: "themeManager",
         },
       ],
     },
     {
       label: i18n.t("&Settings"),
-      id: "settingsMenu",
       submenu: [
         {
           label: i18n.t("&Settings"),
@@ -515,13 +533,11 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("open-settings");
           },
-          id: "settings",
         },
       ],
     },
     {
       label: i18n.t("&Help"),
-      id: "help",
       submenu: [
         {
           label: i18n.t("&About"),
@@ -559,7 +575,6 @@ function getLocalizedMainMenu() {
                 console.error(err);
               });
           },
-          id: "about",
         },
         {
           label: i18n.t("Check For &Updates"),
@@ -580,7 +595,6 @@ function getLocalizedMainMenu() {
               })
               .catch((err) => console.error(err));
           },
-          id: "checkForUpdates",
         },
         {
           label: i18n.t("Links"),
@@ -606,7 +620,6 @@ function getLocalizedMainMenu() {
               },
             },
           ],
-          id: "links",
         },
         {
           label: i18n.t("Open &DevTools"),
@@ -615,7 +628,6 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.openDevTools();
           },
-          id: "openWindowDevTools",
         },
       ],
     },

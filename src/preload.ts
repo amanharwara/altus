@@ -65,3 +65,13 @@ contextBridge.exposeInMainWorld(
     return ipcRenderer.invoke("show-message-box", options);
   }
 );
+
+contextBridge.exposeInMainWorld("getAppMenu", () =>
+  ipcRenderer.invoke("get-app-menu")
+);
+
+contextBridge.exposeInMainWorld("clickMenuItem", (id: string) =>
+  ipcRenderer.invoke("menu-item-click", id)
+);
+
+contextBridge.exposeInMainWorld("platform", process.platform);

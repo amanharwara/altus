@@ -1,6 +1,7 @@
 import { type ElectronTabStoreIpcApi } from "./stores/tabs/common";
 import { type ElectronThemeStoreIpcApi } from "./stores/themes/common";
 import { type ElectronSettingsStoreIpcApi } from "./stores/settings/common";
+import { type CloneableMenu } from "./main";
 
 // Types for APIs exposed to the renderer process via contextBridge
 
@@ -29,5 +30,8 @@ declare global {
     showMessageBox: (
       options: Electron.MessageBoxOptions
     ) => Promise<Electron.MessageBoxReturnValue>;
+    getAppMenu: () => Promise<CloneableMenu>;
+    clickMenuItem: (id: string) => Promise<void>;
+    platform: NodeJS.Platform;
   }
 }

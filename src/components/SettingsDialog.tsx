@@ -15,7 +15,6 @@ import { createResizeObserver } from "@solid-primitives/resize-observer";
 function addRightPaddingIfOverflowing(element: Element | undefined) {
   setTimeout(() => {
     if (!element) return;
-    console.log(element.scrollHeight, element.clientHeight);
     const hasOverflow = element.scrollHeight > element.clientHeight;
     if (hasOverflow) {
       element.classList.add("pr-3");
