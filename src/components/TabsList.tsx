@@ -63,6 +63,10 @@ const TabsList: Component = () => {
   const [tabToEdit, setTabToEdit] = createSignal<Tab | null>(null);
   const canShowDialog = () => tabToEdit() !== null;
 
+  const addNewTab = () => {
+    addTab(getDefaultTab());
+  };
+
   const removeTabWithPrompt = async (tab: Tab) => {
     const requiresPrompt = getSettingValue("tabClosePrompt");
     if (!requiresPrompt) {
@@ -86,6 +90,10 @@ const TabsList: Component = () => {
     );
     if (!activeTab) return;
     removeTabWithPrompt(activeTab);
+  });
+
+  window.electronIPCHandlers.onAddNewTab(() => {
+    addNewTab();
   });
 
   window.electronIPCHandlers.onRestoreTab(() => {
@@ -114,9 +122,7 @@ const TabsList: Component = () => {
         </For>
         <button
           class="group flex items-center gap-2.5 bg-zinc-800 px-3 py-2 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
-          onClick={() => {
-            addTab(getDefaultTab());
-          }}
+          onClick={addNewTab}
         >
           <div class="sr-only">Add new tab</div>
           <CloseIcon class="w-4 h-4 rotate-45" />

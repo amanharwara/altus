@@ -38,11 +38,13 @@ contextBridge.exposeInMainWorld(
 contextBridge.exposeInMainWorld("toggleNotifications", toggleNotifications);
 
 contextBridge.exposeInMainWorld("electronIPCHandlers", {
-  onOpenSettings: (callback: Parameters<typeof ipcRenderer.on>[1]) =>
+  onOpenSettings: (callback: () => void) =>
     ipcRenderer.on("open-settings", callback),
-  onCloseActiveTab: (callback: Parameters<typeof ipcRenderer.on>[1]) =>
+  onCloseActiveTab: (callback: () => void) =>
     ipcRenderer.on("close-active-tab", callback),
-  onRestoreTab: (callback: Parameters<typeof ipcRenderer.on>[1]) =>
+  onAddNewTab: (callback: () => void) =>
+    ipcRenderer.on("add-new-tab", callback),
+  onRestoreTab: (callback: () => void) =>
     ipcRenderer.on("restore-tab", callback),
 });
 

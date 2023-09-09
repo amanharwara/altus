@@ -12,15 +12,10 @@ declare global {
     whatsappPreloadPath: string;
     toggleNotifications: (enabled: boolean, partition: string) => Promise<void>;
     electronIPCHandlers: {
-      onOpenSettings: (
-        callback: Parameters<typeof ipcRenderer.on>[1]
-      ) => Electron.IpcRenderer;
-      onCloseActiveTab: (
-        callback: Parameters<typeof ipcRenderer.on>[1]
-      ) => Electron.IpcRenderer;
-      onRestoreTab: (
-        callback: Parameters<typeof ipcRenderer.on>[1]
-      ) => Electron.IpcRenderer;
+      onOpenSettings: (callback: () => void) => Electron.IpcRenderer;
+      onCloseActiveTab: (callback: () => void) => Electron.IpcRenderer;
+      onAddNewTab: (callback: () => void) => Electron.IpcRenderer;
+      onRestoreTab: (callback: () => void) => Electron.IpcRenderer;
     };
     showMessageBox: (
       options: Electron.MessageBoxOptions
