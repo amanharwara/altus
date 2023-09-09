@@ -78,6 +78,22 @@ const SettingsDialog: Component<{
                   </div>
                 </StyledSwitch>
               </div>
+              <div class="py-2.5">
+                <StyledSwitch
+                  checked={getSettingValue("launchMinimized")}
+                  onChange={(checked) =>
+                    setSettingValue("launchMinimized", checked)
+                  }
+                  class="items-start"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">Start minimized</div>
+                    <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
+                      When enabled, Altus will start minimized
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
             </Dialog.Description>
           </Dialog.Content>
         </div>

@@ -87,7 +87,6 @@ const TabsList: Component = () => {
     );
     if (activeTabIndex === -1) return;
     const nextIndex = activeTabIndex + 1;
-    console.log(nextIndex);
     if (nextIndex >= tabStore.tabs.length) {
       setTabActive(tabStore.tabs[0].id);
       return;

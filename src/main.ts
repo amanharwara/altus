@@ -34,6 +34,7 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
       webviewTag: true,
     },
+    show: false,
   });
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -46,6 +47,16 @@ const createWindow = () => {
 
   if (isDev) {
     mainWindow.webContents.openDevTools();
+  }
+
+  if (electronSettingsStore.get("settings").launchMinimized.value) {
+    mainWindow.minimize();
+    mainWindow.blur();
+  } else {
+    mainWindow.once("ready-to-show", () => {
+      mainWindow.show();
+      mainWindow.focus();
+    });
   }
 
   return mainWindow;
