@@ -84,6 +84,14 @@ const TabsList: Component = () => {
     }
   };
 
+  window.electronIPCHandlers.onEditActiveTab(() => {
+    const activeTab = tabStore.tabs.find(
+      (tab) => tab.id === tabStore.selectedTabId
+    );
+    if (!activeTab) return;
+    setTabToEdit(activeTab);
+  });
+
   window.electronIPCHandlers.onCloseActiveTab(() => {
     const activeTab = tabStore.tabs.find(
       (tab) => tab.id === tabStore.selectedTabId

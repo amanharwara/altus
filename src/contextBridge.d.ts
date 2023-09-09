@@ -13,6 +13,7 @@ declare global {
     toggleNotifications: (enabled: boolean, partition: string) => Promise<void>;
     electronIPCHandlers: {
       onOpenSettings: (callback: () => void) => Electron.IpcRenderer;
+      onEditActiveTab: (callback: () => void) => Electron.IpcRenderer;
       onCloseActiveTab: (callback: () => void) => Electron.IpcRenderer;
       onAddNewTab: (callback: () => void) => Electron.IpcRenderer;
       onRestoreTab: (callback: () => void) => Electron.IpcRenderer;

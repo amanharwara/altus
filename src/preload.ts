@@ -40,6 +40,8 @@ contextBridge.exposeInMainWorld("toggleNotifications", toggleNotifications);
 contextBridge.exposeInMainWorld("electronIPCHandlers", {
   onOpenSettings: (callback: () => void) =>
     ipcRenderer.on("open-settings", callback),
+  onEditActiveTab: (callback: () => void) =>
+    ipcRenderer.on("edit-active-tab", callback),
   onCloseActiveTab: (callback: () => void) =>
     ipcRenderer.on("close-active-tab", callback),
   onAddNewTab: (callback: () => void) =>

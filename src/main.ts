@@ -341,7 +341,7 @@ function getLocalizedMainMenu() {
           accelerator: "CmdOrCtrl+E",
           click() {
             const window = BrowserWindow.getFocusedWindow();
-            if (window) window.webContents.send("edit-tab");
+            if (window) window.webContents.send("edit-active-tab");
           },
           id: "editActiveTab",
         },
