@@ -6,6 +6,8 @@ import { Tab, getDefaultTab } from "../stores/tabs/common";
 import CloseIcon from "../icons/CloseIcon";
 import SettingsIcon from "../icons/SettingsIcon";
 import TabEditDialog from "./TabEditDialog";
+import { twJoin } from "tailwind-merge";
+import { getSettingValue } from "../stores/settings/solid";
 
 interface TabComponentProps
   extends OverrideComponentProps<"div", Tabs.TabsTriggerOptions> {
@@ -62,7 +64,12 @@ const TabsList: Component = () => {
 
   return (
     <>
-      <Tabs.List class="flex bg-zinc-800 divide-x divide-zinc-700/20">
+      <Tabs.List
+        class={twJoin(
+          "bg-zinc-800 divide-x divide-zinc-700/20",
+          getSettingValue("tabBar") ? "flex" : "hidden"
+        )}
+      >
         <For each={tabStore.tabs}>
           {(tab) => (
             <Tabs.Trigger value={tab.id} asChild>

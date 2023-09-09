@@ -50,6 +50,7 @@
     "i18next": "^23.5.1",
     "i18next-fs-backend": "^2.1.5",
     "nanoid": "^4.0.2",
-    "solid-js": "^1.7.11"
+    "solid-js": "^1.7.11",
+    "tailwind-merge": "^1.14.0"
   }
 }

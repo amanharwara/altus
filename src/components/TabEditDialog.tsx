@@ -1,4 +1,4 @@
-import { Dialog, Select, Switch, TextField } from "@kobalte/core";
+import { Dialog, Select, TextField } from "@kobalte/core";
 import {
   Accessor,
   Component,
@@ -13,30 +13,7 @@ import { Theme } from "../stores/themes/common";
 import CaretSortIcon from "../icons/CaretSortIcon";
 import CheckIcon from "../icons/CheckIcon";
 import { updateTabStore } from "../stores/tabs/solid";
-
-const StyledSwitch: Component<{
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-  label: string;
-}> = (props) => {
-  return (
-    <Switch.Root
-      checked={props.checked}
-      onChange={props.onChange}
-      class="flex items-center justify-between gap-1.5"
-    >
-      <Switch.Label class="text-[0.95rem] leading-none">
-        {props.label}
-      </Switch.Label>
-      <Switch.Input class="peer" />
-      <Switch.Control class="inline-flex items-center h-6 w-10 px-px bg-zinc-700/50 rounded-xl border border-zinc-600 peer-focus:border-zinc-300 ui-checked:bg-zinc-900 transition-colors duration-75">
-        <Switch.Thumb class="h-5 w-5 flex items-center justify-center rounded-full bg-white group ui-checked:translate-x-[calc(100%_-_0.275rem)]  transition-all duration-75">
-          <CheckIcon class="w-3.5 h-3.5 opacity-0 group-data-[checked]:opacity-100 transition-opacity duration-75 text-black" />
-        </Switch.Thumb>
-      </Switch.Control>
-    </Switch.Root>
-  );
-};
+import { StyledSwitch } from "./StyledSwitch";
 
 const TabEditDialog: Component<{
   tabToEdit: Accessor<Tab>;
@@ -142,7 +119,6 @@ const TabEditDialog: Component<{
             </Select.Root>
             <div class="py-2">
               <StyledSwitch
-                label="Notifications"
                 checked={props.tabToEdit().config.notifications}
                 onChange={(value) => {
                   updateTabStore(
@@ -153,11 +129,12 @@ const TabEditDialog: Component<{
                     value
                   );
                 }}
-              />
+              >
+                Notifications
+              </StyledSwitch>
             </div>
             <div class="py-2">
               <StyledSwitch
-                label="Sound"
                 checked={props.tabToEdit().config.sound}
                 onChange={(value) => {
                   updateTabStore(
@@ -168,11 +145,12 @@ const TabEditDialog: Component<{
                     value
                   );
                 }}
-              />
+              >
+                Sound
+              </StyledSwitch>
             </div>
             <div class="py-2">
               <StyledSwitch
-                label="Spellcheck"
                 checked={props.tabToEdit().config.spellChecker}
                 onChange={(value) => {
                   updateTabStore(
@@ -183,11 +161,12 @@ const TabEditDialog: Component<{
                     value
                   );
                 }}
-              />
+              >
+                Spellcheck
+              </StyledSwitch>
             </div>
             <div class="py-2">
               <StyledSwitch
-                label="Use custom tab color"
                 checked={hasColor()}
                 onChange={(hasColor) => {
                   setHasColor(hasColor);
@@ -210,7 +189,9 @@ const TabEditDialog: Component<{
                     );
                   }
                 }}
-              />
+              >
+                Use custom tab color
+              </StyledSwitch>
               {hasColor() && (
                 <TextField.Root
                   class="flex flex-col gap-1.5 mt-2"

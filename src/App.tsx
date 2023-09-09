@@ -1,10 +1,17 @@
-import { For, type Component } from "solid-js";
+import { For, type Component, createSignal } from "solid-js";
 import { Tabs } from "@kobalte/core";
 import { setTabActive, tabStore } from "./stores/tabs/solid";
 import WebView from "./components/WebView";
 import TabsList from "./components/TabsList";
+import SettingsDialog from "./components/SettingsDialog";
 
 const App: Component = () => {
+  const [isSettingsOpen, setIsSettingsOpen] = createSignal(false);
+
+  window.electronIPCHandlers.onOpenSettings(() => {
+    setIsSettingsOpen(true);
+  });
+
   return (
     <>
       <Tabs.Root
@@ -21,6 +28,7 @@ const App: Component = () => {
           )}
         </For>
       </Tabs.Root>
+      <SettingsDialog isOpen={isSettingsOpen} setIsOpen={setIsSettingsOpen} />
     </>
   );
 };

@@ -15,9 +15,11 @@ import { electronTabStore } from "./stores/tabs/electron";
 import { Tab, TabStore } from "./stores/tabs/common";
 import { electronThemeStore } from "./stores/themes/electron";
 import { ThemeStore } from "./stores/themes/common";
+import { electronSettingsStore } from "./stores/settings/electron";
 import { i18n, i18nOptions } from "./i18n/i18next.config";
 import { languages } from "./i18n/langauges.config";
 import os from "os";
+import { SettingsStore } from "./stores/settings/common";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -155,6 +157,18 @@ function addIPCHandlers() {
     // @ts-expect-error ImportMeta works correctly
     return import.meta.url.replace("main.js", "whatsapp.preload.js");
   });
+
+  ipcMain.handle("settings-store-get", () => {
+    return electronSettingsStore.store;
+  });
+
+  ipcMain.handle(
+    "settings-store-set",
+    (_event, key: keyof SettingsStore, value: unknown) => {
+      if (value === undefined) return electronSettingsStore.delete(key);
+      return electronSettingsStore.set(key, value);
+    }
+  );
 
   ipcMain.handle("tab-store-get", () => {
     return electronTabStore.store;
