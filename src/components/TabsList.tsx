@@ -1,7 +1,13 @@
 import { As, Dialog, Tabs } from "@kobalte/core";
 import { OverrideComponentProps } from "@kobalte/utils";
 import { Component, For, Show, createSignal, splitProps } from "solid-js";
-import { addTab, removeTab, restoreTab, tabStore } from "../stores/tabs/solid";
+import {
+  addTab,
+  removeTab,
+  restoreTab,
+  setTabActive,
+  tabStore,
+} from "../stores/tabs/solid";
 import { Tab, getDefaultTab } from "../stores/tabs/common";
 import CloseIcon from "../icons/CloseIcon";
 import SettingsIcon from "../icons/SettingsIcon";
@@ -84,6 +90,44 @@ const TabsList: Component = () => {
       removeTab(tab);
     }
   };
+
+  window.electronIPCHandlers.onNextTab(() => {
+    const activeTabIndex = tabStore.tabs.findIndex(
+      (tab) => tab.id === tabStore.selectedTabId
+    );
+    if (activeTabIndex === -1) return;
+    const nextIndex = activeTabIndex + 1;
+    if (nextIndex >= tabStore.tabs.length) {
+      setTabActive(tabStore.tabs[0].id);
+      return;
+    }
+    setTabActive(tabStore.tabs[nextIndex].id);
+  });
+
+  window.electronIPCHandlers.onPreviousTab(() => {
+    const activeTabIndex = tabStore.tabs.findIndex(
+      (tab) => tab.id === tabStore.selectedTabId
+    );
+    if (activeTabIndex === -1) return;
+    const previousIndex = activeTabIndex - 1;
+    if (previousIndex < 0) {
+      setTabActive(tabStore.tabs[tabStore.tabs.length - 1].id);
+      return;
+    }
+    setTabActive(tabStore.tabs[previousIndex].id);
+  });
+
+  window.electronIPCHandlers.onFirstTab(() => {
+    const firstTab = tabStore.tabs[0];
+    if (!firstTab) return;
+    setTabActive(firstTab.id);
+  });
+
+  window.electronIPCHandlers.onLastTab(() => {
+    const lastTab = tabStore.tabs[tabStore.tabs.length - 1];
+    if (!lastTab) return;
+    setTabActive(lastTab.id);
+  });
 
   window.electronIPCHandlers.onOpenWhatsappLink((url) => {
     const activeWebview = document.querySelector(

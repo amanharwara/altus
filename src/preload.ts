@@ -50,6 +50,11 @@ contextBridge.exposeInMainWorld("electronIPCHandlers", {
     ipcRenderer.on("add-new-tab", callback),
   onRestoreTab: (callback: () => void) =>
     ipcRenderer.on("restore-tab", callback),
+  onNextTab: (callback: () => void) => ipcRenderer.on("next-tab", callback),
+  onPreviousTab: (callback: () => void) =>
+    ipcRenderer.on("previous-tab", callback),
+  onFirstTab: (callback: () => void) => ipcRenderer.on("first-tab", callback),
+  onLastTab: (callback: () => void) => ipcRenderer.on("last-tab", callback),
   onOpenWhatsappLink: (callback: (url: string) => void) =>
     ipcRenderer.on("open-whatsapp-link", (_, url) => callback(url)),
 });
