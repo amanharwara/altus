@@ -1,76 +1,62 @@
-import { createStore, unwrap } from "solid-js/store";
+import { SetStoreFunction, createStore, unwrap } from "solid-js/store";
 import {
   TabStoreDefaults,
   type TabStore,
   type Tab,
   getDefaultTab,
 } from "./common";
-import { createEffect, on } from "solid-js";
 
-const [tabStore, updateTabStore] = createStore<TabStore>(TabStoreDefaults());
+const [tabStore, _updateTabStore] = createStore<TabStore>(TabStoreDefaults());
 
 window.electronTabStore.getStore().then((store) => {
   if (store.tabs.length === 0) {
     store.tabs.push(getDefaultTab());
   }
-  updateTabStore(store);
+  _updateTabStore(store);
 });
 
-createEffect(() => {
-  const tabs = unwrap(
-    tabStore.tabs.filter((tab) => {
-      // Hack to get solid to subscribe to changes in objects in store arrays
-      // while keeping fine-grained reactivity for the UI
-      tab.name,
-        tab.config.theme,
-        tab.config.spellChecker,
-        tab.config.sound,
-        tab.config.notifications,
-        tab.config.color;
-      return true;
-    })
-  );
+const updateAndSyncTabStore: SetStoreFunction<TabStore> = (
+  ...args: unknown[]
+) => {
+  // @ts-expect-error Difficult to type, but works correctly
+  _updateTabStore(...args);
+  syncElectronTabStore();
+};
+
+function syncElectronTabStore() {
+  const tabs = unwrap(tabStore.tabs);
   window.electronTabStore.set("tabs", tabs);
-});
 
-createEffect(
-  on(
-    () => tabStore.previouslyClosedTab,
-    () => {
-      const previouslyClosedTab = unwrap(tabStore.previouslyClosedTab);
-      window.electronTabStore.set("previouslyClosedTab", previouslyClosedTab);
-    },
-    {
-      defer: true,
-    }
-  )
-);
-
-createEffect(() => {
   const selectedTabId = unwrap(tabStore.selectedTabId);
   window.electronTabStore.set("selectedTabId", selectedTabId);
-});
+
+  const previouslyClosedTab = unwrap(tabStore.previouslyClosedTab);
+  window.electronTabStore.set("previouslyClosedTab", previouslyClosedTab);
+}
 
 export function addTab(tab: Tab) {
-  updateTabStore("tabs", (tabs) => [...tabs, tab]);
-  updateTabStore("selectedTabId", tab.id);
+  updateAndSyncTabStore("tabs", (tabs) => [...tabs, tab]);
+  updateAndSyncTabStore("selectedTabId", tab.id);
 }
 
 export function removeTab(tab: Tab) {
-  updateTabStore("tabs", (tabs) => tabs.filter((t) => t.id !== tab.id));
-  updateTabStore("previouslyClosedTab", tab);
+  updateAndSyncTabStore("tabs", (tabs) => tabs.filter((t) => t.id !== tab.id));
+  updateAndSyncTabStore("previouslyClosedTab", tab);
+  if (tabStore.tabs.length > 0) {
+    updateAndSyncTabStore("selectedTabId", tabStore.tabs[0].id);
+  }
 }
 
 export function restoreTab() {
   const previouslyClosedTab = tabStore.previouslyClosedTab;
   if (previouslyClosedTab) {
     addTab(previouslyClosedTab);
-    updateTabStore("previouslyClosedTab", null);
+    updateAndSyncTabStore("previouslyClosedTab", null);
   }
 }
 
 export function setTabActive(id: string) {
-  updateTabStore("selectedTabId", id);
+  updateAndSyncTabStore("selectedTabId", id);
 }
 
-export { tabStore, updateTabStore };
+export { tabStore, updateAndSyncTabStore };

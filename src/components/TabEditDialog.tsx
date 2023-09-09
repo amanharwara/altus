@@ -9,7 +9,7 @@ import {
 import { Tab } from "../stores/tabs/common";
 import CloseIcon from "../icons/CloseIcon";
 import { themeStore } from "../stores/themes/solid";
-import { updateTabStore } from "../stores/tabs/solid";
+import { updateAndSyncTabStore } from "../stores/tabs/solid";
 import { StyledSwitch } from "./StyledSwitch";
 import StyledSelect from "./StyledSelect";
 
@@ -56,7 +56,7 @@ const TabEditDialog: Component<{
                 spellcheck={false}
                 onChange={(event) => {
                   const value = event.currentTarget.value;
-                  updateTabStore(
+                  updateAndSyncTabStore(
                     "tabs",
                     (t) => t.id === props.tabToEdit().id,
                     "name",
@@ -75,7 +75,7 @@ const TabEditDialog: Component<{
               placeholder="Select a theme..."
               value={theme()}
               onChange={(theme) => {
-                updateTabStore(
+                updateAndSyncTabStore(
                   "tabs",
                   (t) => t.id === props.tabToEdit().id,
                   "config",
@@ -91,7 +91,7 @@ const TabEditDialog: Component<{
               <StyledSwitch
                 checked={props.tabToEdit().config.notifications}
                 onChange={(value) => {
-                  updateTabStore(
+                  updateAndSyncTabStore(
                     "tabs",
                     (t) => t.id === props.tabToEdit().id,
                     "config",
@@ -107,7 +107,7 @@ const TabEditDialog: Component<{
               <StyledSwitch
                 checked={props.tabToEdit().config.sound}
                 onChange={(value) => {
-                  updateTabStore(
+                  updateAndSyncTabStore(
                     "tabs",
                     (t) => t.id === props.tabToEdit().id,
                     "config",
@@ -123,7 +123,7 @@ const TabEditDialog: Component<{
               <StyledSwitch
                 checked={props.tabToEdit().config.spellChecker}
                 onChange={(value) => {
-                  updateTabStore(
+                  updateAndSyncTabStore(
                     "tabs",
                     (t) => t.id === props.tabToEdit().id,
                     "config",
@@ -141,7 +141,7 @@ const TabEditDialog: Component<{
                 onChange={(hasColor) => {
                   setHasColor(hasColor);
                   if (hasColor) {
-                    updateTabStore(
+                    updateAndSyncTabStore(
                       "tabs",
                       (t) => t.id === props.tabToEdit().id,
                       "config",
@@ -150,7 +150,7 @@ const TabEditDialog: Component<{
                     );
                   } else {
                     setColor(props.tabToEdit().config.color);
-                    updateTabStore(
+                    updateAndSyncTabStore(
                       "tabs",
                       (t) => t.id === props.tabToEdit().id,
                       "config",
@@ -176,7 +176,7 @@ const TabEditDialog: Component<{
                     onChange={(event) => {
                       const value = event.currentTarget.value;
                       setColor(value);
-                      updateTabStore(
+                      updateAndSyncTabStore(
                         "tabs",
                         (t) => t.id === props.tabToEdit().id,
                         "config",
