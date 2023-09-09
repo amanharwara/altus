@@ -1040,6 +1040,16 @@
   dependencies:
     "@solid-primitives/utils" "^6.2.1"
 
+"@solid-primitives/resize-observer@^2.0.22":
+  version "2.0.22"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/resize-observer/-/resize-observer-2.0.22.tgz#55e8b4f87b7d6f72fabb689b91049c125cfba27d"
+  integrity sha512-ps8UIFiGsNxZaWBKSH0Py0Nx5PDd7NtUGHkN/04SNRYgtTvlPF768rk0ksPlDgpIwYmBLIoC9qvQmQPaHF4F5w==
+  dependencies:
+    "@solid-primitives/event-listener" "^2.3.0"
+    "@solid-primitives/rootless" "^1.4.2"
+    "@solid-primitives/static-store" "^0.0.5"
+    "@solid-primitives/utils" "^6.2.1"
+
 "@solid-primitives/rootless@^1.4.2":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@solid-primitives/rootless/-/rootless-1.4.2.tgz#00eb3970e1015b884f9dc95e21807ba2b58a39f9"

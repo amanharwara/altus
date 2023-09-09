@@ -9,3 +9,19 @@ body,
   height: 100%;
   @apply bg-neutral-900;
 }
+
+::-webkit-scrollbar {
+  @apply w-2 rounded;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-neutral-900 rounded;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-700 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-600;
+}

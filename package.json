@@ -45,6 +45,7 @@
     "@kobalte/core": "^0.11.0",
     "@kobalte/tailwindcss": "^0.8.0",
     "@kobalte/utils": "^0.9.0",
+    "@solid-primitives/resize-observer": "^2.0.22",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
     "i18next": "^23.5.1",

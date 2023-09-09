@@ -43,6 +43,10 @@ const windowState = new Store<{
 });
 
 const createWindow = () => {
+  const useCustomTitlebar =
+    process.platform !== "darwin" &&
+    electronSettingsStore.get("settings").customTitlebar.value;
+
   const rememberWindowSize =
     electronSettingsStore.get("settings").rememberWindowSize.value;
   const rememberWindowPosition =
@@ -59,7 +63,10 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
       webviewTag: true,
     },
+    title: "Altus",
     show: false,
+    frame: !useCustomTitlebar,
+    titleBarStyle: useCustomTitlebar ? "hidden" : "default",
   });
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {

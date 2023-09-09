@@ -1,14 +1,43 @@
 import { Dialog } from "@kobalte/core";
-import { Accessor, Component, Setter } from "solid-js";
+import {
+  Accessor,
+  Component,
+  Setter,
+  createEffect,
+  createSignal,
+} from "solid-js";
 import CloseIcon from "../icons/CloseIcon";
 import { getSettingValue, setSettingValue } from "../stores/settings/solid";
 import { StyledSwitch } from "./StyledSwitch";
 import StyledSelect from "./StyledSelect";
+import { createResizeObserver } from "@solid-primitives/resize-observer";
+
+function addRightPaddingIfOverflowing(element: Element | undefined) {
+  setTimeout(() => {
+    if (!element) return;
+    console.log(element.scrollHeight, element.clientHeight);
+    const hasOverflow = element.scrollHeight > element.clientHeight;
+    if (hasOverflow) {
+      element.classList.add("pr-3");
+    } else {
+      element.classList.remove("pr-3");
+    }
+  });
+}
 
 const SettingsDialog: Component<{
   isOpen: Accessor<boolean>;
   setIsOpen: Setter<boolean>;
 }> = (props) => {
+  const [settingsListElement, setSettingsListElement] =
+    createSignal<HTMLDivElement>();
+
+  createEffect(() => {
+    createResizeObserver(settingsListElement(), (_, element) => {
+      addRightPaddingIfOverflowing(element);
+    });
+  });
+
   return (
     <Dialog.Root open={props.isOpen()} onOpenChange={props.setIsOpen}>
       <Dialog.Portal>
@@ -21,7 +50,13 @@ const SettingsDialog: Component<{
                 <CloseIcon class="w-4 h-4" />
               </Dialog.CloseButton>
             </div>
-            <Dialog.Description class="overflow-y-auto">
+            <Dialog.Description
+              class="overflow-y-auto"
+              ref={(element) => {
+                setSettingsListElement(element);
+                addRightPaddingIfOverflowing(element);
+              }}
+            >
               <div class="py-2.5">
                 <StyledSwitch
                   checked={getSettingValue("tabBar")}
@@ -124,6 +159,24 @@ const SettingsDialog: Component<{
                     <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
                       When enabled, Altus will remember the position of the
                       window from previous use
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
+              <div class="py-2.5">
+                <StyledSwitch
+                  checked={getSettingValue("customTitlebar")}
+                  onChange={(checked) =>
+                    setSettingValue("customTitlebar", checked)
+                  }
+                  class="items-start"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">Use custom titlebar</div>
+                    <div class="text-zinc-300 max-w-[40ch] leading-snug text-sm">
+                      When enabled, Altus will use a custom titlebar instead of
+                      the one provided by the system. (NOTE: Requires a restart
+                      for changes to apply.)
                     </div>
                   </div>
                 </StyledSwitch>
