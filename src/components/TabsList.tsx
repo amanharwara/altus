@@ -93,6 +93,14 @@ const TabsList: Component = () => {
     activeWebview.src = url;
   });
 
+  window.electronIPCHandlers.onOpenTabDevTools(() => {
+    const activeWebview = document.querySelector(
+      "webview"
+    ) as WebviewTag | null;
+    if (!activeWebview) return;
+    activeWebview.openDevTools();
+  });
+
   window.electronIPCHandlers.onEditActiveTab(() => {
     const activeTab = tabStore.tabs.find(
       (tab) => tab.id === tabStore.selectedTabId

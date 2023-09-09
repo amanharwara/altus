@@ -15,6 +15,7 @@ declare global {
       onOpenSettings: (callback: () => void) => Electron.IpcRenderer;
       onEditActiveTab: (callback: () => void) => Electron.IpcRenderer;
       onCloseActiveTab: (callback: () => void) => Electron.IpcRenderer;
+      onOpenTabDevTools: (callback: () => void) => Electron.IpcRenderer;
       onAddNewTab: (callback: () => void) => Electron.IpcRenderer;
       onRestoreTab: (callback: () => void) => Electron.IpcRenderer;
       onOpenWhatsappLink: (

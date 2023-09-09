@@ -44,6 +44,8 @@ contextBridge.exposeInMainWorld("electronIPCHandlers", {
     ipcRenderer.on("edit-active-tab", callback),
   onCloseActiveTab: (callback: () => void) =>
     ipcRenderer.on("close-active-tab", callback),
+  onOpenTabDevTools: (callback: () => void) =>
+    ipcRenderer.on("open-tab-devtools", callback),
   onAddNewTab: (callback: () => void) =>
     ipcRenderer.on("add-new-tab", callback),
   onRestoreTab: (callback: () => void) =>
