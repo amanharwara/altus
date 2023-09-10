@@ -30,7 +30,7 @@ const MenuItem: Component<{
               props.item.id || props.item.commandId.toString()
             )
           }
-          class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none"
+          class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none outline-none"
         >
           <span class="mr-8">{props.item.label.replace(/&/g, "")}</span>
           <Show when={props.item.accelerator}>
@@ -45,7 +45,7 @@ const MenuItem: Component<{
               props.item.id || props.item.commandId.toString()
             )
           }
-          class="flex items-center w-full py-1.5 px-3 hover:bg-white/10 focus:bg-white/20 select-none"
+          class="flex items-center w-full py-1.5 px-3 hover:bg-white/10 focus:bg-white/20 select-none outline-none"
         >
           {props.item.checked ? (
             <RadioBoxMarked class="w-4 h-4 mr-2.5" />
@@ -65,7 +65,7 @@ const MenuItem: Component<{
       </Match>
       <Match when={props.item.type === "submenu"}>
         <DropdownMenu.Sub>
-          <DropdownMenu.SubTrigger class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none">
+          <DropdownMenu.SubTrigger class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none outline-none">
             <span class="mr-8">{props.item.label.replace(/&/g, "")}</span>
             <Show when={props.item.accelerator}>
               <span class="ml-auto text-[#c3c3c3]">
@@ -75,7 +75,10 @@ const MenuItem: Component<{
             <ChevronRightIcon class="w-4 h-4" />
           </DropdownMenu.SubTrigger>
           <DropdownMenu.Portal>
-            <DropdownMenu.SubContent class="z-50 text-[13px] py-1 bg-[#202224] text-white">
+            <DropdownMenu.SubContent
+              data-custom-titlebar-menu
+              class="z-[100] text-[13px] py-1 bg-[#202224] text-white outline-none"
+            >
               <For each={props.item.submenu}>
                 {(submenuItem) => <MenuItem item={submenuItem} />}
               </For>
@@ -113,6 +116,7 @@ const CustomTitlebar: Component<{
 
   return (
     <div
+      data-custom-titlebar
       classList={{
         "flex h-8 relative w-full bg-[#202224] text-white text-[13px] [-webkit-app-region:drag] select-none isolate z-[100] pointer-events-auto":
           true,
@@ -129,7 +133,10 @@ const CustomTitlebar: Component<{
                     {menuItem.label.replace(/&/g, "")}
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Portal>
-                    <DropdownMenu.Content class="z-50 text-[13px] py-1 bg-[#202224] text-white">
+                    <DropdownMenu.Content
+                      data-custom-titlebar-menu
+                      class="z-[100] text-[13px] py-1 bg-[#202224] text-white outline-none"
+                    >
                       <For each={menuItem.submenu}>
                         {(submenuItem) => <MenuItem item={submenuItem} />}
                       </For>

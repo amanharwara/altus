@@ -42,7 +42,18 @@ const SettingsDialog: Component<{
       <Dialog.Portal>
         <Dialog.Overlay class="fixed inset-0 z-50 bg-black/30" />
         <div class="fixed inset-0 z-50 flex items-center justify-center">
-          <Dialog.Content class="flex flex-col z-50 bg-zinc-800 text-white border rounded border-zinc-600 min-w-[30rem] px-3.5 pt-3 pb-2 max-w-[min(calc(100vw_-_1rem),32rem)] max-h-[70vh] overflow-hidden">
+          <Dialog.Content
+            class="flex flex-col z-50 bg-zinc-800 text-white border rounded border-zinc-600 min-w-[30rem] px-3.5 pt-3 pb-2 max-w-[min(calc(100vw_-_1rem),32rem)] max-h-[70vh] overflow-hidden"
+            onPointerDownOutside={(event) => {
+              if (
+                (event.target as HTMLElement).closest(
+                  "[data-custom-titlebar],[data-custom-titlebar-menu]"
+                )
+              ) {
+                event.preventDefault();
+              }
+            }}
+          >
             <div class="flex items-center justify-between mb-3">
               <Dialog.Title class="font-semibold">Settings</Dialog.Title>
               <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
