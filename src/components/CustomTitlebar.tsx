@@ -152,6 +152,29 @@ const CustomTitlebar: Component<{
                         })
                       );
                     }}
+                    onKeyDown={(event) => {
+                      if (event.key === "ArrowLeft") {
+                        const previousMenuItem =
+                          event.currentTarget.previousElementSibling;
+                        const lastMenuItem =
+                          event.currentTarget.parentElement?.lastElementChild;
+                        if (previousMenuItem instanceof HTMLElement) {
+                          previousMenuItem.focus();
+                        } else if (lastMenuItem instanceof HTMLElement) {
+                          lastMenuItem.focus();
+                        }
+                      } else if (event.key === "ArrowRight") {
+                        const nextMenuItem =
+                          event.currentTarget.nextElementSibling;
+                        const firstMenuItem =
+                          event.currentTarget.parentElement?.firstElementChild;
+                        if (nextMenuItem instanceof HTMLElement) {
+                          nextMenuItem.focus();
+                        } else if (firstMenuItem instanceof HTMLElement) {
+                          firstMenuItem.focus();
+                        }
+                      }
+                    }}
                   >
                     {menuItem.label.replace(/&/g, "")}
                   </DropdownMenu.Trigger>
