@@ -280,7 +280,10 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
     if (!menu) return;
     const item = menu.getMenuItemById(id);
     if (!item) return;
-    item.click();
+    const focusedWindow = BrowserWindow.getFocusedWindow();
+    if (!focusedWindow) return;
+    const focusedWebContents = focusedWindow.webContents;
+    item.click(undefined, focusedWindow, focusedWebContents);
   });
 
   ipcMain.handle("minimize-window", () => {
