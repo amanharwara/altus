@@ -143,6 +143,7 @@ const CustomTitlebar: Component<{
                         event.currentTarget.getAttribute("aria-expanded") ===
                         "true";
                       if (isCurrentMenuOpen) return;
+                      if (blurred()) return;
                       event.currentTarget.focus();
                       event.currentTarget.dispatchEvent(
                         new KeyboardEvent("keydown", {
