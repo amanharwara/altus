@@ -9,7 +9,6 @@ import {
   Show,
   Switch,
   createSignal,
-  onMount,
 } from "solid-js";
 import { CloneableMenu } from "../main";
 import { DropdownMenu } from "@kobalte/core";
@@ -93,16 +92,20 @@ const MenuItem: Component<{
 const CustomTitlebar: Component<{
   menu: Resource<CloneableMenu>;
 }> = (props) => {
+  let menubarElement!: HTMLDivElement;
+
+  const isAnyMenuOpen = () => {
+    return !!menubarElement.querySelector("[data-expanded]");
+  };
+
   const [maximized, setMaximized] = createSignal(false);
   const [blurred, setBlurred] = createSignal(false);
 
-  onMount(() => {
-    window.windowActions.isMaximized().then(setMaximized).catch(console.error);
-    window.windowActions.isBlurred().then(setBlurred).catch(console.error);
+  window.windowActions.isMaximized().then(setMaximized).catch(console.error);
+  window.windowActions.isBlurred().then(setBlurred).catch(console.error);
 
-    window.windowActions.onBlurred(() => setBlurred(true));
-    window.windowActions.onFocused(() => setBlurred(false));
-  });
+  window.windowActions.onBlurred(() => setBlurred(true));
+  window.windowActions.onFocused(() => setBlurred(false));
 
   const toggleMaximize = async () => {
     if (maximized()) {
@@ -124,12 +127,32 @@ const CustomTitlebar: Component<{
       }}
     >
       <Show when={props.menu()}>
-        <div class="flex ml-2 select-none [-webkit-app-region:no-drag]">
+        <div
+          ref={menubarElement}
+          class="flex ml-2 select-none [-webkit-app-region:no-drag]"
+        >
           <For each={props.menu()}>
             {(menuItem) =>
               menuItem.type === "submenu" ? (
                 <DropdownMenu.Root preventScroll={false} modal={false}>
-                  <DropdownMenu.Trigger class="flex items-center px-2 h-full cursor-default hover:bg-white/10 focus:bg-white/20 outline-none ui-expanded:bg-white/20">
+                  <DropdownMenu.Trigger
+                    class="flex items-center px-2 h-full cursor-default hover:bg-white/10 focus:bg-white/20 outline-none ui-expanded:bg-white/20"
+                    onMouseOver={(event) => {
+                      if (!isAnyMenuOpen()) return;
+                      const isCurrentMenuOpen =
+                        event.currentTarget.getAttribute("aria-expanded") ===
+                        "true";
+                      if (isCurrentMenuOpen) return;
+                      event.currentTarget.focus();
+                      event.currentTarget.dispatchEvent(
+                        new KeyboardEvent("keydown", {
+                          key: "Enter",
+                          bubbles: true,
+                          cancelable: true,
+                        })
+                      );
+                    }}
+                  >
                     {menuItem.label.replace(/&/g, "")}
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Portal>
