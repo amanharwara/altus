@@ -112,7 +112,13 @@ const CustomTitlebar: Component<{
   };
 
   return (
-    <div class="flex h-8 relative w-full bg-[#202224] text-white text-[13px] [-webkit-app-region:drag] select-none isolate z-[100] pointer-events-auto">
+    <div
+      classList={{
+        "flex h-8 relative w-full bg-[#202224] text-white text-[13px] [-webkit-app-region:drag] select-none isolate z-[100] pointer-events-auto":
+          true,
+        "opacity-75": blurred(),
+      }}
+    >
       <Show when={props.menu()}>
         <div class="flex ml-2 select-none [-webkit-app-region:no-drag]">
           <For each={props.menu()}>
