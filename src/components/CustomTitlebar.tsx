@@ -129,6 +129,7 @@ const CustomTitlebar: Component<{
       <Show when={props.menu()}>
         <div
           ref={menubarElement}
+          data-custom-titlebar-menu
           class="flex ml-2 select-none [-webkit-app-region:no-drag]"
         >
           <For each={props.menu()}>

@@ -54,6 +54,20 @@ const WebView: Component<{ tab: Tab }> = (props) => {
       setDidStopLoading(false);
       setDidStopLoading(true);
     });
+
+    webview.addEventListener("focus", () => {
+      const anyOpenTitlebarMenu = document.querySelector(
+        "[data-custom-titlebar-menu] > [data-expanded]"
+      );
+      if (!anyOpenTitlebarMenu) return;
+      anyOpenTitlebarMenu.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "Enter",
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+    });
   });
 
   return (
