@@ -15,7 +15,8 @@ export type SettingKey =
   | "customTitlebar"
   | "systemScrollbars"
   | "rememberWindowSize"
-  | "rememberWindowPosition";
+  | "rememberWindowPosition"
+  | "language";
 
 export type SettingValue = {
   tabBar: boolean;
@@ -35,6 +36,7 @@ export type SettingValue = {
   systemScrollbars: boolean;
   rememberWindowSize: boolean;
   rememberWindowPosition: boolean;
+  language: typeof import("../../i18n/langauges.config").languages[number];
 };
 
 type StoredSettings = Record<SettingKey, { value: SettingValue[SettingKey] }>;
@@ -57,6 +59,7 @@ export const getDefaultSettings = (): StoredSettings => ({
   systemScrollbars: { value: false },
   rememberWindowSize: { value: false },
   rememberWindowPosition: { value: false },
+  language: { value: "en" },
 });
 
 export type SettingsStore = {

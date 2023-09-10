@@ -9,11 +9,13 @@ import CustomTitlebar from "./components/CustomTitlebar";
 
 const App: Component = () => {
   const [isSettingsOpen, setIsSettingsOpen] = createSignal(false);
-  const [menu] = createResource(window.getAppMenu);
+  const [menu, { refetch: refetchAppMenu }] = createResource(window.getAppMenu);
 
   window.electronIPCHandlers.onOpenSettings(() => {
     setIsSettingsOpen(true);
   });
+
+  window.electronIPCHandlers.onReloadCustomTitleBar(refetchAppMenu);
 
   return (
     <div class="flex flex-col h-full">

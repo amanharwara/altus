@@ -57,6 +57,8 @@ contextBridge.exposeInMainWorld("electronIPCHandlers", {
   onLastTab: (callback: () => void) => ipcRenderer.on("last-tab", callback),
   onOpenWhatsappLink: (callback: (url: string) => void) =>
     ipcRenderer.on("open-whatsapp-link", (_, url) => callback(url)),
+  onReloadCustomTitleBar: (callback: () => void) =>
+    ipcRenderer.on("reload-custom-title-bar", callback),
 });
 
 contextBridge.exposeInMainWorld(

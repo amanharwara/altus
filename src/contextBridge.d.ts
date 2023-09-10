@@ -26,6 +26,7 @@ declare global {
       onOpenWhatsappLink: (
         callback: (url: string) => void
       ) => Electron.IpcRenderer;
+      onReloadCustomTitleBar: (callback: () => void) => Electron.IpcRenderer;
     };
     windowActions: {
       minimize: () => Promise<void>;

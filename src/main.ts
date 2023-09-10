@@ -18,7 +18,7 @@ import { electronThemeStore } from "./stores/themes/electron";
 import { ThemeStore } from "./stores/themes/common";
 import { electronSettingsStore } from "./stores/settings/electron";
 import { i18n, i18nOptions } from "./i18n/i18next.config";
-import { languages } from "./i18n/langauges.config";
+import { fallbackLanguage, languages } from "./i18n/langauges.config";
 import os from "os";
 import { SettingsStore } from "./stores/settings/common";
 import Store from "electron-store";
@@ -133,8 +133,6 @@ if (!singleInstanceLock) {
       handleWhatsappLinks(process.argv);
     }
 
-    initializeI18N();
-
     pruneUnusedPartitions(
       electronTabStore.get("tabs"),
       electronTabStore.get("previouslyClosedTab"),
@@ -142,6 +140,8 @@ if (!singleInstanceLock) {
     );
 
     const mainWindow = createWindow();
+
+    initializeI18N(mainWindow);
 
     addIPCHandlers(mainWindow);
   });
@@ -333,24 +333,43 @@ function getCloneableMenuItem(item: MenuItem): CloneableMenuItem {
       cloneableItem.submenu as Menu
     );
   }
+  cloneableItem.checked = item.checked;
   return cloneableItem;
 }
 
-function initializeI18N() {
+function initializeI18N(mainWindow: BrowserWindow) {
   if (!i18n.isInitialized) {
-    i18n.init(i18nOptions, (error) => {
-      if (error) console.error("i18n initialization error:", error);
+    i18n.init(
+      {
+        ...i18nOptions,
+        lng:
+          (electronSettingsStore.get("settings").language?.value as string) ||
+          fallbackLanguage,
+      },
+      (error) => {
+        if (error) console.error("i18n initialization error:", error);
 
-      i18n.on("loaded", () => {
-        i18n.changeLanguage(app.getLocale());
-        i18n.off("loaded");
-      });
+        i18n.on("loaded", () => {
+          const menu = getLocalizedMainMenu();
+          Menu.setApplicationMenu(menu);
+          mainWindow.webContents.send("reload-custom-title-bar");
+          i18n.off("loaded");
+        });
 
-      i18n.on("languageChanged", () => {
-        const menu = getLocalizedMainMenu();
-        Menu.setApplicationMenu(menu);
-      });
-    });
+        i18n.on("languageChanged", (lng) => {
+          const menu = getLocalizedMainMenu();
+          Menu.setApplicationMenu(menu);
+          mainWindow.webContents.send("reload-custom-title-bar");
+
+          electronSettingsStore.set("settings", {
+            ...electronSettingsStore.get("settings"),
+            language: {
+              value: lng,
+            },
+          });
+        });
+      }
+    );
   }
 }
 

@@ -14,8 +14,9 @@ import {
 import { CloneableMenu } from "../main";
 import { DropdownMenu } from "@kobalte/core";
 import { ChevronRightIcon } from "../icons/ChevronRightIcon";
-import CheckIcon from "../icons/CheckIcon";
 import MaximizeIcon from "../icons/MaximizeIcon";
+import RadioBoxMarked from "../icons/RadioBoxMarked";
+import RadioBoxBlank from "../icons/RadioBoxBlank";
 
 const MenuItem: Component<{
   item: CloneableMenu[number];
@@ -44,10 +45,16 @@ const MenuItem: Component<{
               props.item.id || props.item.commandId.toString()
             )
           }
-          class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none"
+          class="flex items-center w-full py-1.5 px-3 hover:bg-white/10 focus:bg-white/20 select-none"
         >
-          {props.item.checked && <CheckIcon class="w-4 h-4" />}
-          <span class="mr-8">{props.item.label.replace(/&/g, "")}</span>
+          {props.item.checked ? (
+            <RadioBoxMarked class="w-4 h-4 mr-2.5" />
+          ) : (
+            <RadioBoxBlank class="w-4 h-4 mr-2.5" />
+          )}
+          <span class="mr-8 text-left">
+            {props.item.label.replace(/&/g, "")}
+          </span>
           <Show when={props.item.accelerator}>
             <span class="ml-auto text-[#c3c3c3]">{props.item.accelerator}</span>
           </Show>
