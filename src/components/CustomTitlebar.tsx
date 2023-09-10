@@ -1,11 +1,21 @@
 import RestoreIcon from "../icons/RestoreIcon";
 import MinimizeIcon from "../icons/MinimizeIcon";
 import CloseIcon from "../icons/CloseIcon";
-import { Component, For, Match, Resource, Show, Switch } from "solid-js";
+import {
+  Component,
+  For,
+  Match,
+  Resource,
+  Show,
+  Switch,
+  createSignal,
+  onMount,
+} from "solid-js";
 import { CloneableMenu } from "../main";
 import { DropdownMenu } from "@kobalte/core";
 import { ChevronRightIcon } from "../icons/ChevronRightIcon";
 import CheckIcon from "../icons/CheckIcon";
+import MaximizeIcon from "../icons/MaximizeIcon";
 
 const MenuItem: Component<{
   item: CloneableMenu[number];
@@ -73,8 +83,29 @@ const MenuItem: Component<{
 const CustomTitlebar: Component<{
   menu: Resource<CloneableMenu>;
 }> = (props) => {
+  const [maximized, setMaximized] = createSignal(false);
+  const [blurred, setBlurred] = createSignal(false);
+
+  onMount(() => {
+    window.windowActions.isMaximized().then(setMaximized).catch(console.error);
+    window.windowActions.isBlurred().then(setBlurred).catch(console.error);
+
+    window.windowActions.onBlurred(() => setBlurred(true));
+    window.windowActions.onFocused(() => setBlurred(false));
+  });
+
+  const toggleMaximize = async () => {
+    if (maximized()) {
+      await window.windowActions.restore();
+    } else {
+      await window.windowActions.maximize();
+    }
+    const isMaximized = await window.windowActions.isMaximized();
+    setMaximized(isMaximized);
+  };
+
   return (
-    <div class="flex h-8 relative w-full bg-[#202224] text-white text-[13px] [-webkit-app-region:drag] select-none">
+    <div class="flex h-8 relative w-full bg-[#202224] text-white text-[13px] [-webkit-app-region:drag] select-none isolate z-[100] pointer-events-auto">
       <Show when={props.menu()}>
         <div class="flex ml-2 select-none [-webkit-app-region:no-drag]">
           <For each={props.menu()}>
@@ -103,13 +134,26 @@ const CustomTitlebar: Component<{
       </Show>
       <div class="flex-grow flex items-center justify-center pl-4">Altus</div>
       <div class="grid grid-cols-[repeat(3,46px)] h-full [-webkit-app-region:no-drag] ml-auto">
-        <button class="flex items-center justify-center hover:bg-white/10 focus:bg-white/20 outline-none">
+        <button
+          onClick={window.windowActions.minimize}
+          class="flex items-center justify-center hover:bg-white/10 focus:bg-white/20 outline-none"
+        >
           <MinimizeIcon class="h-4 w-4" />
         </button>
-        <button class="flex items-center justify-center hover:bg-white/10 focus:bg-white/20 outline-none">
-          <RestoreIcon class="h-4 w-4" />
+        <button
+          onClick={toggleMaximize}
+          class="flex items-center justify-center hover:bg-white/10 focus:bg-white/20 outline-none"
+        >
+          {maximized() ? (
+            <RestoreIcon class="h-4 w-4" />
+          ) : (
+            <MaximizeIcon class="h-4 w-4" />
+          )}
         </button>
-        <button class="flex items-center justify-center hover:bg-red-600/70 focus:bg-red-600 outline-none">
+        <button
+          onClick={window.windowActions.close}
+          class="flex items-center justify-center hover:bg-red-600/70 focus:bg-red-600 outline-none"
+        >
           <CloseIcon class="h-4 w-4" />
         </button>
       </div>

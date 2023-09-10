@@ -75,3 +75,16 @@ contextBridge.exposeInMainWorld("clickMenuItem", (id: string) =>
 );
 
 contextBridge.exposeInMainWorld("platform", process.platform);
+
+contextBridge.exposeInMainWorld("windowActions", {
+  minimize: () => ipcRenderer.invoke("minimize-window"),
+  maximize: () => ipcRenderer.invoke("maximize-window"),
+  restore: () => ipcRenderer.invoke("restore-window"),
+  close: () => ipcRenderer.invoke("close-window"),
+  isMaximized: () => ipcRenderer.invoke("is-maximized"),
+  isBlurred: () => ipcRenderer.invoke("is-blurred"),
+  onBlurred: (callback: () => void) =>
+    ipcRenderer.on("window-blurred", callback),
+  onFocused: (callback: () => void) =>
+    ipcRenderer.on("window-focused", callback),
+});

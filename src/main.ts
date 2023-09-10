@@ -133,8 +133,6 @@ if (!singleInstanceLock) {
       handleWhatsappLinks(process.argv);
     }
 
-    addIPCHandlers();
-
     initializeI18N();
 
     pruneUnusedPartitions(
@@ -143,7 +141,9 @@ if (!singleInstanceLock) {
       app.getPath("userData")
     );
 
-    createWindow();
+    const mainWindow = createWindow();
+
+    addIPCHandlers(mainWindow);
   });
 
   app.on("window-all-closed", () => {
@@ -202,7 +202,7 @@ function pruneUnusedPartitions(
     });
 }
 
-function addIPCHandlers() {
+function addIPCHandlers(mainWindow: BrowserWindow) {
   ipcMain.handle("get-whatsapp-preload-path", () => {
     // @ts-expect-error ImportMeta works correctly
     return import.meta.url.replace("main.js", "whatsapp.preload.js");
@@ -278,13 +278,37 @@ function addIPCHandlers() {
   ipcMain.handle("menu-item-click", (_event, id: string) => {
     const menu = Menu.getApplicationMenu();
     if (!menu) return;
-    const item = menu.items.find(
-      (item) => item.id === id || item.commandId.toString() === id
-    );
-    console.log(id, item);
+    const item = menu.getMenuItemById(id);
     if (!item) return;
     item.click();
   });
+
+  ipcMain.handle("minimize-window", () => {
+    mainWindow.minimize();
+  });
+
+  ipcMain.handle("maximize-window", () => {
+    mainWindow.maximize();
+  });
+
+  ipcMain.handle("restore-window", () => {
+    mainWindow.restore();
+  });
+
+  ipcMain.handle("close-window", () => {
+    mainWindow.close();
+  });
+
+  ipcMain.handle("is-maximized", () => {
+    return mainWindow.isMaximized();
+  });
+
+  ipcMain.handle("is-blurred", () => {
+    return !mainWindow.isFocused();
+  });
+
+  mainWindow.on("blur", () => mainWindow.webContents.send("window-blurred"));
+  mainWindow.on("focus", () => mainWindow.webContents.send("window-focused"));
 }
 
 type CloneableMenuItem = Omit<MenuItem, "menu" | "submenu" | "click"> & {
@@ -330,6 +354,18 @@ function initializeI18N() {
   }
 }
 
+const versionInfo = `Altus: ${app.getVersion()}
+Electron: ${process.versions.electron}
+Chrome: ${process.versions.chrome}
+V8: ${process.versions.v8}
+OS: ${os.type()} ${os.arch()} ${os.release()}`;
+
+const aboutDialogText = `With help from: MarceloZapatta, Dafnik, dmcdo, insign, srevinsaju, maicol07, ngmoviedo.
+
+Thanks to: vednoc for Dark WhatsApp theme.
+  
+${versionInfo}`;
+
 function getLocalizedMainMenu() {
   const menuTemplate: (
     | Electron.MenuItemConstructorOptions
@@ -344,17 +380,17 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("new-chat");
           },
+          id: "start-new-chat",
         },
         {
           label: i18n.t("Force &Reload"),
           role: "forceReload",
+          id: "force-reload",
         },
         {
           label: i18n.t("&Quit"),
-          accelerator: "CmdOrCtrl+Q",
-          click() {
-            app.exit(0);
-          },
+          role: "quit",
+          id: "quit",
         },
       ],
     },
@@ -364,29 +400,35 @@ function getLocalizedMainMenu() {
         {
           label: i18n.t("Undo"),
           role: "undo",
+          id: "undo",
         },
         {
           label: i18n.t("Redo"),
           role: "redo",
+          id: "redo",
         },
         {
           type: "separator",
         },
         {
           label: i18n.t("Cut"),
-          accelerator: "CmdOrCtrl+X",
+          role: "cut",
+          id: "cut",
         },
         {
           label: i18n.t("Copy"),
-          accelerator: "CmdOrCtrl+C",
+          role: "copy",
+          id: "copy",
         },
         {
           label: i18n.t("Paste"),
-          accelerator: "CmdOrCtrl+V",
+          role: "paste",
+          id: "paste",
         },
         {
           label: i18n.t("Select All"),
-          accelerator: "CmdOrCtrl+A",
+          role: "selectAll",
+          id: "select-all",
         },
         {
           type: "separator",
@@ -401,6 +443,7 @@ function getLocalizedMainMenu() {
               click: () => {
                 i18n.changeLanguage(lang);
               },
+              id: lang,
             };
           }),
         },
@@ -416,6 +459,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("add-new-tab");
           },
+          id: "add-new-tab",
         },
         {
           label: i18n.t("Edit Active Tab"),
@@ -424,6 +468,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("edit-active-tab");
           },
+          id: "edit-active-tab",
         },
         {
           label: i18n.t("Close Active Tab"),
@@ -432,6 +477,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("close-active-tab");
           },
+          id: "close-active-tab",
         },
         {
           label: i18n.t("Open Tab DevTools"),
@@ -440,6 +486,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("open-tab-devtools");
           },
+          id: "open-tab-devtools",
         },
         {
           label: i18n.t("Restore Tab"),
@@ -448,6 +495,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("restore-tab");
           },
+          id: "restore-tab",
         },
         {
           type: "separator",
@@ -459,6 +507,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("next-tab");
           },
+          id: "next-tab",
         },
         {
           label: i18n.t("Go to Previous Tab"),
@@ -467,6 +516,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("previous-tab");
           },
+          id: "previous-tab",
         },
         {
           type: "separator",
@@ -478,6 +528,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("first-tab");
           },
+          id: "first-tab",
         },
         {
           label: i18n.t("Go to Last Tab"),
@@ -486,27 +537,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("last-tab");
           },
-        },
-      ],
-    },
-    {
-      label: i18n.t("&View"),
-      submenu: [
-        {
-          label: i18n.t("Toggle Fullscreen"),
-          accelerator: "F11",
-          click() {
-            const window = BrowserWindow.getFocusedWindow();
-            if (window) window.setFullScreen(!window.fullScreen);
-          },
-        },
-        {
-          label: i18n.t("Toggle Tab Bar"),
-          accelerator: "CmdOrCtrl+Shift+B",
-          click() {
-            const window = BrowserWindow.getFocusedWindow();
-            if (window) window.webContents.send("toggle-tab-bar");
-          },
+          id: "last-tab",
         },
       ],
     },
@@ -520,6 +551,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("open-theme-manager");
           },
+          id: "open-theme-manager",
         },
       ],
     },
@@ -533,6 +565,7 @@ function getLocalizedMainMenu() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("open-settings");
           },
+          id: "open-settings",
         },
       ],
     },
@@ -542,22 +575,12 @@ function getLocalizedMainMenu() {
         {
           label: i18n.t("&About"),
           click() {
-            const versionInfo = `Altus: ${app.getVersion()}
-  Electron: ${process.versions.electron}
-  Chrome: ${process.versions.chrome}
-  V8: ${process.versions.v8}
-  OS: ${os.type()} ${os.arch()} ${os.release()}`;
-
             dialog
               .showMessageBox({
                 type: "info",
                 title: `Altus v${app.getVersion()}`,
                 message: `Made by Aman Harwara.`,
-                detail: `With help from: MarceloZapatta, Dafnik, dmcdo, insign, srevinsaju, maicol07, ngmoviedo.
-  
-  Thanks to: vednoc for Dark WhatsApp theme.
-  
-  ${versionInfo}`,
+                detail: aboutDialogText,
                 // icon: mainIcon,
                 buttons: ["Copy Version Info", "OK"],
               })
@@ -575,6 +598,7 @@ function getLocalizedMainMenu() {
                 console.error(err);
               });
           },
+          id: "about",
         },
         {
           label: i18n.t("Check For &Updates"),
@@ -595,6 +619,7 @@ function getLocalizedMainMenu() {
               })
               .catch((err) => console.error(err));
           },
+          id: "check-for-updates",
         },
         {
           label: i18n.t("Links"),
@@ -606,28 +631,28 @@ function getLocalizedMainMenu() {
                   "https://gitlab.com/amanharwara/altus/-/issues"
                 );
               },
+              id: "report-bugs-issues",
             },
             {
               label: i18n.t("Website"),
               click: () => {
                 shell.openExternal("https://amanharwara.com");
               },
+              id: "website",
             },
             {
               label: i18n.t("Repository"),
               click: () => {
-                shell.openExternal("https://www.gitlab.com/amanharwara/altus");
+                shell.openExternal("https://www.github.com/amanharwara/altus");
               },
+              id: "repository",
             },
           ],
         },
         {
           label: i18n.t("Open &DevTools"),
-          accelerator: "CmdOrCtrl+Shift+I",
-          click() {
-            const window = BrowserWindow.getFocusedWindow();
-            if (window) window.webContents.openDevTools();
-          },
+          role: "toggleDevTools",
+          id: "toggle-dev-tools",
         },
       ],
     },

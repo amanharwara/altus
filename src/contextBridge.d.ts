@@ -27,6 +27,16 @@ declare global {
         callback: (url: string) => void
       ) => Electron.IpcRenderer;
     };
+    windowActions: {
+      minimize: () => Promise<void>;
+      maximize: () => Promise<void>;
+      restore: () => Promise<void>;
+      close: () => Promise<void>;
+      isMaximized: () => Promise<boolean>;
+      isBlurred: () => Promise<boolean>;
+      onBlurred: (callback: () => void) => void;
+      onFocused: (callback: () => void) => void;
+    };
     showMessageBox: (
       options: Electron.MessageBoxOptions
     ) => Promise<Electron.MessageBoxReturnValue>;
