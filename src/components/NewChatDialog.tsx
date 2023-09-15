@@ -50,6 +50,11 @@ const NewChatDialog = (props: { close: () => void }) => {
                 <TextField.Input
                   class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300"
                   spellcheck={false}
+                  ref={(element) => {
+                    setTimeout(() => {
+                      element.focus();
+                    }, 5);
+                  }}
                 />
               </TextField.Root>
               <button
