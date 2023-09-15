@@ -62,6 +62,7 @@ export const getDefaultSettings = (): StoredSettings => ({
   language: { value: "en" },
 });
 
+// @TODO This not the correct schema, it should actually be StoredSettings
 export type SettingsStore = {
   settings: StoredSettings;
 };

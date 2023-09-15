@@ -108,7 +108,7 @@ const singleInstanceLock = app.requestSingleInstanceLock();
 if (!singleInstanceLock) {
   app.exit();
 } else {
-  app.on("second-instance", (event, argv) => {
+  app.on("second-instance", (_, argv) => {
     if (BrowserWindow.getAllWindows().length === 0) return;
 
     const mainWindow = BrowserWindow.getAllWindows()[0];
@@ -156,6 +156,29 @@ if (!singleInstanceLock) {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
+  });
+
+  app.on("web-contents-created", (_, webContents) => {
+    webContents.on("before-input-event", (event, input) => {
+      if (electronSettingsStore.get("settings").preventEnter.value) {
+        if (input.key === "Enter" && !input.shift && !input.control) {
+          webContents.sendInputEvent({
+            keyCode: "Shift+Return",
+            type: "keyDown",
+          });
+          event.preventDefault();
+          return;
+        }
+
+        if (input.key === "Enter" && input.control) {
+          webContents.executeJavaScript(
+            `document.querySelector('[data-icon="send"]').click()`
+          );
+          event.preventDefault();
+          return;
+        }
+      }
+    });
   });
 }
 

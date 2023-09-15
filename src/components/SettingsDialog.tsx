@@ -175,6 +175,25 @@ const SettingsDialog: Component<{
               </div>
               <div class="py-2.5">
                 <StyledSwitch
+                  checked={getSettingValue("preventEnter")}
+                  onChange={(checked) =>
+                    setSettingValue("preventEnter", checked)
+                  }
+                  class="items-start"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">
+                      Prevent sending message on Enter
+                    </div>
+                    <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
+                      When enabled, pressing Enter while typing will not send
+                      the message and add a new line instead
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
+              <div class="py-2.5">
+                <StyledSwitch
                   checked={getSettingValue("customTitlebar")}
                   onChange={(checked) =>
                     setSettingValue("customTitlebar", checked)
