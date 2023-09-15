@@ -205,11 +205,13 @@ const TabsList: Component = () => {
         open={canShowNewChatDialog()}
         onOpenChange={setShowNewChatDialog}
       >
-        <NewChatDialog
-          close={() => {
-            setShowNewChatDialog(false);
-          }}
-        />
+        <Show when={canShowNewChatDialog()}>
+          <NewChatDialog
+            close={() => {
+              setShowNewChatDialog(false);
+            }}
+          />
+        </Show>
       </Dialog.Root>
     </>
   );
