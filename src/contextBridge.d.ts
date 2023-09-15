@@ -27,6 +27,7 @@ declare global {
         callback: (url: string) => void
       ) => Electron.IpcRenderer;
       onReloadCustomTitleBar: (callback: () => void) => Electron.IpcRenderer;
+      onNewChat: (callback: () => void) => Electron.IpcRenderer;
     };
     windowActions: {
       minimize: () => Promise<void>;

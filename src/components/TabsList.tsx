@@ -2,6 +2,7 @@ import { Dialog } from "@kobalte/core";
 import { Component, For, Show, createSignal } from "solid-js";
 import {
   addTab,
+  getActiveWebviewElement,
   removeTab,
   restoreTab,
   setTabActive,
@@ -13,7 +14,7 @@ import SettingsIcon from "../icons/SettingsIcon";
 import TabEditDialog from "./TabEditDialog";
 import { twJoin } from "tailwind-merge";
 import { getSettingValue } from "../stores/settings/solid";
-import { WebviewTag } from "electron";
+import NewChatDialog from "./NewChatDialog";
 
 interface TabComponentProps {
   tab: Tab;
@@ -58,7 +59,9 @@ const TabComponent: Component<TabComponentProps> = (props) => {
 
 const TabsList: Component = () => {
   const [tabToEdit, setTabToEdit] = createSignal<Tab | null>(null);
-  const canShowDialog = () => tabToEdit() !== null;
+  const canShowTabEditDialog = () => tabToEdit() !== null;
+
+  const [canShowNewChatDialog, setShowNewChatDialog] = createSignal(false);
 
   const addNewTab = () => {
     addTab(getDefaultTab());
@@ -120,17 +123,13 @@ const TabsList: Component = () => {
   });
 
   window.electronIPCHandlers.onOpenWhatsappLink((url) => {
-    const activeWebview = document.querySelector(
-      "webview"
-    ) as WebviewTag | null;
+    const activeWebview = getActiveWebviewElement();
     if (!activeWebview) return;
     activeWebview.src = url;
   });
 
   window.electronIPCHandlers.onOpenTabDevTools(() => {
-    const activeWebview = document.querySelector(
-      "webview"
-    ) as WebviewTag | null;
+    const activeWebview = getActiveWebviewElement();
     if (!activeWebview) return;
     activeWebview.openDevTools();
   });
@@ -159,6 +158,10 @@ const TabsList: Component = () => {
     restoreTab();
   });
 
+  window.electronIPCHandlers.onNewChat(() => {
+    setShowNewChatDialog(true);
+  });
+
   return (
     <>
       <div
@@ -185,7 +188,7 @@ const TabsList: Component = () => {
         </button>
       </div>
       <Dialog.Root
-        open={canShowDialog()}
+        open={canShowTabEditDialog()}
         onOpenChange={(open) => {
           if (!open) {
             setTabToEdit(null);
@@ -197,6 +200,16 @@ const TabsList: Component = () => {
             <TabEditDialog tabToEdit={tabToEdit} setTabToEdit={setTabToEdit} />
           )}
         </Show>
+      </Dialog.Root>
+      <Dialog.Root
+        open={canShowNewChatDialog()}
+        onOpenChange={setShowNewChatDialog}
+      >
+        <NewChatDialog
+          close={() => {
+            setShowNewChatDialog(false);
+          }}
+        />
       </Dialog.Root>
     </>
   );

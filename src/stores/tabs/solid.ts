@@ -5,6 +5,7 @@ import {
   type Tab,
   getDefaultTab,
 } from "./common";
+import { WebviewTag } from "electron";
 
 const [tabStore, _updateTabStore] = createStore<TabStore>(TabStoreDefaults());
 
@@ -57,6 +58,13 @@ export function restoreTab() {
 
 export function setTabActive(id: string) {
   updateAndSyncTabStore("selectedTabId", id);
+}
+
+export function getActiveWebviewElement() {
+  const webviewElement = document.getElementById(
+    `webview-${tabStore.selectedTabId}`
+  ) as WebviewTag | null;
+  return webviewElement;
 }
 
 export { tabStore, updateAndSyncTabStore };
