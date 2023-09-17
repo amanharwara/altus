@@ -45,7 +45,10 @@ declare global {
     ) => Promise<Electron.MessageBoxReturnValue>;
     getAppMenu: () => Promise<CloneableMenu>;
     i18n: {
-      getTranslations: () => Promise<Record<string, string>>;
+      getTranslations: () => Promise<{
+        current: Record<string, string>;
+        fallback: Record<string, string>;
+      }>;
       keyMissing: (key: string) => Promise<void>;
     };
     clickMenuItem: (id: string) => Promise<void>;

@@ -7,18 +7,31 @@ import { isDev } from "../utils/isDev";
 export class ElectronI18N {
   protected language: Language = fallbackLanguage;
   private translation: Record<string, string> = {};
+  private fallbackTranslation: Record<string, string> = {};
   private languageChangeCallback?: (_language: Language) => void;
   private languageLoadedCallback?: () => void;
+  private didInitialize = false;
 
-  initializeIPC() {
+  initialize = async () => {
     ipcMain.handle("get-translations", async () => {
-      return this.translation;
+      return {
+        current: this.translation,
+        fallback: this.fallbackTranslation,
+      };
     });
 
     ipcMain.handle("key-missing", async (_, key: string) => {
       this.keyMissing(key);
     });
-  }
+
+    try {
+      const fallbackTranslations = await this.loadLanguage(fallbackLanguage);
+      this.fallbackTranslation = fallbackTranslations;
+      this.didInitialize = true;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   getLanguage = () => {
     return this.language;
@@ -38,6 +51,10 @@ export class ElectronI18N {
   };
 
   onLanguageChange = (language: Language) => {
+    if (!this.didInitialize) {
+      throw new Error("ElectronI18N not initialized");
+    }
+
     if (!this.languageChangeCallback) {
       throw new Error("Language change callback not set");
     }
@@ -45,6 +62,9 @@ export class ElectronI18N {
     this.languageChangeCallback(language);
 
     this.loadLanguage(language)
+      .then((translation) => {
+        this.translation = translation;
+      })
       .then(this.onLanguageLoaded)
       .catch(console.error);
   };
@@ -58,7 +78,7 @@ export class ElectronI18N {
       throw new Error(`Language file not found: ${filePath}`);
     }
     const contents = readFileSync(filePath, { encoding: "utf-8" });
-    this.translation = JSON.parse(contents);
+    return JSON.parse(contents);
   };
 
   onLanguageLoaded = () => {
@@ -95,7 +115,7 @@ export class ElectronI18N {
   t = (key: string) => {
     if (!this.translation[key]) {
       this.keyMissing(key);
-      return key;
+      return this.fallbackTranslation[key] || key;
     }
     return this.translation[key];
   };

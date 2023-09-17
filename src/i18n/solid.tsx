@@ -17,10 +17,10 @@ export const I18NProvider: Component<{
   window.electronIPCHandlers.onReloadTranslations(refetchTranslations);
 
   const t = (key: string) => {
-    const value = translations()?.[key];
+    const value = translations()?.current?.[key];
     if (!value) {
       window.i18n.keyMissing(key);
-      return key;
+      return translations()?.fallback?.[key] || key;
     }
     return value;
   };

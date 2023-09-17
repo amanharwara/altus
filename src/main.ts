@@ -365,9 +365,7 @@ function getCloneableMenuItem(item: MenuItem): CloneableMenuItem {
   return cloneableItem;
 }
 
-function initializeI18N(mainWindow: BrowserWindow) {
-  electronI18N.initializeIPC();
-
+async function initializeI18N(mainWindow: BrowserWindow) {
   electronI18N.setLanguageChangeCallback((language) => {
     electronSettingsStore.set("language", {
       value: language,
@@ -381,8 +379,13 @@ function initializeI18N(mainWindow: BrowserWindow) {
     mainWindow.webContents.send("reload-translations");
   });
 
-  const initialLanguage = electronSettingsStore.get("language").value;
-  electronI18N.setLanguage(initialLanguage);
+  electronI18N
+    .initialize()
+    .then(() => {
+      const initialLanguage = electronSettingsStore.get("language").value;
+      electronI18N.setLanguage(initialLanguage);
+    })
+    .catch(console.error);
 }
 
 const versionInfo = `Altus: ${app.getVersion()}
