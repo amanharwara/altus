@@ -1,13 +1,13 @@
-import { createStore, unwrap } from "solid-js/store";
+import { createStore } from "solid-js/store";
 import {
   SettingKey,
   SettingValue,
-  SettingsStore,
-  SettingsStoreDefaults,
+  Settings,
+  getDefaultSettings,
 } from "./common";
 
-const [settingsStore, updateSettingsStore] = createStore<SettingsStore>(
-  SettingsStoreDefaults()
+const [settingsStore, updateSettingsStore] = createStore<Settings>(
+  getDefaultSettings()
 );
 
 window.electronSettingsStore.getStore().then((store) => {
@@ -17,8 +17,7 @@ window.electronSettingsStore.getStore().then((store) => {
 export function getSettingValue<Key extends SettingKey>(
   key: Key
 ): SettingValue[Key] {
-  const settings = settingsStore.settings;
-  const value = settings[key].value;
+  const value = settingsStore[key].value;
   return value as SettingValue[Key];
 }
 
@@ -26,11 +25,8 @@ export function setSettingValue<Key extends SettingKey>(
   key: Key,
   value: SettingValue[Key]
 ) {
-  updateSettingsStore("settings", (settings) => ({
-    ...settings,
-    [key]: { value },
-  }));
-  window.electronSettingsStore.setSettings(unwrap(settingsStore.settings));
+  updateSettingsStore((prev) => ({ ...prev, [key]: { value } }));
+  window.electronSettingsStore.setSetting(key, value);
 }
 
 export { settingsStore };

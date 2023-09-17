@@ -17,11 +17,11 @@ import { Tab, TabStore } from "./stores/tabs/common";
 import { electronThemeStore } from "./stores/themes/electron";
 import { ThemeStore } from "./stores/themes/common";
 import { electronSettingsStore } from "./stores/settings/electron";
-import { i18n, i18nOptions } from "./i18n/i18next.config";
-import { fallbackLanguage, languages } from "./i18n/langauges.config";
+import { languages } from "./i18n/langauges.config";
 import os from "os";
-import { SettingsStore } from "./stores/settings/common";
 import Store from "electron-store";
+import { electronI18N } from "./i18n/electron";
+import { SettingKey } from "./stores/settings/common";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -46,12 +46,14 @@ const windowState = new Store<{
 const createWindow = () => {
   const useCustomTitlebar =
     process.platform !== "darwin" &&
-    electronSettingsStore.get("settings").customTitlebar.value;
+    electronSettingsStore.get("customTitlebar").value;
 
   const rememberWindowSize =
-    electronSettingsStore.get("settings").rememberWindowSize.value;
-  const rememberWindowPosition =
-    electronSettingsStore.get("settings").rememberWindowPosition.value;
+    electronSettingsStore.get("rememberWindowSize").value;
+
+  const rememberWindowPosition = electronSettingsStore.get(
+    "rememberWindowPosition"
+  ).value;
 
   const mainWindow = new BrowserWindow({
     minWidth: 520,
@@ -82,7 +84,7 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools();
   }
 
-  if (electronSettingsStore.get("settings").launchMinimized.value) {
+  if (electronSettingsStore.get("launchMinimized").value) {
     mainWindow.minimize();
     mainWindow.blur();
   } else {
@@ -160,7 +162,7 @@ if (!singleInstanceLock) {
 
   app.on("web-contents-created", (_, webContents) => {
     webContents.on("before-input-event", (event, input) => {
-      if (electronSettingsStore.get("settings").preventEnter.value) {
+      if (electronSettingsStore.get("preventEnter").value) {
         if (input.key === "Enter" && !input.shift && !input.control) {
           webContents.sendInputEvent({
             keyCode: "Shift+Return",
@@ -237,7 +239,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
 
   ipcMain.handle(
     "settings-store-set",
-    (_event, key: keyof SettingsStore, value: unknown) => {
+    (_event, key: SettingKey, value: unknown) => {
       if (value === undefined) return electronSettingsStore.delete(key);
       return electronSettingsStore.set(key, value);
     }
@@ -364,39 +366,23 @@ function getCloneableMenuItem(item: MenuItem): CloneableMenuItem {
 }
 
 function initializeI18N(mainWindow: BrowserWindow) {
-  if (!i18n.isInitialized) {
-    i18n.init(
-      {
-        ...i18nOptions,
-        lng:
-          (electronSettingsStore.get("settings").language?.value as string) ||
-          fallbackLanguage,
-      },
-      (error) => {
-        if (error) console.error("i18n initialization error:", error);
+  electronI18N.initializeIPC();
 
-        i18n.on("loaded", () => {
-          const menu = getLocalizedMainMenu();
-          Menu.setApplicationMenu(menu);
-          mainWindow.webContents.send("reload-custom-title-bar");
-          i18n.off("loaded");
-        });
+  electronI18N.setLanguageChangeCallback((language) => {
+    electronSettingsStore.set("language", {
+      value: language,
+    });
+  });
 
-        i18n.on("languageChanged", (lng) => {
-          const menu = getLocalizedMainMenu();
-          Menu.setApplicationMenu(menu);
-          mainWindow.webContents.send("reload-custom-title-bar");
+  electronI18N.setLanguageLoadedCallback(() => {
+    const menu = getLocalizedMainMenu();
+    Menu.setApplicationMenu(menu);
+    mainWindow.webContents.send("reload-custom-title-bar");
+    mainWindow.webContents.send("reload-translations");
+  });
 
-          electronSettingsStore.set("settings", {
-            ...electronSettingsStore.get("settings"),
-            language: {
-              value: lng,
-            },
-          });
-        });
-      }
-    );
-  }
+  const initialLanguage = electronSettingsStore.get("language").value;
+  electronI18N.setLanguage(initialLanguage);
 }
 
 const versionInfo = `Altus: ${app.getVersion()}
@@ -417,10 +403,10 @@ function getLocalizedMainMenu() {
     | Electron.MenuItem
   )[] = [
     {
-      label: i18n.t("&File"),
+      label: electronI18N.t("&File"),
       submenu: [
         {
-          label: i18n.t("Start &New Chat"),
+          label: electronI18N.t("Start &New Chat"),
           click() {
             const window = BrowserWindow.getFocusedWindow();
             if (window) window.webContents.send("new-chat");
@@ -428,27 +414,27 @@ function getLocalizedMainMenu() {
           id: "start-new-chat",
         },
         {
-          label: i18n.t("Force &Reload"),
+          label: electronI18N.t("Force &Reload"),
           role: "forceReload",
           id: "force-reload",
         },
         {
-          label: i18n.t("&Quit"),
+          label: electronI18N.t("&Quit"),
           role: "quit",
           id: "quit",
         },
       ],
     },
     {
-      label: i18n.t("&Edit"),
+      label: electronI18N.t("&Edit"),
       submenu: [
         {
-          label: i18n.t("Undo"),
+          label: electronI18N.t("Undo"),
           role: "undo",
           id: "undo",
         },
         {
-          label: i18n.t("Redo"),
+          label: electronI18N.t("Redo"),
           role: "redo",
           id: "redo",
         },
@@ -456,22 +442,22 @@ function getLocalizedMainMenu() {
           type: "separator",
         },
         {
-          label: i18n.t("Cut"),
+          label: electronI18N.t("Cut"),
           role: "cut",
           id: "cut",
         },
         {
-          label: i18n.t("Copy"),
+          label: electronI18N.t("Copy"),
           role: "copy",
           id: "copy",
         },
         {
-          label: i18n.t("Paste"),
+          label: electronI18N.t("Paste"),
           role: "paste",
           id: "paste",
         },
         {
-          label: i18n.t("Select All"),
+          label: electronI18N.t("Select All"),
           role: "selectAll",
           id: "select-all",
         },
@@ -479,14 +465,14 @@ function getLocalizedMainMenu() {
           type: "separator",
         },
         {
-          label: i18n.t("Language"),
+          label: electronI18N.t("Language"),
           submenu: languages.map((lang) => {
             return {
-              label: i18n.t(lang),
+              label: electronI18N.t(lang),
               type: "radio",
-              checked: i18n.language === lang,
+              checked: electronI18N.getLanguage() === lang,
               click: () => {
-                i18n.changeLanguage(lang);
+                electronI18N.setLanguage(lang);
               },
               id: lang,
             };
@@ -495,10 +481,10 @@ function getLocalizedMainMenu() {
       ],
     },
     {
-      label: i18n.t("Tab"),
+      label: electronI18N.t("Tab"),
       submenu: [
         {
-          label: i18n.t("Add New Tab"),
+          label: electronI18N.t("Add New Tab"),
           accelerator: "CmdOrCtrl+T",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -507,7 +493,7 @@ function getLocalizedMainMenu() {
           id: "add-new-tab",
         },
         {
-          label: i18n.t("Edit Active Tab"),
+          label: electronI18N.t("Edit Active Tab"),
           accelerator: "CmdOrCtrl+E",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -516,7 +502,7 @@ function getLocalizedMainMenu() {
           id: "edit-active-tab",
         },
         {
-          label: i18n.t("Close Active Tab"),
+          label: electronI18N.t("Close Active Tab"),
           accelerator: "CmdOrCtrl+W",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -525,7 +511,7 @@ function getLocalizedMainMenu() {
           id: "close-active-tab",
         },
         {
-          label: i18n.t("Open Tab DevTools"),
+          label: electronI18N.t("Open Tab DevTools"),
           accelerator: "CmdOrCtrl+Shift+D",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -534,7 +520,7 @@ function getLocalizedMainMenu() {
           id: "open-tab-devtools",
         },
         {
-          label: i18n.t("Restore Tab"),
+          label: electronI18N.t("Restore Tab"),
           accelerator: "CmdOrCtrl+Shift+T",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -546,7 +532,7 @@ function getLocalizedMainMenu() {
           type: "separator",
         },
         {
-          label: i18n.t("Go to Next Tab"),
+          label: electronI18N.t("Go to Next Tab"),
           accelerator: "CmdOrCtrl+Tab",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -555,7 +541,7 @@ function getLocalizedMainMenu() {
           id: "next-tab",
         },
         {
-          label: i18n.t("Go to Previous Tab"),
+          label: electronI18N.t("Go to Previous Tab"),
           accelerator: "CmdOrCtrl+Shift+Tab",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -567,7 +553,7 @@ function getLocalizedMainMenu() {
           type: "separator",
         },
         {
-          label: i18n.t("Go to First Tab"),
+          label: electronI18N.t("Go to First Tab"),
           accelerator: "CmdOrCtrl+1",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -576,7 +562,7 @@ function getLocalizedMainMenu() {
           id: "first-tab",
         },
         {
-          label: i18n.t("Go to Last Tab"),
+          label: electronI18N.t("Go to Last Tab"),
           accelerator: "CmdOrCtrl+9",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -587,10 +573,10 @@ function getLocalizedMainMenu() {
       ],
     },
     {
-      label: i18n.t("Themes"),
+      label: electronI18N.t("Themes"),
       submenu: [
         {
-          label: i18n.t("Theme Manager"),
+          label: electronI18N.t("Theme Manager"),
           accelerator: "Alt+T",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -601,10 +587,10 @@ function getLocalizedMainMenu() {
       ],
     },
     {
-      label: i18n.t("&Settings"),
+      label: electronI18N.t("&Settings"),
       submenu: [
         {
-          label: i18n.t("&Settings"),
+          label: electronI18N.t("&Settings"),
           accelerator: "Ctrl+,",
           click() {
             const window = BrowserWindow.getFocusedWindow();
@@ -615,10 +601,10 @@ function getLocalizedMainMenu() {
       ],
     },
     {
-      label: i18n.t("&Help"),
+      label: electronI18N.t("&Help"),
       submenu: [
         {
-          label: i18n.t("&About"),
+          label: electronI18N.t("&About"),
           click() {
             dialog
               .showMessageBox({
@@ -646,7 +632,7 @@ function getLocalizedMainMenu() {
           id: "about",
         },
         {
-          label: i18n.t("Check For &Updates"),
+          label: electronI18N.t("Check For &Updates"),
           accelerator: "CmdOrCtrl+Shift+U",
           click() {
             dialog
@@ -667,10 +653,10 @@ function getLocalizedMainMenu() {
           id: "check-for-updates",
         },
         {
-          label: i18n.t("Links"),
+          label: electronI18N.t("Links"),
           submenu: [
             {
-              label: i18n.t("Report Bugs/Issues"),
+              label: electronI18N.t("Report Bugs/Issues"),
               click: () => {
                 shell.openExternal(
                   "https://gitlab.com/amanharwara/altus/-/issues"
@@ -679,14 +665,14 @@ function getLocalizedMainMenu() {
               id: "report-bugs-issues",
             },
             {
-              label: i18n.t("Website"),
+              label: electronI18N.t("Website"),
               click: () => {
                 shell.openExternal("https://amanharwara.com");
               },
               id: "website",
             },
             {
-              label: i18n.t("Repository"),
+              label: electronI18N.t("Repository"),
               click: () => {
                 shell.openExternal("https://www.github.com/amanharwara/altus");
               },
@@ -695,7 +681,7 @@ function getLocalizedMainMenu() {
           ],
         },
         {
-          label: i18n.t("Open &DevTools"),
+          label: electronI18N.t("Open &DevTools"),
           role: "toggleDevTools",
           id: "toggle-dev-tools",
         },

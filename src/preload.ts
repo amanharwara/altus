@@ -21,8 +21,8 @@ const electronThemeStoreIpcApi: ElectronThemeStoreIpcApi = {
 
 const electronSettingsStoreIpcApi: ElectronSettingsStoreIpcApi = {
   getStore: async () => await ipcRenderer.invoke("settings-store-get"),
-  setSettings: async (settings) =>
-    ipcRenderer.invoke("settings-store-set", "settings", settings),
+  setSetting: async (key, value) =>
+    ipcRenderer.invoke("settings-store-set", key, value),
 };
 
 const toggleNotifications = async (enabled: boolean, partition: string) => {
@@ -59,6 +59,8 @@ contextBridge.exposeInMainWorld("electronIPCHandlers", {
     ipcRenderer.on("open-whatsapp-link", (_, url) => callback(url)),
   onReloadCustomTitleBar: (callback: () => void) =>
     ipcRenderer.on("reload-custom-title-bar", callback),
+  onReloadTranslations: (callback: () => void) =>
+    ipcRenderer.on("reload-translations", callback),
   onNewChat: (callback: () => void) => ipcRenderer.on("new-chat", callback),
 });
 
@@ -72,6 +74,11 @@ contextBridge.exposeInMainWorld(
 contextBridge.exposeInMainWorld("getAppMenu", () =>
   ipcRenderer.invoke("get-app-menu")
 );
+
+contextBridge.exposeInMainWorld("i18n", {
+  getTranslations: () => ipcRenderer.invoke("get-translations"),
+  keyMissing: (key: string) => ipcRenderer.invoke("key-missing", key),
+});
 
 contextBridge.exposeInMainWorld("clickMenuItem", (id: string) =>
   ipcRenderer.invoke("menu-item-click", id)

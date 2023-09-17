@@ -5,12 +5,14 @@ import {
   Setter,
   createEffect,
   createSignal,
+  useContext,
 } from "solid-js";
 import CloseIcon from "../icons/CloseIcon";
 import { getSettingValue, setSettingValue } from "../stores/settings/solid";
 import { StyledSwitch } from "./StyledSwitch";
 import StyledSelect from "./StyledSelect";
 import { createResizeObserver } from "@solid-primitives/resize-observer";
+import { I18NContext } from "../i18n/solid";
 
 function addRightPaddingIfOverflowing(element: Element | undefined) {
   setTimeout(() => {
@@ -28,6 +30,8 @@ const SettingsDialog: Component<{
   isOpen: Accessor<boolean>;
   setIsOpen: Setter<boolean>;
 }> = (props) => {
+  const { t } = useContext(I18NContext);
+
   const [settingsListElement, setSettingsListElement] =
     createSignal<HTMLDivElement>();
 
@@ -55,7 +59,7 @@ const SettingsDialog: Component<{
             }}
           >
             <div class="flex items-center justify-between mb-3">
-              <Dialog.Title class="font-semibold">Settings</Dialog.Title>
+              <Dialog.Title class="font-semibold">{t("Settings")}</Dialog.Title>
               <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
                 <CloseIcon class="w-4 h-4" />
               </Dialog.CloseButton>
@@ -74,9 +78,9 @@ const SettingsDialog: Component<{
                   class="items-start"
                 >
                   <div class="flex flex-col gap-1.5">
-                    <div class="font-semibold">Show Tab Bar</div>
+                    <div class="font-semibold">{t("showTabBar")}</div>
                     <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
-                      Controls whether the tab bar is visible or not
+                      {t("showTabBarDescription")}
                     </div>
                   </div>
                 </StyledSwitch>
@@ -88,9 +92,9 @@ const SettingsDialog: Component<{
                   multiple={false}
                   label={
                     <div class="flex flex-col gap-1.5">
-                      <div class="font-semibold">Tab Bar Position</div>
+                      <div class="font-semibold">{t("tabBarPosition")}</div>
                       <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
-                        Controls the position of the tab bar
+                        {t("tabBarPositionDescription")}
                       </div>
                     </div>
                   }
@@ -116,9 +120,9 @@ const SettingsDialog: Component<{
                   class="items-start"
                 >
                   <div class="flex flex-col gap-1.5">
-                    <div class="font-semibold">Prompt when closing tab</div>
+                    <div class="font-semibold">{t("promptWhenClosingTab")}</div>
                     <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
-                      When enabled, you will be prompted when you close a tab
+                      {t("promptWhenClosingTabDescription")}
                     </div>
                   </div>
                 </StyledSwitch>
@@ -132,9 +136,9 @@ const SettingsDialog: Component<{
                   class="items-start"
                 >
                   <div class="flex flex-col gap-1.5">
-                    <div class="font-semibold">Start minimized</div>
+                    <div class="font-semibold">{t("launchMinimized")}</div>
                     <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
-                      When enabled, Altus will start minimized
+                      {t("launchMinimizedDescription")}
                     </div>
                   </div>
                 </StyledSwitch>
@@ -148,10 +152,9 @@ const SettingsDialog: Component<{
                   class="items-start"
                 >
                   <div class="flex flex-col gap-1.5">
-                    <div class="font-semibold">Remember window size</div>
+                    <div class="font-semibold">{t("rememberWindowSize")}</div>
                     <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
-                      When enabled, Altus will remember the size of the window
-                      from previous use
+                      {t("rememberWindowSizeDescription")}
                     </div>
                   </div>
                 </StyledSwitch>
@@ -165,10 +168,11 @@ const SettingsDialog: Component<{
                   class="items-start"
                 >
                   <div class="flex flex-col gap-1.5">
-                    <div class="font-semibold">Remember window position</div>
+                    <div class="font-semibold">
+                      {t("rememberWindowPosition")}
+                    </div>
                     <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
-                      When enabled, Altus will remember the position of the
-                      window from previous use
+                      {t("rememberWindowPositionDescription")}
                     </div>
                   </div>
                 </StyledSwitch>
@@ -182,12 +186,9 @@ const SettingsDialog: Component<{
                   class="items-start"
                 >
                   <div class="flex flex-col gap-1.5">
-                    <div class="font-semibold">
-                      Prevent sending message on Enter
-                    </div>
+                    <div class="font-semibold">{t("preventEnter")}</div>
                     <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
-                      When enabled, pressing Enter while typing will not send
-                      the message and add a new line instead
+                      {t("preventEnterDescription")}
                     </div>
                   </div>
                 </StyledSwitch>
@@ -201,11 +202,9 @@ const SettingsDialog: Component<{
                   class="items-start"
                 >
                   <div class="flex flex-col gap-1.5">
-                    <div class="font-semibold">Use custom titlebar</div>
+                    <div class="font-semibold">{t("customTitlebar")}</div>
                     <div class="text-zinc-300 max-w-[40ch] leading-snug text-sm">
-                      When enabled, Altus will use a custom titlebar instead of
-                      the one provided by the system. (NOTE: Requires a restart
-                      for changes to apply.)
+                      {t("customTitlebarDescription")}
                     </div>
                   </div>
                 </StyledSwitch>

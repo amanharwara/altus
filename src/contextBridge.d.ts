@@ -27,6 +27,7 @@ declare global {
         callback: (url: string) => void
       ) => Electron.IpcRenderer;
       onReloadCustomTitleBar: (callback: () => void) => Electron.IpcRenderer;
+      onReloadTranslations: (callback: () => void) => Electron.IpcRenderer;
       onNewChat: (callback: () => void) => Electron.IpcRenderer;
     };
     windowActions: {
@@ -43,6 +44,10 @@ declare global {
       options: Electron.MessageBoxOptions
     ) => Promise<Electron.MessageBoxReturnValue>;
     getAppMenu: () => Promise<CloneableMenu>;
+    i18n: {
+      getTranslations: () => Promise<Record<string, string>>;
+      keyMissing: (key: string) => Promise<void>;
+    };
     clickMenuItem: (id: string) => Promise<void>;
     platform: NodeJS.Platform;
   }

@@ -1,9 +1,11 @@
 import { Dialog, TextField } from "@kobalte/core";
 import CloseIcon from "../icons/CloseIcon";
-import { createSignal } from "solid-js";
+import { createSignal, useContext } from "solid-js";
 import { getActiveWebviewElement } from "../stores/tabs/solid";
+import { I18NContext } from "../i18n/solid";
 
 const NewChatDialog = (props: { close: () => void }) => {
+  const { t } = useContext(I18NContext);
   const [phoneNumber, setPhoneNumber] = createSignal("");
 
   return (
@@ -23,7 +25,9 @@ const NewChatDialog = (props: { close: () => void }) => {
           }}
         >
           <div class="flex items-center justify-between">
-            <Dialog.Title class="font-semibold">Start new chat</Dialog.Title>
+            <Dialog.Title class="font-semibold">
+              {t("Start &New Chat").replace("&", "")}
+            </Dialog.Title>
             <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
               <CloseIcon class="w-4 h-4" />
             </Dialog.CloseButton>
@@ -45,7 +49,7 @@ const NewChatDialog = (props: { close: () => void }) => {
                 onChange={setPhoneNumber}
               >
                 <TextField.Label class="text-[0.95rem] leading-none">
-                  Phone number:
+                  {t("Phone number")}:
                 </TextField.Label>
                 <TextField.Input
                   class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300"
@@ -61,7 +65,7 @@ const NewChatDialog = (props: { close: () => void }) => {
                 type="submit"
                 class="mt-1 text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 select-none hover:bg-zinc-700 focus:bg-zinc-700 active:bg-zinc-700/75"
               >
-                Start chat
+                {t("Start chat")}
               </button>
             </form>
           </Dialog.Description>

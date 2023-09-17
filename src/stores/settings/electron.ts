@@ -1,7 +1,7 @@
 import Store from "electron-store";
-import { type SettingsStore, SettingsStoreDefaults } from "./common";
+import { type Settings, getDefaultSettings } from "./common";
 
-export const electronSettingsStore = new Store<SettingsStore>({
+export const electronSettingsStore = new Store<Settings>({
   name: "settings",
-  defaults: SettingsStoreDefaults(),
+  defaults: getDefaultSettings(),
 });

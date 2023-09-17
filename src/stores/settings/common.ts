@@ -1,47 +1,34 @@
-export type SettingKey =
-  | "tabBar"
-  | "tabBarPosition"
-  | "trayIcon"
-  | "tabClosePrompt"
-  | "closeToTray"
-  | "exitPrompt"
-  | "preventEnter"
-  | "notificationBadge"
-  | "launchMinimized"
-  | "autoLaunch"
-  | "autoHideMenuBar"
-  | "showSaveDialog"
-  | "defaultDownloadDir"
-  | "customTitlebar"
-  | "systemScrollbars"
-  | "rememberWindowSize"
-  | "rememberWindowPosition"
-  | "language";
+import { languages } from "../../i18n/langauges.config";
+import z from "zod";
 
+const SettingsSchema = z.object({
+  tabBar: z.object({ value: z.boolean() }),
+  tabBarPosition: z.object({ value: z.enum(["top", "bottom"]) }),
+  trayIcon: z.object({ value: z.boolean() }),
+  tabClosePrompt: z.object({ value: z.boolean() }),
+  closeToTray: z.object({ value: z.boolean() }),
+  exitPrompt: z.object({ value: z.boolean() }),
+  preventEnter: z.object({ value: z.boolean() }),
+  notificationBadge: z.object({ value: z.boolean() }),
+  launchMinimized: z.object({ value: z.boolean() }),
+  autoLaunch: z.object({ value: z.boolean() }),
+  autoHideMenuBar: z.object({ value: z.boolean() }),
+  showSaveDialog: z.object({ value: z.boolean() }),
+  defaultDownloadDir: z.object({ value: z.string() }),
+  customTitlebar: z.object({ value: z.boolean() }),
+  systemScrollbars: z.object({ value: z.boolean() }),
+  rememberWindowSize: z.object({ value: z.boolean() }),
+  rememberWindowPosition: z.object({ value: z.boolean() }),
+  language: z.object({ value: z.enum(languages) }),
+});
+
+export type Settings = z.infer<typeof SettingsSchema>;
+export type SettingKey = keyof Settings;
 export type SettingValue = {
-  tabBar: boolean;
-  tabBarPosition: "top" | "bottom";
-  trayIcon: boolean;
-  tabClosePrompt: boolean;
-  closeToTray: boolean;
-  exitPrompt: boolean;
-  preventEnter: boolean;
-  notificationBadge: boolean;
-  launchMinimized: boolean;
-  autoLaunch: boolean;
-  autoHideMenuBar: boolean;
-  showSaveDialog: boolean;
-  defaultDownloadDir: string;
-  customTitlebar: boolean;
-  systemScrollbars: boolean;
-  rememberWindowSize: boolean;
-  rememberWindowPosition: boolean;
-  language: typeof import("../../i18n/langauges.config").languages[number];
+  [Key in SettingKey]: Settings[Key]["value"];
 };
 
-type StoredSettings = Record<SettingKey, { value: SettingValue[SettingKey] }>;
-
-export const getDefaultSettings = (): StoredSettings => ({
+export const getDefaultSettings = (): Settings => ({
   tabBar: { value: true },
   tabBarPosition: { value: "top" },
   trayIcon: { value: true },
@@ -62,16 +49,10 @@ export const getDefaultSettings = (): StoredSettings => ({
   language: { value: "en" },
 });
 
-// @TODO This not the correct schema, it should actually be StoredSettings
-export type SettingsStore = {
-  settings: StoredSettings;
-};
-
-export const SettingsStoreDefaults = (): SettingsStore => ({
-  settings: getDefaultSettings(),
-});
-
 export type ElectronSettingsStoreIpcApi = {
-  getStore: () => Promise<SettingsStore>;
-  setSettings: (settings: SettingsStore["settings"]) => Promise<void>;
+  getStore: () => Promise<Settings>;
+  setSetting: (
+    _key: SettingKey,
+    _value: SettingValue[SettingKey]
+  ) => Promise<void>;
 };

@@ -5,6 +5,7 @@ import {
   Setter,
   createMemo,
   createSignal,
+  useContext,
 } from "solid-js";
 import { Tab } from "../stores/tabs/common";
 import CloseIcon from "../icons/CloseIcon";
@@ -12,11 +13,14 @@ import { themeStore } from "../stores/themes/solid";
 import { updateAndSyncTabStore } from "../stores/tabs/solid";
 import { StyledSwitch } from "./StyledSwitch";
 import StyledSelect from "./StyledSelect";
+import { I18NContext } from "../i18n/solid";
 
 const TabEditDialog: Component<{
   tabToEdit: Accessor<Tab>;
   setTabToEdit: Setter<Tab | null>;
 }> = (props) => {
+  const { t } = useContext(I18NContext);
+
   const availableThemes = createMemo(() => {
     return themeStore.themes;
   });
@@ -49,7 +53,7 @@ const TabEditDialog: Component<{
           }}
         >
           <div class="flex items-center justify-between">
-            <Dialog.Title class="font-semibold">Edit tab</Dialog.Title>
+            <Dialog.Title class="font-semibold">{t("Edit tab")}</Dialog.Title>
             <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
               <CloseIcon class="w-4 h-4" />
             </Dialog.CloseButton>
@@ -60,7 +64,7 @@ const TabEditDialog: Component<{
               defaultValue={props.tabToEdit().name}
             >
               <TextField.Label class="text-[0.95rem] leading-none">
-                Name
+                {t("Name")}
               </TextField.Label>
               <TextField.Input
                 class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
@@ -82,8 +86,8 @@ const TabEditDialog: Component<{
               options={availableThemes()}
               optionValue="id"
               optionTextValue="name"
-              label="Theme"
-              placeholder="Select a theme..."
+              label={t("Theme")}
+              placeholder={t("Select a theme...")}
               value={theme()}
               onChange={(theme) => {
                 updateAndSyncTabStore(
@@ -111,7 +115,7 @@ const TabEditDialog: Component<{
                   );
                 }}
               >
-                Notifications
+                {t("Notifications")}
               </StyledSwitch>
             </div>
             <div class="py-2">
@@ -127,7 +131,7 @@ const TabEditDialog: Component<{
                   );
                 }}
               >
-                Sound
+                {t("Sound")}
               </StyledSwitch>
             </div>
             <div class="py-2">
@@ -143,7 +147,7 @@ const TabEditDialog: Component<{
                   );
                 }}
               >
-                Spellcheck
+                {t("Spellcheck")}
               </StyledSwitch>
             </div>
             <div class="py-2">
@@ -171,7 +175,7 @@ const TabEditDialog: Component<{
                   }
                 }}
               >
-                Use custom tab color
+                {t("Use custom tab color")}
               </StyledSwitch>
               {hasColor() && (
                 <TextField.Root
@@ -179,7 +183,7 @@ const TabEditDialog: Component<{
                   defaultValue={color() || ""}
                 >
                   <TextField.Label class="text-[0.95rem] leading-none sr-only">
-                    Color
+                    {t("Color")}
                   </TextField.Label>
                   <TextField.Input
                     class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
