@@ -8,6 +8,7 @@ import {
   MenuItem,
   session,
   shell,
+  Tray,
 } from "electron";
 import fs from "fs";
 import path from "path";
@@ -42,6 +43,8 @@ const windowState = new Store<{
     y: null,
   },
 });
+
+let tray: Tray | undefined;
 
 const createWindow = () => {
   const useCustomTitlebar =
@@ -95,10 +98,10 @@ const createWindow = () => {
     });
   }
 
-  if (electronSettingsStore.get("autoHideMenuBar").value) {
-    mainWindow.setAutoHideMenuBar(true);
-    mainWindow.setMenuBarVisibility(false);
-  }
+  changeAutoHideMenuBar(
+    mainWindow,
+    electronSettingsStore.get("autoHideMenuBar").value
+  );
 
   mainWindow.on("resize", () => {
     windowState.store = mainWindow.getBounds();
@@ -149,7 +152,9 @@ if (!singleInstanceLock) {
 
     const mainWindow = createWindow();
 
-    initializeI18N(mainWindow);
+    initializeI18N(mainWindow).then(() => {
+      toggleTray(mainWindow, electronSettingsStore.get("trayIcon").value);
+    });
 
     addIPCHandlers(mainWindow);
   });
@@ -238,6 +243,31 @@ function changeAutoHideMenuBar(mainWindow: BrowserWindow, value: boolean) {
   mainWindow.setMenuBarVisibility(!value);
 }
 
+function toggleTray(mainWindow: BrowserWindow, enabled: boolean) {
+  if (!enabled) {
+    if (tray) tray.destroy();
+    tray = undefined;
+    return;
+  }
+  if (process.platform === "darwin") {
+    app.dock.setMenu(getLocalizedTrayMenu());
+  }
+  const icon =
+    process.platform === "win32"
+      ? "./src/icons/app/icon.ico"
+      : "./src/icons/app/tray.png";
+  tray = new Tray(icon);
+  tray.setToolTip("Altus");
+  tray.setContextMenu(getLocalizedTrayMenu());
+  tray.on("click", () => {
+    if (mainWindow.isVisible()) {
+      mainWindow.hide();
+    } else {
+      mainWindow.show();
+    }
+  });
+}
+
 function addIPCHandlers(mainWindow: BrowserWindow) {
   ipcMain.handle("get-whatsapp-preload-path", () => {
     // @ts-expect-error ImportMeta works correctly
@@ -254,6 +284,8 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
       if (value === undefined) return electronSettingsStore.delete(key);
       if (key === "autoHideMenuBar") {
         changeAutoHideMenuBar(mainWindow, value as boolean);
+      } else if (key === "trayIcon") {
+        toggleTray(mainWindow, value as boolean);
       }
       return electronSettingsStore.set(key, value);
     }
@@ -393,13 +425,14 @@ async function initializeI18N(mainWindow: BrowserWindow) {
     mainWindow.webContents.send("reload-translations");
   });
 
-  electronI18N
-    .initialize()
-    .then(() => {
-      const initialLanguage = electronSettingsStore.get("language").value;
-      electronI18N.setLanguage(initialLanguage);
-    })
-    .catch(console.error);
+  try {
+    await electronI18N.initialize();
+
+    const initialLanguage = electronSettingsStore.get("language").value;
+    electronI18N.setLanguage(initialLanguage);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 const versionInfo = `Altus: ${app.getVersion()}
@@ -703,6 +736,34 @@ function getLocalizedMainMenu() {
           id: "toggle-dev-tools",
         },
       ],
+    },
+  ];
+
+  return Menu.buildFromTemplate(menuTemplate);
+}
+
+function getLocalizedTrayMenu() {
+  const menuTemplate: (
+    | Electron.MenuItemConstructorOptions
+    | Electron.MenuItem
+  )[] = [
+    {
+      label: electronI18N.t("Maximize"),
+      click() {
+        const window = BrowserWindow.getAllWindows()[0];
+        if (window) window.show();
+      },
+    },
+    {
+      label: electronI18N.t("Minimize to Tray"),
+      click() {
+        const window = BrowserWindow.getAllWindows()[0];
+        if (window) window.hide();
+      },
+    },
+    {
+      label: electronI18N.t("Quit"),
+      role: "quit",
     },
   ];
 

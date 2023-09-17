@@ -67,5 +67,10 @@
   "customTitlebar": "Use custom titlebar",
   "customTitlebarDescription": "When enabled, Altus will use a custom titlebar instead of the one provided by the system. (NOTE: Requires a restart for changes to apply.)",
   "autoHideMenuBar": "Auto-hide Menu Bar",
-  "autoHideMenuBarDescription": "When enabled, the menu bar will only show when you press the Alt key"
+  "autoHideMenuBarDescription": "When enabled, the menu bar will only show when you press the Alt key",
+  "Maximize": "Maximize",
+  "Minimize to Tray": "Minimize to Tray",
+  "Quit": "Quit",
+  "trayIcon": "Tray Icon",
+  "trayIconDescription": "Controls whether the tray icon is visible or not"
 }

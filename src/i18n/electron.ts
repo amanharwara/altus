@@ -113,6 +113,9 @@ export class ElectronI18N {
   };
 
   t = (key: string) => {
+    if (!this.didInitialize) {
+      throw new Error("ElectronI18N not initialized");
+    }
     if (!this.translation[key]) {
       this.keyMissing(key);
       return this.fallbackTranslation[key] || key;
