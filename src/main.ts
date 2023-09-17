@@ -94,6 +94,11 @@ const createWindow = () => {
     });
   }
 
+  if (electronSettingsStore.get("autoHideMenuBar").value) {
+    mainWindow.setAutoHideMenuBar(true);
+    mainWindow.setMenuBarVisibility(false);
+  }
+
   mainWindow.on("resize", () => {
     windowState.store = mainWindow.getBounds();
   });
@@ -227,6 +232,11 @@ function pruneUnusedPartitions(
     });
 }
 
+function changeAutoHideMenuBar(mainWindow: BrowserWindow, value: boolean) {
+  mainWindow.setAutoHideMenuBar(value);
+  mainWindow.setMenuBarVisibility(!value);
+}
+
 function addIPCHandlers(mainWindow: BrowserWindow) {
   ipcMain.handle("get-whatsapp-preload-path", () => {
     // @ts-expect-error ImportMeta works correctly
@@ -241,6 +251,9 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
     "settings-store-set",
     (_event, key: SettingKey, value: unknown) => {
       if (value === undefined) return electronSettingsStore.delete(key);
+      if (key === "autoHideMenuBar") {
+        changeAutoHideMenuBar(mainWindow, value as boolean);
+      }
       return electronSettingsStore.set(key, value);
     }
   );

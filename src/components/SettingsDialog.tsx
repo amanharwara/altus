@@ -209,6 +209,23 @@ const SettingsDialog: Component<{
                   </div>
                 </StyledSwitch>
               </div>
+              <div class="py-2.5">
+                <StyledSwitch
+                  checked={getSettingValue("autoHideMenuBar")}
+                  onChange={(checked) =>
+                    setSettingValue("autoHideMenuBar", checked)
+                  }
+                  class="items-start"
+                  disabled={!!getSettingValue("customTitlebar")}
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">{t("autoHideMenuBar")}</div>
+                    <div class="text-zinc-300 max-w-[40ch] leading-snug text-sm">
+                      {t("autoHideMenuBarDescription")}
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
             </Dialog.Description>
           </Dialog.Content>
         </div>

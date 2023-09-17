@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge";
 export const StyledSwitch: Component<{
   checked: boolean;
   onChange: (checked: boolean) => void;
+  disabled?: boolean;
   class?: string;
   children: JSX.Element;
 }> = (props) => {
@@ -14,6 +15,7 @@ export const StyledSwitch: Component<{
       checked={props.checked}
       onChange={props.onChange}
       class={twMerge("flex items-center justify-between gap-1.5", props.class)}
+      disabled={props.disabled}
     >
       <Switch.Label class="text-[0.95rem] leading-none">
         {props.children}
