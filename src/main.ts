@@ -70,6 +70,7 @@ const createWindow = () => {
     show: false,
     frame: !useCustomTitlebar,
     titleBarStyle: useCustomTitlebar ? "hidden" : "default",
+    icon: "./src/icons/app/icon.png",
   });
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
