@@ -124,7 +124,7 @@
     "@tsconfig/svelte": "^5.0.0",
     "@types/node": "^20.5.0",
     "concurrently": "^8.2.0",
-    "electron": "^26.0.0",
+    "electron": "^26.2.1",
     "electron-builder": "^24.6.3",
     "rollup": "^3.28.0",
     "rollup-plugin-css-only": "^4.3.0",
