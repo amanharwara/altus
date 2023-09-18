@@ -6,6 +6,7 @@ import {
   ipcMain,
   Menu,
   MenuItem,
+  nativeImage,
   session,
   shell,
   Tray,
@@ -252,20 +253,28 @@ function toggleTray(mainWindow: BrowserWindow, enabled: boolean) {
   if (process.platform === "darwin") {
     app.dock.setMenu(getLocalizedTrayMenu());
   }
-  const icon =
+  const icon = nativeImage.createFromPath(
     process.platform === "win32"
       ? "./src/icons/app/icon.ico"
-      : "./src/icons/app/tray.png";
-  tray = new Tray(icon);
+      : "./src/icons/app/tray.png"
+  );
+  tray = new Tray(
+    process.platform === "darwin"
+      ? icon.resize({
+          width: 16,
+          height: 16,
+        })
+      : icon
+  );
   tray.setToolTip("Altus");
   tray.setContextMenu(getLocalizedTrayMenu());
-  tray.on("click", () => {
+  if (process.platform !== "darwin") {
     if (mainWindow.isVisible()) {
       mainWindow.hide();
     } else {
       mainWindow.show();
     }
-  });
+  }
 }
 
 function addIPCHandlers(mainWindow: BrowserWindow) {
