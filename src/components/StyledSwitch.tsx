@@ -4,8 +4,9 @@ import CheckIcon from "../icons/CheckIcon";
 import { twMerge } from "tailwind-merge";
 
 export const StyledSwitch: Component<{
-  checked: boolean;
+  checked?: boolean;
   onChange: (checked: boolean) => void;
+  defaultChecked?: boolean;
   disabled?: boolean;
   class?: string;
   children: JSX.Element;
@@ -16,6 +17,7 @@ export const StyledSwitch: Component<{
       onChange={props.onChange}
       class={twMerge("flex items-center justify-between gap-1.5", props.class)}
       disabled={props.disabled}
+      defaultChecked={props.defaultChecked}
     >
       <Switch.Label class="text-[0.95rem] leading-none">
         {props.children}

@@ -13,6 +13,9 @@
     "resolveJsonModule": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
+    "types": [
+      "vite/client"
+    ],
     "strict": true,
   },
   "include": [

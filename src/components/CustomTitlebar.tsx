@@ -16,6 +16,7 @@ import { ChevronRightIcon } from "../icons/ChevronRightIcon";
 import MaximizeIcon from "../icons/MaximizeIcon";
 import RadioBoxMarked from "../icons/RadioBoxMarked";
 import RadioBoxBlank from "../icons/RadioBoxBlank";
+import icon from "../icons/app/icon.png";
 
 const MenuItem: Component<{
   item: CloneableMenu[number];
@@ -126,11 +127,14 @@ const CustomTitlebar: Component<{
         "opacity-75": blurred(),
       }}
     >
+      <div class="p-1.5 mx-0.5">
+        <img src={icon} class="w-full h-full" />
+      </div>
       <Show when={props.menu()}>
         <div
           ref={menubarElement}
           data-custom-titlebar-menu
-          class="flex ml-2 select-none [-webkit-app-region:no-drag]"
+          class="flex select-none [-webkit-app-region:no-drag]"
         >
           <For each={props.menu()}>
             {(menuItem) =>

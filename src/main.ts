@@ -296,7 +296,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
       } else if (key === "trayIcon") {
         toggleTray(mainWindow, value as boolean);
       }
-      return electronSettingsStore.set(key, value);
+      return electronSettingsStore.set(key, { value });
     }
   );
 

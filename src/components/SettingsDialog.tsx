@@ -209,9 +209,12 @@ const SettingsDialog: Component<{
               </div>
               <div class="py-2.5">
                 <StyledSwitch
-                  checked={getSettingValue("customTitlebar")}
+                  defaultChecked={getSettingValue("customTitlebar")}
                   onChange={(checked) =>
-                    setSettingValue("customTitlebar", checked)
+                    window.electronSettingsStore.setSetting(
+                      "customTitlebar",
+                      checked
+                    )
                   }
                   class="items-start"
                 >
