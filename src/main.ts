@@ -27,6 +27,7 @@ import {
   SettingKey,
   Settings,
 } from "./stores/settings/common";
+import AutoLaunch from "auto-launch";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -185,6 +186,16 @@ if (!singleInstanceLock) {
       electronTabStore.get("previouslyClosedTab"),
       app.getPath("userData")
     );
+
+    const autoLauncher = new AutoLaunch({
+      name: "Altus",
+    });
+
+    if (getSettingWithDefault("autoLaunch")) {
+      autoLauncher.enable();
+    } else {
+      autoLauncher.disable();
+    }
 
     const mainWindow = createWindow();
 

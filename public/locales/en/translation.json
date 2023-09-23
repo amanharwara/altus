@@ -76,5 +76,7 @@
   "closeToTray": "Close to Tray",
   "closeToTrayDescription": "When enabled, Altus will be minimized to the tray instead of being closed completely",
   "exitPrompt": "Show Exit Prompt",
-  "exitPromptDescription": "When enabled, you will be prompted when you close the app"
+  "exitPromptDescription": "When enabled, you will be prompted when you close the app",
+  "autoLaunch": "Launch at system startup",
+  "autoLaunchDescription": "When enabled, Altus will launch whenever you start your system."
 }

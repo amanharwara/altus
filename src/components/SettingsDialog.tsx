@@ -173,6 +173,20 @@ const SettingsDialog: Component<{
               </div>
               <div class="py-2.5">
                 <StyledSwitch
+                  checked={getSettingValue("autoLaunch")}
+                  onChange={(checked) => setSettingValue("autoLaunch", checked)}
+                  class="items-start"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">{t("autoLaunch")}</div>
+                    <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
+                      {t("autoLaunchDescription")}
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
+              <div class="py-2.5">
+                <StyledSwitch
                   checked={getSettingValue("launchMinimized")}
                   onChange={(checked) =>
                     setSettingValue("launchMinimized", checked)
