@@ -78,5 +78,9 @@
   "exitPrompt": "Show Exit Prompt",
   "exitPromptDescription": "When enabled, you will be prompted when you close the app",
   "autoLaunch": "Launch at system startup",
-  "autoLaunchDescription": "When enabled, Altus will launch whenever you start your system."
+  "autoLaunchDescription": "When enabled, Altus will launch whenever you start your system.",
+  "showSaveDialog": "Show Save Dialog",
+  "showSaveDialogDescription": "Whether to ask where to save each file before downloading. (NOTE: Requires a restart for changes to apply.)",
+  "defaultDownloadDir": "Default Download Directory",
+  "defaultDownloadDirDescription": "The directory where you want to save the downloads. (NOTE: Requires an absolute path)"
 }

@@ -1,4 +1,4 @@
-import { Dialog } from "@kobalte/core";
+import { Dialog, TextField } from "@kobalte/core";
 import {
   Accessor,
   Component,
@@ -286,6 +286,44 @@ const SettingsDialog: Component<{
                     </div>
                   </div>
                 </StyledSwitch>
+              </div>
+              <div class="py-2.5">
+                <StyledSwitch
+                  checked={getSettingValue("showSaveDialog")}
+                  onChange={(checked) =>
+                    setSettingValue("showSaveDialog", checked)
+                  }
+                  class="items-start"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">{t("showSaveDialog")}</div>
+                    <div class="text-zinc-300 max-w-[40ch] leading-snug text-sm">
+                      {t("showSaveDialogDescription")}
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
+              <div class="py-2.5">
+                <TextField.Root
+                  class="flex gap-4 items-start"
+                  value={getSettingValue("defaultDownloadDir")}
+                  onChange={(value) =>
+                    setSettingValue("defaultDownloadDir", value)
+                  }
+                >
+                  <TextField.Label class="text-[0.95rem] leading-none">
+                    <div class="flex flex-col gap-1.5">
+                      <div class="font-semibold">{t("defaultDownloadDir")}</div>
+                      <div class="text-zinc-300 max-w-[40ch] leading-snug text-sm">
+                        {t("defaultDownloadDirDescription")}
+                      </div>
+                    </div>
+                  </TextField.Label>
+                  <TextField.Input
+                    class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
+                    spellcheck={false}
+                  />
+                </TextField.Root>
               </div>
             </Dialog.Description>
           </Dialog.Content>

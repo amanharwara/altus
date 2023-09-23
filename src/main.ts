@@ -28,6 +28,7 @@ import {
   Settings,
 } from "./stores/settings/common";
 import AutoLaunch from "auto-launch";
+import electronDl from "electron-dl";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -198,6 +199,12 @@ if (!singleInstanceLock) {
     }
 
     const mainWindow = createWindow();
+
+    const defaultDownloadDir = getSettingWithDefault("defaultDownloadDir");
+    electronDl({
+      saveAs: getSettingWithDefault("showSaveDialog"),
+      directory: defaultDownloadDir ? defaultDownloadDir : undefined,
+    });
 
     initializeI18N(mainWindow).then(() => {
       toggleTray(mainWindow, getSettingWithDefault("trayIcon"));
