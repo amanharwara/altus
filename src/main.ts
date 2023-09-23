@@ -13,7 +13,6 @@ import {
 } from "electron";
 import fs from "fs";
 import path from "path";
-import { isDev } from "./utils/isDev";
 import { electronTabStore } from "./stores/tabs/electron";
 import { Tab, TabStore } from "./stores/tabs/common";
 import { electronThemeStore } from "./stores/themes/electron";
@@ -85,10 +84,6 @@ const createWindow = () => {
     );
   }
 
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
-
   if (electronSettingsStore.get("launchMinimized").value) {
     mainWindow.minimize();
     mainWindow.blur();
@@ -110,6 +105,19 @@ const createWindow = () => {
 
   mainWindow.on("move", () => {
     windowState.store = mainWindow.getBounds();
+  });
+
+  mainWindow.on("blur", () => mainWindow.webContents.send("window-blurred"));
+  mainWindow.on("focus", () => mainWindow.webContents.send("window-focused"));
+
+  mainWindow.on("close", (event) => {
+    const shouldCloseToTray = electronSettingsStore.get("closeToTray").value;
+    if (shouldCloseToTray) {
+      event.preventDefault();
+      mainWindow.hide();
+    } else if (tray) {
+      tray.destroy();
+    }
   });
 
   return mainWindow;
@@ -268,13 +276,15 @@ function toggleTray(mainWindow: BrowserWindow, enabled: boolean) {
   );
   tray.setToolTip("Altus");
   tray.setContextMenu(getLocalizedTrayMenu());
-  if (process.platform !== "darwin") {
-    if (mainWindow.isVisible()) {
-      mainWindow.hide();
-    } else {
-      mainWindow.show();
+  tray.on("click", () => {
+    if (process.platform !== "darwin") {
+      if (mainWindow.isVisible()) {
+        mainWindow.hide();
+      } else {
+        mainWindow.show();
+      }
     }
-  }
+  });
 }
 
 function addIPCHandlers(mainWindow: BrowserWindow) {
@@ -389,9 +399,6 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
   ipcMain.handle("is-blurred", () => {
     return !mainWindow.isFocused();
   });
-
-  mainWindow.on("blur", () => mainWindow.webContents.send("window-blurred"));
-  mainWindow.on("focus", () => mainWindow.webContents.send("window-focused"));
 }
 
 type CloneableMenuItem = Omit<MenuItem, "menu" | "submenu" | "click"> & {

@@ -100,6 +100,22 @@ const SettingsDialog: Component<{
                 </StyledSwitch>
               </div>
               <div class="py-2.5">
+                <StyledSwitch
+                  checked={getSettingValue("closeToTray")}
+                  onChange={(checked) =>
+                    setSettingValue("closeToTray", checked)
+                  }
+                  class="items-start"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">{t("closeToTray")}</div>
+                    <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
+                      {t("closeToTrayDescription")}
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
+              <div class="py-2.5">
                 <StyledSelect
                   rootClass="items-start justify-between"
                   triggerClass="min-w-[15ch]"

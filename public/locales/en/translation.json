@@ -72,5 +72,7 @@
   "Minimize to Tray": "Minimize to Tray",
   "Quit": "Quit",
   "trayIcon": "Tray Icon",
-  "trayIconDescription": "Controls whether the tray icon is visible or not"
+  "trayIconDescription": "Controls whether the tray icon is visible or not",
+  "closeToTray": "Close to Tray",
+  "closeToTrayDescription": "When enabled, Altus will be minimized to the tray instead of being closed completely"
 }
