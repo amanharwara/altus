@@ -36,5 +36,9 @@ body,
 }
 
 .tabs-list::-webkit-scrollbar-thumb {
-  border-radius: 0;
+  @apply bg-zinc-600/50 rounded-none;
+}
+
+.tabs-list::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-600;
 }
