@@ -7,6 +7,7 @@ body,
 #root {
   width: 100%;
   height: 100%;
+  overflow: hidden;
   @apply bg-neutral-900;
 }
 
@@ -24,4 +25,16 @@ body,
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-zinc-600;
+}
+
+.tabs-list::-webkit-scrollbar {
+  @apply h-1.5 rounded-none;
+}
+
+.tabs-list::-webkit-scrollbar-track {
+  border-radius: 0;
+}
+
+.tabs-list::-webkit-scrollbar-thumb {
+  border-radius: 0;
 }

@@ -26,7 +26,7 @@ const App: Component = () => {
         )}
         <div
           class={twJoin(
-            "h-full flex",
+            "h-full flex overflow-hidden",
             getSettingValue("tabBarPosition") === "top"
               ? "flex-col"
               : "flex-col-reverse"

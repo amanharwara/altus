@@ -25,7 +25,7 @@ interface TabComponentProps {
 const TabComponent: Component<TabComponentProps> = (props) => {
   return (
     <div
-      class="group flex items-center gap-1.5 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
+      class="group flex flex-shrink-0 items-center gap-1.5 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
       style={
         props.tab.config.color
           ? {
@@ -166,7 +166,7 @@ const TabsList: Component = () => {
     <>
       <div
         class={twJoin(
-          "bg-zinc-800 divide-x divide-zinc-700/20",
+          "tabs-list bg-zinc-800 divide-x divide-zinc-700/20 overflow-x-auto w-full",
           getSettingValue("tabBar") ? "flex" : "hidden"
         )}
       >
