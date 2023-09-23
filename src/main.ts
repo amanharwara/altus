@@ -22,7 +22,11 @@ import { languages } from "./i18n/langauges.config";
 import os from "os";
 import Store from "electron-store";
 import { electronI18N } from "./i18n/electron";
-import { SettingKey } from "./stores/settings/common";
+import {
+  DefaultSettingValues,
+  SettingKey,
+  Settings,
+} from "./stores/settings/common";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -44,19 +48,28 @@ const windowState = new Store<{
   },
 });
 
+function getSettingWithDefault<Key extends SettingKey>(
+  setting: Key
+): Settings[Key]["value"] {
+  const defaultValue = DefaultSettingValues[setting];
+  try {
+    const value = electronSettingsStore.get(setting).value;
+    return value ?? defaultValue;
+  } catch (error) {
+    console.error(error);
+    return defaultValue;
+  }
+}
+
 let tray: Tray | undefined;
 
 const createWindow = () => {
   const useCustomTitlebar =
-    process.platform !== "darwin" &&
-    electronSettingsStore.get("customTitlebar").value;
-
-  const rememberWindowSize =
-    electronSettingsStore.get("rememberWindowSize").value;
-
-  const rememberWindowPosition = electronSettingsStore.get(
+    process.platform !== "darwin" && getSettingWithDefault("customTitlebar");
+  const rememberWindowSize = getSettingWithDefault("rememberWindowSize");
+  const rememberWindowPosition = getSettingWithDefault(
     "rememberWindowPosition"
-  ).value;
+  );
 
   const mainWindow = new BrowserWindow({
     minWidth: 520,
@@ -84,7 +97,7 @@ const createWindow = () => {
     );
   }
 
-  if (electronSettingsStore.get("launchMinimized").value) {
+  if (getSettingWithDefault("launchMinimized")) {
     mainWindow.minimize();
     mainWindow.blur();
   } else {
@@ -94,10 +107,7 @@ const createWindow = () => {
     });
   }
 
-  changeAutoHideMenuBar(
-    mainWindow,
-    electronSettingsStore.get("autoHideMenuBar").value
-  );
+  changeAutoHideMenuBar(mainWindow, getSettingWithDefault("autoHideMenuBar"));
 
   mainWindow.on("resize", () => {
     windowState.store = mainWindow.getBounds();
@@ -111,10 +121,27 @@ const createWindow = () => {
   mainWindow.on("focus", () => mainWindow.webContents.send("window-focused"));
 
   mainWindow.on("close", (event) => {
-    const shouldCloseToTray = electronSettingsStore.get("closeToTray").value;
+    const shouldCloseToTray = getSettingWithDefault("closeToTray");
+    const shouldPrompt = getSettingWithDefault("exitPrompt");
     if (shouldCloseToTray) {
       event.preventDefault();
       mainWindow.hide();
+    } else if (shouldPrompt) {
+      event.preventDefault();
+      dialog
+        .showMessageBox({
+          type: "question",
+          buttons: ["OK", "Cancel"],
+          title: "Exit",
+          message: "Are you sure you want to exit?",
+        })
+        .then(({ response }) => {
+          if (response !== 0) {
+            return;
+          }
+          if (tray) tray.destroy();
+          app.quit();
+        });
     } else if (tray) {
       tray.destroy();
     }
@@ -162,7 +189,7 @@ if (!singleInstanceLock) {
     const mainWindow = createWindow();
 
     initializeI18N(mainWindow).then(() => {
-      toggleTray(mainWindow, electronSettingsStore.get("trayIcon").value);
+      toggleTray(mainWindow, getSettingWithDefault("trayIcon"));
     });
 
     addIPCHandlers(mainWindow);
@@ -182,7 +209,7 @@ if (!singleInstanceLock) {
 
   app.on("web-contents-created", (_, webContents) => {
     webContents.on("before-input-event", (event, input) => {
-      if (electronSettingsStore.get("preventEnter").value) {
+      if (getSettingWithDefault("preventEnter")) {
         if (input.key === "Enter" && !input.shift && !input.control) {
           webContents.sendInputEvent({
             keyCode: "Shift+Return",
@@ -444,7 +471,7 @@ async function initializeI18N(mainWindow: BrowserWindow) {
   try {
     await electronI18N.initialize();
 
-    const initialLanguage = electronSettingsStore.get("language").value;
+    const initialLanguage = getSettingWithDefault("language");
     electronI18N.setLanguage(initialLanguage);
   } catch (error) {
     console.error(error);
