@@ -82,5 +82,8 @@
   "showSaveDialog": "Show Save Dialog",
   "showSaveDialogDescription": "Whether to ask where to save each file before downloading. (NOTE: Requires a restart for changes to apply.)",
   "defaultDownloadDir": "Default Download Directory",
-  "defaultDownloadDirDescription": "The directory where you want to save the downloads. (NOTE: Requires an absolute path)"
+  "defaultDownloadDirDescription": "The directory where you want to save the downloads. (NOTE: Requires an absolute path)",
+  "allThemes": "All Themes",
+  "addTheme": "Add Theme",
+  "editTheme": "Edit Theme"
 }

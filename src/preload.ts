@@ -62,6 +62,8 @@ contextBridge.exposeInMainWorld("electronIPCHandlers", {
   onReloadTranslations: (callback: () => void) =>
     ipcRenderer.on("reload-translations", callback),
   onNewChat: (callback: () => void) => ipcRenderer.on("new-chat", callback),
+  onOpenThemeManager: (callback: () => void) =>
+    ipcRenderer.on("open-theme-manager", callback),
 });
 
 contextBridge.exposeInMainWorld(
