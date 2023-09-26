@@ -85,5 +85,8 @@
   "defaultDownloadDirDescription": "The directory where you want to save the downloads. (NOTE: Requires an absolute path)",
   "allThemes": "All Themes",
   "addTheme": "Add Theme",
-  "editTheme": "Edit Theme"
+  "deleteTheme": "Delete Theme",
+  "deleteThemeConfirm": "Are you sure you want to delete this theme?",
+  "editTheme": "Edit Theme",
+  "Type": "Type"
 }

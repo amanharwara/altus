@@ -1,45 +1,16 @@
 import { Dialog, TextField } from "@kobalte/core";
-import {
-  Accessor,
-  Component,
-  Setter,
-  createEffect,
-  createSignal,
-  useContext,
-} from "solid-js";
+import { Accessor, Component, Setter, useContext } from "solid-js";
 import CloseIcon from "../icons/CloseIcon";
 import { getSettingValue, setSettingValue } from "../stores/settings/solid";
 import { StyledSwitch } from "./StyledSwitch";
 import StyledSelect from "./StyledSelect";
-import { createResizeObserver } from "@solid-primitives/resize-observer";
 import { I18NContext } from "../i18n/solid";
-
-function addRightPaddingIfOverflowing(element: Element | undefined) {
-  setTimeout(() => {
-    if (!element) return;
-    const hasOverflow = element.scrollHeight > element.clientHeight;
-    if (hasOverflow) {
-      element.classList.add("pr-3");
-    } else {
-      element.classList.remove("pr-3");
-    }
-  });
-}
 
 const SettingsDialog: Component<{
   isOpen: Accessor<boolean>;
   setIsOpen: Setter<boolean>;
 }> = (props) => {
   const { t } = useContext(I18NContext);
-
-  const [settingsListElement, setSettingsListElement] =
-    createSignal<HTMLDivElement>();
-
-  createEffect(() => {
-    createResizeObserver(settingsListElement(), (_, element) => {
-      addRightPaddingIfOverflowing(element);
-    });
-  });
 
   return (
     <Dialog.Root open={props.isOpen()} onOpenChange={props.setIsOpen}>
@@ -64,13 +35,7 @@ const SettingsDialog: Component<{
                 <CloseIcon class="w-4 h-4" />
               </Dialog.CloseButton>
             </div>
-            <Dialog.Description
-              class="overflow-y-auto"
-              ref={(element) => {
-                setSettingsListElement(element);
-                addRightPaddingIfOverflowing(element);
-              }}
-            >
+            <Dialog.Description class="overflow-y-auto">
               <div class="py-2.5">
                 <StyledSwitch
                   checked={getSettingValue("trayIcon")}

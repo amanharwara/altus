@@ -12,15 +12,21 @@ body,
 }
 
 ::-webkit-scrollbar {
-  @apply w-2 rounded;
+  width: 18px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-neutral-900 rounded;
+  border-left: 10px solid rgba(0, 0, 0, 0);
+  border-right: 0px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  @apply bg-neutral-900;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-zinc-700 rounded;
+  border-left: 10px solid rgba(0, 0, 0, 0);
+  border-right: 0px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  @apply bg-zinc-700;
 }
 
 ::-webkit-scrollbar-thumb:hover {
