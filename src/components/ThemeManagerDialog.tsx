@@ -47,6 +47,7 @@ const ThemeDialog: Component<{
     if (type() === "css") {
       setColors(undefined);
       setPreset(undefined);
+      return;
     }
 
     const _preset = preset();
@@ -96,7 +97,7 @@ const ThemeDialog: Component<{
                 onChange={setType}
               >
                 <RadioGroup.Label class="text-[0.95rem] leading-none">
-                  Type
+                  {t("Type")}
                 </RadioGroup.Label>
                 <div class="flex divide-x divide-zinc-600 rounded border border-zinc-600 select-none">
                   <RadioGroup.Item
@@ -105,7 +106,7 @@ const ThemeDialog: Component<{
                   >
                     <RadioGroup.ItemInput />
                     <RadioGroup.ItemLabel class="px-2.5 py-1.5 flex-grow text-center">
-                      Choose colors
+                      {t("chooseColors")}
                     </RadioGroup.ItemLabel>
                   </RadioGroup.Item>
                   <RadioGroup.Item
@@ -114,7 +115,7 @@ const ThemeDialog: Component<{
                   >
                     <RadioGroup.ItemInput />
                     <RadioGroup.ItemLabel class="px-2.5 py-1.5 flex-grow text-center">
-                      Use CSS
+                      {t("useCSS")}
                     </RadioGroup.ItemLabel>
                   </RadioGroup.Item>
                 </div>
@@ -124,11 +125,11 @@ const ThemeDialog: Component<{
                   <StyledSelect
                     rootClass="flex-col py-2"
                     multiple={false}
-                    options={Object.keys(themePresets)}
+                    options={Object.keys(themePresets) as ThemePreset[]}
                     label={t("Preset")}
-                    placeholder={t("Select a preset...")}
+                    placeholder={t("selectPreset")}
                     value={preset()}
-                    onChange={setPreset()}
+                    onChange={setPreset}
                     class="flex flex-col gap-1.5 py-2"
                     valueRender={(state) =>
                       capitalizeFirstLetter(state.selectedOption())
@@ -140,27 +141,93 @@ const ThemeDialog: Component<{
                   <Show when={colors()}>
                     {(colors) => (
                       <>
-                        <StyledTextField
-                          value={colors().bg}
-                          onChange={(value) =>
-                            setColors({ ...colors(), bg: value })
-                          }
-                          label="Background color"
-                        />
-                        <StyledTextField
-                          value={colors().fg}
-                          onChange={(value) =>
-                            setColors({ ...colors(), fg: value })
-                          }
-                          label="Foreground color"
-                        />
-                        <StyledTextField
-                          value={colors().ac}
-                          onChange={(value) =>
-                            setColors({ ...colors(), ac: value })
-                          }
-                          label="Accent color"
-                        />
+                        <div class="flex items-end gap-3 pb-2">
+                          <StyledTextField
+                            class="flex-grow pb-0"
+                            value={colors().bg}
+                            onChange={(value) =>
+                              setColors({ ...colors(), bg: value })
+                            }
+                            label={t("bgColor")}
+                          />
+                          <label
+                            class="w-[2.15rem] h-[2.15rem] border rounded border-zinc-600 focus-within:border-zinc-300 relative"
+                            style={{
+                              "background-color": colors().bg,
+                            }}
+                          >
+                            <span class="sr-only">{t("bgColor")}</span>
+                            <input
+                              type="color"
+                              class="sr-only top-0 left-0"
+                              value={colors().bg}
+                              onChange={(event) => {
+                                setColors({
+                                  ...colors(),
+                                  bg: event.currentTarget.value,
+                                });
+                              }}
+                            />
+                          </label>
+                        </div>
+                        <div class="flex items-end gap-3 pb-2">
+                          <StyledTextField
+                            class="flex-grow pb-0"
+                            value={colors().fg}
+                            onChange={(value) =>
+                              setColors({ ...colors(), fg: value })
+                            }
+                            label={t("fgColor")}
+                          />
+                          <label
+                            class="w-[2.15rem] h-[2.15rem] border rounded border-zinc-600 focus-within:border-zinc-300 relative"
+                            style={{
+                              "background-color": colors().fg,
+                            }}
+                          >
+                            <span class="sr-only">{t("fgColor")}</span>
+                            <input
+                              type="color"
+                              class="sr-only top-0 left-0"
+                              value={colors().fg}
+                              onChange={(event) => {
+                                setColors({
+                                  ...colors(),
+                                  fg: event.currentTarget.value,
+                                });
+                              }}
+                            />
+                          </label>
+                        </div>
+                        <div class="flex items-end gap-3 pb-2">
+                          <StyledTextField
+                            class="flex-grow pb-0"
+                            value={colors().ac}
+                            onChange={(value) =>
+                              setColors({ ...colors(), ac: value })
+                            }
+                            label={t("acColor")}
+                          />
+                          <label
+                            class="w-[2.15rem] h-[2.15rem] border rounded border-zinc-600 focus-within:border-zinc-300 relative"
+                            style={{
+                              "background-color": colors().ac,
+                            }}
+                          >
+                            <span class="sr-only">{t("acColor")}</span>
+                            <input
+                              type="color"
+                              class="sr-only top-0 left-0"
+                              value={colors().ac}
+                              onChange={(event) => {
+                                setColors({
+                                  ...colors(),
+                                  ac: event.currentTarget.value,
+                                });
+                              }}
+                            />
+                          </label>
+                        </div>
                       </>
                     )}
                   </Show>
@@ -254,11 +321,11 @@ const ThemeManagerDialog: Component<{
                       setIsThemeDialogOpen(true);
                     }}
                   >
-                    Add theme
+                    {t("addTheme")}
                   </button>
                   {themeStore.themes.some((theme) => !!theme.colors) && (
                     <button class="px-3 py-1.5 my-2 text-sm border border-zinc-700 bg-zinc-700/50 hover:bg-zinc-800/50 rounded focus:bg-zinc-800/50 focus:border-zinc-600 outline-none">
-                      Update themes
+                      {t("updateThemes")}
                     </button>
                   )}
                 </div>

@@ -1,5 +1,6 @@
 import { TextField } from "@kobalte/core";
 import { Component } from "solid-js";
+import { twMerge } from "tailwind-merge";
 
 const StyledTextField: Component<
   TextField.TextFieldRootProps & {
@@ -7,7 +8,10 @@ const StyledTextField: Component<
   }
 > = (props) => {
   return (
-    <TextField.Root class="flex flex-col gap-1.5 py-2" {...props}>
+    <TextField.Root
+      {...props}
+      class={twMerge("flex flex-col gap-1.5 py-2", props.class)}
+    >
       <TextField.Label class="text-[0.95rem] leading-none">
         {props.label}
       </TextField.Label>

@@ -83,10 +83,17 @@
   "showSaveDialogDescription": "Whether to ask where to save each file before downloading. (NOTE: Requires a restart for changes to apply.)",
   "defaultDownloadDir": "Default Download Directory",
   "defaultDownloadDirDescription": "The directory where you want to save the downloads. (NOTE: Requires an absolute path)",
-  "allThemes": "All Themes",
   "addTheme": "Add Theme",
+  "updateThemes": "Update Themes",
   "deleteTheme": "Delete Theme",
   "deleteThemeConfirm": "Are you sure you want to delete this theme?",
   "editTheme": "Edit Theme",
-  "Type": "Type"
+  "Type": "Type",
+  "Preset": "Preset",
+  "chooseColors": "Choose Colors",
+  "useCSS": "Use CSS",
+  "selectPreset": "Select a preset...",
+  "bgColor": "Background color",
+  "fgColor": "Foreground Color",
+  "acColor": "Accent Color"
 }
