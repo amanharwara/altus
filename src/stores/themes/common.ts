@@ -1,7 +1,7 @@
 export type Theme = {
   id: string;
   name: string;
-  css: string;
+  css?: string;
   customCSS?: boolean;
   preset?: string;
   colors?: {

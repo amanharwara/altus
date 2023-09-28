@@ -87,7 +87,7 @@ const TabEditDialog: Component<{
               optionValue="id"
               optionTextValue="name"
               label={t("Theme")}
-              placeholder={t("Select a theme...")}
+              placeholder={t("selectTheme")}
               value={theme()}
               onChange={(theme) => {
                 updateAndSyncTabStore(

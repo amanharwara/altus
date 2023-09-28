@@ -25,6 +25,17 @@ export function updateTheme(theme: Theme) {
   );
 }
 
+export function upsertTheme(theme: Theme) {
+  updateThemeStore("themes", (themes) => {
+    const existingTheme = themes.find((t) => t.id === theme.id);
+    if (existingTheme) {
+      return themes.map((t) => (t.id === theme.id ? theme : t));
+    } else {
+      return [...themes, theme];
+    }
+  });
+}
+
 export function removeTheme(theme: Theme) {
   updateThemeStore("themes", (themes) =>
     themes.filter((t) => t.id !== theme.id)

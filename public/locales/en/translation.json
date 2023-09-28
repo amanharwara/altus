@@ -92,6 +92,7 @@
   "Preset": "Preset",
   "chooseColors": "Choose Colors",
   "useCSS": "Use CSS",
+  "selectTheme": "Select a theme...",
   "selectPreset": "Select a preset...",
   "bgColor": "Background color",
   "fgColor": "Foreground Color",
