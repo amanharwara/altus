@@ -64,14 +64,28 @@ function setThemeColors(colors: NonNullable<Theme["colors"]>) {
   --app-background: var(--bg);
   --intro-background: var(--bg);
   --startup-background: var(--bg);
+  --status-background: var(--bg);
   --conversation-panel-background: var(--bg);
   --background-default: color-mix(in srgb, var(--bg), white 2.5%);
   --background-default-active: color-mix(in srgb, var(--bg), white 7%);
+  --background-default-hover: color-mix(in srgb, var(--bg), white 6%);
+  --incoming-background: color-mix(in srgb, var(--bg), white 9%);
+  --outgoing-background: color-mix(in srgb, var(--bg), white 12.5%);
+  --system-message-background: color-mix(in srgb, var(--bg), white 10%);
+  --notification-e2e-background: color-mix(in srgb, var(--bg), white 10%);
+  --dropdown-background: color-mix(in srgb, var(--bg), white 10%);
+  --dropdown-background-hover: color-mix(in srgb, var(--bg), white 2.5%);
   --panel-header-background: color-mix(in srgb, var(--bg), white 5%);
+  --panel-background-colored: color-mix(in srgb, var(--bg), white 5%);
   --search-input-container-background: color-mix(in srgb, var(--bg), white 5%);
   --search-input-container-background-active: color-mix(in srgb, var(--bg), white 5%);
   --search-input-background: color-mix(in srgb, var(--bg), white 2.5%);
+  --compose-input-background: var(--bg);
+  --compose-input-border: color-mix(in srgb, var(--bg), white 15%);
   --rich-text-panel-background: color-mix(in srgb, var(--bg), white 7%);
+  --drawer-background: var(--bg);
+  --drawer-section-background: var(--bg);
+  --avatar-placeholder-background: color-mix(in srgb, var(--bg), white 20%);
 }
 
 @media (min-width: 1441px) {
