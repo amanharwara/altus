@@ -61,6 +61,8 @@ function setThemeColors(colors: NonNullable<Theme["colors"]>) {
   setThemeCSS(`
 .custom {
   --bg: ${colors.bg};
+  --fg: ${colors.fg};
+  --ac: ${colors.ac};
   --app-background: var(--bg);
   --intro-background: var(--bg);
   --startup-background: var(--bg);
@@ -70,9 +72,12 @@ function setThemeColors(colors: NonNullable<Theme["colors"]>) {
   --background-default-active: color-mix(in srgb, var(--bg), white 7%);
   --background-default-hover: color-mix(in srgb, var(--bg), white 6%);
   --incoming-background: color-mix(in srgb, var(--bg), white 9%);
+  --incoming-background-deeper: color-mix(in srgb, var(--bg), white 3.5%);
   --outgoing-background: color-mix(in srgb, var(--bg), white 12.5%);
+  --outgoing-background-deeper: color-mix(in srgb, var(--bg), white 6.5%);
   --system-message-background: color-mix(in srgb, var(--bg), white 10%);
   --notification-e2e-background: color-mix(in srgb, var(--bg), white 10%);
+  --notification-non-e2e-background: color-mix(in srgb, var(--bg), white 10%);
   --dropdown-background: color-mix(in srgb, var(--bg), white 10%);
   --dropdown-background-hover: color-mix(in srgb, var(--bg), white 2.5%);
   --panel-header-background: color-mix(in srgb, var(--bg), white 5%);
@@ -86,6 +91,11 @@ function setThemeColors(colors: NonNullable<Theme["colors"]>) {
   --drawer-background: var(--bg);
   --drawer-section-background: var(--bg);
   --avatar-placeholder-background: color-mix(in srgb, var(--bg), white 20%);
+  --butterbar-update-background: color-mix(in srgb, var(--bg), white 8%);
+  --butterbar-update-icon: var(--ac);
+  --drawer-background-deep: color-mix(in srgb, var(--bg), black 10%);
+  --modal-background: color-mix(in srgb, var(--bg), white 1%);
+  --modal-backdrop: color-mix(in srgb, var(--bg), transparent 10%);
 }
 
 @media (min-width: 1441px) {

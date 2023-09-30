@@ -24,6 +24,7 @@ const themePresets = {
   dark: { bg: "#1f232a", fg: "#eeeeee", ac: "#7289da" },
   darkMint: { bg: "#10151E", fg: "#eeeeee", ac: "#40C486" },
   purplish: { bg: "#15192E", fg: "#eeeeee", ac: "#125DBF" },
+  coffee: { bg: "#100d11", fg: "#eeeeee", ac: "#c7a589" },
 };
 type ThemePreset = keyof typeof themePresets;
 
