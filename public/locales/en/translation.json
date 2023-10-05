@@ -66,6 +66,8 @@
   "preventEnterDescription": "When enabled, pressing Enter while typing will not send the message and add a new line instead",
   "customTitlebar": "Use custom titlebar",
   "customTitlebarDescription": "When enabled, Altus will use a custom titlebar instead of the one provided by the system. (NOTE: Requires a restart for changes to apply.)",
+  "titleName": "Titlebar title",
+  "titleNameDescription": "The text displayed in the middle of the titlebar, and on the taskbar. (NOTE: Requires a restart for changes to apply.)",
   "autoHideMenuBar": "Auto-hide Menu Bar",
   "autoHideMenuBarDescription": "When enabled, the menu bar will only show when you press the Alt key",
   "Maximize": "Maximize",

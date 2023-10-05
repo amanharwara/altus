@@ -73,6 +73,8 @@ const createWindow = () => {
     "rememberWindowPosition"
   );
 
+  const titleName = getSettingWithDefault("titleName");
+
   const mainWindow = new BrowserWindow({
     minWidth: 520,
     minHeight: 395,
@@ -84,11 +86,15 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
       webviewTag: true,
     },
-    title: "Altus",
+    title: titleName,
     show: false,
     frame: !useCustomTitlebar,
     titleBarStyle: useCustomTitlebar ? "hidden" : "default",
     icon: "./src/icons/app/icon.png",
+  });
+
+  mainWindow.on("page-title-updated", (event) => {
+    event.preventDefault();
   });
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -319,7 +325,8 @@ function toggleTray(mainWindow: BrowserWindow, enabled: boolean) {
         })
       : icon
   );
-  tray.setToolTip("Altus");
+  const titleName = getSettingWithDefault("titleName");
+  tray.setToolTip(titleName);
   tray.setContextMenu(getLocalizedTrayMenu());
   tray.on("click", () => {
     if (process.platform !== "darwin") {
