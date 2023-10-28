@@ -96,6 +96,8 @@ function setThemeColors(colors: NonNullable<Theme["colors"]>) {
   --drawer-background-deep: color-mix(in srgb, var(--bg), black 10%);
   --modal-background: color-mix(in srgb, var(--bg), white 1%);
   --modal-backdrop: color-mix(in srgb, var(--bg), transparent 10%);
+  --icon-ack: var(--ac);
+  --checkbox-background: var(--ac);
 }
 
 @media (min-width: 1441px) {
