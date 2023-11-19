@@ -22,9 +22,10 @@
   },
   "license": "GPL-3.0",
   "devDependencies": {
-    "@electron-forge/cli": "^6.4.1",
-    "@electron-forge/plugin-auto-unpack-natives": "^6.4.1",
-    "@electron-forge/plugin-vite": "^6.4.1",
+    "@electron-forge/cli": "^7.1.0",
+    "@electron-forge/maker-dmg": "^7.1.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.1.0",
+    "@electron-forge/plugin-vite": "^7.1.0",
     "@types/auto-launch": "^5.0.3",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",

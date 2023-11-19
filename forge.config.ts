@@ -1,6 +1,7 @@
 import type { ForgeConfig } from "@electron-forge/shared-types";
 import { VitePlugin } from "@electron-forge/plugin-vite";
 import MakerAppImage from "electron-forge-maker-appimage";
+import { MakerDMG } from "@electron-forge/maker-dmg";
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -20,6 +21,10 @@ const config: ForgeConfig = {
       options: {
         productName: "Altus",
       },
+    }),
+    new MakerDMG({
+      background: "./public/assets/dmg-background.png",
+      icon: "./src/icons/app/icon.icns",
     }),
   ],
   plugins: [
