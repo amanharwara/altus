@@ -7,9 +7,21 @@ const config: ForgeConfig = {
     icon: "./public/icons/icon",
     appBundleId: "harwara.aman.altus",
     appCategoryType: "public.app-category.social-networking",
+    protocols: [
+      {
+        name: "whatsapp",
+        schemes: ["whatsapp"],
+      },
+    ],
   },
   rebuildConfig: {},
-  makers: [new MakerAppImage({})],
+  makers: [
+    new MakerAppImage({
+      options: {
+        productName: "Altus",
+      },
+    }),
+  ],
   plugins: [
     new VitePlugin({
       // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
