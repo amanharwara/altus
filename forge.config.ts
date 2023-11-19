@@ -1,21 +1,15 @@
 import type { ForgeConfig } from "@electron-forge/shared-types";
-import { MakerSquirrel } from "@electron-forge/maker-squirrel";
-import { MakerZIP } from "@electron-forge/maker-zip";
-import { MakerDeb } from "@electron-forge/maker-deb";
-import { MakerRpm } from "@electron-forge/maker-rpm";
 import { VitePlugin } from "@electron-forge/plugin-vite";
+import MakerAppImage from "electron-forge-maker-appimage";
 
 const config: ForgeConfig = {
   packagerConfig: {
     icon: "./public/icons/icon",
+    appBundleId: "harwara.aman.altus",
+    appCategoryType: "public.app-category.social-networking",
   },
   rebuildConfig: {},
-  makers: [
-    new MakerSquirrel({}),
-    new MakerZIP({}, ["darwin"]),
-    new MakerRpm({}),
-    new MakerDeb({}),
-  ],
+  makers: [new MakerAppImage({})],
   plugins: [
     new VitePlugin({
       // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
