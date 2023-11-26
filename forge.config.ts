@@ -5,7 +5,7 @@ import { MakerDMG } from "@electron-forge/maker-dmg";
 
 const config: ForgeConfig = {
   packagerConfig: {
-    icon: "./public/icons/icon",
+    icon: "./src/icons/app/icon",
     appBundleId: "harwara.aman.altus",
     appCategoryType: "public.app-category.social-networking",
     protocols: [
@@ -23,7 +23,6 @@ const config: ForgeConfig = {
       },
     }),
     new MakerDMG({
-      background: "./public/assets/dmg-background.png",
       icon: "./src/icons/app/icon.icns",
     }),
   ],
