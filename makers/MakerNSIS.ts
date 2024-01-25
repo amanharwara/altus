@@ -41,7 +41,6 @@ export default class MakerNSIS extends MakerBase<MakerOptions> {
             "public",
             "assets",
             "icons",
-            "app",
             "icon.ico"
           ),
           nsis: {

@@ -37,7 +37,6 @@ export default class MakerAppImage extends MakerBase<MakerOptions> {
             "public",
             "assets",
             "icons",
-            "app",
             "icon.png"
           ),
           linux: {
