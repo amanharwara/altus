@@ -1,7 +1,7 @@
 import type { ForgeConfig } from "@electron-forge/shared-types";
 import { VitePlugin } from "@electron-forge/plugin-vite";
-import MakerAppImage from "electron-forge-maker-appimage";
 import { MakerDMG } from "@electron-forge/maker-dmg";
+import MakerAppImage from "./makers/MakerAppImage";
 import MakerNSIS from "./makers/MakerNSIS";
 
 const config: ForgeConfig = {
@@ -18,11 +18,7 @@ const config: ForgeConfig = {
   },
   rebuildConfig: {},
   makers: [
-    new MakerAppImage({
-      options: {
-        productName: "Altus",
-      },
-    }),
+    new MakerAppImage(),
     new MakerDMG({
       icon: "./public/assets/icons/icon.icns",
     }),

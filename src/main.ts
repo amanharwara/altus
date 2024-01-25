@@ -30,11 +30,6 @@ import {
 import AutoLaunch from "auto-launch";
 import electronDl from "electron-dl";
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require("electron-squirrel-startup")) {
-  app.quit();
-}
-
 const windowState = new Store<{
   width: number | null;
   height: number | null;

@@ -40,9 +40,9 @@ export default class MakerAppImage extends MakerBase<MakerOptions> {
             "icon.png"
           ),
           linux: {
+            executableName,
             desktop: {
               Name: appName,
-              Exec: executableName,
               Terminal: "false",
               Type: "Application",
               Icon: executableName,
