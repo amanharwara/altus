@@ -1,0 +1,10 @@
+directories:
+  output: dist
+  buildResources: build
+nsis:
+  oneClick: false
+  installerSidebar: /home/someone/code/altus/public/assets/installerSidebar.bmp
+  artifactName: ${productName}-Setup-${version}.${ext}
+  allowToChangeInstallationDirectory: true
+files: []
+electronVersion: 26.2.1

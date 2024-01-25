@@ -2,6 +2,7 @@ import type { ForgeConfig } from "@electron-forge/shared-types";
 import { VitePlugin } from "@electron-forge/plugin-vite";
 import MakerAppImage from "electron-forge-maker-appimage";
 import { MakerDMG } from "@electron-forge/maker-dmg";
+import MakerNSIS from "./makers/MakerNSIS";
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -25,6 +26,7 @@ const config: ForgeConfig = {
     new MakerDMG({
       icon: "./src/icons/app/icon.icns",
     }),
+    new MakerNSIS(),
   ],
   plugins: [
     new VitePlugin({
