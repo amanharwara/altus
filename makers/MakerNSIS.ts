@@ -10,9 +10,10 @@ const log = debug("electron-forge:maker:nsis");
 export default class MakerNSIS extends MakerBase<MakerOptions> {
   name = "nsis";
 
-  defaultPlatforms: string[] = ["win32"];
+  defaultPlatforms: string[] = ["win32", "linux"];
 
   isSupportedOnCurrentPlatform(): boolean {
+    return true;
     return process.platform === "win32";
   }
 
@@ -61,13 +62,19 @@ export default class MakerNSIS extends MakerBase<MakerOptions> {
 
     log("Received output files", output);
     for (const file of output) {
-      const filePath = path.resolve(outPath, path.basename(file));
+      const filePath = path.resolve(makeDir, path.basename(file));
       result.push(filePath);
+
+      if (fs.existsSync(filePath)) {
+        log(`Removing ${filePath}`);
+        await fs.remove(filePath);
+      }
 
       await fs.move(file, filePath);
     }
 
     await fs.remove(tmpPath);
+    await fs.remove(outPath);
     await fs.remove(path.resolve(makeDir, "nsis/make"));
 
     return result;

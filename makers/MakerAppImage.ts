@@ -58,13 +58,18 @@ export default class MakerAppImage extends MakerBase<MakerOptions> {
     );
 
     for (const file of output) {
-      const filePath = path.resolve(outPath, path.basename(file));
+      const filePath = path.resolve(makeDir, path.basename(file));
       result.push(filePath);
+
+      if (fs.existsSync(filePath)) {
+        await fs.remove(filePath);
+      }
 
       await fs.move(file, filePath);
     }
 
     await fs.remove(tmpPath);
+    await fs.remove(outPath);
     await fs.remove(path.resolve(makeDir, "appImage/make"));
 
     return result;

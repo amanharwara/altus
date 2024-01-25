@@ -1,9 +1,9 @@
 version: 5.0.0
 files:
   - url: Altus-5.0.0.AppImage
-    sha512: O4bqcuEam8k2akV0n/C2lb7C90ssB21nQsbJg41P2X/d39EcfVmfz6cjyh0tCE+awtEVDEIIV9aeibJIu7vILA==
-    size: 103221383
-    blockMapSize: 108699
+    sha512: uMeRpYrOuBOnAEHb9NBpgwM35tgFclufPZ/vtz8xSz/+mrVuu5wOk6Su75RJASNTXbQMUc1WYS67Zosg2tbXKw==
+    size: 278166518
+    blockMapSize: 281610
 path: Altus-5.0.0.AppImage
-sha512: O4bqcuEam8k2akV0n/C2lb7C90ssB21nQsbJg41P2X/d39EcfVmfz6cjyh0tCE+awtEVDEIIV9aeibJIu7vILA==
-releaseDate: '2024-01-25T12:06:44.377Z'
+sha512: uMeRpYrOuBOnAEHb9NBpgwM35tgFclufPZ/vtz8xSz/+mrVuu5wOk6Su75RJASNTXbQMUc1WYS67Zosg2tbXKw==
+releaseDate: '2024-01-25T12:49:56.062Z'
