@@ -1,8 +1,8 @@
 version: 5.0.0
 files:
   - url: Altus-Setup-5.0.0.exe
-    sha512: vPNhjN2MwBFaOFOyfOMXs25jePeejPqksN1X/PZVnxNsC+VOrNTYZ/KTtDMhkI3ox0SUr/e8jAjaWDEacs2Qig==
-    size: 72623579
+    sha512: pSMf/fp43alEQqn5Eb+S9KbKTqe0/7Am89EKA0ERhFce1VXXLaB1IYEdJCN9D5eLfblY/Z/l0aFgR9Pdq2H3qw==
+    size: 72746549
 path: Altus-Setup-5.0.0.exe
-sha512: vPNhjN2MwBFaOFOyfOMXs25jePeejPqksN1X/PZVnxNsC+VOrNTYZ/KTtDMhkI3ox0SUr/e8jAjaWDEacs2Qig==
-releaseDate: '2024-01-25T09:27:39.336Z'
+sha512: pSMf/fp43alEQqn5Eb+S9KbKTqe0/7Am89EKA0ERhFce1VXXLaB1IYEdJCN9D5eLfblY/Z/l0aFgR9Pdq2H3qw==
+releaseDate: '2024-01-25T10:18:49.450Z'

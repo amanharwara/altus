@@ -16,7 +16,6 @@ import { ChevronRightIcon } from "../icons/ChevronRightIcon";
 import MaximizeIcon from "../icons/MaximizeIcon";
 import RadioBoxMarked from "../icons/RadioBoxMarked";
 import RadioBoxBlank from "../icons/RadioBoxBlank";
-import icon from "../icons/app/icon.png";
 
 const MenuItem: Component<{
   item: CloneableMenu[number];
@@ -128,7 +127,7 @@ const CustomTitlebar: Component<{
       }}
     >
       <div class="p-1.5 mx-0.5">
-        <img src={icon} class="w-full h-full" />
+        <img src="/assets/icons/icon.png?url" class="w-full h-full" />
       </div>
       <Show when={props.menu()}>
         <div

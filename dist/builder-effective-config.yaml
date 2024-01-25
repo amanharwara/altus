@@ -1,6 +1,7 @@
 directories:
   output: dist
   buildResources: build
+icon: /home/someone/code/altus/src/icons/app/icon.ico
 nsis:
   oneClick: false
   installerSidebar: /home/someone/code/altus/public/assets/installerSidebar.bmp

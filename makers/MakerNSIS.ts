@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs-extra";
 import debug from "debug";
 import { buildForge } from "app-builder-lib";
+import { CommonConfig } from "./CommonConfig";
 
 const log = debug("electron-forge:maker:nsis");
 
@@ -17,7 +18,7 @@ export default class MakerNSIS extends MakerBase<MakerOptions> {
 
   async make(options: MakerOptions): Promise<string[]> {
     const { makeDir, targetArch } = options;
-    const outPath = path.resolve(makeDir, `nsis/${targetArch}`);
+    const outPath = path.resolve(makeDir, `nsis`);
     const tmpPath = path.resolve(makeDir, `nsis/${targetArch}-tmp`);
     const result: Array<string> = [];
 
@@ -33,6 +34,7 @@ export default class MakerNSIS extends MakerBase<MakerOptions> {
       {
         win: [`nsis:${options.targetArch}`],
         config: {
+          ...CommonConfig,
           icon: path.resolve(
             __dirname,
             "..",

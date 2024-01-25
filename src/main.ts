@@ -65,6 +65,16 @@ function getSettingWithDefault<Key extends SettingKey>(
 
 let tray: Tray | undefined;
 
+const iconsPath = path.join(__dirname, "assets", "icons");
+
+const mainIcon = nativeImage.createFromPath(
+  path.join(iconsPath, process.platform === "win32" ? "icon.ico" : "icon.png")
+);
+
+const trayIcon = nativeImage.createFromPath(
+  path.join(iconsPath, process.platform === "win32" ? "icon.ico" : "tray.png")
+);
+
 const createWindow = () => {
   const useCustomTitlebar =
     process.platform !== "darwin" && getSettingWithDefault("customTitlebar");
@@ -88,7 +98,7 @@ const createWindow = () => {
     show: false,
     frame: !useCustomTitlebar,
     titleBarStyle: useCustomTitlebar ? "hidden" : "default",
-    icon: "./src/icons/app/icon.png",
+    icon: mainIcon,
   });
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -306,18 +316,13 @@ function toggleTray(mainWindow: BrowserWindow, enabled: boolean) {
   if (process.platform === "darwin") {
     app.dock.setMenu(getLocalizedTrayMenu());
   }
-  const icon = nativeImage.createFromPath(
-    process.platform === "win32"
-      ? "./src/icons/app/icon.ico"
-      : "./src/icons/app/tray.png"
-  );
   tray = new Tray(
     process.platform === "darwin"
-      ? icon.resize({
+      ? trayIcon.resize({
           width: 16,
           height: 16,
         })
-      : icon
+      : trayIcon
   );
   tray.setToolTip("Altus");
   tray.setContextMenu(getLocalizedTrayMenu());
@@ -723,7 +728,7 @@ function getLocalizedMainMenu() {
                 title: `Altus v${app.getVersion()}`,
                 message: `Made by Aman Harwara.`,
                 detail: aboutDialogText,
-                // icon: mainIcon,
+                icon: mainIcon,
                 buttons: ["Copy Version Info", "OK"],
               })
               .then((res) => {
