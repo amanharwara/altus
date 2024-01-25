@@ -94,7 +94,7 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
       webviewTag: true,
     },
-    title: "Altus",
+    title: `Altus ${app.getVersion()}`,
     show: false,
     frame: !useCustomTitlebar,
     titleBarStyle: useCustomTitlebar ? "hidden" : "default",
