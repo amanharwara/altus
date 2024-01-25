@@ -21,6 +21,7 @@ const config: ForgeConfig = {
     new MakerAppImage(),
     new MakerDMG({
       icon: "./public/assets/icons/icon.icns",
+      format: "ULFO",
     }),
     new MakerNSIS(),
   ],
