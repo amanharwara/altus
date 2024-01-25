@@ -38,7 +38,8 @@ export default class MakerNSIS extends MakerBase<MakerOptions> {
           icon: path.resolve(
             __dirname,
             "..",
-            "src",
+            "public",
+            "assets",
             "icons",
             "app",
             "icon.ico"

@@ -6,7 +6,7 @@ import MakerNSIS from "./makers/MakerNSIS";
 
 const config: ForgeConfig = {
   packagerConfig: {
-    icon: "./src/icons/app/icon",
+    icon: "./public/assets/icons/app/icon",
     appBundleId: "harwara.aman.altus",
     appCategoryType: "public.app-category.social-networking",
     protocols: [
@@ -24,7 +24,7 @@ const config: ForgeConfig = {
       },
     }),
     new MakerDMG({
-      icon: "./src/icons/app/icon.icns",
+      icon: "./public/assets/icons/app/icon.icns",
     }),
     new MakerNSIS(),
   ],

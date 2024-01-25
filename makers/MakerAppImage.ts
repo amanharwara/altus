@@ -34,7 +34,8 @@ export default class MakerAppImage extends MakerBase<MakerOptions> {
           icon: path.resolve(
             __dirname,
             "..",
-            "src",
+            "public",
+            "assets",
             "icons",
             "app",
             "icon.png"
