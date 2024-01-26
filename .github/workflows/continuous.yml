@@ -12,7 +12,7 @@ on:
 
 jobs:
   AppImage:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -51,7 +51,8 @@ jobs:
       - name: Build Altus
         run: |
           yarn install
-          yarn run make -p darwin --arch="x64,arm64"
+          yarn run make -p darwin --arch x64
+          yarn run make -p darwin --arch arm64
 
       - name: Upload DMG
         uses: actions/upload-artifact@v3.0.0

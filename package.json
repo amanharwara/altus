@@ -4,6 +4,9 @@
   "version": "5.0.0",
   "description": "Desktop client for WhatsApp Web with themes & multiple account support.",
   "main": ".vite/build/main.js",
+  "build": {
+    "publish": "never"
+  },
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",

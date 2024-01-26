@@ -53,7 +53,7 @@ export default class MakerAppImage extends MakerBase<MakerOptions> {
             },
           },
           appImage: {},
-          publish: "never",
+          publish: null,
         },
       }
     );
