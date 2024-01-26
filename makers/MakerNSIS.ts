@@ -56,6 +56,7 @@ export default class MakerNSIS extends MakerBase<MakerOptions> {
             artifactName: "${productName}-Setup-${version}.${ext}",
             allowToChangeInstallationDirectory: true,
           },
+          publish: "never",
         },
       }
     );
