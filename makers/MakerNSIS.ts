@@ -10,10 +10,9 @@ const log = debug("electron-forge:maker:nsis");
 export default class MakerNSIS extends MakerBase<MakerOptions> {
   name = "nsis";
 
-  defaultPlatforms: string[] = ["win32", "linux"];
+  defaultPlatforms: string[] = ["win32"];
 
   isSupportedOnCurrentPlatform(): boolean {
-    return true;
     return process.platform === "win32";
   }
 
