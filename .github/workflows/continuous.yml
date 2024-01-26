@@ -76,7 +76,7 @@ jobs:
       - name: Build Altus
         run: |
           yarn install
-          yarn run make -p windows
+          yarn run make -p win32
 
       - name: Upload EXE
         uses: actions/upload-artifact@v3.0.0
