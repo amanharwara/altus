@@ -27,27 +27,13 @@ jobs:
       - name: Build Altus
         run: |
           yarn install
-          yarn run svelte-build
-          yarn add electron-builder --dev
-          yarn run electron-builder -l appimage --publish never
-          ls dist
-          mkdir -p dist/appimage
-          mv dist/*.AppImage dist/appimage/.
-          cd dist/appimage
-          ./*.AppImage --appimage-extract
-          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-          chmod +x ./appimagetool-x86_64.AppImage
-          rm Altus*.AppImage
-          ARCH=x86_64 ./appimagetool-x86_64.AppImage --appimage-extract-and-run squashfs-root -n -u 'gh-releases-zsync|amanharwara|altus|continuous|Altus*.AppImage.zsync' Altus-`git describe --tags --always`-x86_64.AppImage
-          rm -r ./appimagetool-x86_64.AppImage
-          chmod +x *.AppImage
-          rm -rf squashfs-root
+          yarn run make -p linux
 
       - name: Upload Appimage
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: altus-continuous-x86_64.AppImage
-          path: "dist/appimage/"
+          name: AppImage
+          path: "out/make/*.AppImage"
 
   Darwin:
     runs-on: macos-latest
@@ -65,18 +51,14 @@ jobs:
       - name: Build Altus
         run: |
           yarn install
-          yarn run svelte-build
-          yarn add electron-builder --dev
-          yarn run electron-builder --mac --publish never
-          ls dist
-          mkdir -p dist/darwin
-          mv dist/*.dmg dist/darwin/.
+          yarn run make -p darwin --arch x64
+          yarn run make -p darwin --arch arm64
 
       - name: Upload DMG
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: altus-continuous-x86_64.dmg
-          path: "dist/darwin/"
+          name: DMG
+          path: "out/make/*.dmg"
 
   Windows:
     runs-on: windows-latest
@@ -94,19 +76,13 @@ jobs:
       - name: Build Altus
         run: |
           yarn install
-          yarn run svelte-build
-          yarn add electron-builder --dev
-          yarn run electron-builder --windows --publish never
-          ls dist
-          mkdir -p dist/windows
-          mv dist/*.exe dist/windows/.
-          cd dist/windows
+          yarn run make -p windows
 
-      - name: Upload Exe
+      - name: Upload EXE
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: altus-continuous-x86_64.exe
-          path: "dist/windows/"
+          name: EXE
+          path: "out/make/*.exe"
 
   Release:
     needs: [AppImage, Windows, Darwin]
@@ -120,8 +96,8 @@ jobs:
         with:
           prerelease: false
           files: |
-            altus-continuous-x86_64.AppImage
-            altus-continuous-x86_64.exe
-            altus-continuous-x86_64.dmg
+            AppImage
+            DMG
+            EXE
 
           repo_token: ${{ secrets.GITHUB_TOKEN }}

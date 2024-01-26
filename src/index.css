@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  @apply bg-neutral-900;
+}
+
+::-webkit-scrollbar {
+  width: 18px;
+}
+
+::-webkit-scrollbar-track {
+  border-left: 10px solid rgba(0, 0, 0, 0);
+  border-right: 0px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  @apply bg-neutral-900;
+}
+
+::-webkit-scrollbar-thumb {
+  border-left: 10px solid rgba(0, 0, 0, 0);
+  border-right: 0px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  @apply bg-zinc-700;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-600;
+}
+
+.tabs-list::-webkit-scrollbar {
+  @apply h-1.5 rounded-none;
+}
+
+.tabs-list::-webkit-scrollbar-track {
+  border-radius: 0;
+}
+
+.tabs-list::-webkit-scrollbar-thumb {
+  @apply bg-zinc-600/50 rounded-none;
+}
+
+.tabs-list::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-600;
+}
