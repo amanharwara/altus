@@ -147,7 +147,7 @@ const createWindow = () => {
             return;
           }
           if (tray) tray.destroy();
-          app.quit();
+          app.exit(0);
         });
     } else if (tray) {
       tray.destroy();
