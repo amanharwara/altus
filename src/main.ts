@@ -488,6 +488,21 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
   ipcMain.handle("is-blurred", () => {
     return !mainWindow.isFocused();
   });
+
+  ipcMain.on("zoom", ({ sender }, type) => {
+    const currentZoomFactor = sender.getZoomFactor();
+    switch (type) {
+      case "in":
+        sender.setZoomFactor(currentZoomFactor + 0.1);
+        break;
+      case "out":
+        sender.setZoomFactor(currentZoomFactor - 0.1);
+        break;
+      default:
+        sender.setZoomFactor(1);
+        break;
+    }
+  });
 }
 
 type CloneableMenuItem = Omit<MenuItem, "menu" | "submenu" | "click"> & {

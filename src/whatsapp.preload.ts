@@ -15,6 +15,16 @@ window.onload = () => {
     if (!event.ctrlKey) return;
 
     switch (event.key) {
+      case "=":
+      case "+":
+        ipcRenderer.send("zoom", "in");
+        break;
+      case "-":
+        ipcRenderer.send("zoom", "out");
+        break;
+      case "0":
+        ipcRenderer.send("zoom", "reset");
+        break;
       case "b":
         formatSelectedText("*");
         break;
