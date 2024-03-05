@@ -34,7 +34,7 @@ export const DefaultSettingValues = {
   trayIcon: true,
   tabClosePrompt: true,
   closeToTray: false,
-  exitPrompt: true,
+  exitPrompt: false,
   preventEnter: false,
   notificationBadge: true,
   launchMinimized: false,
