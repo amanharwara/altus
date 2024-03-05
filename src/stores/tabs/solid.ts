@@ -50,6 +50,8 @@ export function removeTab(tab: Tab) {
   updateAndSyncTabStore("previouslyClosedTab", tab);
   if (tabStore.tabs.length > 0) {
     updateAndSyncTabStore("selectedTabId", tabStore.tabs[0].id);
+  } else {
+    addTab(getDefaultTab());
   }
 }
 
