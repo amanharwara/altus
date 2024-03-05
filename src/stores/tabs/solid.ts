@@ -11,7 +11,9 @@ const [tabStore, _updateTabStore] = createStore<TabStore>(TabStoreDefaults());
 
 window.electronTabStore.getStore().then((store) => {
   if (store.tabs.length === 0) {
-    store.tabs.push(getDefaultTab());
+    const tab = getDefaultTab();
+    store.tabs.push(tab);
+    store.selectedTabId = tab.id;
   }
   _updateTabStore(store);
 });
