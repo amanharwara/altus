@@ -2496,6 +2496,24 @@ ejs@^3.1.8:
   dependencies:
     jake "^10.8.5"
 
+electron-context-menu@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-3.6.1.tgz#42f117e15309687b22283e6f8f7a0d95a19afe84"
+  integrity sha512-lcpO6tzzKUROeirhzBjdBWNqayEThmdW+2I2s6H6QMrwqTVyT3EK47jW3Nxm60KTxl5/bWfEoIruoUNn57/QkQ==
+  dependencies:
+    cli-truncate "^2.1.0"
+    electron-dl "^3.2.1"
+    electron-is-dev "^2.0.0"
+
+electron-dl@^3.2.1:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/electron-dl/-/electron-dl-3.5.2.tgz#9e83d624473ec90682928b19ae9221a0e0b83a39"
+  integrity sha512-i104cl+u8yJ0lhpRAtUWfeGuWuL1PL6TBiw2gLf0MMIBjfgE485Ags2mcySx4uWU9P9uj/vsD3jd7X+w1lzZxw==
+  dependencies:
+    ext-name "^5.0.0"
+    pupa "^2.0.1"
+    unused-filename "^2.1.0"
+
 electron-dl@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/electron-dl/-/electron-dl-3.5.0.tgz#7a80bf13f168f7e5204774eee89dbc7c86de957b"
@@ -2514,6 +2532,11 @@ electron-installer-dmg@^4.0.0:
     minimist "^1.1.1"
   optionalDependencies:
     appdmg "^0.6.4"
+
+electron-is-dev@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-2.0.0.tgz#833487a069b8dad21425c67a19847d9064ab19bd"
+  integrity sha512-3X99K852Yoqu9AcW50qz3ibYBWY79/pBhlMCab8ToEWS48R0T9tyxRiQhwylE7zQdXrMnx2JKqUJyMPmt5FBqA==
 
 electron-publish@24.13.1:
   version "24.13.1"

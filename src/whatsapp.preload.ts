@@ -126,3 +126,7 @@ ipcRenderer.on("set-theme", (event, theme: Theme) => {
     setThemeColors(theme.colors);
   }
 });
+
+ipcRenderer.on("format-text", (e, wrapper) => {
+  formatSelectedText(wrapper);
+});

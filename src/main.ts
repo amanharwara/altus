@@ -29,6 +29,7 @@ import {
 } from "./stores/settings/common";
 import AutoLaunch from "auto-launch";
 import electronDl from "electron-dl";
+import contextMenu from "electron-context-menu";
 
 const windowState = new Store<{
   width: number | null;
@@ -205,6 +206,8 @@ if (!singleInstanceLock) {
 
     const mainWindow = createWindow();
 
+    contextMenu();
+
     const defaultDownloadDir = getSettingWithDefault("defaultDownloadDir");
     electronDl({
       saveAs: getSettingWithDefault("showSaveDialog"),
@@ -231,6 +234,47 @@ if (!singleInstanceLock) {
   });
 
   app.on("web-contents-created", (_, webContents) => {
+    if (webContents.getType() === "webview") {
+      contextMenu({
+        window: {
+          webContents: webContents,
+          inspectElement: webContents.inspectElement.bind(webContents),
+        } as unknown as BrowserWindow,
+        showSaveImageAs: true,
+        showInspectElement: true,
+        append: (def, params, window) => [
+          {
+            label: "Bold",
+            visible: params.isEditable,
+            click: () => {
+              (window as BrowserWindow).webContents.send("format-text", "*");
+            },
+          },
+          {
+            label: "Italic",
+            visible: params.isEditable,
+            click: () => {
+              (window as BrowserWindow).webContents.send("format-text", "_");
+            },
+          },
+          {
+            label: "Strike",
+            visible: params.isEditable,
+            click: () => {
+              (window as BrowserWindow).webContents.send("format-text", "~");
+            },
+          },
+          {
+            label: "Monospaced",
+            visible: params.isEditable,
+            click: () => {
+              (window as BrowserWindow).webContents.send("format-text", "```");
+            },
+          },
+        ],
+      });
+    }
+
     webContents.on("before-input-event", (event, input) => {
       if (getSettingWithDefault("preventEnter")) {
         if (input.key === "Enter" && !input.shift && !input.control) {
