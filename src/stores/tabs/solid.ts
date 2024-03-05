@@ -15,6 +15,9 @@ window.electronTabStore.getStore().then((store) => {
     store.tabs.push(tab);
     store.selectedTabId = tab.id;
   }
+  if (!store.selectedTabId && store.tabs.length > 0) {
+    store.selectedTabId = store.tabs[0].id;
+  }
   _updateTabStore(store);
 });
 
