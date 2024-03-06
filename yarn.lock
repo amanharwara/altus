@@ -1592,10 +1592,10 @@ app-builder-bin@4.0.0:
   resolved "https://registry.yarnpkg.com/app-builder-bin/-/app-builder-bin-4.0.0.tgz#1df8e654bd1395e4a319d82545c98667d7eed2f0"
   integrity sha512-xwdG0FJPQMe0M0UA4Tz0zEB8rBJTRA5a476ZawAqiBkMv16GRK5xpXThOjMaEOFnZ6zabejjG4J3da0SXG63KA==
 
-app-builder-lib@^24.13.1:
-  version "24.13.1"
-  resolved "https://registry.yarnpkg.com/app-builder-lib/-/app-builder-lib-24.13.1.tgz#90100d8479ebfa51f96f29de7cb18027a9258ec2"
-  integrity sha512-hmRZ4/ot+mL3xjNbalpvd7O458tJHxGC1kq/04T/AyBWQD3grbbnKXUCUhebQR/3tEYfG0hyMueycAb78l0EGQ==
+app-builder-lib@^24.13.2:
+  version "24.13.2"
+  resolved "https://registry.yarnpkg.com/app-builder-lib/-/app-builder-lib-24.13.2.tgz#dcfac7922ea850c7b607e7cded0e1e1906d4fe1e"
+  integrity sha512-EPqgMIby/mwp140olwMoSHAreqjtu0m9IqfmGD8lWCeVvxvMoHqkWfqCF1sgaE5ISj7+nFb994RelR3As9VJJg==
   dependencies:
     "@develar/schema-utils" "~2.6.5"
     "@electron/notarize" "2.2.1"
