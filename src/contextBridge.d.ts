@@ -30,6 +30,9 @@ declare global {
       onReloadTranslations: (callback: () => void) => Electron.IpcRenderer;
       onNewChat: (callback: () => void) => Electron.IpcRenderer;
       onOpenThemeManager: (callback: () => void) => Electron.IpcRenderer;
+      onMessageCount: (
+        callback: (detail: { messageCount: number; tabId: string }) => void
+      ) => Electron.IpcRenderer;
     };
     windowActions: {
       minimize: () => Promise<void>;

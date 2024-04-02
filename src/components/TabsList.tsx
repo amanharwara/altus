@@ -23,6 +23,14 @@ interface TabComponentProps {
 }
 
 const TabComponent: Component<TabComponentProps> = (props) => {
+  const [messageCount, setMessageCount] = createSignal(0);
+
+  window.electronIPCHandlers.onMessageCount(({ messageCount, tabId }) => {
+    if (tabId === props.tab.id) {
+      setMessageCount(messageCount);
+    }
+  });
+
   return (
     <div
       class="group flex flex-shrink-0 items-center gap-1.5 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
@@ -36,6 +44,11 @@ const TabComponent: Component<TabComponentProps> = (props) => {
       onClick={() => setTabActive(props.tab.id)}
       data-selected={props.tab.id === tabStore.selectedTabId ? "" : undefined}
     >
+      {!!messageCount() && (
+        <div class="flex items-center justify-center leading-none w-[4ch] h-5 bg-red-600 text-white rounded-full text-[length:0.65rem] mr-0.5">
+          {messageCount() > 99 ? "99+" : messageCount()}
+        </div>
+      )}
       <span>{props.tab.name}</span>
       <button
         class="flex items-center justify-center ml-0.5 w-6 h-6 hover:bg-zinc-800/50 rounded group-data-[selected]:hover:bg-zinc-800/50"

@@ -64,6 +64,9 @@ contextBridge.exposeInMainWorld("electronIPCHandlers", {
   onNewChat: (callback: () => void) => ipcRenderer.on("new-chat", callback),
   onOpenThemeManager: (callback: () => void) =>
     ipcRenderer.on("open-theme-manager", callback),
+  onMessageCount: (
+    callback: (detail: { messageCount: number; tabId: string }) => void
+  ) => ipcRenderer.on("message-count", (_, count) => callback(count)),
 });
 
 contextBridge.exposeInMainWorld(

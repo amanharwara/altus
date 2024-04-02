@@ -2,7 +2,11 @@ import { ipcRenderer } from "electron";
 import { Theme } from "./stores/themes/common";
 import { formatSelectedText } from "./utils/webview/formatSelectedText";
 
+let titleElement: HTMLTitleElement;
+
 window.onload = () => {
+  titleElement = document.querySelector("title") as HTMLTitleElement;
+
   // Reset initial theme
   document.body.querySelectorAll("script").forEach((script) => {
     if (script.innerHTML.includes("systemThemeDark")) {
@@ -51,7 +55,40 @@ window.onload = () => {
       ipcRenderer.send("open-link", event.target.href);
     }
   });
+
+  registerTitleElementObserver();
 };
+
+function getMessageCountFromTitle(title: string) {
+  const title_regex = /([0-9]+)/;
+  const exec = title_regex.exec(title);
+  if (!exec) return 0;
+
+  return parseInt(exec[0], 10);
+}
+
+function registerTitleElementObserver() {
+  new MutationObserver(function () {
+    const title = titleElement.textContent;
+    if (!title) return;
+
+    try {
+      const messageCount = getMessageCountFromTitle(title);
+      const tabId = document.body.dataset.tabId;
+
+      ipcRenderer.send("message-count", {
+        messageCount,
+        tabId,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }).observe(titleElement, {
+    subtree: true,
+    childList: true,
+    characterData: true,
+  });
+}
 
 function setThemeCSS(css: string) {
   const existingStyle = document.getElementById("altus-style");
@@ -139,4 +176,18 @@ ipcRenderer.on("set-theme", (event, theme: Theme) => {
 
 ipcRenderer.on("format-text", (e, wrapper) => {
   formatSelectedText(wrapper);
+});
+
+ipcRenderer.on("set-id", (e, id) => {
+  if (!document.body.dataset.tabId) {
+    // send back initial message count
+    ipcRenderer.send("message-count", {
+      messageCount: getMessageCountFromTitle(
+        titleElement.textContent as string
+      ),
+      tabId: id,
+    });
+  }
+
+  document.body.dataset.tabId = id;
 });

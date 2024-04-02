@@ -43,6 +43,13 @@ const WebView: Component<{ tab: Tab }> = (props) => {
     window.toggleNotifications(tab.config.notifications, `persist:${tab.id}`);
   });
 
+  createEffect(() => {
+    if (!webviewRef) return;
+    if (!didStopLoading()) return;
+
+    webviewRef.send("set-id", tab.id);
+  });
+
   onMount(() => {
     const webview = webviewRef;
 

@@ -67,8 +67,16 @@ const mainIcon = nativeImage.createFromPath(
   path.join(iconsPath, process.platform === "win32" ? "icon.ico" : "icon.png")
 );
 
+const mainNotificationIcon = nativeImage.createFromPath(
+  path.join(iconsPath, "icon-notification.png")
+);
+
 const trayIcon = nativeImage.createFromPath(
   path.join(iconsPath, process.platform === "win32" ? "icon.ico" : "tray.png")
+);
+
+const trayNotificationIcon = nativeImage.createFromPath(
+  path.join(iconsPath, "tray-notification.png")
 );
 
 const createWindow = () => {
@@ -501,6 +509,35 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
       default:
         sender.setZoomFactor(1);
         break;
+    }
+  });
+
+  ipcMain.on("message-count", (_, detail) => {
+    mainWindow.webContents.send("message-count", detail);
+    if (!getSettingWithDefault("notificationBadge")) {
+      return;
+    }
+    const messageCount = detail.messageCount;
+    if (messageCount) {
+      switch (process.platform) {
+        case "darwin":
+          app.dock.setBadge("·");
+          break;
+        default:
+          if (tray) tray.setImage(trayNotificationIcon);
+          mainWindow.setOverlayIcon(mainNotificationIcon, "Notification badge");
+          break;
+      }
+    } else {
+      switch (process.platform) {
+        case "darwin":
+          app.dock.setBadge("");
+          break;
+        default:
+          if (tray) tray.setImage(trayIcon);
+          mainWindow.setOverlayIcon(null, "Notification badge empty");
+          break;
+      }
     }
   });
 }
