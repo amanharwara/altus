@@ -14,8 +14,8 @@ jobs:
   AppImage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -30,7 +30,7 @@ jobs:
           yarn run make -p linux
 
       - name: Upload Appimage
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v4
         with:
           name: AppImage
           path: "out/make/*.AppImage"
@@ -38,8 +38,8 @@ jobs:
   Darwin:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -55,7 +55,7 @@ jobs:
           yarn run make -p darwin --arch arm64
 
       - name: Upload DMG
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v4
         with:
           name: DMG
           path: "out/make/*.dmg"
@@ -63,8 +63,8 @@ jobs:
   Windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -79,7 +79,7 @@ jobs:
           yarn run make -p win32
 
       - name: Upload EXE
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v4
         with:
           name: EXE
           path: "out/make/*.exe"
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
 
       - name: Release
         uses: marvinpinto/action-automatic-releases@v1.2.1
