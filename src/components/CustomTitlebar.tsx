@@ -127,7 +127,7 @@ const CustomTitlebar: Component<{
       }}
     >
       <div class="p-1.5 mx-0.5">
-        <img src="/assets/icons/icon.png?url" class="w-full h-full" />
+        <img src="./assets/icons/icon.png?url" class="w-full h-full" />
       </div>
       <Show when={props.menu()}>
         <div
