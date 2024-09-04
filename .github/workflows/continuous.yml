@@ -30,7 +30,7 @@ jobs:
           yarn run make -p linux
 
       - name: Upload Appimage
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: AppImage
           path: "out/make/*.AppImage"
@@ -55,7 +55,7 @@ jobs:
           yarn run make -p darwin --arch arm64
 
       - name: Upload DMG
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: DMG
           path: "out/make/*.dmg"
@@ -79,7 +79,7 @@ jobs:
           yarn run make -p win32
 
       - name: Upload EXE
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: EXE
           path: "out/make/*.exe"
