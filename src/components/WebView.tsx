@@ -41,6 +41,7 @@ const WebView: Component<{ tab: Tab }> = (props) => {
     if (!didStopLoading()) return;
 
     window.toggleNotifications(tab.config.notifications, `persist:${tab.id}`);
+    window.toggleMediaPermission(tab.config.media, `persist:${tab.id}`);
   });
 
   createEffect(() => {

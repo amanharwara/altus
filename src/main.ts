@@ -444,6 +444,20 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
     }
   );
 
+  ipcMain.handle(
+    "toggle-media-permission",
+    (_event, enabled: boolean, partition: string) => {
+      session
+        .fromPartition(partition)
+        .setPermissionRequestHandler((webContents, permission, callback) => {
+          if (permission === "media") {
+            callback(enabled); 
+          }
+        });
+    }
+  );
+  
+
   ipcMain.on("open-link", (_event, url: string) => {
     shell.openExternal(url);
   });

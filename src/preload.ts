@@ -29,6 +29,10 @@ const toggleNotifications = async (enabled: boolean, partition: string) => {
   await ipcRenderer.invoke("toggle-notifications", enabled, partition);
 };
 
+const toggleMediaPermission = async (enabled: boolean, partition: string) => {
+  await ipcRenderer.invoke("toggle-media-permission", enabled, partition);
+};
+
 contextBridge.exposeInMainWorld("electronTabStore", electronTabStoreIpcApi);
 contextBridge.exposeInMainWorld("electronThemeStore", electronThemeStoreIpcApi);
 contextBridge.exposeInMainWorld(
@@ -36,6 +40,7 @@ contextBridge.exposeInMainWorld(
   electronSettingsStoreIpcApi
 );
 contextBridge.exposeInMainWorld("toggleNotifications", toggleNotifications);
+contextBridge.exposeInMainWorld("toggleMediaPermission", toggleMediaPermission);
 
 contextBridge.exposeInMainWorld("electronIPCHandlers", {
   onOpenSettings: (callback: () => void) =>

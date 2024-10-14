@@ -12,6 +12,7 @@ declare global {
     electronSettingsStore: ElectronSettingsStoreIpcApi;
     whatsappPreloadPath: string;
     toggleNotifications: (enabled: boolean, partition: string) => Promise<void>;
+    toggleMediaPermission: (enabled: boolean, partition: string) => Promise<void>;
     electronIPCHandlers: {
       onOpenSettings: (callback: () => void) => Electron.IpcRenderer;
       onEditActiveTab: (callback: () => void) => Electron.IpcRenderer;
