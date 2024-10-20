@@ -6,8 +6,25 @@ import {
   getDefaultTab,
 } from "./common";
 import { WebviewTag } from "electron";
+import { createEffect } from "solid-js";
 
 const [tabStore, _updateTabStore] = createStore<TabStore>(TabStoreDefaults());
+
+createEffect(() => {
+  for (const tab of tabStore.tabs) {
+    const mediaPermsValue = tab.config.media;
+    if (mediaPermsValue === undefined) {
+      const defaultValue = getDefaultTab().config.media;
+      updateAndSyncTabStore(
+        "tabs",
+        (t) => t.id === tab.id,
+        "config",
+        "media",
+        defaultValue
+      );
+    }
+  }
+});
 
 window.electronTabStore.getStore().then((store) => {
   if (store.tabs.length === 0) {

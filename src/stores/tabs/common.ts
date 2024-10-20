@@ -27,7 +27,7 @@ export const getDefaultTab = (): Tab => ({
   config: {
     theme: "dark",
     notifications: true,
-    media: false,
+    media: true,
     sound: true,
     color: null,
     spellChecker: true,
