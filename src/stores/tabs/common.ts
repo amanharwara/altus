@@ -6,6 +6,7 @@ export type Tab = {
   messageCount?: number;
   config: {
     theme: string;
+    media: boolean;
     notifications: boolean;
     sound: boolean;
     color: string | null;
@@ -26,6 +27,7 @@ export const getDefaultTab = (): Tab => ({
   config: {
     theme: "dark",
     notifications: true,
+    media: false,
     sound: true,
     color: null,
     spellChecker: true,

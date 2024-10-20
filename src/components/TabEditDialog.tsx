@@ -120,6 +120,22 @@ const TabEditDialog: Component<{
             </div>
             <div class="py-2">
               <StyledSwitch
+                checked={props.tabToEdit().config.media}
+                onChange={(value) => {
+                  updateAndSyncTabStore(
+                    "tabs",
+                    (t) => t.id === props.tabToEdit().id,
+                    "config",
+                    "media",
+                    value
+                  );
+                }}
+              >
+                {t("Microphone and Camera")}
+              </StyledSwitch>
+            </div>
+            <div class="py-2">
+              <StyledSwitch
                 checked={props.tabToEdit().config.sound}
                 onChange={(value) => {
                   updateAndSyncTabStore(
