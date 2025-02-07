@@ -18,6 +18,7 @@
   "de": "Deutsch (de)",
   "tr": "Turkish (tr)",
   "Tab": "Tab",
+  "Edit tab": "टैब बदलें",
   "Add New Tab": "नया टैब खोलें",
   "Edit Active Tab": "मौजूदा टैब बदलें",
   "Close Active Tab": "मौजूदा टैब बंद करें",
@@ -33,6 +34,7 @@
   "Themes": "दिखावट",
   "Theme Manager": "Theme Manager",
   "&Settings": "सेटिंग्स",
+  "Settings": "सेटिंग्स",
   "&Help": "मदद",
   "&About": "Altus के बारे में",
   "Check For &Updates": "अपडेट के लिये जांचें",
@@ -40,5 +42,9 @@
   "Report Bugs/Issues": "समस्या की सूचना दें",
   "Website": "वेबसाइट",
   "Repository": "GitHub",
-  "Open &DevTools": "DevTools खोलें"
+  "Open &DevTools": "DevTools खोलें",
+  "Start &New Chat": "नई चैट शुरू करें",
+  "Exit": "बंद करे",
+  "Cancel": "कैंसिल",
+  "Are you sure you want to exit?": "क्या आप ऐप बंद करना चाहते हैं?"
 }

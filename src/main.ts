@@ -79,7 +79,30 @@ const trayNotificationIcon = nativeImage.createFromPath(
   path.join(iconsPath, "tray-notification.png")
 );
 
-const createWindow = () => {
+function confirmAndExit() {
+  dialog
+    .showMessageBox({
+      type: "question",
+      buttons: [electronI18N.t("Exit"), electronI18N.t("Cancel")],
+      title: electronI18N.t("Exit"),
+      message: electronI18N.t("Are you sure you want to exit?"),
+    })
+    .then(({ response }) => {
+      if (response !== 0) {
+        return;
+      }
+      if (tray) tray.destroy();
+      app.exit(0);
+    });
+}
+
+function quitApp() {
+  const shouldPrompt = getSettingWithDefault("exitPrompt");
+  if (shouldPrompt) confirmAndExit();
+  else app.quit();
+}
+
+function createWindow() {
   const useCustomTitlebar =
     process.platform !== "darwin" && getSettingWithDefault("customTitlebar");
   const rememberWindowSize = getSettingWithDefault("rememberWindowSize");
@@ -144,27 +167,14 @@ const createWindow = () => {
       mainWindow.hide();
     } else if (shouldPrompt) {
       event.preventDefault();
-      dialog
-        .showMessageBox({
-          type: "question",
-          buttons: ["OK", "Cancel"],
-          title: "Exit",
-          message: "Are you sure you want to exit?",
-        })
-        .then(({ response }) => {
-          if (response !== 0) {
-            return;
-          }
-          if (tray) tray.destroy();
-          app.exit(0);
-        });
+      confirmAndExit();
     } else if (tray) {
       tray.destroy();
     }
   });
 
   return mainWindow;
-};
+}
 
 const singleInstanceLock = app.requestSingleInstanceLock();
 
@@ -451,12 +461,11 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
         .fromPartition(partition)
         .setPermissionRequestHandler((webContents, permission, callback) => {
           if (permission === "media") {
-            callback(enabled); 
+            callback(enabled);
           }
         });
     }
   );
-  
 
   ipcMain.on("open-link", (_event, url: string) => {
     shell.openExternal(url);
@@ -641,8 +650,10 @@ function getLocalizedMainMenu() {
         },
         {
           label: electronI18N.t("&Quit"),
-          role: "quit",
           id: "quit",
+          accelerator: "CmdOrCtrl+Q",
+          acceleratorWorksWhenHidden: false,
+          click: quitApp,
         },
       ],
     },
@@ -934,7 +945,7 @@ function getLocalizedTrayMenu() {
     },
     {
       label: electronI18N.t("Quit"),
-      role: "quit",
+      click: quitApp,
     },
   ];
 
