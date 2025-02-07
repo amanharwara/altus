@@ -11,7 +11,7 @@ import {
   createSignal,
 } from "solid-js";
 import { CloneableMenu } from "../main";
-import { DropdownMenu } from "@kobalte/core";
+import { Menubar } from "@kobalte/core";
 import { ChevronRightIcon } from "../icons/ChevronRightIcon";
 import MaximizeIcon from "../icons/MaximizeIcon";
 import RadioBoxMarked from "../icons/RadioBoxMarked";
@@ -23,7 +23,7 @@ const MenuItem: Component<{
   return (
     <Switch>
       <Match when={props.item.type === "normal"}>
-        <DropdownMenu.Item
+        <Menubar.Item
           onSelect={() =>
             window.clickMenuItem(
               props.item.id || props.item.commandId.toString()
@@ -35,10 +35,10 @@ const MenuItem: Component<{
           <Show when={props.item.accelerator}>
             <span class="ml-auto text-[#c3c3c3]">{props.item.accelerator}</span>
           </Show>
-        </DropdownMenu.Item>
+        </Menubar.Item>
       </Match>
       <Match when={props.item.type === "radio"}>
-        <DropdownMenu.Item
+        <Menubar.Item
           onSelect={() =>
             window.clickMenuItem(
               props.item.id || props.item.commandId.toString()
@@ -57,14 +57,14 @@ const MenuItem: Component<{
           <Show when={props.item.accelerator}>
             <span class="ml-auto text-[#c3c3c3]">{props.item.accelerator}</span>
           </Show>
-        </DropdownMenu.Item>
+        </Menubar.Item>
       </Match>
       <Match when={props.item.type === "separator"}>
-        <DropdownMenu.Separator class="my-1.5 h-px border-t border-white/10" />
+        <Menubar.Separator class="my-1.5 h-px border-t border-white/10" />
       </Match>
       <Match when={props.item.type === "submenu"}>
-        <DropdownMenu.Sub>
-          <DropdownMenu.SubTrigger class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none outline-none">
+        <Menubar.Sub>
+          <Menubar.SubTrigger class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none outline-none">
             <span class="mr-8">{props.item.label.replace(/&/g, "")}</span>
             <Show when={props.item.accelerator}>
               <span class="ml-auto text-[#c3c3c3]">
@@ -72,18 +72,18 @@ const MenuItem: Component<{
               </span>
             </Show>
             <ChevronRightIcon class="w-4 h-4" />
-          </DropdownMenu.SubTrigger>
-          <DropdownMenu.Portal>
-            <DropdownMenu.SubContent
+          </Menubar.SubTrigger>
+          <Menubar.Portal>
+            <Menubar.SubContent
               data-custom-titlebar-menu
               class="z-[100] text-[13px] py-1 bg-[#202224] text-white outline-none"
             >
               <For each={props.item.submenu}>
                 {(submenuItem) => <MenuItem item={submenuItem} />}
               </For>
-            </DropdownMenu.SubContent>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Sub>
+            </Menubar.SubContent>
+          </Menubar.Portal>
+        </Menubar.Sub>
       </Match>
     </Switch>
   );
@@ -92,12 +92,6 @@ const MenuItem: Component<{
 const CustomTitlebar: Component<{
   menu: Resource<CloneableMenu>;
 }> = (props) => {
-  let menubarElement!: HTMLDivElement;
-
-  const isAnyMenuOpen = () => {
-    return !!menubarElement.querySelector("[data-expanded]");
-  };
-
   const [maximized, setMaximized] = createSignal(false);
   const [blurred, setBlurred] = createSignal(false);
 
@@ -130,78 +124,32 @@ const CustomTitlebar: Component<{
         <img src="./assets/icons/icon.png?url" class="w-full h-full" />
       </div>
       <Show when={props.menu()}>
-        <div
-          ref={menubarElement}
+        <Menubar.Menubar
           data-custom-titlebar-menu
           class="flex select-none [-webkit-app-region:no-drag]"
         >
           <For each={props.menu()}>
-            {(menuItem) =>
-              menuItem.type === "submenu" ? (
-                <DropdownMenu.Root preventScroll={false} modal={false}>
-                  <DropdownMenu.Trigger
-                    class="flex items-center px-2 h-full cursor-default hover:bg-white/10 focus:bg-white/20 outline-none ui-expanded:bg-white/20"
-                    onMouseOver={(event) => {
-                      if (!isAnyMenuOpen()) return;
-                      const isCurrentMenuOpen =
-                        event.currentTarget.getAttribute("aria-expanded") ===
-                        "true";
-                      if (isCurrentMenuOpen) return;
-                      if (blurred()) return;
-                      event.currentTarget.focus();
-                      event.currentTarget.dispatchEvent(
-                        new KeyboardEvent("keydown", {
-                          key: "Enter",
-                          bubbles: true,
-                          cancelable: true,
-                        })
-                      );
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key === "ArrowLeft") {
-                        const previousMenuItem =
-                          event.currentTarget.previousElementSibling;
-                        const lastMenuItem =
-                          event.currentTarget.parentElement?.lastElementChild;
-                        if (previousMenuItem instanceof HTMLElement) {
-                          previousMenuItem.focus();
-                        } else if (lastMenuItem instanceof HTMLElement) {
-                          lastMenuItem.focus();
-                        }
-                      } else if (event.key === "ArrowRight") {
-                        const nextMenuItem =
-                          event.currentTarget.nextElementSibling;
-                        const firstMenuItem =
-                          event.currentTarget.parentElement?.firstElementChild;
-                        if (nextMenuItem instanceof HTMLElement) {
-                          nextMenuItem.focus();
-                        } else if (firstMenuItem instanceof HTMLElement) {
-                          firstMenuItem.focus();
-                        }
-                      }
-                    }}
-                  >
+            {(menuItem) => (
+              <Show when={menuItem.type === "submenu"}>
+                <Menubar.Menu>
+                  <Menubar.Trigger class="flex items-center px-2 h-full cursor-default hover:bg-white/10 focus:bg-white/20 outline-none ui-expanded:bg-white/20">
                     {menuItem.label.replace(/&/g, "")}
-                  </DropdownMenu.Trigger>
-                  <DropdownMenu.Portal>
-                    <DropdownMenu.Content
+                  </Menubar.Trigger>
+                  <Menubar.Portal>
+                    <Menubar.Content
                       data-custom-titlebar-menu
                       class="z-[100] text-[13px] py-1 bg-[#202224] text-white outline-none"
                     >
                       <For each={menuItem.submenu}>
                         {(submenuItem) => <MenuItem item={submenuItem} />}
                       </For>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Portal>
-                </DropdownMenu.Root>
-              ) : (
-                <button class="flex items-center px-2 h-full cursor-default hover:bg-white/10 focus:bg-white/20 outline-none ui-expanded:bg-white/20">
-                  {menuItem.label.replace(/&/g, "")}
-                </button>
-              )
-            }
+                    </Menubar.Content>
+                  </Menubar.Portal>
+                </Menubar.Menu>
+              </Show>
+            )}
           </For>
-        </div>
+        </Menubar.Menubar>
       </Show>
       <div class="flex-grow flex items-center justify-center pl-4">Altus</div>
       <div class="grid grid-cols-[repeat(3,46px)] h-full [-webkit-app-region:no-drag] ml-auto">

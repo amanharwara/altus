@@ -45,8 +45,8 @@
     "vite-plugin-solid": "^2.7.0"
   },
   "dependencies": {
-    "@kobalte/core": "^0.11.0",
-    "@kobalte/tailwindcss": "^0.8.0",
+    "@kobalte/core": "^0.13.8",
+    "@kobalte/tailwindcss": "^0.9.0",
     "@kobalte/utils": "^0.9.0",
     "@solid-primitives/resize-observer": "^2.0.22",
     "auto-launch": "^5.0.6",
