@@ -11,14 +11,12 @@ import { themeStore } from "../stores/themes/solid";
 import { unwrap } from "solid-js/store";
 
 const WebView: Component<{ tab: Tab }> = (props) => {
-  const { tab } = props;
-
   let webviewRef: WebviewTag | undefined;
   const [didStopLoading, setDidStopLoading] = createSignal(false);
 
   const selectedTheme = createMemo(() => {
     return unwrap(
-      themeStore.themes.find((theme) => theme.id === tab.config.theme)
+      themeStore.themes.find((theme) => theme.id === props.tab.config.theme)
     );
   });
 
@@ -33,22 +31,28 @@ const WebView: Component<{ tab: Tab }> = (props) => {
     if (!webviewRef) return;
     if (!didStopLoading()) return;
 
-    webviewRef.setAudioMuted(!tab.config.sound);
+    webviewRef.setAudioMuted(!props.tab.config.sound);
   });
 
   createEffect(() => {
     if (!webviewRef) return;
     if (!didStopLoading()) return;
 
-    window.toggleNotifications(tab.config.notifications, `persist:${tab.id}`);
-    window.toggleMediaPermission(tab.config.media, `persist:${tab.id}`);
+    window.toggleNotifications(
+      props.tab.config.notifications,
+      `persist:${props.tab.id}`
+    );
+    window.toggleMediaPermission(
+      props.tab.config.media,
+      `persist:${props.tab.id}`
+    );
   });
 
   createEffect(() => {
     if (!webviewRef) return;
     if (!didStopLoading()) return;
 
-    webviewRef.send("set-id", tab.id);
+    webviewRef.send("set-id", props.tab.id);
   });
 
   onMount(() => {
@@ -82,11 +86,11 @@ const WebView: Component<{ tab: Tab }> = (props) => {
     <webview
       ref={webviewRef}
       class="w-full h-full"
-      id={`webview-${tab.id}`}
+      id={`webview-${props.tab.id}`}
       src="https://web.whatsapp.com"
-      partition={`persist:${tab.id}`}
+      partition={`persist:${props.tab.id}`}
       preload={window.whatsappPreloadPath}
-      webpreferences={`spellcheck=${tab.config.spellChecker}`}
+      webpreferences={`spellcheck=${props.tab.config.spellChecker}`}
     />
   );
 };

@@ -1,4 +1,10 @@
-import { Component, JSX, createContext, createResource } from "solid-js";
+import {
+  Component,
+  JSX,
+  createContext,
+  createResource,
+  onCleanup,
+} from "solid-js";
 
 type I18NContextType = {
   t: (key: string) => string;
@@ -14,7 +20,10 @@ export const I18NProvider: Component<{
   const [translations, { refetch: refetchTranslations }] = createResource(
     window.i18n.getTranslations
   );
-  window.electronIPCHandlers.onReloadTranslations(refetchTranslations);
+
+  const cleanup =
+    window.electronIPCHandlers.onReloadTranslations(refetchTranslations);
+  onCleanup(cleanup);
 
   const t = (key: string) => {
     const value = translations()?.current?.[key];

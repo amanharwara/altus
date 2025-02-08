@@ -1,7 +1,13 @@
-import { type MessageBoxOptions, contextBridge, ipcRenderer } from "electron";
+import {
+  type MessageBoxOptions,
+  contextBridge,
+  ipcRenderer,
+  type IpcRendererEvent,
+} from "electron";
 import { ElectronTabStoreIpcApi } from "./stores/tabs/common";
 import { ElectronThemeStoreIpcApi } from "./stores/themes/common";
 import { ElectronSettingsStoreIpcApi } from "./stores/settings/common";
+import type { ElectronIPCHandlers } from "./ipcHandlersType";
 
 ipcRenderer.invoke("get-whatsapp-preload-path").then((preloadPath) => {
   contextBridge.exposeInMainWorld("whatsappPreloadPath", preloadPath);
@@ -42,37 +48,79 @@ contextBridge.exposeInMainWorld(
 contextBridge.exposeInMainWorld("toggleNotifications", toggleNotifications);
 contextBridge.exposeInMainWorld("toggleMediaPermission", toggleMediaPermission);
 
-contextBridge.exposeInMainWorld("electronIPCHandlers", {
-  onOpenSettings: (callback: () => void) =>
-    ipcRenderer.on("open-settings", callback),
-  onEditActiveTab: (callback: () => void) =>
-    ipcRenderer.on("edit-active-tab", callback),
-  onCloseActiveTab: (callback: () => void) =>
-    ipcRenderer.on("close-active-tab", callback),
-  onOpenTabDevTools: (callback: () => void) =>
-    ipcRenderer.on("open-tab-devtools", callback),
-  onAddNewTab: (callback: () => void) =>
-    ipcRenderer.on("add-new-tab", callback),
-  onRestoreTab: (callback: () => void) =>
-    ipcRenderer.on("restore-tab", callback),
-  onNextTab: (callback: () => void) => ipcRenderer.on("next-tab", callback),
-  onPreviousTab: (callback: () => void) =>
-    ipcRenderer.on("previous-tab", callback),
-  onFirstTab: (callback: () => void) => ipcRenderer.on("first-tab", callback),
-  onLastTab: (callback: () => void) => ipcRenderer.on("last-tab", callback),
-  onOpenWhatsappLink: (callback: (url: string) => void) =>
-    ipcRenderer.on("open-whatsapp-link", (_, url) => callback(url)),
-  onReloadCustomTitleBar: (callback: () => void) =>
-    ipcRenderer.on("reload-custom-title-bar", callback),
-  onReloadTranslations: (callback: () => void) =>
-    ipcRenderer.on("reload-translations", callback),
-  onNewChat: (callback: () => void) => ipcRenderer.on("new-chat", callback),
-  onOpenThemeManager: (callback: () => void) =>
-    ipcRenderer.on("open-theme-manager", callback),
-  onMessageCount: (
-    callback: (detail: { messageCount: number; tabId: string }) => void
-  ) => ipcRenderer.on("message-count", (_, count) => callback(count)),
-});
+const ipcHandlers: ElectronIPCHandlers = {
+  onOpenSettings: (callback) => {
+    ipcRenderer.on("open-settings", callback);
+    return () => ipcRenderer.off("open-settings", callback);
+  },
+  onEditActiveTab: (callback) => {
+    ipcRenderer.on("edit-active-tab", callback);
+    return () => ipcRenderer.off("edit-active-tab", callback);
+  },
+  onCloseActiveTab: (callback) => {
+    ipcRenderer.on("close-active-tab", callback);
+    return () => ipcRenderer.off("close-active-tab", callback);
+  },
+  onOpenTabDevTools: (callback) => {
+    ipcRenderer.on("open-tab-devtools", callback);
+    return () => ipcRenderer.off("open-tab-devtools", callback);
+  },
+  onAddNewTab: (callback) => {
+    ipcRenderer.on("add-new-tab", callback);
+    return () => ipcRenderer.off("add-new-tab", callback);
+  },
+  onRestoreTab: (callback) => {
+    ipcRenderer.on("restore-tab", callback);
+    return () => ipcRenderer.off("restore-tab", callback);
+  },
+  onNextTab: (callback) => {
+    ipcRenderer.on("next-tab", callback);
+    return () => ipcRenderer.off("next-tab", callback);
+  },
+  onPreviousTab: (callback) => {
+    ipcRenderer.on("previous-tab", callback);
+    return () => ipcRenderer.off("previous-tab", callback);
+  },
+  onFirstTab: (callback) => {
+    ipcRenderer.on("first-tab", callback);
+    return () => ipcRenderer.off("first-tab", callback);
+  },
+  onLastTab: (callback) => {
+    ipcRenderer.on("last-tab", callback);
+    return () => ipcRenderer.off("last-tab", callback);
+  },
+  onOpenWhatsappLink: (callback) => {
+    const handler = (_: IpcRendererEvent, url: string) => callback(url);
+    ipcRenderer.on("open-whatsapp-link", handler);
+    return () => ipcRenderer.off("open-whatsapp-link", handler);
+  },
+  onReloadCustomTitleBar: (callback) => {
+    ipcRenderer.on("reload-custom-title-bar", callback);
+    return () => ipcRenderer.off("reload-custom-title-bar", callback);
+  },
+  onReloadTranslations: (callback) => {
+    ipcRenderer.on("reload-translations", callback);
+    return () => ipcRenderer.off("reload-translations", callback);
+  },
+  onNewChat: (callback) => {
+    ipcRenderer.on("new-chat", callback);
+    return () => ipcRenderer.off("new-chat", callback);
+  },
+  onOpenThemeManager: (callback) => {
+    ipcRenderer.on("open-theme-manager", callback);
+    return () => ipcRenderer.off("open-theme-manager", callback);
+  },
+  onMessageCount: (callback) => {
+    const handler = (
+      _: IpcRendererEvent,
+      count: { messageCount: number; tabId: string }
+    ) => callback(count);
+    ipcRenderer.on("message-count", handler);
+    return () => ipcRenderer.off("message-count", handler);
+  },
+};
+
+contextBridge.exposeInMainWorld("electronIPCHandlers", ipcHandlers);
 
 contextBridge.exposeInMainWorld(
   "showMessageBox",

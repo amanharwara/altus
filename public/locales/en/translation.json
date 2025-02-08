@@ -98,5 +98,8 @@
   "selectPreset": "Select a preset...",
   "bgColor": "Background color",
   "fgColor": "Foreground Color",
-  "acColor": "Accent Color"
+  "acColor": "Accent Color",
+  "Exit": "Exit",
+  "Cancel": "Cancel",
+  "Are you sure you want to exit?": "Are you sure you want to exit?"
 }

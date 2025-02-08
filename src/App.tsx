@@ -1,5 +1,11 @@
-import { For, type Component, createSignal, createResource } from "solid-js";
-import { tabStore } from "./stores/tabs/solid";
+import {
+  For,
+  type Component,
+  createSignal,
+  createResource,
+  onCleanup,
+} from "solid-js";
+import { stableTabArray, tabStore } from "./stores/tabs/solid";
 import WebView from "./components/WebView";
 import TabsList from "./components/TabsList";
 import SettingsDialog from "./components/SettingsDialog";
@@ -14,14 +20,25 @@ const App: Component = () => {
   const [isThemeManagerOpen, setIsThemeManagerOpen] = createSignal(false);
   const [menu, { refetch: refetchAppMenu }] = createResource(window.getAppMenu);
 
-  window.electronIPCHandlers.onOpenSettings(() => {
-    setIsSettingsOpen(true);
+  const handlers = new Set<() => void>();
+  onCleanup(() => {
+    for (const cleanup of handlers) {
+      cleanup();
+    }
   });
-  window.electronIPCHandlers.onOpenThemeManager(() => {
-    setIsThemeManagerOpen(true);
-  });
-
-  window.electronIPCHandlers.onReloadCustomTitleBar(refetchAppMenu);
+  handlers.add(
+    window.electronIPCHandlers.onOpenSettings(() => {
+      setIsSettingsOpen(true);
+    })
+  );
+  handlers.add(
+    window.electronIPCHandlers.onOpenThemeManager(() => {
+      setIsThemeManagerOpen(true);
+    })
+  );
+  handlers.add(
+    window.electronIPCHandlers.onReloadCustomTitleBar(refetchAppMenu)
+  );
 
   return (
     <I18NProvider>
@@ -38,11 +55,14 @@ const App: Component = () => {
           )}
         >
           <TabsList />
-          <For each={tabStore.tabs}>
+          <For each={stableTabArray()}>
             {(tab) => (
               <div
+                role="tabpanel"
+                ref={(el) => console.log(tab.id, el)}
+                id={`tabpanel-${tab.id}`}
                 class={twJoin(
-                  "min-h-0 flex-grow",
+                  "min-h-0 flex-grow text-white",
                   tabStore.selectedTabId !== tab.id && "hidden"
                 )}
               >

@@ -2,6 +2,7 @@ import { type ElectronTabStoreIpcApi } from "./stores/tabs/common";
 import { type ElectronThemeStoreIpcApi } from "./stores/themes/common";
 import { type ElectronSettingsStoreIpcApi } from "./stores/settings/common";
 import { type CloneableMenu } from "./main";
+import { type ElectronIPCHandlers } from "./ipcHandlersType";
 
 // Types for APIs exposed to the renderer process via contextBridge
 
@@ -12,29 +13,11 @@ declare global {
     electronSettingsStore: ElectronSettingsStoreIpcApi;
     whatsappPreloadPath: string;
     toggleNotifications: (enabled: boolean, partition: string) => Promise<void>;
-    toggleMediaPermission: (enabled: boolean, partition: string) => Promise<void>;
-    electronIPCHandlers: {
-      onOpenSettings: (callback: () => void) => Electron.IpcRenderer;
-      onEditActiveTab: (callback: () => void) => Electron.IpcRenderer;
-      onCloseActiveTab: (callback: () => void) => Electron.IpcRenderer;
-      onOpenTabDevTools: (callback: () => void) => Electron.IpcRenderer;
-      onAddNewTab: (callback: () => void) => Electron.IpcRenderer;
-      onRestoreTab: (callback: () => void) => Electron.IpcRenderer;
-      onNextTab: (callback: () => void) => Electron.IpcRenderer;
-      onPreviousTab: (callback: () => void) => Electron.IpcRenderer;
-      onFirstTab: (callback: () => void) => Electron.IpcRenderer;
-      onLastTab: (callback: () => void) => Electron.IpcRenderer;
-      onOpenWhatsappLink: (
-        callback: (url: string) => void
-      ) => Electron.IpcRenderer;
-      onReloadCustomTitleBar: (callback: () => void) => Electron.IpcRenderer;
-      onReloadTranslations: (callback: () => void) => Electron.IpcRenderer;
-      onNewChat: (callback: () => void) => Electron.IpcRenderer;
-      onOpenThemeManager: (callback: () => void) => Electron.IpcRenderer;
-      onMessageCount: (
-        callback: (detail: { messageCount: number; tabId: string }) => void
-      ) => Electron.IpcRenderer;
-    };
+    toggleMediaPermission: (
+      enabled: boolean,
+      partition: string
+    ) => Promise<void>;
+    electronIPCHandlers: ElectronIPCHandlers;
     windowActions: {
       minimize: () => Promise<void>;
       maximize: () => Promise<void>;

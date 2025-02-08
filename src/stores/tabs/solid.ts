@@ -6,9 +6,18 @@ import {
   getDefaultTab,
 } from "./common";
 import { WebviewTag } from "electron";
-import { createEffect } from "solid-js";
+import { createEffect, createMemo } from "solid-js";
 
 const [tabStore, _updateTabStore] = createStore<TabStore>(TabStoreDefaults());
+
+/**
+ * Used to make sure the rendered webviews are not moved when a tab is drag-n-dropped.
+ */
+export const stableTabArray = createMemo(() => {
+  return tabStore.tabs.toSorted((a, b) =>
+    a.id > b.id ? 1 : a.id < b.id ? -1 : 0
+  );
+});
 
 createEffect(() => {
   for (const tab of tabStore.tabs) {
@@ -70,6 +79,15 @@ export function removeTab(tab: Tab) {
   } else {
     addTab(getDefaultTab());
   }
+}
+
+export function moveTabToIndex(from: number, to: number) {
+  updateAndSyncTabStore("tabs", (_tabs) => {
+    const tabs = _tabs.slice();
+    const [splicedTab] = tabs.splice(from, 1);
+    tabs.splice(to, 0, splicedTab);
+    return tabs;
+  });
 }
 
 export function restoreTab() {
