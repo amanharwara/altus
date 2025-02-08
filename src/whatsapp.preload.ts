@@ -48,10 +48,16 @@ window.onload = () => {
 
   document.body.addEventListener("click", (event) => {
     if (!(event.target instanceof HTMLAnchorElement)) return;
+    console.log(event.target);
     if (
       event.target.tagName === "A" &&
       event.target.getAttribute("target") === "_blank"
     ) {
+      const url = new URL(event.target.href);
+      if (url.hostname === "wa.me" || url.hostname === "api.whatsapp.com") {
+        // WhatsApp automatically opens the correct chat for "click to chat" links.
+        return;
+      }
       ipcRenderer.send("open-link", event.target.href);
     }
   });
