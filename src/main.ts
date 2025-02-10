@@ -99,7 +99,7 @@ function confirmAndExit() {
 function quitApp() {
   const shouldPrompt = getSettingWithDefault("exitPrompt");
   if (shouldPrompt) confirmAndExit();
-  else app.quit();
+  else app.exit(0);
 }
 
 function createWindow() {
