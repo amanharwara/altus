@@ -30,6 +30,7 @@ jobs:
 
       - name: Build Altus
         run: |
+          corepack enable
           yarn install
           yarn run make -p linux
 
@@ -58,6 +59,7 @@ jobs:
 
       - name: Build Altus
         run: |
+          corepack enable
           yarn install
           yarn run make -p darwin --arch x64
           yarn run make -p darwin --arch arm64
@@ -87,6 +89,7 @@ jobs:
 
       - name: Build Altus
         run: |
+          corepack enable
           yarn install
           yarn run make -p win32
 
