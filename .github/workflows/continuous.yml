@@ -16,13 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: "yarn"
-
-      - name: Enable Corepack
-        run: corepack enable
 
       - name: Current Directory Structure
         run: |
@@ -46,13 +46,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: "yarn"
-
-      - name: Enable Corepack
-        run: corepack enable
 
       - name: Current Directory Structure
         run: |
@@ -61,6 +61,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          corepack enable
           yarn install
 
       # forge uses electron-installer-dmg for making the dmg, which
