@@ -98,7 +98,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: "yarn"
 
       - name: Current Directory Structure
         run: |
