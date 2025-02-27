@@ -59,7 +59,6 @@ const App: Component = () => {
             {(tab) => (
               <div
                 role="tabpanel"
-                ref={(el) => console.log(tab.id, el)}
                 id={`tabpanel-${tab.id}`}
                 class={twJoin(
                   "min-h-0 flex-grow text-white",

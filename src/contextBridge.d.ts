@@ -12,6 +12,7 @@ declare global {
     electronThemeStore: ElectronThemeStoreIpcApi;
     electronSettingsStore: ElectronSettingsStoreIpcApi;
     whatsappPreloadPath: string;
+    initPermissionHandler: (partition: string) => Promise<void>;
     toggleNotifications: (enabled: boolean, partition: string) => Promise<void>;
     toggleMediaPermission: (
       enabled: boolean,

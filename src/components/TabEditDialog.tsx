@@ -62,6 +62,14 @@ const TabEditDialog: Component<{
             <TextField.Root
               class="flex flex-col gap-1.5 py-2"
               defaultValue={props.tabToEdit().name}
+              onChange={(value) => {
+                updateAndSyncTabStore(
+                  "tabs",
+                  (t) => t.id === props.tabToEdit().id,
+                  "name",
+                  value
+                );
+              }}
             >
               <TextField.Label class="text-[0.95rem] leading-none">
                 {t("Name")}
@@ -69,19 +77,9 @@ const TabEditDialog: Component<{
               <TextField.Input
                 class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
                 spellcheck={false}
-                onChange={(event) => {
-                  const value = event.currentTarget.value;
-                  updateAndSyncTabStore(
-                    "tabs",
-                    (t) => t.id === props.tabToEdit().id,
-                    "name",
-                    value
-                  );
-                }}
               />
             </TextField.Root>
             <StyledSelect
-              rootClass="flex-col py-2"
               multiple={false}
               options={availableThemes()}
               optionValue="id"
@@ -90,6 +88,7 @@ const TabEditDialog: Component<{
               placeholder={t("selectTheme")}
               value={theme()}
               onChange={(theme) => {
+                if (!theme) return;
                 updateAndSyncTabStore(
                   "tabs",
                   (t) => t.id === props.tabToEdit().id,
@@ -98,7 +97,7 @@ const TabEditDialog: Component<{
                   theme.id
                 );
               }}
-              class="flex flex-col gap-1.5 py-2"
+              rootClass="flex flex-col gap-1.5 py-2"
               valueRender={(state) => state.selectedOption().name}
               itemLabelRender={(item) => item.rawValue.name}
             />
@@ -197,6 +196,16 @@ const TabEditDialog: Component<{
                 <TextField.Root
                   class="flex flex-col gap-1.5 mt-2"
                   defaultValue={color() || ""}
+                  onChange={(value) => {
+                    setColor(value);
+                    updateAndSyncTabStore(
+                      "tabs",
+                      (t) => t.id === props.tabToEdit().id,
+                      "config",
+                      "color",
+                      value
+                    );
+                  }}
                 >
                   <TextField.Label class="text-[0.95rem] leading-none sr-only">
                     {t("Color")}
@@ -204,17 +213,6 @@ const TabEditDialog: Component<{
                   <TextField.Input
                     class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
                     spellcheck={false}
-                    onChange={(event) => {
-                      const value = event.currentTarget.value;
-                      setColor(value);
-                      updateAndSyncTabStore(
-                        "tabs",
-                        (t) => t.id === props.tabToEdit().id,
-                        "config",
-                        "color",
-                        value
-                      );
-                    }}
                   />
                 </TextField.Root>
               )}

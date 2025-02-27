@@ -38,6 +38,13 @@ const WebView: Component<{ tab: Tab }> = (props) => {
     if (!webviewRef) return;
     if (!didStopLoading()) return;
 
+    window.initPermissionHandler(`persist:${props.tab.id}`);
+  });
+
+  createEffect(() => {
+    if (!webviewRef) return;
+    if (!didStopLoading()) return;
+
     window.toggleNotifications(
       props.tab.config.notifications,
       `persist:${props.tab.id}`

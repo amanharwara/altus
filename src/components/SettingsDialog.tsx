@@ -115,7 +115,6 @@ const SettingsDialog: Component<{
                       position as "top" | "bottom"
                     );
                   }}
-                  class="flex flex-col gap-1.5 py-2"
                   valueRender={(state) => state.selectedOption()}
                   itemLabelRender={(item) => item.rawValue}
                 />

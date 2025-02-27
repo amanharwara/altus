@@ -394,6 +394,18 @@ function toggleTray(mainWindow: BrowserWindow, enabled: boolean) {
   });
 }
 
+type PartitionID = string;
+/**
+ * For every permission that we want to handle, we keep track of the partitions
+ * where it is enabled.
+ */
+const sessionPermissions = {
+  notifications: new Set<PartitionID>(),
+  media: new Set<PartitionID>(),
+};
+type SessionPermissionKey = keyof typeof sessionPermissions;
+const HandledPermissions = Object.keys(sessionPermissions);
+
 function addIPCHandlers(mainWindow: BrowserWindow) {
   ipcMain.handle("get-whatsapp-preload-path", () => {
     // @ts-expect-error ImportMeta works correctly
@@ -441,29 +453,41 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
     }
   );
 
+  ipcMain.handle("init-permission-handler", (_, partitionId: string) => {
+    session
+      .fromPartition(partitionId)
+      .setPermissionRequestHandler((_, permission, callback) => {
+        if (!HandledPermissions.includes(permission)) {
+          callback(false);
+          return;
+        }
+        const isEnabled =
+          sessionPermissions[permission as SessionPermissionKey].has(
+            partitionId
+          );
+        callback(isEnabled);
+      });
+  });
+
   ipcMain.handle(
     "toggle-notifications",
-    (_event, enabled: boolean, partition: string) => {
-      session
-        .fromPartition(partition)
-        .setPermissionRequestHandler((webContents, permission, callback) => {
-          if (permission === "notifications") {
-            callback(enabled);
-          }
-        });
+    (_event, enabled: boolean, partitionId: string) => {
+      if (enabled) {
+        sessionPermissions.notifications.add(partitionId);
+      } else {
+        sessionPermissions.notifications.delete(partitionId);
+      }
     }
   );
 
   ipcMain.handle(
     "toggle-media-permission",
-    (_event, enabled: boolean, partition: string) => {
-      session
-        .fromPartition(partition)
-        .setPermissionRequestHandler((webContents, permission, callback) => {
-          if (permission === "media") {
-            callback(enabled);
-          }
-        });
+    (_event, enabled: boolean, partitionId: string) => {
+      if (enabled) {
+        sessionPermissions.media.add(partitionId);
+      } else {
+        sessionPermissions.media.delete(partitionId);
+      }
     }
   );
 

@@ -31,6 +31,10 @@ const electronSettingsStoreIpcApi: ElectronSettingsStoreIpcApi = {
     ipcRenderer.invoke("settings-store-set", key, value),
 };
 
+const initPermissionHandler = async (partition: string) => {
+  await ipcRenderer.invoke("init-permission-handler", partition);
+};
+
 const toggleNotifications = async (enabled: boolean, partition: string) => {
   await ipcRenderer.invoke("toggle-notifications", enabled, partition);
 };
@@ -45,6 +49,7 @@ contextBridge.exposeInMainWorld(
   "electronSettingsStore",
   electronSettingsStoreIpcApi
 );
+contextBridge.exposeInMainWorld("initPermissionHandler", initPermissionHandler);
 contextBridge.exposeInMainWorld("toggleNotifications", toggleNotifications);
 contextBridge.exposeInMainWorld("toggleMediaPermission", toggleMediaPermission);
 

@@ -1,7 +1,7 @@
 {
   "name": "altus",
   "productName": "Altus",
-  "version": "5.5.2",
+  "version": "5.5.3",
   "description": "Desktop client for WhatsApp Web with themes & multiple account support.",
   "main": ".vite/build/main.js",
   "build": {
@@ -41,7 +41,7 @@
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3",
     "ts-node": "^10.0.0",
-    "typescript": "^5.2.2",
+    "typescript": "^5.7.3",
     "vite-plugin-solid": "^2.7.0"
   },
   "dependencies": {
@@ -57,5 +57,6 @@
     "solid-js": "^1.7.11",
     "tailwind-merge": "^1.14.0",
     "zod": "^3.22.3"
-  }
+  },
+  "packageManager": "yarn@4.6.0"
 }
