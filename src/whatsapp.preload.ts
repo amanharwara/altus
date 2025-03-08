@@ -1,6 +1,7 @@
 import { ipcRenderer } from "electron";
 import { Theme } from "./stores/themes/common";
 import { formatSelectedText } from "./utils/webview/formatSelectedText";
+import { getLuminance } from "color2k";
 
 let titleElement: HTMLTitleElement;
 
@@ -111,51 +112,93 @@ function setThemeCSS(css: string) {
 function setThemeColors(colors: NonNullable<Theme["colors"]>) {
   document.body.classList.add("custom");
 
+  const bgLuminance = getLuminance(colors.bg);
+  console.log(bgLuminance);
+
+  let colorMixColor = "white";
+  let colorMixColorOpposite = "black";
+  if (bgLuminance < 0.25) {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+    colorMixColor = "black";
+    colorMixColorOpposite = "white";
+  }
+
   setThemeCSS(`
 .custom {
   --bg: ${colors.bg};
   --fg: ${colors.fg};
   --ac: ${colors.ac};
+  --border: color-mix(in srgb, var(--bg), ${colorMixColor} 15%);
   --app-background: var(--bg);
+  --navbar-background: var(--bg);
+  --navbar-border: var(--border);
+  --conversation-header-border: var(--border);
+  --border-list: var(--border);
   --intro-background: var(--bg);
   --startup-background: var(--bg);
   --status-background: var(--bg);
   --conversation-panel-background: var(--bg);
-  --background-default: color-mix(in srgb, var(--bg), white 2.5%);
-  --background-default-active: color-mix(in srgb, var(--bg), white 7%);
-  --background-default-hover: color-mix(in srgb, var(--bg), white 6%);
-  --incoming-background: color-mix(in srgb, var(--bg), white 9%);
-  --incoming-background-deeper: color-mix(in srgb, var(--bg), white 3.5%);
-  --outgoing-background: color-mix(in srgb, var(--bg), white 12.5%);
-  --outgoing-background-deeper: color-mix(in srgb, var(--bg), white 6.5%);
-  --system-message-background: color-mix(in srgb, var(--bg), white 10%);
-  --notification-e2e-background: color-mix(in srgb, var(--bg), white 10%);
-  --notification-non-e2e-background: color-mix(in srgb, var(--bg), white 10%);
-  --dropdown-background: color-mix(in srgb, var(--bg), white 10%);
-  --dropdown-background-hover: color-mix(in srgb, var(--bg), white 2.5%);
-  --panel-header-background: color-mix(in srgb, var(--bg), white 5%);
-  --panel-background-colored: color-mix(in srgb, var(--bg), white 5%);
-  --search-input-container-background: color-mix(in srgb, var(--bg), white 5%);
-  --search-input-container-background-active: color-mix(in srgb, var(--bg), white 5%);
-  --search-input-background: color-mix(in srgb, var(--bg), white 2.5%);
+  --background-default: color-mix(in srgb, var(--bg), ${colorMixColor} 2.5%);
+  --background-default-active: color-mix(in srgb, var(--bg), ${colorMixColor} 7%);
+  --background-default-hover: color-mix(in srgb, var(--bg), ${colorMixColor} 6%);
+  --background-lighter: color-mix(in srgb, var(--bg), white 5%);
+  --background-lighter-active: color-mix(in srgb, var(--bg), white 10%);
+  --background-lighter-hover: color-mix(in srgb, var(--bg), white 10%);
+  --incoming-background: color-mix(in srgb, var(--bg), ${colorMixColor} 9%);
+  --incoming-background-deeper: color-mix(in srgb, var(--bg), ${colorMixColor} 3.5%);
+  --outgoing-background: color-mix(in srgb, var(--bg), ${colorMixColor} 12.5%);
+  --outgoing-background-deeper: color-mix(in srgb, var(--bg), ${colorMixColor} 6.5%);
+  --system-message-background: color-mix(in srgb, var(--bg), ${colorMixColor} 10%);
+  --notification-e2e-background: color-mix(in srgb, var(--bg), ${colorMixColor} 10%);
+  --notification-non-e2e-background: color-mix(in srgb, var(--bg), ${colorMixColor} 10%);
+  --dropdown-background: color-mix(in srgb, var(--bg), ${colorMixColor} 10%);
+  --dropdown-background-hover: color-mix(in srgb, var(--bg), ${colorMixColor} 2.5%);
+  --panel-header-background: color-mix(in srgb, var(--bg), ${colorMixColor} 5%);
+  --panel-background-colored: color-mix(in srgb, var(--bg), ${colorMixColor} 5%);
+  --filters-container-background: color-mix(in srgb, var(--bg), ${colorMixColor} 5%);
+  --filters-item-background: color-mix(in srgb, var(--bg), ${colorMixColor} 10%);
+  --filters-item-active-background: color-mix(in srgb, var(--bg), ${colorMixColor} 20%);
+  --search-input-container-background: color-mix(in srgb, var(--bg), ${colorMixColor} 5%);
+  --search-input-container-background-active: color-mix(in srgb, var(--bg), ${colorMixColor} 5%);
+  --search-input-background: color-mix(in srgb, var(--bg), ${colorMixColor} 2.5%);
   --compose-input-background: var(--bg);
-  --compose-input-border: color-mix(in srgb, var(--bg), white 15%);
-  --rich-text-panel-background: color-mix(in srgb, var(--bg), white 7%);
+  --compose-input-border: color-mix(in srgb, var(--bg), ${colorMixColor} 15%);
+  --rich-text-panel-background: color-mix(in srgb, var(--bg), ${colorMixColor} 7%);
   --drawer-background: var(--bg);
   --drawer-section-background: var(--bg);
-  --avatar-placeholder-background: color-mix(in srgb, var(--bg), white 20%);
-  --butterbar-update-background: color-mix(in srgb, var(--bg), white 8%);
+  --avatar-placeholder-background: color-mix(in srgb, var(--bg), ${colorMixColor} 20%);
+  --butterbar-update-background: color-mix(in srgb, var(--bg), ${colorMixColor} 8%);
   --butterbar-update-icon: var(--ac);
-  --drawer-background-deep: color-mix(in srgb, var(--bg), black 10%);
-  --modal-background: color-mix(in srgb, var(--bg), white 1%);
+  --drawer-background-deep: color-mix(in srgb, var(--bg), ${colorMixColor} 10%);
+  --modal-background: color-mix(in srgb, var(--bg), ${colorMixColor} 1%);
   --modal-backdrop: color-mix(in srgb, var(--bg), transparent 10%);
   --icon-ack: var(--ac);
   --checkbox-background: var(--ac);
+  --app-background-stripe: var(--ac);
+  --primary: var(--fg);
+  --primary-strong: color-mix(in srgb, var(--primary), ${colorMixColor} 20%);
+  --message-primary: var(--primary-strong);
+  --secondary: color-mix(in srgb, var(--fg), ${colorMixColorOpposite} 20%);
+  --secondary-stronger: color-mix(in srgb, var(--secondary), ${colorMixColor} 30%);
+  --chat-meta: var(--secondary);
+  --panel-header-icon: var(--ac);
+  --archived-chat-marker: var(--secondary);
+  --text-secondary-emphasized: var(--secondary);
+  --filters-item-color: var(--secondary);
+  --icon: var(--secondary);
+  --icon-strong: var(--secondary);
+  --filters-item-active-color: var(--secondary);
+  --archived-chat-marker-background: color-mix(in srgb, var(--bg), ${colorMixColor} 10%);
+  --archived-chat-marker-border: var(--archived-chat-marker-background);
+  --round-icon-background: var(--ac);
+  --teal: var(--ac);
 }
 
 @media (min-width: 1441px) {
   #app > div > [tabindex], [data-animate-status-v3-modal-background] > div:first-child {
-    border: 1px solid color-mix(in srgb, var(--bg), white 15%);
+    border: 1px solid color-mix(in srgb, var(--bg), ${colorMixColor} 15%);
     border-radius: 4px;
   }
 }

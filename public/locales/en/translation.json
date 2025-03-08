@@ -90,6 +90,7 @@
   "deleteTheme": "Delete Theme",
   "deleteThemeConfirm": "Are you sure you want to delete this theme?",
   "editTheme": "Edit Theme",
+  "saveTheme": "Save Theme",
   "Type": "Type",
   "Preset": "Preset",
   "chooseColors": "Choose Colors",
@@ -101,5 +102,6 @@
   "acColor": "Accent Color",
   "Exit": "Exit",
   "Cancel": "Cancel",
-  "Are you sure you want to exit?": "Are you sure you want to exit?"
+  "Are you sure you want to exit?": "Are you sure you want to exit?",
+  "Pick color": "Pick color"
 }

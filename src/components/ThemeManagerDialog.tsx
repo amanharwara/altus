@@ -158,7 +158,6 @@ const ThemeDialog: Component<{
                       placeholder={t("selectPreset")}
                       value={preset()}
                       onChange={setPreset}
-                      class="flex flex-col gap-1.5 py-2"
                       valueRender={(state) =>
                         capitalizeFirstLetter(state.selectedOption())
                       }
@@ -276,7 +275,7 @@ const ThemeDialog: Component<{
                 class="flex items-center gap-2 justify-center px-3 py-1.5 my-2 text-sm border border-zinc-700 bg-zinc-700/50 enabled:hover:bg-zinc-600/50 disabled:cursor-not-allowed disabled:opacity-80 rounded focus:bg-zinc-600/50 focus:border-zinc-300 outline-none"
                 disabled={!name()}
               >
-                {props.theme ? t("editTheme") : t("addTheme")}
+                {props.theme ? t("saveTheme") : t("addTheme")}
               </button>
             </Dialog.Description>
           </Dialog.Content>

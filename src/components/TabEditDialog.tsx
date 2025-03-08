@@ -14,6 +14,7 @@ import { updateAndSyncTabStore } from "../stores/tabs/solid";
 import { StyledSwitch } from "./StyledSwitch";
 import StyledSelect from "./StyledSelect";
 import { I18NContext } from "../i18n/solid";
+import { ColorPickerButton } from "./ColorPickerButton";
 
 const TabEditDialog: Component<{
   tabToEdit: Accessor<Tab>;
@@ -35,6 +36,17 @@ const TabEditDialog: Component<{
     !!props.tabToEdit().config.color
   );
   const [color, setColor] = createSignal(props.tabToEdit().config.color);
+
+  function onColorChange(value: string) {
+    setColor(value);
+    updateAndSyncTabStore(
+      "tabs",
+      (t) => t.id === props.tabToEdit().id,
+      "config",
+      "color",
+      value
+    );
+  }
 
   return (
     <Dialog.Portal>
@@ -193,28 +205,25 @@ const TabEditDialog: Component<{
                 {t("Use custom tab color")}
               </StyledSwitch>
               {hasColor() && (
-                <TextField.Root
-                  class="flex flex-col gap-1.5 mt-2"
-                  defaultValue={color() || ""}
-                  onChange={(value) => {
-                    setColor(value);
-                    updateAndSyncTabStore(
-                      "tabs",
-                      (t) => t.id === props.tabToEdit().id,
-                      "config",
-                      "color",
-                      value
-                    );
-                  }}
-                >
-                  <TextField.Label class="text-[0.95rem] leading-none sr-only">
-                    {t("Color")}
-                  </TextField.Label>
-                  <TextField.Input
-                    class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
-                    spellcheck={false}
+                <div class="flex items-center gap-1.5 mt-2">
+                  <TextField.Root
+                    class="flex flex-col gap-1.5 flex-grow"
+                    value={color() || ""}
+                    onChange={onColorChange}
+                  >
+                    <TextField.Label class="text-[0.95rem] leading-none sr-only">
+                      {t("Color")}
+                    </TextField.Label>
+                    <TextField.Input
+                      class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
+                      spellcheck={false}
+                    />
+                  </TextField.Root>
+                  <ColorPickerButton
+                    value={color() || ""}
+                    onChange={onColorChange}
                   />
-                </TextField.Root>
+                </div>
               )}
             </div>
           </Dialog.Description>
