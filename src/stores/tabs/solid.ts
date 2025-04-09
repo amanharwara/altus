@@ -36,15 +36,20 @@ createEffect(() => {
 });
 
 window.electronTabStore.getStore().then((store) => {
-  if (store.tabs.length === 0) {
+  const hasNoTabsOnLoad = store.tabs.length === 0;
+  if (hasNoTabsOnLoad) {
     const tab = getDefaultTab();
     store.tabs.push(tab);
     store.selectedTabId = tab.id;
   }
-  if (!store.selectedTabId && store.tabs.length > 0) {
+  const hasNoSelectedTabOnLoad = !store.selectedTabId && store.tabs.length > 0;
+  if (hasNoSelectedTabOnLoad) {
     store.selectedTabId = store.tabs[0].id;
   }
   _updateTabStore(store);
+  if (hasNoTabsOnLoad || hasNoSelectedTabOnLoad) {
+    syncElectronTabStore();
+  }
 });
 
 const updateAndSyncTabStore: SetStoreFunction<TabStore> = (
