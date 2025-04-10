@@ -21,7 +21,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: "yarn"
 
       - name: Current Directory Structure
@@ -51,7 +51,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: "yarn"
 
       - name: Current Directory Structure
@@ -63,18 +63,6 @@ jobs:
         run: |
           corepack enable
           yarn install
-
-      # forge uses electron-installer-dmg for making the dmg, which
-      # internally uses appdmg which uses macos-alias, and for whatever
-      # reason, the node-gyp addon that it depends on is not correctly
-      # built which causes an error when running the make command.
-      # so we build it ourselves here. note: it seems to require node 18,
-      # does not build with node 22
-      - name: Fix macos-alias dep
-        run: |
-          cd ./node_modules/macos-alias
-          yarn node-gyp configure
-          yarn node-gyp build
 
       - name: Build Altus
         run: |
@@ -97,7 +85,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Current Directory Structure
         run: |

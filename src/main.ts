@@ -371,7 +371,7 @@ function toggleTray(mainWindow: BrowserWindow, enabled: boolean) {
     return;
   }
   if (process.platform === "darwin") {
-    app.dock.setMenu(getLocalizedTrayMenu());
+    app.dock?.setMenu(getLocalizedTrayMenu());
   }
   tray = new Tray(
     process.platform === "darwin"
@@ -568,7 +568,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
     if (messageCount) {
       switch (process.platform) {
         case "darwin":
-          app.dock.setBadge("·");
+          app.dock?.setBadge("·");
           break;
         default:
           if (tray) tray.setImage(trayNotificationIcon);
@@ -578,7 +578,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
     } else {
       switch (process.platform) {
         case "darwin":
-          app.dock.setBadge("");
+          app.dock?.setBadge("");
           break;
         default:
           if (tray) tray.setImage(trayIcon);

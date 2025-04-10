@@ -42,14 +42,15 @@ export default class MakerAppImage extends MakerBase<MakerOptions> {
           linux: {
             executableName,
             desktop: {
-              Name: appName,
-              Terminal: "false",
-              Type: "Application",
-              Icon: executableName,
-              StartUpWMClass: "Altus",
-              "X-AppImage-Version": packageJSON.version,
-              Comment: packageJSON.description,
-              Categories: ["Network", "InstantMessaging"],
+              entry: {
+                Name: appName,
+                Terminal: "false",
+                Type: "Application",
+                Icon: executableName,
+                "X-AppImage-Version": packageJSON.version,
+                Comment: packageJSON.description,
+                Categories: "Network, InstantMessaging",
+              },
             },
           },
           appImage: {},
