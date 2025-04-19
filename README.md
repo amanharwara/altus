@@ -2,6 +2,41 @@
 
 **Altus** is an Electron-based WhatsApp client with themes and multiple account support, available for Windows, Mac and Linux!
 
+## Installation
+
+### Windows
+
+- Download the `.exe` file from the [latest release](https://github.com/amanharwara/altus/releases/latest)
+- Run the file and follow the setup wizard
+
+If you see a "Windows protected your PC" error, it's because Altus is not signed. If you have doubts you can verify the file is safe using something like VirusTotal or any other antivirus software.
+To continue with the installation,
+
+- Click on "More info"
+- Click "Run anyway"
+
+### macOS
+
+- Download one of the `.dmg` files from [latest release](https://github.com/amanharwara/altus/releases/latest)
+  - If you're on an Intel mac, download the regular `.dmg` file
+  - If you're on an M-series mac, download the `-arm64.dmg` file
+- Open the dmg file
+- Drag the `Altus` icon onto the `Applications` icon as instructed
+
+If you're on an M-series (i.e. arm) macOS, you'll need to run the following command, otherwise you'll get a `Altus is damaged and cannot be opened.` error.
+
+```console
+sudo xattr -d com.apple.quarantine /Applications/Altus.app
+```
+
+### Linux
+
+- Download the `.AppImage` file from the [latest release](https://github.com/amanharwara/altus/releases/latest)
+- Make sure it is executable by running `chmod +x ./Altus-*.AppImage` in the same directory
+- Run the AppImage by either double-clicking it or running `./Altus-*.AppImage`
+
+There are separate tools like [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) that make it easier to run the file and integrate it into your DE.
+
 ## Features
 
 **Altus** uses the GitHub-produced Electron framework to wrap around WhatsApp Web and add extra features to it.
