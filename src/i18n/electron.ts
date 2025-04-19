@@ -66,7 +66,15 @@ export class ElectronI18N {
         this.translation = translation;
       })
       .then(this.onLanguageLoaded)
-      .catch(console.error);
+      .catch((err) => {
+        if (
+          err instanceof Error &&
+          err.message.startsWith("Language file not found")
+        ) {
+          this.onLanguageChange(fallbackLanguage);
+        }
+        console.error(err);
+      });
   };
 
   loadLanguage = async (language: Language) => {
