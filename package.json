@@ -1,7 +1,7 @@
 {
   "name": "altus",
   "productName": "Altus",
-  "version": "5.7.1",
+  "version": "5.7.2",
   "description": "Desktop client for WhatsApp Web with themes & multiple account support.",
   "main": ".vite/build/main.js",
   "build": {
