@@ -305,9 +305,13 @@ if (!singleInstanceLock) {
         }
 
         if (input.key === "Enter" && input.control) {
-          webContents.executeJavaScript(
-            `document.querySelector('[data-icon="send"]').click()`
-          );
+          try {
+            webContents.executeJavaScript(
+              `document.querySelector('button[aria-label="Send"]').click()`
+            );
+          } catch (error) {
+            console.error(error);
+          }
           event.preventDefault();
           return;
         }
