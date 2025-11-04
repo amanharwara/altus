@@ -13,6 +13,8 @@ import { unwrap } from "solid-js/store";
 const WebView: Component<{ tab: Tab }> = (props) => {
   let webviewRef: WebviewTag | undefined;
   const [didStopLoading, setDidStopLoading] = createSignal(false);
+  const [permissionHandlerRegistered, setPermissionHandlerRegistered] =
+    createSignal(false);
 
   const selectedTheme = createMemo(() => {
     return unwrap(
@@ -20,46 +22,75 @@ const WebView: Component<{ tab: Tab }> = (props) => {
     );
   });
 
-  createEffect(() => {
-    if (!webviewRef) return;
-    if (!didStopLoading()) return;
+  const webviewSettings = createMemo(() => {
+    const theme = selectedTheme();
 
-    webviewRef.send("set-theme", selectedTheme());
+    return {
+      theme,
+      sound: props.tab.config.sound,
+      notifications: props.tab.config.notifications,
+      media: props.tab.config.media,
+      tabId: props.tab.id,
+    };
   });
 
-  createEffect(() => {
-    if (!webviewRef) return;
-    if (!didStopLoading()) return;
-
-    webviewRef.setAudioMuted(!props.tab.config.sound);
-  });
-
-  createEffect(() => {
-    if (!webviewRef) return;
-    if (!didStopLoading()) return;
-
-    window.initPermissionHandler(`persist:${props.tab.id}`);
-  });
+  let previousState:
+    | {
+        themeId?: string;
+        sound?: boolean;
+        notifications?: boolean;
+        media?: boolean;
+        tabId?: string;
+      }
+    | undefined;
 
   createEffect(() => {
-    if (!webviewRef) return;
-    if (!didStopLoading()) return;
+    const webview = webviewRef;
+    const ready = didStopLoading();
+    const state = webviewSettings();
 
-    window.toggleNotifications(
-      props.tab.config.notifications,
-      `persist:${props.tab.id}`
-    );
-    window.toggleMediaPermission(
-      props.tab.config.media,
-      `persist:${props.tab.id}`
-    );
-  });
+    if (!webview || !ready) return;
 
-  createEffect(() => {
-    if (!webviewRef) return;
-    if (!didStopLoading()) return;
+    const partition = `persist:${state.tabId}`;
+    const themeId = state.theme?.id;
+    const tabChanged = previousState?.tabId !== state.tabId;
 
-    webviewRef.send("set-id", props.tab.id);
+    if (tabChanged && permissionHandlerRegistered()) {
+      setPermissionHandlerRegistered(false);
+    }
+
+    if (!permissionHandlerRegistered()) {
+      window.initPermissionHandler(partition);
+      setPermissionHandlerRegistered(true);
+    }
+
+    if (tabChanged) {
+      webview.send("set-id", state.tabId);
+    }
+
+    if (previousState?.themeId !== themeId) {
+      webview.send("set-theme", state.theme);
+    }
+
+    if (previousState?.sound !== state.sound) {
+      webview.setAudioMuted(!state.sound);
+    }
+
+    if (previousState?.notifications !== state.notifications) {
+      window.toggleNotifications(state.notifications, partition);
+    }
+
+    if (previousState?.media !== state.media) {
+      window.toggleMediaPermission(state.media, partition);
+    }
+
+    previousState = {
+      themeId,
+      sound: state.sound,
+      notifications: state.notifications,
+      media: state.media,
+      tabId: state.tabId,
+    };
   });
 
   onMount(() => {
