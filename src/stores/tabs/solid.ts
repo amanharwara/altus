@@ -1,4 +1,5 @@
 import { SetStoreFunction, createStore, unwrap } from "solid-js/store";
+import equal from "fast-deep-equal";
 import {
   TabStoreDefaults,
   type TabStore,
@@ -24,7 +25,7 @@ createEffect(() => {
     const mediaPermsValue = tab.config.media;
     if (mediaPermsValue === undefined) {
       const defaultValue = getDefaultTab().config.media;
-      updateAndSyncTabStore(
+      updateTabStore(
         "tabs",
         (t) => t.id === tab.id,
         "config",
@@ -35,59 +36,132 @@ createEffect(() => {
   }
 });
 
+const dirtyKeys = new Set<keyof TabStore>();
+let scheduledFlushHandle: number | null = null;
+const lastPersisted = new Map<keyof TabStore, unknown>();
+
+const updateTabStore: SetStoreFunction<TabStore> = (...args: unknown[]) => {
+  // @ts-expect-error Difficult to type, but works correctly
+  _updateTabStore(...args);
+  markDirtyKey(args[0]);
+  scheduleTabStoreFlush();
+};
+
+function markDirtyKey(path: unknown) {
+  if (typeof path === "string" && path in tabStore) {
+    dirtyKeys.add(path as keyof TabStore);
+    return;
+  }
+
+  dirtyKeys.add("tabs");
+  dirtyKeys.add("selectedTabId");
+  dirtyKeys.add("previouslyClosedTab");
+}
+
+function clonePersistedValue<T>(value: T): T {
+  if (typeof value === "object" && value !== null) {
+    if (typeof structuredClone === "function") {
+      return structuredClone(value);
+    }
+
+    return JSON.parse(JSON.stringify(value)) as T;
+  }
+
+  return value;
+}
+
+function updateLastPersistedSnapshot(snapshot: Partial<TabStore>) {
+  for (const key of Object.keys(snapshot) as (keyof TabStore)[]) {
+    lastPersisted.set(key, clonePersistedValue(snapshot[key]));
+  }
+}
+
+function clearScheduledFlush() {
+  if (scheduledFlushHandle === null) {
+    return;
+  }
+
+  if ("cancelIdleCallback" in window && typeof window.cancelIdleCallback === "function") {
+    window.cancelIdleCallback(scheduledFlushHandle);
+  } else {
+    window.clearTimeout(scheduledFlushHandle);
+  }
+
+  scheduledFlushHandle = null;
+}
+
+function scheduleTabStoreFlush() {
+  if (scheduledFlushHandle !== null) {
+    return;
+  }
+
+  if ("requestIdleCallback" in window && typeof window.requestIdleCallback === "function") {
+    scheduledFlushHandle = window.requestIdleCallback(() => {
+      scheduledFlushHandle = null;
+      flushTabStoreToElectron();
+    });
+    return;
+  }
+
+  scheduledFlushHandle = window.setTimeout(() => {
+    scheduledFlushHandle = null;
+    flushTabStoreToElectron();
+  }, 0);
+}
+
+function flushTabStoreToElectron() {
+  if (dirtyKeys.size === 0) {
+    return;
+  }
+
+  const currentSnapshot = unwrap(tabStore);
+  const keysToFlush = Array.from(dirtyKeys);
+  dirtyKeys.clear();
+
+  for (const key of keysToFlush) {
+    const currentValue = currentSnapshot[key];
+    const previousValue = lastPersisted.get(key);
+
+    if (!equal(currentValue, previousValue)) {
+      void window.electronTabStore.set(key, currentValue);
+      lastPersisted.set(key, clonePersistedValue(currentValue));
+    }
+  }
+}
+
+window.addEventListener("beforeunload", () => {
+  clearScheduledFlush();
+  flushTabStoreToElectron();
+});
+
 window.electronTabStore.getStore().then((store) => {
-  const hasNoTabsOnLoad = store.tabs.length === 0;
-  if (hasNoTabsOnLoad) {
-    const tab = getDefaultTab();
-    store.tabs.push(tab);
-    store.selectedTabId = tab.id;
-  }
-  const hasNoSelectedTabOnLoad = !store.selectedTabId && store.tabs.length > 0;
-  if (hasNoSelectedTabOnLoad) {
-    store.selectedTabId = store.tabs[0].id;
-  }
   _updateTabStore(store);
-  if (hasNoTabsOnLoad || hasNoSelectedTabOnLoad) {
-    syncElectronTabStore();
+  updateLastPersistedSnapshot(store);
+
+  if (store.tabs.length === 0) {
+    addTab(getDefaultTab());
+  } else if (!store.selectedTabId && store.tabs.length > 0) {
+    setTabActive(store.tabs[0].id);
   }
 });
 
-const updateAndSyncTabStore: SetStoreFunction<TabStore> = (
-  ...args: unknown[]
-) => {
-  // @ts-expect-error Difficult to type, but works correctly
-  _updateTabStore(...args);
-  syncElectronTabStore();
-};
-
-function syncElectronTabStore() {
-  const tabs = unwrap(tabStore.tabs);
-  window.electronTabStore.set("tabs", tabs);
-
-  const selectedTabId = unwrap(tabStore.selectedTabId);
-  window.electronTabStore.set("selectedTabId", selectedTabId);
-
-  const previouslyClosedTab = unwrap(tabStore.previouslyClosedTab);
-  window.electronTabStore.set("previouslyClosedTab", previouslyClosedTab);
-}
-
 export function addTab(tab: Tab) {
-  updateAndSyncTabStore("tabs", (tabs) => [...tabs, tab]);
-  updateAndSyncTabStore("selectedTabId", tab.id);
+  updateTabStore("tabs", (tabs) => [...tabs, tab]);
+  updateTabStore("selectedTabId", tab.id);
 }
 
 export function removeTab(tab: Tab) {
-  updateAndSyncTabStore("tabs", (tabs) => tabs.filter((t) => t.id !== tab.id));
-  updateAndSyncTabStore("previouslyClosedTab", tab);
+  updateTabStore("tabs", (tabs) => tabs.filter((t) => t.id !== tab.id));
+  updateTabStore("previouslyClosedTab", tab);
   if (tabStore.tabs.length > 0) {
-    updateAndSyncTabStore("selectedTabId", tabStore.tabs[0].id);
+    updateTabStore("selectedTabId", tabStore.tabs[0].id);
   } else {
     addTab(getDefaultTab());
   }
 }
 
 export function moveTabToIndex(from: number, to: number) {
-  updateAndSyncTabStore("tabs", (_tabs) => {
+  updateTabStore("tabs", (_tabs) => {
     const tabs = _tabs.slice();
     const [splicedTab] = tabs.splice(from, 1);
     tabs.splice(to, 0, splicedTab);
@@ -99,12 +173,12 @@ export function restoreTab() {
   const previouslyClosedTab = tabStore.previouslyClosedTab;
   if (previouslyClosedTab) {
     addTab(previouslyClosedTab);
-    updateAndSyncTabStore("previouslyClosedTab", null);
+    updateTabStore("previouslyClosedTab", null);
   }
 }
 
 export function setTabActive(id: string) {
-  updateAndSyncTabStore("selectedTabId", id);
+  updateTabStore("selectedTabId", id);
 }
 
 export function getActiveWebviewElement() {
@@ -114,4 +188,4 @@ export function getActiveWebviewElement() {
   return webviewElement;
 }
 
-export { tabStore, updateAndSyncTabStore };
+export { tabStore, updateTabStore };
