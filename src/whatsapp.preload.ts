@@ -3,6 +3,13 @@ import { Theme } from "./stores/themes/common";
 import { formatSelectedText } from "./utils/webview/formatSelectedText";
 import { getLuminance } from "color2k";
 
+const MESSAGE_COUNT_DEBOUNCE_MS = 50;
+
+let lastSentMessageCount: number | undefined;
+let pendingMessageCount: number | undefined;
+let pendingMessageCountTabId: string | undefined;
+let pendingMessageCountTimeout: number | undefined;
+
 let titleElement: HTMLTitleElement;
 
 window.onload = () => {
@@ -49,7 +56,6 @@ window.onload = () => {
 
   document.body.addEventListener("click", (event) => {
     if (!(event.target instanceof HTMLAnchorElement)) return;
-    console.log(event.target);
     if (
       event.target.tagName === "A" &&
       event.target.getAttribute("target") === "_blank"
@@ -74,6 +80,46 @@ function getMessageCountFromTitle(title: string) {
   return parseInt(exec[0], 10);
 }
 
+function scheduleMessageCountSend(messageCount: number, tabId?: string) {
+  if (
+    messageCount === lastSentMessageCount &&
+    pendingMessageCountTimeout === undefined
+  ) {
+    return;
+  }
+
+  pendingMessageCount = messageCount;
+  pendingMessageCountTabId = tabId;
+
+  if (pendingMessageCountTimeout !== undefined) {
+    return;
+  }
+
+  pendingMessageCountTimeout = window.setTimeout(() => {
+    pendingMessageCountTimeout = undefined;
+
+    const nextMessageCount = pendingMessageCount;
+    const nextTabId = pendingMessageCountTabId;
+
+    pendingMessageCount = undefined;
+    pendingMessageCountTabId = undefined;
+
+    if (nextMessageCount === undefined) {
+      return;
+    }
+
+    if (nextMessageCount === lastSentMessageCount) {
+      return;
+    }
+
+    lastSentMessageCount = nextMessageCount;
+    ipcRenderer.send("message-count", {
+      messageCount: nextMessageCount,
+      tabId: nextTabId,
+    });
+  }, MESSAGE_COUNT_DEBOUNCE_MS);
+}
+
 function registerTitleElementObserver() {
   new MutationObserver(function () {
     const title = titleElement.textContent;
@@ -83,10 +129,7 @@ function registerTitleElementObserver() {
       const messageCount = getMessageCountFromTitle(title);
       const tabId = document.body.dataset.tabId;
 
-      ipcRenderer.send("message-count", {
-        messageCount,
-        tabId,
-      });
+      scheduleMessageCountSend(messageCount, tabId);
     } catch (error) {
       console.error(error);
     }
@@ -113,7 +156,6 @@ function setThemeColors(colors: NonNullable<Theme["colors"]>) {
   document.body.classList.add("custom");
 
   const bgLuminance = getLuminance(colors.bg);
-  console.log(bgLuminance);
 
   let colorMixColor = "white";
   let colorMixColorOpposite = "black";
