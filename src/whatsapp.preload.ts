@@ -3,10 +3,10 @@ import { Theme } from "./stores/themes/common";
 import { formatSelectedText } from "./utils/webview/formatSelectedText";
 import { getLuminance } from "color2k";
 
-let titleElement: HTMLTitleElement;
+let titleElement: HTMLTitleElement | null = null;
 
 window.onload = () => {
-  titleElement = document.querySelector("title") as HTMLTitleElement;
+  titleElement = document.querySelector("title") as HTMLTitleElement | null;
 
   // Reset initial theme
   document.body.querySelectorAll("script").forEach((script) => {
@@ -75,8 +75,13 @@ function getMessageCountFromTitle(title: string) {
 }
 
 function registerTitleElementObserver() {
+  if (!titleElement) {
+    console.warn("WhatsApp preload: <title> element not found, skipping observer");
+    return;
+  }
+
   new MutationObserver(function () {
-    const title = titleElement.textContent;
+    const title = titleElement?.textContent;
     if (!title) return;
 
     try {
@@ -230,12 +235,13 @@ ipcRenderer.on("format-text", (e, wrapper) => {
 ipcRenderer.on("set-id", (e, id) => {
   if (!document.body.dataset.tabId) {
     // send back initial message count
-    ipcRenderer.send("message-count", {
-      messageCount: getMessageCountFromTitle(
-        titleElement.textContent as string
-      ),
-      tabId: id,
-    });
+    const currentTitle = titleElement?.textContent ?? "";
+    if (currentTitle) {
+      ipcRenderer.send("message-count", {
+        messageCount: getMessageCountFromTitle(currentTitle),
+        tabId: id,
+      });
+    }
   }
 
   document.body.dataset.tabId = id;

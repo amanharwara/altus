@@ -89,6 +89,9 @@ const WebView: Component<{ tab: Tab }> = (props) => {
     });
   });
 
+  const chromeLikeUserAgent =
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+
   return (
     <webview
       ref={webviewRef}
@@ -98,6 +101,7 @@ const WebView: Component<{ tab: Tab }> = (props) => {
       partition={`persist:${props.tab.id}`}
       preload={window.whatsappPreloadPath}
       webpreferences={`spellcheck=${props.tab.config.spellChecker}`}
+      useragent={chromeLikeUserAgent}
     />
   );
 };
