@@ -75,6 +75,8 @@
   "Quit": "Sair",
   "trayIcon": "Ícone na Bandeja",
   "trayIconDescription": "Controla se o ícone na bandeja está visível ou não",
+  "registerProtocol": "Registrar protocolo whatsapp://",
+  "registerProtocolDescription": "Se ativado, o Altus se registrará como o manipulador padrão para links whatsapp://. (NOTA: Requer reinicialização para que as mudanças tenham efeito.)",
   "closeToTray": "Fechar para a Bandeja",
   "closeToTrayDescription": "Quando ativado, o Altus será minimizado para a bandeja em vez de ser fechado completamente",
   "exitPrompt": "Mostrar Confirmação de Saída",

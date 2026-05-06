@@ -52,6 +52,20 @@ const SettingsDialog: Component<{
               </div>
               <div class="py-2.5">
                 <StyledSwitch
+                  checked={getSettingValue("registerProtocol")}
+                  onChange={(checked) => setSettingValue("registerProtocol", checked)}
+                  class="items-start"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <div class="font-semibold">{t("registerProtocol")}</div>
+                    <div class="text-zinc-300 max-w-[30ch] leading-snug text-sm">
+                      {t("registerProtocolDescription")}
+                    </div>
+                  </div>
+                </StyledSwitch>
+              </div>
+              <div class="py-2.5">
+                <StyledSwitch
                   checked={getSettingValue("tabBar")}
                   onChange={(checked) => setSettingValue("tabBar", checked)}
                   class="items-start"
