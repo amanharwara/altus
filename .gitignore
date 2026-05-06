@@ -91,3 +91,6 @@ typings/
 # Electron-Forge
 out/
 dist/
+
+# Yarn
+.yarn/install-state.gz
