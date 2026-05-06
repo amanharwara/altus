@@ -74,6 +74,8 @@
   "Quit": "Çıkış",
   "trayIcon": "Görev Çubuğu İkonu",
   "trayIconDescription": "Görev çubuğu simgesinin görünür olup olmadığını kontrol eder",
+  "registerProtocol": "whatsapp:// Protokolünü Kaydet",
+  "registerProtocolDescription": "Etkinleştirilirse Altus, kendisini whatsapp:// bağlantıları için varsayılan işleyici olarak kaydeder. (NOT: Değişikliklerin uygulanması için yeniden başlatma gerekir.)",
   "closeToTray": "Kapatmak yerine küçült",
   "closeToTrayDescription": "Etkinleştirildiğinde, Altus tamamen kapatılmak yerine görev çubuğuna küçültülecektir",
   "exitPrompt": "Çıkış İstemini Göster",

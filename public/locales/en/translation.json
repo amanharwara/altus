@@ -75,6 +75,8 @@
   "Quit": "Quit",
   "trayIcon": "Tray Icon",
   "trayIconDescription": "Controls whether the tray icon is visible or not",
+  "registerProtocol": "Register whatsapp:// Protocol",
+  "registerProtocolDescription": "If enabled, Altus will register itself as the default handler for whatsapp:// links. (NOTE: Requires a restart for changes to apply.)",
   "closeToTray": "Close to Tray",
   "closeToTrayDescription": "When enabled, Altus will be minimized to the tray instead of being closed completely",
   "exitPrompt": "Show Exit Prompt",

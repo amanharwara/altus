@@ -75,6 +75,8 @@
   "Quit": "Beenden",
   "trayIcon": "Benachrichtigungsfeld-Symbol",
   "trayIconDescription": "Steuert, ob das Benachrichtigungsfeld-Symbol sichtbar ist oder nicht",
+  "registerProtocol": "WhatsApp://-Protokoll registrieren",
+  "registerProtocolDescription": "Falls aktiviert, registriert sich Altus als Standard-Handler für whatsapp://-Links. (HINWEIS: Damit die Änderungen wirksam werden, ist ein Neustart erforderlich)",
   "closeToTray": "Zu Benachrichtigungsfeld schließen",
   "closeToTrayDescription": "Wenn diese Option aktiviert ist, wird Altus in die Taskleiste minimiert, anstatt vollständig geschlossen zu werden",
   "exitPrompt": "Beendigungsaufforderung anzeigen",
