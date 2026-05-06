@@ -33,7 +33,7 @@ export const DefaultSettingValues = {
   tabBar: true,
   tabBarPosition: "top",
   trayIcon: true,
-  registerProtocol: false,
+  registerProtocol: true,
   tabClosePrompt: true,
   closeToTray: false,
   exitPrompt: false,
@@ -79,6 +79,6 @@ export type ElectronSettingsStoreIpcApi = {
   getStore: () => Promise<Settings>;
   setSetting: (
     _key: SettingKey,
-    _value: SettingValue[SettingKey]
+    _value: SettingValue[SettingKey],
   ) => Promise<void>;
 };
