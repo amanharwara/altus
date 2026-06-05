@@ -63,6 +63,20 @@ function getSettingWithDefault<Key extends SettingKey>(
 
 let tray: Tray | undefined;
 
+// Closing to tray with no tray icon would hide the window with no way to
+// restore it, so the two settings are kept consistent where they are stored.
+function applySettingIntent(settings: Settings, key: SettingKey): Settings {
+  if (key === "closeToTray" && settings.closeToTray.value) {
+    return { ...settings, trayIcon: { value: true } };
+  }
+  return settings;
+}
+
+function applySettingInvariants(settings: Settings): Settings {
+  if (settings.trayIcon.value || !settings.closeToTray.value) return settings;
+  return { ...settings, closeToTray: { value: false } };
+}
+
 const iconsPath = path.join(__dirname, "assets", "icons");
 
 const mainIcon = nativeImage.createFromPath(
@@ -164,7 +178,7 @@ function createWindow() {
   mainWindow.on("close", (event) => {
     const shouldCloseToTray = getSettingWithDefault("closeToTray");
     const shouldPrompt = getSettingWithDefault("exitPrompt");
-    if (shouldCloseToTray) {
+    if (shouldCloseToTray && tray) {
       event.preventDefault();
       mainWindow.hide();
     } else if (shouldPrompt) {
@@ -420,19 +434,36 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
   });
 
   ipcMain.handle("settings-store-get", () => {
-    return electronSettingsStore.store;
+    // Repair settings written before the tray dependency existed.
+    const settings = applySettingInvariants(electronSettingsStore.store);
+    if (settings !== electronSettingsStore.store) {
+      electronSettingsStore.store = settings;
+    }
+    return settings;
   });
 
   ipcMain.handle(
     "settings-store-set",
     (_event, key: SettingKey, value: Settings[SettingKey]["value"] | undefined) => {
-      if (value === undefined) return electronSettingsStore.delete(key);
-      if (key === "autoHideMenuBar") {
-        changeAutoHideMenuBar(mainWindow, value as boolean);
-      } else if (key === "trayIcon") {
-        toggleTray(mainWindow, value as boolean);
+      if (value === undefined) {
+        electronSettingsStore.delete(key);
+        return electronSettingsStore.store;
       }
-      return electronSettingsStore.set(key, { value });
+
+      const previous = electronSettingsStore.store;
+      const settings = applySettingInvariants(
+        applySettingIntent({ ...previous, [key]: { value } }, key)
+      );
+      electronSettingsStore.store = settings;
+
+      if (settings.autoHideMenuBar.value !== previous.autoHideMenuBar.value) {
+        changeAutoHideMenuBar(mainWindow, settings.autoHideMenuBar.value);
+      }
+      if (settings.trayIcon.value !== previous.trayIcon.value) {
+        toggleTray(mainWindow, settings.trayIcon.value);
+      }
+
+      return settings;
     }
   );
 

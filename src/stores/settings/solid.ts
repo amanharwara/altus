@@ -26,7 +26,9 @@ export function setSettingValue<Key extends SettingKey>(
   value: SettingValue[Key]
 ) {
   updateSettingsStore((prev) => ({ ...prev, [key]: { value } }));
-  window.electronSettingsStore.setSetting(key, value);
+  // The main process enforces settings dependencies and returns the stored
+  // settings, which may differ from the optimistic update above.
+  window.electronSettingsStore.setSetting(key, value).then(updateSettingsStore);
 }
 
 export { settingsStore };
