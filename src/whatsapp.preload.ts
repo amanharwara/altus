@@ -97,6 +97,40 @@ function registerTitleElementObserver() {
   });
 }
 
+const WA_THEME_KEY = "theme";
+const WA_SYSTEM_THEME_MODE_KEY = "system-theme-mode";
+
+/**
+ * WhatsApp Web no longer picks its colours from a `dark` class on <body>.
+ * It follows its own preference (Settings > Chats > Theme), persisted in
+ * localStorage as `theme` ("light" | "dark") and `system-theme-mode`
+ * (anything but `false` = follow `prefers-color-scheme`, which in Electron
+ * mirrors the OS setting). Write exactly what the in-app setting writes so
+ * the chosen Altus theme sticks across WhatsApp updates and restarts.
+ */
+function applyWhatsAppTheme(theme: "light" | "dark") {
+  const snapshot = () =>
+    [
+      localStorage.getItem(WA_THEME_KEY),
+      localStorage.getItem(WA_SYSTEM_THEME_MODE_KEY),
+    ].join("|");
+
+  const before = snapshot();
+  localStorage.setItem(WA_THEME_KEY, JSON.stringify(theme));
+  localStorage.setItem(WA_SYSTEM_THEME_MODE_KEY, JSON.stringify(false));
+
+  // WhatsApp reads these preferences once during startup, so a change only
+  // becomes visible after a reload. Guard against reloading more than once
+  // per page load in case WhatsApp rewrites the values.
+  const reloadGuard = "altus-theme-reloaded";
+  if (before === snapshot()) {
+    sessionStorage.removeItem(reloadGuard);
+  } else if (!sessionStorage.getItem(reloadGuard)) {
+    sessionStorage.setItem(reloadGuard, "1");
+    window.location.reload();
+  }
+}
+
 function setThemeCSS(css: string) {
   const existingStyle = document.getElementById("altus-style");
   if (existingStyle) {
@@ -119,8 +153,10 @@ function setThemeColors(colors: NonNullable<Theme["colors"]>) {
   let colorMixColorOpposite = "black";
   if (bgLuminance < 0.25) {
     document.body.classList.add("dark");
+    applyWhatsAppTheme("dark");
   } else {
     document.body.classList.remove("dark");
+    applyWhatsAppTheme("light");
     colorMixColor = "black";
     colorMixColorOpposite = "white";
   }
@@ -210,8 +246,10 @@ ipcRenderer.on("set-theme", (event, theme: Theme) => {
 
   if (theme.id === "dark") {
     document.body.classList.add("dark");
+    applyWhatsAppTheme("dark");
   } else if (theme.id === "default") {
     document.body.classList.remove("dark");
+    applyWhatsAppTheme("light");
   }
 
   if (theme.css) {
