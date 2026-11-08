@@ -39,7 +39,13 @@ const SettingsDialog: Component<{
               <div class="py-2.5">
                 <StyledSwitch
                   checked={getSettingValue("trayIcon")}
-                  onChange={(checked) => setSettingValue("trayIcon", checked)}
+                  onChange={(checked) => {
+                    setSettingValue("trayIcon", checked);
+                    // Avoid redundant writes: trayIcon has a main-process side effect.
+                    if (!checked && getSettingValue("closeToTray")) {
+                      setSettingValue("closeToTray", false);
+                    }
+                  }}
                   class="items-start"
                 >
                   <div class="flex flex-col gap-1.5">
@@ -95,9 +101,13 @@ const SettingsDialog: Component<{
               <div class="py-2.5">
                 <StyledSwitch
                   checked={getSettingValue("closeToTray")}
-                  onChange={(checked) =>
-                    setSettingValue("closeToTray", checked)
-                  }
+                  onChange={(checked) => {
+                    setSettingValue("closeToTray", checked);
+                    // Avoid redundant writes: trayIcon has a main-process side effect.
+                    if (checked && !getSettingValue("trayIcon")) {
+                      setSettingValue("trayIcon", true);
+                    }
+                  }}
                   class="items-start"
                 >
                   <div class="flex flex-col gap-1.5">
