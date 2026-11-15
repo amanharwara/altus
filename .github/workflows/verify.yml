@@ -26,11 +26,54 @@ jobs:
       - run: yarn typecheck
       - run: yarn lint
       - run: yarn test:coverage
-      - name: Verify application packaging
-        run: yarn package
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: coverage
           path: coverage/
+          if-no-files-found: ignore
+
+  platform-smoke:
+    name: Build and launch (${{ matrix.platform }}-${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            arch: x64
+          - os: windows-latest
+            platform: win32
+            arch: x64
+          - os: macos-15-intel
+            platform: darwin
+            arch: x64
+          - os: macos-15
+            platform: darwin
+            arch: arm64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: corepack enable
+      - run: yarn install --immutable
+      - name: Build platform release artifacts
+        run: yarn make --platform ${{ matrix.platform }} --arch ${{ matrix.arch }}
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      - name: Launch packaged application (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run --auto-servernum yarn test:smoke
+      - name: Launch packaged application (macOS / Windows)
+        if: runner.os != 'Linux'
+        run: yarn test:smoke
+      - name: Upload startup diagnostics
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-${{ matrix.platform }}-${{ matrix.arch }}
+          path: out/smoke/
           if-no-files-found: ignore

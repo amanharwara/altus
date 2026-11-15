@@ -17,6 +17,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:smoke": "node scripts/smoke.mjs",
     "verify": "yarn typecheck && yarn lint && yarn test"
   },
   "keywords": [
@@ -51,6 +52,7 @@
     "eslint": "^8.0.1",
     "eslint-plugin-import": "^2.31.0",
     "jsdom": "^26.0.0",
+    "playwright-core": "1.51.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.3.3",
     "ts-node": "^10.0.0",

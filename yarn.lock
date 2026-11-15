@@ -3002,6 +3002,7 @@ __metadata:
     eslint-plugin-import: "npm:^2.31.0"
     jsdom: "npm:^26.0.0"
     nanoid: "npm:^5.1.5"
+    playwright-core: "npm:1.51.1"
     postcss: "npm:^8.5.3"
     solid-js: "npm:^1.9.5"
     tailwind-merge: "npm:^3.2.0"
@@ -9049,6 +9050,15 @@ __metadata:
   dependencies:
     find-up: "npm:^3.0.0"
   checksum: 10c0/ecb60e1f8e1f611c0bdf1a0b6a474d6dfb51185567dc6f29cdef37c8d480ecba5362e006606bb290519bbb6f49526c403fabea93c3090c20368d98bb90c999ab
+  languageName: node
+  linkType: hard
+
+"playwright-core@npm:1.51.1":
+  version: 1.51.1
+  resolution: "playwright-core@npm:1.51.1"
+  bin:
+    playwright-core: cli.js
+  checksum: 10c0/4f004d9dea5ecbd76b84c858fa4880ed955600b6cda972a3e8093ea47e150ce20bf2ea806e73e740497d34f4b61b080c208339a661fc75ad04d8f00bedcc21e0
   languageName: node
   linkType: hard
 

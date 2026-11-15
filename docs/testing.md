@@ -21,9 +21,29 @@ need no display server, Electron process, network or WhatsApp account.
 | `corepack yarn typecheck` | Check application, tests and test configuration |
 | `corepack yarn lint` | Existing TypeScript/ESLint checks |
 | `corepack yarn package` | Compile and package the Electron app without launching |
+| `corepack yarn test:smoke` | Launch the native package in `out/` and check window, renderer and preload startup (requires a desktop display) |
 
-The Verify workflow runs type checking, lint, coverage and Linux packaging for
-pushes and pull requests. It uploads coverage even if later packaging fails.
+The Verify workflow runs type checking, lint and coverage for pushes and pull
+requests. Separate platform jobs run `yarn make` to build AppImage, NSIS and DMG
+artifacts, then launch the packaged application on Linux x64, Windows x64,
+macOS Intel and macOS Apple Silicon. Linux uses Xvfb for its display. Platform
+jobs run independently so a failure on one platform does not cancel the others.
+Coverage is uploaded even on failure; each platform also uploads startup logs
+and a screenshot from the smoke check under `out/smoke/`.
+
+The smoke check uses Playwright Core to control the packaged Electron executable
+without downloading a separate browser. It requires a visible native window,
+the selected tab and add-tab button, a working settings preload/IPC round trip,
+and no uncaught shell renderer errors. A disposable user-data directory disables
+protocol registration and exit prompts; Chromium networking is blocked so no
+WhatsApp account or live service is needed. The profile is removed on completion.
+Run this in a disposable desktop/OS session, since normal app startup still
+exercises native integrations such as tray setup and disabling auto-launch.
+For a local Linux check after `corepack yarn make`, use
+`xvfb-run --auto-servernum corepack yarn test:smoke` (or use an existing display).
+The smoke check launches the unpacked Forge package used to build the release
+artifact; it does not install or launch the AppImage, NSIS installer or DMG.
+
 Coverage includes untested application files so gaps remain visible. Icons,
 type declarations and WhatsApp-specific WebView/preload code are excluded.
 There is no arbitrary overall coverage gate; add assertions around the behavior
@@ -72,7 +92,8 @@ Run `corepack yarn start` in a desktop session when changing native integration.
 Use a disposable OS/profile and inspect the relevant platform behavior: window
 controls/size/position, menu shortcuts, tray close/restore, protocol links,
 auto-launch and native save dialogs. Packaging verifies compilation, not these
-runtime behaviors. macOS and Windows packaging remain in the release workflow.
+runtime behaviors. The CI smoke check verifies basic packaged startup on all
+platforms, but does not replace these manual integration checks.
 WhatsApp authentication, webview DOM, messages, media and notifications inside
 WhatsApp are outside this automated suite.
 
