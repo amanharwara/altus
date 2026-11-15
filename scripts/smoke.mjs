@@ -116,6 +116,17 @@ try {
   );
   const settings = await window.evaluate(() => window.electronSettingsStore.getStore());
   assert.equal(settings.registerProtocol.value, false, "Preload IPC must work");
+  await window.waitForFunction(async () => {
+    const translations = await globalThis.i18n.getTranslations();
+    return translations.fallback.Settings === "Settings";
+  });
+  assert.equal(
+    await application.evaluate(({ Menu }) => Boolean(
+      Menu.getApplicationMenu()?.getMenuItemById("open-settings")
+    )),
+    true,
+    "Packaged translation assets must initialize the native application menu"
+  );
   await window.waitForFunction(() => typeof globalThis.whatsappPreloadPath === "string");
   const preloadURL = await window.evaluate(() => globalThis.whatsappPreloadPath);
   const preloadPath = fileURLToPath(preloadURL);

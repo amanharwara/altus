@@ -253,3 +253,11 @@ Updated Nano ID to 6.0.2. The app uses the unchanged zero-argument generator;
 saved IDs stay untouched. Existing first-launch, distinct-defaults, tab CRUD,
 theme creation and hydration tests pass, along with immutable installation,
 coverage, Linux packaging, type/lint and real packaged startup.
+### Forge 8 asset-copy correction (completed)
+
+The deeper desktop check found missing native menus: Forge 8 disables public
+asset copying for main bundles by default, leaving translation catalogs and
+icons out of the main-process build directory. Explicitly enable copying there.
+The persistent packaged smoke check now waits for loaded fallback translations
+and asserts the native Settings menu exists. Full verification, coverage,
+packaging and the strengthened smoke test pass.
