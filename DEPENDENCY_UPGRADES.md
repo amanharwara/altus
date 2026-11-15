@@ -204,3 +204,18 @@ scripts, and Vite v6 declaration instead of the batch 2 Vite v4 declaration.
 The remaining batch 1/2 upgrades are restored. Immutable install, `yarn verify`
 (41 offline tests), `yarn test:coverage`, and Linux x64 packaging pass on the
 combined tree. Earlier renderer comparisons describe the pre-rebase tree.
+
+## Execution of remaining batches
+
+### Batch 6: compatible packaging tools (completed)
+
+Aligned Forge packages and shared types on 7.11.2, upgraded the Solid Vite plugin
+within 2.11, and matched builder/DMG/Squirrel packages on 26.0.20. The attempted
+26.18 line has an upstream `ElectronDownloadCacheMode`/`@electron/get` mismatch
+that prevents AppImage creation; stay on the verified 26.0 patch line. The missing
+builder peer is now explicitly provided. Vitest workers externalize Solid with
+browser/development conditions so module resets share the renderer's runtime.
+Immutable install, type/lint, 41 offline tests, coverage, Linux packaging,
+packaged startup, and Linux AppImage creation pass. Native macOS/Windows maker
+and startup checks run in the existing CI matrix. Styling batch CI passed all
+four platform builds and launches before this batch.
