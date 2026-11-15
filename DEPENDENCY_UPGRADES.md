@@ -261,3 +261,14 @@ icons out of the main-process build directory. Explicitly enable copying there.
 The persistent packaged smoke check now waits for loaded fallback translations
 and asserts the native Settings menu exists. Full verification, coverage,
 packaging and the strengthened smoke test pass.
+### Batch 11: Tailwind v4 (completed)
+
+Migrated Tailwind/PostCSS to 4.3.5 and tailwind-merge to 3.7.0. Replaced the
+v3-only Kobalte plugin with the three used data-state variants, removed redundant
+Autoprefixer and the legacy JS theme config, and use the v4 CSS import/source
+workflow. Preserve the existing dark color tokens; rename outline/flex utilities
+to preserve their behavior. Full checks and coverage (41 tests), Linux packaging,
+and the strengthened native startup check pass. A real desktop check verifies
+tab/settings/theme flows, accessibility restoration and persistence across a
+restart; dark dialog colors/borders/sizing are asserted and its screenshot was
+inspected. The Forge asset-copy correction is included in the tested base.

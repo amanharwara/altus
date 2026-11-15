@@ -29,7 +29,7 @@ const MenuItem: Component<{
               props.item.id || props.item.commandId.toString()
             )
           }
-          class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none outline-none"
+          class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none outline-hidden"
         >
           <span class="mr-8">{props.item.label.replace(/&/g, "")}</span>
           <Show when={props.item.accelerator}>
@@ -44,7 +44,7 @@ const MenuItem: Component<{
               props.item.id || props.item.commandId.toString()
             )
           }
-          class="flex items-center w-full py-1.5 px-3 hover:bg-white/10 focus:bg-white/20 select-none outline-none"
+          class="flex items-center w-full py-1.5 px-3 hover:bg-white/10 focus:bg-white/20 select-none outline-hidden"
         >
           {props.item.checked ? (
             <RadioBoxMarked class="w-4 h-4 mr-2.5" />
@@ -64,7 +64,7 @@ const MenuItem: Component<{
       </Match>
       <Match when={props.item.type === "submenu"}>
         <Menubar.Sub>
-          <Menubar.SubTrigger class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none outline-none">
+          <Menubar.SubTrigger class="flex items-center justify-between w-full py-1.5 px-4 hover:bg-white/10 focus:bg-white/20 select-none outline-hidden">
             <span class="mr-8">{props.item.label.replace(/&/g, "")}</span>
             <Show when={props.item.accelerator}>
               <span class="ml-auto text-[#c3c3c3]">
@@ -76,7 +76,7 @@ const MenuItem: Component<{
           <Menubar.Portal>
             <Menubar.SubContent
               data-custom-titlebar-menu
-              class="z-[100] text-[13px] py-1 bg-[#202224] text-white outline-none"
+              class="z-[100] text-[13px] py-1 bg-[#202224] text-white outline-hidden"
             >
               <For each={props.item.submenu}>
                 {(submenuItem) => <MenuItem item={submenuItem} />}
@@ -132,13 +132,13 @@ const CustomTitlebar: Component<{
             {(menuItem) => (
               <Show when={menuItem.type === "submenu"}>
                 <Menubar.Menu>
-                  <Menubar.Trigger class="flex items-center px-2 h-full cursor-default hover:bg-white/10 focus:bg-white/20 outline-none ui-expanded:bg-white/20">
+                  <Menubar.Trigger class="flex items-center px-2 h-full cursor-default hover:bg-white/10 focus:bg-white/20 outline-hidden ui-expanded:bg-white/20">
                     {menuItem.label.replace(/&/g, "")}
                   </Menubar.Trigger>
                   <Menubar.Portal>
                     <Menubar.Content
                       data-custom-titlebar-menu
-                      class="z-[100] text-[13px] py-1 bg-[#202224] text-white outline-none"
+                      class="z-[100] text-[13px] py-1 bg-[#202224] text-white outline-hidden"
                     >
                       <For each={menuItem.submenu}>
                         {(submenuItem) => <MenuItem item={submenuItem} />}
@@ -151,17 +151,17 @@ const CustomTitlebar: Component<{
           </For>
         </Menubar.Menubar>
       </Show>
-      <div class="flex-grow flex items-center justify-center pl-4">Altus</div>
+      <div class="grow flex items-center justify-center pl-4">Altus</div>
       <div class="grid grid-cols-[repeat(3,46px)] h-full [-webkit-app-region:no-drag] ml-auto">
         <button
           onClick={window.windowActions.minimize}
-          class="flex items-center justify-center hover:bg-white/10 focus:bg-white/20 outline-none"
+          class="flex items-center justify-center hover:bg-white/10 focus:bg-white/20 outline-hidden"
         >
           <MinimizeIcon class="h-4 w-4" />
         </button>
         <button
           onClick={toggleMaximize}
-          class="flex items-center justify-center hover:bg-white/10 focus:bg-white/20 outline-none"
+          class="flex items-center justify-center hover:bg-white/10 focus:bg-white/20 outline-hidden"
         >
           {maximized() ? (
             <RestoreIcon class="h-4 w-4" />
@@ -171,7 +171,7 @@ const CustomTitlebar: Component<{
         </button>
         <button
           onClick={window.windowActions.close}
-          class="flex items-center justify-center hover:bg-red-600/70 focus:bg-red-600 outline-none"
+          class="flex items-center justify-center hover:bg-red-600/70 focus:bg-red-600 outline-hidden"
         >
           <CloseIcon class="h-4 w-4" />
         </button>

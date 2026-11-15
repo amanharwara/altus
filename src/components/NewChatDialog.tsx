@@ -28,7 +28,7 @@ const NewChatDialog = (props: { close: () => void }) => {
             <Dialog.Title class="font-semibold">
               {t("Start &New Chat").replace("&", "")}
             </Dialog.Title>
-            <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
+            <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-hidden border border-transparent focus:border-zinc-300">
               <CloseIcon class="w-4 h-4" />
             </Dialog.CloseButton>
           </div>
@@ -52,7 +52,7 @@ const NewChatDialog = (props: { close: () => void }) => {
                   {t("Phone number")}:
                 </TextField.Label>
                 <TextField.Input
-                  class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300"
+                  class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-hidden focus:border-zinc-300"
                   spellcheck={false}
                   ref={(element) => {
                     setTimeout(() => {
@@ -63,7 +63,7 @@ const NewChatDialog = (props: { close: () => void }) => {
               </TextField.Root>
               <button
                 type="submit"
-                class="mt-1 text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 select-none hover:bg-zinc-700 focus:bg-zinc-700 active:bg-zinc-700/75"
+                class="mt-1 text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-hidden focus:border-zinc-300 select-none hover:bg-zinc-700 focus:bg-zinc-700 active:bg-zinc-700/75"
               >
                 {t("Start chat")}
               </button>

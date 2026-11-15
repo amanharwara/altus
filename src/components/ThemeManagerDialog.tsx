@@ -107,12 +107,12 @@ const ThemeDialog: Component<{
               <Dialog.Title class="font-semibold">
                 {props.theme ? t("editTheme") : t("addTheme")}
               </Dialog.Title>
-              <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
+              <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-hidden border border-transparent focus:border-zinc-300">
                 <CloseIcon class="w-4 h-4" />
               </Dialog.CloseButton>
             </div>
             <Dialog.Description class="flex flex-col overflow-hidden">
-              <div class="overflow-y-auto min-h-0 flex-grow">
+              <div class="overflow-y-auto min-h-0 grow">
                 <StyledTextField
                   value={name()}
                   onChange={setName}
@@ -130,19 +130,19 @@ const ThemeDialog: Component<{
                   <div class="flex divide-x divide-zinc-600 rounded border border-zinc-600 select-none">
                     <RadioGroup.Item
                       value="simple"
-                      class="flex text-sm ui-checked:bg-zinc-700/50 [&:has(:focus-visible)]:outline [&:has(:focus-visible)]:outline-zinc-600 rounded-bl rounded-tl flex-grow"
+                      class="flex text-sm ui-checked:bg-zinc-700/50 [&:has(:focus-visible)]:outline [&:has(:focus-visible)]:outline-zinc-600 rounded-bl rounded-tl grow"
                     >
                       <RadioGroup.ItemInput />
-                      <RadioGroup.ItemLabel class="px-2.5 py-1.5 flex-grow text-center">
+                      <RadioGroup.ItemLabel class="px-2.5 py-1.5 grow text-center">
                         {t("chooseColors")}
                       </RadioGroup.ItemLabel>
                     </RadioGroup.Item>
                     <RadioGroup.Item
                       value="css"
-                      class="flex text-sm ui-checked:bg-zinc-700/50 [&:has(:focus-visible)]:outline [&:has(:focus-visible)]:outline-zinc-600 rounded-br rounded-tr flex-grow"
+                      class="flex text-sm ui-checked:bg-zinc-700/50 [&:has(:focus-visible)]:outline [&:has(:focus-visible)]:outline-zinc-600 rounded-br rounded-tr grow"
                     >
                       <RadioGroup.ItemInput />
-                      <RadioGroup.ItemLabel class="px-2.5 py-1.5 flex-grow text-center">
+                      <RadioGroup.ItemLabel class="px-2.5 py-1.5 grow text-center">
                         {t("useCSS")}
                       </RadioGroup.ItemLabel>
                     </RadioGroup.Item>
@@ -170,7 +170,7 @@ const ThemeDialog: Component<{
                         <>
                           <div class="flex items-end gap-3 pb-2">
                             <StyledTextField
-                              class="flex-grow pb-0"
+                              class="grow pb-0"
                               value={colors().bg}
                               onChange={(value) =>
                                 setColors({ ...colors(), bg: value })
@@ -199,7 +199,7 @@ const ThemeDialog: Component<{
                           </div>
                           <div class="flex items-end gap-3 pb-2">
                             <StyledTextField
-                              class="flex-grow pb-0"
+                              class="grow pb-0"
                               value={colors().fg}
                               onChange={(value) =>
                                 setColors({ ...colors(), fg: value })
@@ -228,7 +228,7 @@ const ThemeDialog: Component<{
                           </div>
                           <div class="flex items-end gap-3 pb-2">
                             <StyledTextField
-                              class="flex-grow pb-0"
+                              class="grow pb-0"
                               value={colors().ac}
                               onChange={(value) =>
                                 setColors({ ...colors(), ac: value })
@@ -263,7 +263,7 @@ const ThemeDialog: Component<{
                     <TextField.Root value={css()} onChange={setCSS}>
                       <TextField.Label class="sr-only">CSS</TextField.Label>
                       <TextField.TextArea
-                        class="text-sm py-2 px-2 bg-zinc-700/50 border rounded font-mono border-zinc-600 outline-none focus:border-zinc-300 w-full min-h-[10rem]"
+                        class="text-sm py-2 px-2 bg-zinc-700/50 border rounded font-mono border-zinc-600 outline-hidden focus:border-zinc-300 w-full min-h-[10rem]"
                         autoResize
                       />
                     </TextField.Root>
@@ -272,7 +272,7 @@ const ThemeDialog: Component<{
               </div>
               <button
                 onClick={saveTheme}
-                class="flex items-center gap-2 justify-center px-3 py-1.5 my-2 text-sm border border-zinc-700 bg-zinc-700/50 enabled:hover:bg-zinc-600/50 disabled:cursor-not-allowed disabled:opacity-80 rounded focus:bg-zinc-600/50 focus:border-zinc-300 outline-none"
+                class="flex items-center gap-2 justify-center px-3 py-1.5 my-2 text-sm border border-zinc-700 bg-zinc-700/50 enabled:hover:bg-zinc-600/50 disabled:cursor-not-allowed disabled:opacity-80 rounded focus:bg-zinc-600/50 focus:border-zinc-300 outline-hidden"
                 disabled={!name()}
               >
                 {props.theme ? t("saveTheme") : t("addTheme")}
@@ -317,19 +317,19 @@ const ThemeManagerDialog: Component<{
                 <Dialog.Title class="font-semibold">
                   {t("Theme Manager")}
                 </Dialog.Title>
-                <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
+                <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-hidden border border-transparent focus:border-zinc-300">
                   <CloseIcon class="w-4 h-4" />
                 </Dialog.CloseButton>
               </div>
               <Dialog.Description class="flex flex-col overflow-hidden">
-                <div class="overflow-y-auto min-h-0 flex-grow divide-y divide-zinc-700/50">
+                <div class="overflow-y-auto min-h-0 grow divide-y divide-zinc-700/50">
                   {themeStore.themes.map((theme) => (
                     <div class="flex items-center py-2 gap-2.5">
                       <div class="mr-auto text-sm">{theme.name}</div>
                       {theme.id !== "default" && theme.id !== "dark" && (
                         <>
                           <button
-                            class="flex items-center justify-center w-6 h-6 border border-zinc-700 bg-zinc-700/50 hover:bg-zinc-800/50 rounded focus:bg-zinc-800/50 focus:border-zinc-300 outline-none"
+                            class="flex items-center justify-center w-6 h-6 border border-zinc-700 bg-zinc-700/50 hover:bg-zinc-800/50 rounded focus:bg-zinc-800/50 focus:border-zinc-300 outline-hidden"
                             onClick={() => {
                               setEditingTheme(theme);
                               setIsThemeDialogOpen(true);
@@ -339,7 +339,7 @@ const ThemeManagerDialog: Component<{
                             <EditIcon class="w-3 h-3" />
                           </button>
                           <button
-                            class="flex items-center justify-center w-6 h-6 border border-zinc-700 bg-zinc-700/50 hover:bg-zinc-800/50 rounded focus:bg-zinc-800/50 focus:border-zinc-300 outline-none"
+                            class="flex items-center justify-center w-6 h-6 border border-zinc-700 bg-zinc-700/50 hover:bg-zinc-800/50 rounded focus:bg-zinc-800/50 focus:border-zinc-300 outline-hidden"
                             onClick={() => {
                               if (confirm(t("deleteThemeConfirm"))) {
                                 removeTheme(theme);
@@ -354,9 +354,9 @@ const ThemeManagerDialog: Component<{
                     </div>
                   ))}
                 </div>
-                <div class="flex items-center gap-3 flex-shrink-0">
+                <div class="flex items-center gap-3 shrink-0">
                   <button
-                    class="px-3 py-1.5 my-2 text-sm border border-zinc-700 bg-zinc-700/50 hover:bg-zinc-800/50 rounded focus:bg-zinc-800/50 focus:border-zinc-300 outline-none"
+                    class="px-3 py-1.5 my-2 text-sm border border-zinc-700 bg-zinc-700/50 hover:bg-zinc-800/50 rounded focus:bg-zinc-800/50 focus:border-zinc-300 outline-hidden"
                     onClick={() => {
                       setEditingTheme(undefined);
                       setIsThemeDialogOpen(true);
@@ -365,7 +365,7 @@ const ThemeManagerDialog: Component<{
                     {t("addTheme")}
                   </button>
                   {themeStore.themes.some((theme) => !!theme.colors) && (
-                    <button class="px-3 py-1.5 my-2 text-sm border border-zinc-700 bg-zinc-700/50 hover:bg-zinc-800/50 rounded focus:bg-zinc-800/50 focus:border-zinc-300 outline-none">
+                    <button class="px-3 py-1.5 my-2 text-sm border border-zinc-700 bg-zinc-700/50 hover:bg-zinc-800/50 rounded focus:bg-zinc-800/50 focus:border-zinc-300 outline-hidden">
                       {t("updateThemes")}
                     </button>
                   )}

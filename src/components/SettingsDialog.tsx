@@ -31,7 +31,7 @@ const SettingsDialog: Component<{
           >
             <div class="flex items-center justify-between mb-3">
               <Dialog.Title class="font-semibold">{t("Settings")}</Dialog.Title>
-              <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
+              <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-hidden border border-transparent focus:border-zinc-300">
                 <CloseIcon class="w-4 h-4" />
               </Dialog.CloseButton>
             </div>
@@ -298,7 +298,7 @@ const SettingsDialog: Component<{
                     </div>
                   </TextField.Label>
                   <TextField.Input
-                    class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
+                    class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-hidden focus:border-zinc-300 "
                     spellcheck={false}
                   />
                 </TextField.Root>

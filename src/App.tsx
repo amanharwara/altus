@@ -61,7 +61,7 @@ const App: Component = () => {
                 role="tabpanel"
                 id={`tabpanel-${tab.id}`}
                 class={twJoin(
-                  "min-h-0 flex-grow text-white",
+                  "min-h-0 grow text-white",
                   tabStore.selectedTabId !== tab.id && "hidden"
                 )}
               >

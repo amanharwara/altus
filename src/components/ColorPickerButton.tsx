@@ -15,7 +15,7 @@ export function ColorPickerButton(props: {
     <Tooltip openDelay={100} gutter={5}>
       <Tooltip.Trigger
         as="label"
-        class="relative w-8 h-8 rounded outline-none border border-zinc-600 p-4 focus:border-zinc-300"
+        class="relative w-8 h-8 rounded outline-hidden border border-zinc-600 p-4 focus:border-zinc-300"
         style={{
           "background-color": props.value,
         }}
@@ -39,7 +39,7 @@ export function ColorPickerButton(props: {
         />
       </Tooltip.Trigger>
       <Tooltip.Portal>
-        <Tooltip.Content class="z-50 px-2 py-1.5 text-sm bg-zinc-700 text-zinc-100 rounded outline-none border border-transparent">
+        <Tooltip.Content class="z-50 px-2 py-1.5 text-sm bg-zinc-700 text-zinc-100 rounded outline-hidden border border-transparent">
           <div>{t("Pick color")}</div>
         </Tooltip.Content>
       </Tooltip.Portal>

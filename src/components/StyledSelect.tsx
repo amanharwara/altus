@@ -22,7 +22,7 @@ function StyledSelect<Option>(props: Props<Option>) {
       itemComponent={(itemProps) => (
         <Select.Item
           item={itemProps.item}
-          class="flex items-center justify-between outline-none border border-transparent focus:border-zinc-500 focus:bg-zinc-800/50 rounded py-1.5 px-2 ui-selected:bg-zinc-800"
+          class="flex items-center justify-between outline-hidden border border-transparent focus:border-zinc-500 focus:bg-zinc-800/50 rounded py-1.5 px-2 ui-selected:bg-zinc-800"
         >
           <Select.ItemLabel>
             {props.itemLabelRender(itemProps.item)}
@@ -38,7 +38,7 @@ function StyledSelect<Option>(props: Props<Option>) {
       </Select.Label>
       <Select.Trigger
         class={twMerge(
-          "flex items-center justify-between text-sm text-left py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300",
+          "flex items-center justify-between text-sm text-left py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-hidden focus:border-zinc-300",
           props.triggerClass
         )}
         aria-label="Theme"
