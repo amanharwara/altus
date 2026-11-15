@@ -1,6 +1,6 @@
 # Dependency upgrade batches
 
-Apply and review one batch at a time, in the order below. Batches 1 through 4 are
+Apply and review one batch at a time, in the order below. Batches 1 through 5 are
 applied. The order estimates regression risk for this app;
 urgent security fixes can take priority. Recheck npm metadata and release notes
 before each later batch, since versions and compatibility requirements change.
@@ -105,35 +105,61 @@ The host emits graphics/font warnings but the tested UI flows complete. Existing
 user profiles were not used. WhatsApp authentication, messaging, notifications,
 tray/protocol/auto-launch behavior, and macOS/Windows remain outside this check.
 
+## Batch 5: compatible styling updates
+
+- `tailwindcss`: 3.3.3 → 3.4.19
+- `autoprefixer`: 10.4.27 → 10.6.2
+- `tailwind-merge`: 3.2.0 → 2.6.1 to use the Tailwind v3-compatible release line
+
+Use `~` ranges for all three. Tailwind remains on v3 and retains the current
+PostCSS configuration and Kobalte plugin. The merge helper's v3 line targets
+Tailwind v4; this deliberately lower version aligns its conflict rules with the
+CSS framework actually used by the app. The existing `twMerge`/`twJoin` imports
+remain compatible. Electron, Forge, Solid, Zod, TypeScript, Vite, and the direct
+PostCSS resolution are unchanged. Tailwind updates its own PostCSS and build
+helpers transitively.
+
+Validation: immutable install, type checking, lint, all 41 offline tests,
+coverage, Linux x64 packaging, and `yarn test:smoke` pass. Generated CSS review
+shows Tailwind preflight updates and opacity-variable fallbacks; removed utility
+selectors are not referenced as standalone classes in the source. A separate
+packaged desktop smoke check verifies tabs, Settings, CSS-theme creation/deletion and parent
+modal accessibility, plus settings/tab/theme persistence across restart. It
+also checks the dark editor's computed background/text colors, border, flex
+layout, and dialog size, with a visual inspection of its screenshot. Both smoke
+checks use disposable profiles and close the app afterwards. They do not verify
+WhatsApp or macOS/Windows behavior.
+
+Compatibility reference: [tailwind-merge](https://github.com/dcastil/tailwind-merge),
+release notes: [Tailwind 3.4.19](https://github.com/tailwindlabs/tailwindcss/releases/tag/v3.4.19),
+[Autoprefixer 10.6.2](https://github.com/postcss/autoprefixer/releases/tag/10.6.2),
+[tailwind-merge 2.6.1](https://github.com/dcastil/tailwind-merge/releases/tag/v2.6.1).
+
 ## Remaining batches, lowest risk first
 
-1. **Compatible styling updates.** Update Tailwind within v3 and Autoprefixer
-   within v10. Review `tailwind-merge` compatibility with Tailwind v3 before
-   changing it; matching version majors alone is insufficient. Check generated
-   CSS and manually inspect theme editing, dark mode, and component states.
-2. **Packaging and build tooling.** Align all `@electron-forge/*` packages on
+1. **Packaging and build tooling.** Align all `@electron-forge/*` packages on
    one compatible v7 release, including `plugin-vite`, and update
    `vite-plugin-solid` with its Vite peer requirements checked. Keep
    `app-builder-lib` and `dmg-builder` matched. Review the missing
    `electron-builder-squirrel-windows` peer when updating the custom makers.
    Run all three platform makers before considering this batch validated.
-3. **Major development-tool migrations.** Migrate ESLint and its TypeScript
+2. **Major development-tool migrations.** Migrate ESLint and its TypeScript
    integrations together, including configuration changes, and restore supported
    compiler/parser compatibility before updating TypeScript within v5. Handle TypeScript
    major upgrades separately. Then migrate Forge/Vite majors as a coupled build
    change, preserving all three main/preload entry points. Check required Node
    versions against `.nvmrc`, CI, and developer machines.
-4. **Application API and styling migrations.** Migrate Zod v4, Nano ID v6, and
+3. **Application API and styling migrations.** Migrate Zod v4, Nano ID v6, and
    Tailwind v4 in separate changes. Coordinate Tailwind's PostCSS integration,
    Kobalte plugin, and `tailwind-merge` versions. Validate existing settings and
    custom themes as well as creating new ones.
-5. **Electron integrations and persisted data.** Upgrade
+4. **Electron integrations and persisted data.** Upgrade
    `electron-context-menu`, `electron-dl`, and `electron-store` separately.
    Review Node/Electron minimums and ESM changes before choosing target versions;
    the current TypeScript output uses CommonJS. Test existing settings with a
    disposable profile, downloads, context menus, and launch-at-login behavior.
    Coordinate packages requiring a newer Electron runtime with the final batch.
-6. **Electron runtime.** Upgrade the pinned Electron version in staged major
+5. **Electron runtime.** Upgrade the pinned Electron version in staged major
    steps to a supported target. Read breaking changes for every crossed major.
    Verify preload isolation, IPC, WhatsApp login and sessions, multiple accounts,
    notifications, tray, downloads, and external links. Exercise packaged apps
