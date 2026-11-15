@@ -172,7 +172,7 @@ be attributed to one batch.
 ## Validation gate for every batch
 
 Run `yarn install --immutable`, `yarn lint`, and `yarn package` with Node 22
-and Yarn 4.9.0, adjusting Node only in an explicitly scoped migration. Review
+and the Yarn version pinned in package.json, adjusting Node only in an explicitly scoped migration. Review
 the lockfile for unrelated changes. For runtime/UI changes, launch the app and
 exercise the affected features. For maker changes, run `yarn make` on each
 supported platform. Keep each batch as a separate commit or PR, and revert the
@@ -272,3 +272,10 @@ and the strengthened native startup check pass. A real desktop check verifies
 tab/settings/theme flows, accessibility restoration and persistence across a
 restart; dark dialog colors/borders/sizing are asserted and its screenshot was
 inspected. The Forge asset-copy correction is included in the tested base.
+### Batch 12: Node 22 and test environment refresh (completed)
+
+Pin Node 22.23.5 in `.nvmrc`, update Yarn to 4.18.1, and jsdom to 31.0.1. This
+stays on the project's Node 22 line while satisfying current jsdom minimums.
+Retain dependency build scripts for Electron tooling, without broad Git-source
+allowlisting. Full repository checks (41 tests), coverage, Linux packaging and
+the strengthened real packaged smoke check pass using the pinned Node binary.

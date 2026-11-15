@@ -56,7 +56,7 @@
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import": "~2.32.0",
     "globals": "~17.14.0",
-    "jsdom": "~26.1.0",
+    "jsdom": "~31.0.1",
     "playwright-core": "~1.65.1",
     "postcss": "~8.5.33",
     "tailwindcss": "~4.3.5",
@@ -79,5 +79,5 @@
     "tailwind-merge": "~3.7.0",
     "zod": "~4.6.7"
   },
-  "packageManager": "yarn@4.9.0"
+  "packageManager": "yarn@4.18.1+sha512.b2e1e7524f654f2749d32b4ebcb4622473cb5bcbc485df2007e12a154e50162a4d795526768bc5f5b8f81717bfd79deb2472813d86fb5ae2eb551fa9c872b08f"
 }
