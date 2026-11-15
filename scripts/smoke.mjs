@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, realpath, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { _electron as electron } from "playwright-core";
@@ -76,7 +76,13 @@ try {
     arch: process.arch,
   }));
   assert.equal(runtime.packaged, true, "Must launch the packaged app");
-  assert.equal(path.resolve(runtime.userData), profile, "Must use a fresh profile");
+  // macOS resolves /var to /private/var in Electron's userData path. Compare
+  // filesystem identities so a symlink alias still verifies profile isolation.
+  assert.equal(
+    await realpath(runtime.userData),
+    await realpath(profile),
+    "Must use a fresh profile"
+  );
   assert.equal(runtime.arch, process.arch, "Must run the native architecture");
 
   await window.getByRole("tab", { selected: true }).waitFor({ state: "visible" });
