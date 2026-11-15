@@ -97,7 +97,6 @@ platforms, but does not replace these manual integration checks.
 WhatsApp authentication, webview DOM, messages, media and notifications inside
 WhatsApp are outside this automated suite.
 
-The scoped `vitest/vite` and `vite-node/vite` resolutions keep the test runner
-and its module loader on Vite 6 to match `vite-plugin-solid`'s supported peer
-range. Revisit it when upgrading the test
-runner or Solid plugin together. Forge retains its own build-time Vite version.
+Forge and the test runner now share Vite 8. Solid is externalized in test workers
+with browser/development conditions so module-reset tests share one client
+runtime. Revisit these conditions when updating the test runner or Solid plugin.

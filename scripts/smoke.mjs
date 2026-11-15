@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { mkdir, mkdtemp, realpath, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { _electron as electron } from "playwright-core";
 
 // Launch the native Forge package produced by `yarn make`, not a development
@@ -73,6 +74,7 @@ try {
   const runtime = await application.evaluate(({ app }) => ({
     packaged: app.isPackaged,
     userData: app.getPath("userData"),
+    appPath: app.getAppPath(),
     arch: process.arch,
   }));
   assert.equal(runtime.packaged, true, "Must launch the packaged app");
@@ -114,6 +116,15 @@ try {
   );
   const settings = await window.evaluate(() => window.electronSettingsStore.getStore());
   assert.equal(settings.registerProtocol.value, false, "Preload IPC must work");
+  await window.waitForFunction(() => typeof globalThis.whatsappPreloadPath === "string");
+  const preloadURL = await window.evaluate(() => globalThis.whatsappPreloadPath);
+  const preloadPath = fileURLToPath(preloadURL);
+  assert.equal(path.basename(preloadPath), "whatsapp.preload.cjs");
+  assert.equal(
+    await realpath(preloadPath),
+    await realpath(path.join(runtime.appPath, ".vite", "build", "whatsapp.preload.cjs")),
+    "WhatsApp preload must point to the packaged entry point"
+  );
   assert.deepEqual(
     rendererErrors.filter((error) => error.page === window).map((error) => error.message),
     [],

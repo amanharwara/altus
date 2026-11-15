@@ -229,3 +229,15 @@ Tailwind's plugin uses an ESM import. ESLint 10 remains outside the import
 plugin's supported peer range, and TypeScript 7 is outside the parser's supported
 range, so neither is forced into an unsupported combination. Repository checks,
 coverage, Linux packaging and real packaged startup pass.
+### Batch 8: major build/test tools (completed)
+
+Migrated Forge to 8.0.1, Vite to 8.3.8, Vitest/coverage to 5.1.0, updated Solid's
+Vite plugin and testing-library packages, and refreshed Playwright and PostCSS.
+Removed the old Vite 6 test resolutions. TypeScript now uses bundler resolution;
+ESLint's TypeScript resolver handles modern package exports. Vitest worker
+options follow its current schema. Forge 8 emits `.cjs` files: update the main
+entry, both preload paths, and explicit main/preload build targets. The packaged
+smoke check now verifies the WhatsApp preload URL points to its real bundled
+file. Removed obsolete import.meta error suppressions. Repository verification,
+coverage, all three Electron entry builds, Linux AppImage creation, and packaged
+startup pass. The prior lint/compiler commit passed the full native CI matrix.

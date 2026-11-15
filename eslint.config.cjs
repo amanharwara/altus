@@ -13,7 +13,10 @@ module.exports = [
   {
     files,
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
-    settings: imports.configs.electron.settings,
+    settings: {
+      ...imports.configs.electron.settings,
+      'import/resolver': { typescript: { project: './tsconfig.json' } },
+    },
     rules: {
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'warn',

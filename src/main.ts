@@ -13,6 +13,7 @@ import {
 } from "electron";
 import fs from "fs";
 import path from "path";
+import { pathToFileURL } from "node:url";
 import { electronTabStore } from "./stores/tabs/electron";
 import { Tab, TabStore } from "./stores/tabs/common";
 import { electronThemeStore } from "./stores/themes/electron";
@@ -118,7 +119,7 @@ function createWindow() {
     x: rememberWindowPosition ? windowState.get("x") || undefined : undefined,
     y: rememberWindowPosition ? windowState.get("y") || undefined : undefined,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, "preload.cjs"),
       webviewTag: true,
     },
     title: `Altus ${app.getVersion()}`,
@@ -415,8 +416,7 @@ const HandledPermissions = Object.keys(sessionPermissions);
 
 function addIPCHandlers(mainWindow: BrowserWindow) {
   ipcMain.handle("get-whatsapp-preload-path", () => {
-    // @ts-expect-error ImportMeta works correctly
-    return import.meta.url.replace("main.js", "whatsapp.preload.js");
+    return pathToFileURL(path.join(__dirname, "whatsapp.preload.cjs")).href;
   });
 
   ipcMain.handle("settings-store-get", () => {

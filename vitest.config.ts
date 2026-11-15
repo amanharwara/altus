@@ -12,9 +12,7 @@ export default defineConfig({
     // Module-reset tests must share the same Solid owner/runtime as the test
     // renderer. Keep Solid external and resolve its client build in workers.
     server: { deps: { external: [/solid-js/] } },
-    poolOptions: {
-      forks: { execArgv: ["--conditions=browser", "--conditions=development"] },
-    },
+    execArgv: ["--conditions=browser", "--conditions=development"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "json-summary"],
