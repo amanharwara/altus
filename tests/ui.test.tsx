@@ -65,12 +65,18 @@ it("creates a CSS theme through the theme manager and confirms deletion", async 
   render(() => <ThemeManager isOpen={() => true} setIsOpen={() => undefined} />);
   expect(screen.queryByRole("button", { name: "deleteTheme" })).not.toBeInTheDocument();
   await userEvent.click(screen.getByRole("button", { name: "addTheme" }));
+  // The parent modal is hidden from accessibility after an animation frame.
+  await waitFor(() => expect(screen.queryByRole("dialog", { name: "Theme Manager" })).not.toBeInTheDocument());
+  expect(screen.getByRole("dialog", { name: "addTheme" })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "addTheme" })).toBeDisabled();
   await userEvent.type(screen.getByRole("textbox", { name: "Name" }), "My theme");
   await userEvent.click(screen.getByRole("radio", { name: "useCSS" }));
   fireEvent.input(screen.getByRole("textbox", { name: "CSS" }), { target: { value: "body { color: red; }" } });
   await userEvent.click(screen.getByRole("button", { name: "addTheme" }));
   expect(themeStore.themes.at(-1)).toMatchObject({ name: "My theme", css: "body { color: red; }" });
+  // Kobalte restores the parent modal's accessibility after an animation frame.
+  // Wait for the manager to become accessible again, not just for store updates.
+  await screen.findByRole("dialog", { name: "Theme Manager" });
   vi.spyOn(window, "confirm").mockReturnValueOnce(false).mockReturnValueOnce(true);
   await userEvent.click(screen.getByRole("button", { name: "deleteTheme" }));
   expect(screen.getByText("My theme")).toBeInTheDocument();
