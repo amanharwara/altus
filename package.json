@@ -75,7 +75,7 @@
     "electron-context-menu": "^4.0.5",
     "electron-dl": "^4.0.0",
     "electron-store": "^8.1.0",
-    "nanoid": "~5.1.16",
+    "nanoid": "~6.0.2",
     "solid-js": "~1.9.19",
     "tailwind-merge": "~2.6.1",
     "zod": "~4.6.7"

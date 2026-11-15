@@ -247,3 +247,9 @@ Moved Zod to 4.6.7 and use its named `z` export. Existing object/enum/boolean
 settings types remain compatible; no persisted-data format or runtime parsing
 policy changes. Immutable installation, type/lint, 41 offline tests, coverage,
 Linux packaging and real packaged startup pass.
+### Batch 10: Nano ID v6 (completed)
+
+Updated Nano ID to 6.0.2. The app uses the unchanged zero-argument generator;
+saved IDs stay untouched. Existing first-launch, distinct-defaults, tab CRUD,
+theme creation and hydration tests pass, along with immutable installation,
+coverage, Linux packaging, type/lint and real packaged startup.
