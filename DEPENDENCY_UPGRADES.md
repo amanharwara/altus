@@ -290,3 +290,11 @@ Real desktop tests verify settings, theme CRUD and restart persistence. A copied
 JSON profile written by electron-store 8 hydrates with unchanged settings, tab
 IDs/selection and themes under electron-store 12. Only disposable profiles were
 used.
+### Batch 14: Electron 43 runtime checkpoint (completed)
+
+Updated the pinned runtime from 35.1.5 to 43.8.10 after reviewing intervening
+breaking changes. Main and sandboxed preload entry points build, repository
+verification and coverage pass, Linux AppImage creation passes, and the packaged
+translation/menu/preload smoke test succeeds. This is the verified checkpoint
+before the Electron 44 clipboard changes and Electron 45 sandbox changes. No
+account or real profile is used in these tests.

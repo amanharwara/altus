@@ -50,7 +50,7 @@
     "@vitest/coverage-v8": "~5.1.0",
     "app-builder-lib": "~26.0.20",
     "dmg-builder": "~26.0.20",
-    "electron": "35.1.5",
+    "electron": "43.8.10",
     "electron-builder-squirrel-windows": "~26.0.20",
     "eslint": "~9.39.5",
     "eslint-import-resolver-typescript": "^4.4.5",
