@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import kobalte from "@kobalte/tailwindcss";
 
 const config: Config = {
   content: [
@@ -8,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {},
   },
-  plugins: [require("@kobalte/tailwindcss")],
+  plugins: [kobalte],
 };
 
 export default config;

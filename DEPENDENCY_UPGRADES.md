@@ -219,3 +219,13 @@ Immutable install, type/lint, 41 offline tests, coverage, Linux packaging,
 packaged startup, and Linux AppImage creation pass. Native macOS/Windows maker
 and startup checks run in the existing CI matrix. Styling batch CI passed all
 four platform builds and launches before this batch.
+### Batch 7: supported lint/compiler migration (completed)
+
+Migrated to ESLint 9 flat configuration, matched TypeScript ESLint 8.72.2
+parser/plugin, and TypeScript 5.9.3. The configured parser now supports the
+compiler. Preserve import/Electron checks, browser/Node globals, and warnings for
+unused variables; generated package/coverage output is explicitly ignored.
+Tailwind's plugin uses an ESM import. ESLint 10 remains outside the import
+plugin's supported peer range, and TypeScript 7 is outside the parser's supported
+range, so neither is forced into an unsupported combination. Repository checks,
+coverage, Linux packaging and real packaged startup pass.
