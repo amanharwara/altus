@@ -1,5 +1,5 @@
 import { languages } from "../../i18n/langauges.config";
-import z from "zod";
+import { z } from "zod";
 
 const SettingsSchema = z.object({
   tabBar: z.object({ value: z.boolean() }),

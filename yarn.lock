@@ -2613,7 +2613,7 @@ __metadata:
     vite: "npm:~8.3.8"
     vite-plugin-solid: "npm:~2.11.16"
     vitest: "npm:~5.1.0"
-    zod: "npm:~3.25.76"
+    zod: "npm:~4.6.7"
   languageName: unknown
   linkType: soft
 
@@ -10723,9 +10723,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:~3.25.76":
-  version: 3.25.76
-  resolution: "zod@npm:3.25.76"
-  checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
+"zod@npm:~4.6.7":
+  version: 4.6.7
+  resolution: "zod@npm:4.6.7"
+  checksum: 10c0/4ce2eb14034317b7254e347ca37b5ad591cf8333147030cf05b9b5d31692d45073f7f2747aa50cf8c6b29012194d2b22978cecc89969cf34a0d18e89d0ee7d7b
   languageName: node
   linkType: hard

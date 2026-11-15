@@ -78,7 +78,7 @@
     "nanoid": "~5.1.16",
     "solid-js": "~1.9.19",
     "tailwind-merge": "~2.6.1",
-    "zod": "~3.25.76"
+    "zod": "~4.6.7"
   },
   "packageManager": "yarn@4.9.0"
 }

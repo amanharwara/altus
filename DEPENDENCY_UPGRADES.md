@@ -241,3 +241,9 @@ smoke check now verifies the WhatsApp preload URL points to its real bundled
 file. Removed obsolete import.meta error suppressions. Repository verification,
 coverage, all three Electron entry builds, Linux AppImage creation, and packaged
 startup pass. The prior lint/compiler commit passed the full native CI matrix.
+### Batch 9: Zod v4 (completed)
+
+Moved Zod to 4.6.7 and use its named `z` export. Existing object/enum/boolean
+settings types remain compatible; no persisted-data format or runtime parsing
+policy changes. Immutable installation, type/lint, 41 offline tests, coverage,
+Linux packaging and real packaged startup pass.
