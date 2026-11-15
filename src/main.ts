@@ -425,7 +425,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
 
   ipcMain.handle(
     "settings-store-set",
-    (_event, key: SettingKey, value: unknown) => {
+    (_event, key: SettingKey, value: Settings[SettingKey]["value"] | undefined) => {
       if (value === undefined) return electronSettingsStore.delete(key);
       if (key === "autoHideMenuBar") {
         changeAutoHideMenuBar(mainWindow, value as boolean);
@@ -442,7 +442,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
 
   ipcMain.handle(
     "tab-store-set",
-    (_event, key: keyof TabStore, value: unknown) => {
+    (_event, key: keyof TabStore, value: TabStore[keyof TabStore] | undefined) => {
       if (value === undefined) return electronTabStore.delete(key);
       return electronTabStore.set(key, value);
     }
@@ -454,7 +454,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
 
   ipcMain.handle(
     "theme-store-set",
-    (_event, key: keyof ThemeStore, value: unknown) => {
+    (_event, key: keyof ThemeStore, value: ThemeStore[keyof ThemeStore] | undefined) => {
       if (value === undefined) return electronThemeStore.delete(key);
       return electronThemeStore.set(key, value);
     }

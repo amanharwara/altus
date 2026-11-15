@@ -279,3 +279,14 @@ stays on the project's Node 22 line while satisfying current jsdom minimums.
 Retain dependency build scripts for Electron tooling, without broad Git-source
 allowlisting. Full repository checks (41 tests), coverage, Linux packaging and
 the strengthened real packaged smoke check pass using the pinned Node binary.
+### Batch 13: storage and compatible context menus (completed)
+
+Upgraded electron-store to 12.0.0 and context menus within v4.1.2. IPC handler
+annotations now match the existing renderer bridge contracts required by the
+store's stricter generic types; persisted formats and deletion behavior are
+unchanged. Keep electron-dl v4 until the runtime batch because v5 requires
+Electron 44. Full verification/coverage, packaging and packaged startup pass.
+Real desktop tests verify settings, theme CRUD and restart persistence. A copied
+JSON profile written by electron-store 8 hydrates with unchanged settings, tab
+IDs/selection and themes under electron-store 12. Only disposable profiles were
+used.
