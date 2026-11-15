@@ -49,6 +49,13 @@ There are separate tools like [AppImageLauncher](https://github.com/TheAssassin/
 - **Available for most desktop platforms** including Windows (7 or above), Linux and MacOS.
 - **Tray icon** so you can minimize the app completely and still receive notifications.
 
+## Development and verification
+
+Use Node 22 and Corepack. Run `corepack yarn install --immutable`, then
+`corepack yarn verify` for type checking, lint and offline tests.
+See [Testing and verification](docs/testing.md) for coverage, focused test runs,
+packaging checks and manual integration checks. No WhatsApp account is needed.
+
 ## Feature Requests
 
 In order to submit a feature request, create a [new issue](https://github.com/amanharwara/altus/issues/new) with the label `enhancement`.
