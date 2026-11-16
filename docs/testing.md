@@ -21,7 +21,7 @@ need no display server, Electron process, network or WhatsApp account.
 | `corepack yarn typecheck` | Check application, tests and test configuration |
 | `corepack yarn lint` | Existing TypeScript/ESLint checks |
 | `corepack yarn package` | Compile and package the Electron app without launching |
-| `corepack yarn test:smoke` | Launch the native package in `out/` and check window, renderer and preload startup (requires a desktop display) |
+| `corepack yarn test:smoke` | Check native package startup, assets, preload and a real fixture download (requires a desktop display) |
 
 The Verify workflow runs type checking, lint and coverage for pushes and pull
 requests. Separate platform jobs run `yarn make` to build AppImage, NSIS and DMG
@@ -34,8 +34,11 @@ and a screenshot from the smoke check under `out/smoke/`.
 The smoke check uses Playwright Core to control the packaged Electron executable
 without downloading a separate browser. It requires a visible native window,
 the selected tab and add-tab button, a working settings preload/IPC round trip,
-and no uncaught shell renderer errors. A disposable user-data directory disables
-protocol registration and exit prompts; Chromium networking is blocked so no
+loaded translations/native menus, the packaged WhatsApp preload path, and no
+uncaught shell renderer errors. A disposable user-data directory disables
+protocol registration, save dialogs and exit prompts. Chromium networking is
+blocked except for a loopback HTTP fixture, which verifies that the real download
+helper saves the expected bytes in the configured temporary directory. No
 WhatsApp account or live service is needed. The profile is removed on completion.
 Run this in a disposable desktop/OS session, since normal app startup still
 exercises native integrations such as tray setup and disabling auto-launch.
@@ -62,6 +65,8 @@ you change and inspect uncovered branches.
   confirmed/cancelled deletion.
 - Preload bridge store channels/arguments, event payload wrappers and unsubscribe
   behavior.
+- Account-scoped media/screen-capture permission grants, revocation and rejection
+  of unhandled permissions, independent of notification grants.
 - Renderer translation reload, fallback and subscription cleanup; main-process
   translation lifecycle; shipped locale catalog validity.
 

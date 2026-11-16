@@ -31,6 +31,7 @@ import {
 import AutoLaunch from "auto-launch";
 import electronDl from "electron-dl";
 import contextMenu from "electron-context-menu";
+import { isPartitionPermissionGranted } from "./permissions";
 
 const windowState = new Store<{
   width: number | null;
@@ -226,8 +227,6 @@ if (!singleInstanceLock) {
       autoLauncher.disable();
     }
 
-    const mainWindow = createWindow();
-
     contextMenu();
 
     const defaultDownloadDir = getSettingWithDefault("defaultDownloadDir");
@@ -235,6 +234,9 @@ if (!singleInstanceLock) {
       saveAs: getSettingWithDefault("showSaveDialog"),
       directory: defaultDownloadDir ? defaultDownloadDir : undefined,
     });
+
+    // Register session listeners before the first window creates its session.
+    const mainWindow = createWindow();
 
     initializeI18N(mainWindow).then(() => {
       toggleTray(mainWindow, getSettingWithDefault("trayIcon"));
@@ -258,39 +260,36 @@ if (!singleInstanceLock) {
   app.on("web-contents-created", (_, webContents) => {
     if (webContents.getType() === "webview") {
       contextMenu({
-        window: {
-          webContents: webContents,
-          inspectElement: webContents.inspectElement.bind(webContents),
-        } as unknown as BrowserWindow,
+        window: webContents,
         showSaveImageAs: true,
         showInspectElement: true,
-        append: (def, params, window) => [
+        append: (_default, params) => [
           {
             label: "Bold",
             visible: params.isEditable,
             click: () => {
-              (window as BrowserWindow).webContents.send("format-text", "*");
+              webContents.send("format-text", "*");
             },
           },
           {
             label: "Italic",
             visible: params.isEditable,
             click: () => {
-              (window as BrowserWindow).webContents.send("format-text", "_");
+              webContents.send("format-text", "_");
             },
           },
           {
             label: "Strike",
             visible: params.isEditable,
             click: () => {
-              (window as BrowserWindow).webContents.send("format-text", "~");
+              webContents.send("format-text", "~");
             },
           },
           {
             label: "Monospaced",
             visible: params.isEditable,
             click: () => {
-              (window as BrowserWindow).webContents.send("format-text", "```");
+              webContents.send("format-text", "```");
             },
           },
         ],
@@ -411,8 +410,6 @@ const sessionPermissions = {
   notifications: new Set<PartitionID>(),
   media: new Set<PartitionID>(),
 };
-type SessionPermissionKey = keyof typeof sessionPermissions;
-const HandledPermissions = Object.keys(sessionPermissions);
 
 function addIPCHandlers(mainWindow: BrowserWindow) {
   ipcMain.handle("get-whatsapp-preload-path", () => {
@@ -464,15 +461,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
     session
       .fromPartition(partitionId)
       .setPermissionRequestHandler((_, permission, callback) => {
-        if (!HandledPermissions.includes(permission)) {
-          callback(false);
-          return;
-        }
-        const isEnabled =
-          sessionPermissions[permission as SessionPermissionKey].has(
-            partitionId
-          );
-        callback(isEnabled);
+        callback(isPartitionPermissionGranted(sessionPermissions, partitionId, permission));
       });
   });
 
@@ -878,13 +867,11 @@ function getLocalizedMainMenu() {
                 icon: mainIcon,
                 buttons: ["Copy Version Info", "OK"],
               })
-              .then((res) => {
+              .then(async (res) => {
                 const buttonClicked = res.response;
                 switch (buttonClicked) {
                   case 0:
-                    clipboard.write({
-                      text: versionInfo,
-                    });
+                    await clipboard.writeText(versionInfo);
                     break;
                 }
               })

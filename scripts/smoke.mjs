@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, realpath, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
+import { createServer } from "node:http";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,6 +19,8 @@ const executablePath = path.join(
 );
 const diagnosticsDir = path.resolve("out/smoke");
 const profile = await mkdtemp(path.join(os.tmpdir(), "altus-smoke-"));
+const downloadDirectory = path.join(profile, "downloads");
+await mkdir(downloadDirectory);
 await mkdir(diagnosticsDir, { recursive: true });
 await writeFile(
   path.join(profile, "settings.json"),
@@ -27,11 +30,14 @@ await writeFile(
     launchMinimized: { value: false },
     closeToTray: { value: false },
     exitPrompt: { value: false },
+    showSaveDialog: { value: false },
+    defaultDownloadDir: { value: downloadDirectory },
   })
 );
 
 let application;
 let window;
+let fixtureServer;
 const log = [];
 const rendererErrors = [];
 // Bound the whole check, including teardown, if Electron stops responding.
@@ -53,8 +59,8 @@ try {
       // Keep WhatsApp and Chromium background traffic offline. This smoke test
       // exercises the local shell and preload, not WhatsApp or a real account.
       "--proxy-server=http://127.0.0.1:9",
-      "--proxy-bypass-list=<-loopback>",
-      "--host-resolver-rules=MAP * ~NOTFOUND",
+      "--proxy-bypass-list=127.0.0.1",
+      "--host-resolver-rules=EXCLUDE 127.0.0.1, MAP * ~NOTFOUND",
       "--disable-background-networking",
     ],
     env,
@@ -116,6 +122,13 @@ try {
   );
   const settings = await window.evaluate(() => window.electronSettingsStore.getStore());
   assert.equal(settings.registerProtocol.value, false, "Preload IPC must work");
+  assert.equal(
+    await application.evaluate(({ BrowserWindow }) =>
+      BrowserWindow.getAllWindows()[0].webContents.session.listenerCount("will-download") > 0
+    ),
+    true,
+    "Download handling must be installed for the first window's session"
+  );
   await window.waitForFunction(async () => {
     const translations = await globalThis.i18n.getTranslations();
     return translations.fallback.Settings === "Settings";
@@ -141,6 +154,36 @@ try {
     [],
     "Shell renderer must start without uncaught errors"
   );
+  // Exercise the real download helper without remote traffic or a save dialog.
+  const contents = "Altus packaged download fixture\n";
+  fixtureServer = createServer((_request, response) => {
+    response.writeHead(200, {
+      "Content-Type": "text/plain",
+      "Content-Disposition": 'attachment; filename="altus-smoke.txt"',
+    });
+    response.end(contents);
+  });
+  await new Promise((resolve, reject) => {
+    fixtureServer.once("error", reject);
+    fixtureServer.listen(0, "127.0.0.1", resolve);
+  });
+  const download = await application.evaluate(({ BrowserWindow }, url) =>
+    new Promise((resolve, reject) => {
+      const win = BrowserWindow.getAllWindows()[0];
+      const timeout = setTimeout(() => reject(new Error("Download timed out")), 15_000);
+      win.webContents.session.once("will-download", (_event, item) => {
+        item.once("done", (_event, state) => {
+          clearTimeout(timeout);
+          resolve({ state, path: item.getSavePath() });
+        });
+      });
+      win.webContents.downloadURL(url);
+    }),
+    `http://127.0.0.1:${fixtureServer.address().port}/fixture`
+  );
+  assert.equal(download.state, "completed");
+  assert.equal(await realpath(path.dirname(download.path)), await realpath(downloadDirectory));
+  assert.equal(await readFile(download.path, "utf8"), contents);
   await window.screenshot({ path: path.join(diagnosticsDir, "startup.png") });
   console.log(`Packaged Altus opened successfully on ${process.platform}-${process.arch}`);
 } catch (error) {
@@ -153,6 +196,7 @@ try {
   log.push(String(error));
   throw error;
 } finally {
+  fixtureServer?.close();
   await writeFile(path.join(diagnosticsDir, "startup.log"), log.join("\n"));
   try {
     await application?.close();
