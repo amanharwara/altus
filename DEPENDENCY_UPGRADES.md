@@ -298,3 +298,10 @@ verification and coverage pass, Linux AppImage creation passes, and the packaged
 translation/menu/preload smoke test succeeds. This is the verified checkpoint
 before the Electron 44 clipboard changes and Electron 45 sandbox changes. No
 account or real profile is used in these tests.
+### Batch 15: supported TypeScript 6 checkpoint (completed)
+
+Upgraded TypeScript to 6.0.3, within the parser/plugin's declared `<6.1` range,
+and removed unused/deprecated `baseUrl`; imports already use relative paths and
+bundler resolution. Type/lint, 41 offline tests, coverage, Linux packaging and
+packaged translation/menu/preload startup checks pass. This supersedes the
+intermediate TypeScript 5.9 ceiling; TypeScript 7 remains outside parser support.
