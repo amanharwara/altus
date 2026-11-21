@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promi
 import { createServer } from "node:http";
 import os from "node:os";
 import path from "node:path";
+import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { _electron as electron } from "playwright-core";
 
@@ -45,7 +46,7 @@ const deadline = setTimeout(() => {
   application?.process().kill("SIGKILL");
   console.error("Packaged application smoke test timed out");
   process.exit(1);
-}, 90_000);
+}, 180_000);
 
 try {
   const env = { ...process.env };
@@ -186,6 +187,79 @@ try {
   assert.equal(await readFile(download.path, "utf8"), contents);
   await window.screenshot({ path: path.join(diagnosticsDir, "startup.png") });
   console.log(`Packaged Altus opened successfully on ${process.platform}-${process.arch}`);
+
+  // Regression (issue #394): with "Start Minimized" enabled the window must
+  // stay hidden in the tray, and launching the app again must reveal it.
+  await application.close();
+  application = null;
+
+  const minimizedProfile = await mkdtemp(path.join(os.tmpdir(), "altus-smoke-minimized-"));
+  try {
+    await writeFile(
+      path.join(minimizedProfile, "settings.json"),
+      JSON.stringify({
+        registerProtocol: { value: false },
+        autoLaunch: { value: false },
+        launchMinimized: { value: true },
+        trayIcon: { value: true },
+        closeToTray: { value: false },
+        exitPrompt: { value: false },
+      })
+    );
+    const minimizedEnv = { ...process.env };
+    delete minimizedEnv.ELECTRON_RUN_AS_NODE;
+    application = await electron.launch({
+      executablePath,
+      args: [
+        `--user-data-dir=${minimizedProfile}`,
+        ...(process.platform === "linux" && process.env.CI ? ["--no-sandbox"] : []),
+        "--proxy-server=http://127.0.0.1:9",
+        "--proxy-bypass-list=127.0.0.1",
+        "--host-resolver-rules=EXCLUDE 127.0.0.1, MAP * ~NOTFOUND",
+        "--disable-background-networking",
+      ],
+      env: minimizedEnv,
+      timeout: 45_000,
+    });
+    application.process().stdout?.on("data", (data) => log.push(String(data)));
+    application.process().stderr?.on("data", (data) => log.push(String(data)));
+    const minimizedWindow = await application.firstWindow({ timeout: 30_000 });
+    minimizedWindow.setDefaultTimeout(30_000);
+
+    // The preload running proves the renderer booted; give the window time to
+    // finish its first paint so a buggy "ready-to-show" would have shown it.
+    await minimizedWindow.waitForFunction(() => typeof globalThis.whatsappPreloadPath === "string");
+    await minimizedWindow.waitForTimeout(2_000);
+    assert.equal(
+      await application.evaluate(({ BrowserWindow }) =>
+        BrowserWindow.getAllWindows()[0].isVisible()
+      ),
+      false,
+      "Window must stay hidden in the tray when 'Start Minimized' is enabled"
+    );
+
+    // Launching a second instance hands focus back and must reveal the window.
+    const secondInstance = spawn(
+      executablePath,
+      [`--user-data-dir=${minimizedProfile}`],
+      { stdio: "ignore" }
+    );
+    await new Promise((resolve, reject) => {
+      secondInstance.once("error", reject);
+      secondInstance.once("exit", resolve);
+    });
+    await minimizedWindow.waitForFunction(() => document.visibilityState === "visible");
+    assert.equal(
+      await application.evaluate(({ BrowserWindow }) =>
+        BrowserWindow.getAllWindows()[0].isVisible()
+      ),
+      true,
+      "Launching the app again must reveal the hidden window"
+    );
+    console.log("Packaged Altus starts hidden in the tray and is revealed on re-launch");
+  } finally {
+    await rm(minimizedProfile, { recursive: true, force: true, maxRetries: 5 });
+  }
 } catch (error) {
   if (window && !window.isClosed()) {
     await window.screenshot({
