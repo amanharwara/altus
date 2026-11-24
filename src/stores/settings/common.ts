@@ -1,10 +1,11 @@
 import { languages } from "../../i18n/langauges.config";
-import z from "zod";
+import { z } from "zod";
 
 const SettingsSchema = z.object({
   tabBar: z.object({ value: z.boolean() }),
   tabBarPosition: z.object({ value: z.enum(["top", "bottom"]) }),
   trayIcon: z.object({ value: z.boolean() }),
+  registerProtocol: z.object({ value: z.boolean() }),
   tabClosePrompt: z.object({ value: z.boolean() }),
   closeToTray: z.object({ value: z.boolean() }),
   exitPrompt: z.object({ value: z.boolean() }),
@@ -32,6 +33,7 @@ export const DefaultSettingValues = {
   tabBar: true,
   tabBarPosition: "top",
   trayIcon: true,
+  registerProtocol: true,
   tabClosePrompt: true,
   closeToTray: false,
   exitPrompt: false,
@@ -53,6 +55,7 @@ export const getDefaultSettings = (): Settings => ({
   tabBar: { value: DefaultSettingValues.tabBar },
   tabBarPosition: { value: DefaultSettingValues.tabBarPosition },
   trayIcon: { value: DefaultSettingValues.trayIcon },
+  registerProtocol: { value: DefaultSettingValues.registerProtocol },
   tabClosePrompt: { value: DefaultSettingValues.tabClosePrompt },
   closeToTray: { value: DefaultSettingValues.closeToTray },
   exitPrompt: { value: DefaultSettingValues.exitPrompt },
@@ -76,6 +79,6 @@ export type ElectronSettingsStoreIpcApi = {
   getStore: () => Promise<Settings>;
   setSetting: (
     _key: SettingKey,
-    _value: SettingValue[SettingKey]
+    _value: SettingValue[SettingKey],
   ) => Promise<void>;
 };

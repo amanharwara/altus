@@ -69,7 +69,7 @@ const TabComponent: Component<TabComponentProps> = (props) => {
       id={props.tab.id}
       aria-controls={`tabpanel-${props.tab.id}`}
       aria-selected={isSelected() ? "true" : "false"}
-      class="group flex flex-shrink-0 items-center gap-1.5 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
+      class="group flex shrink-0 items-center gap-1.5 bg-zinc-800 px-3 py-1.5 text-white text-sm leading-4 ui-selected:bg-zinc-700 hover:bg-zinc-600 select-none"
       classList={{
         "opacity-50": isDragging(),
         "border-l-2 border-blue-500": willDrop() === "before",

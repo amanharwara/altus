@@ -66,7 +66,7 @@ const TabEditDialog: Component<{
         >
           <div class="flex items-center justify-between">
             <Dialog.Title class="font-semibold">{t("Edit tab")}</Dialog.Title>
-            <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-none border border-transparent focus:border-zinc-300">
+            <Dialog.CloseButton class="p-1 bg-zinc-700/50 hover:bg-zinc-600 rounded outline-hidden border border-transparent focus:border-zinc-300">
               <CloseIcon class="w-4 h-4" />
             </Dialog.CloseButton>
           </div>
@@ -87,7 +87,7 @@ const TabEditDialog: Component<{
                 {t("Name")}
               </TextField.Label>
               <TextField.Input
-                class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
+                class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-hidden focus:border-zinc-300 "
                 spellcheck={false}
               />
             </TextField.Root>
@@ -207,7 +207,7 @@ const TabEditDialog: Component<{
               {hasColor() && (
                 <div class="flex items-center gap-1.5 mt-2">
                   <TextField.Root
-                    class="flex flex-col gap-1.5 flex-grow"
+                    class="flex flex-col gap-1.5 grow"
                     value={color() || ""}
                     onChange={onColorChange}
                   >
@@ -215,7 +215,7 @@ const TabEditDialog: Component<{
                       {t("Color")}
                     </TextField.Label>
                     <TextField.Input
-                      class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-none focus:border-zinc-300 "
+                      class="text-sm py-1.5 px-2.5 bg-zinc-700/50 border rounded border-zinc-600 outline-hidden focus:border-zinc-300 "
                       spellcheck={false}
                     />
                   </TextField.Root>

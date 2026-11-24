@@ -46,8 +46,15 @@ There are separate tools like [AppImageLauncher](https://github.com/TheAssassin/
 - **Online Indicator**: Shows an indicator at the bottom-left corner of the chats that are online!
 - **Dark mode** for when you need to chill out your eyes in the night (or even in the day)
 - **Custom Theme Support**: Write your own CSS theme for WhatsApp or use the in-built Theme Customizer to create a new one just by picking colors!
-- **Available for most desktop platforms** including Windows (7 or above), Linux and MacOS.
+- **Available for desktop platforms** including Windows 10 or newer, Linux, and macOS 13 or newer.
 - **Tray icon** so you can minimize the app completely and still receive notifications.
+
+## Development and verification
+
+Use Node 22 and Corepack. Run `corepack yarn install --immutable`, then
+`corepack yarn verify` for type checking, lint and offline tests.
+See [Testing and verification](docs/testing.md) for coverage, focused test runs,
+packaging checks and manual integration checks. No WhatsApp account is needed.
 
 ## Feature Requests
 

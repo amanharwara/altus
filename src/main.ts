@@ -13,6 +13,7 @@ import {
 } from "electron";
 import fs from "fs";
 import path from "path";
+import { pathToFileURL } from "node:url";
 import { electronTabStore } from "./stores/tabs/electron";
 import { Tab, TabStore } from "./stores/tabs/common";
 import { electronThemeStore } from "./stores/themes/electron";
@@ -30,6 +31,7 @@ import {
 import AutoLaunch from "auto-launch";
 import electronDl from "electron-dl";
 import contextMenu from "electron-context-menu";
+import { isPartitionPermissionGranted } from "./permissions";
 
 const windowState = new Store<{
   width: number | null;
@@ -118,7 +120,7 @@ function createWindow() {
     x: rememberWindowPosition ? windowState.get("x") || undefined : undefined,
     y: rememberWindowPosition ? windowState.get("y") || undefined : undefined,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, "preload.cjs"),
       webviewTag: true,
     },
     title: `Altus ${app.getVersion()}`,
@@ -201,7 +203,10 @@ if (!singleInstanceLock) {
       ""
     );
 
-    if (app.isPackaged) app.setAsDefaultProtocolClient("whatsapp");
+    if (app.isPackaged && getSettingWithDefault("registerProtocol")) {
+      app.setAsDefaultProtocolClient("whatsapp");
+    }
+
     if (process.argv.some((arg) => arg.includes("whatsapp"))) {
       handleWhatsappLinks(process.argv);
     }
@@ -222,8 +227,6 @@ if (!singleInstanceLock) {
       autoLauncher.disable();
     }
 
-    const mainWindow = createWindow();
-
     contextMenu();
 
     const defaultDownloadDir = getSettingWithDefault("defaultDownloadDir");
@@ -231,6 +234,9 @@ if (!singleInstanceLock) {
       saveAs: getSettingWithDefault("showSaveDialog"),
       directory: defaultDownloadDir ? defaultDownloadDir : undefined,
     });
+
+    // Register session listeners before the first window creates its session.
+    const mainWindow = createWindow();
 
     initializeI18N(mainWindow).then(() => {
       toggleTray(mainWindow, getSettingWithDefault("trayIcon"));
@@ -254,39 +260,36 @@ if (!singleInstanceLock) {
   app.on("web-contents-created", (_, webContents) => {
     if (webContents.getType() === "webview") {
       contextMenu({
-        window: {
-          webContents: webContents,
-          inspectElement: webContents.inspectElement.bind(webContents),
-        } as unknown as BrowserWindow,
+        window: webContents,
         showSaveImageAs: true,
         showInspectElement: true,
-        append: (def, params, window) => [
+        append: (_default, params) => [
           {
             label: "Bold",
             visible: params.isEditable,
             click: () => {
-              (window as BrowserWindow).webContents.send("format-text", "*");
+              webContents.send("format-text", "*");
             },
           },
           {
             label: "Italic",
             visible: params.isEditable,
             click: () => {
-              (window as BrowserWindow).webContents.send("format-text", "_");
+              webContents.send("format-text", "_");
             },
           },
           {
             label: "Strike",
             visible: params.isEditable,
             click: () => {
-              (window as BrowserWindow).webContents.send("format-text", "~");
+              webContents.send("format-text", "~");
             },
           },
           {
             label: "Monospaced",
             visible: params.isEditable,
             click: () => {
-              (window as BrowserWindow).webContents.send("format-text", "```");
+              webContents.send("format-text", "```");
             },
           },
         ],
@@ -407,13 +410,10 @@ const sessionPermissions = {
   notifications: new Set<PartitionID>(),
   media: new Set<PartitionID>(),
 };
-type SessionPermissionKey = keyof typeof sessionPermissions;
-const HandledPermissions = Object.keys(sessionPermissions);
 
 function addIPCHandlers(mainWindow: BrowserWindow) {
   ipcMain.handle("get-whatsapp-preload-path", () => {
-    // @ts-expect-error ImportMeta works correctly
-    return import.meta.url.replace("main.js", "whatsapp.preload.js");
+    return pathToFileURL(path.join(__dirname, "whatsapp.preload.cjs")).href;
   });
 
   ipcMain.handle("settings-store-get", () => {
@@ -422,7 +422,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
 
   ipcMain.handle(
     "settings-store-set",
-    (_event, key: SettingKey, value: unknown) => {
+    (_event, key: SettingKey, value: Settings[SettingKey]["value"] | undefined) => {
       if (value === undefined) return electronSettingsStore.delete(key);
       if (key === "autoHideMenuBar") {
         changeAutoHideMenuBar(mainWindow, value as boolean);
@@ -439,7 +439,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
 
   ipcMain.handle(
     "tab-store-set",
-    (_event, key: keyof TabStore, value: unknown) => {
+    (_event, key: keyof TabStore, value: TabStore[keyof TabStore] | undefined) => {
       if (value === undefined) return electronTabStore.delete(key);
       return electronTabStore.set(key, value);
     }
@@ -451,7 +451,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
 
   ipcMain.handle(
     "theme-store-set",
-    (_event, key: keyof ThemeStore, value: unknown) => {
+    (_event, key: keyof ThemeStore, value: ThemeStore[keyof ThemeStore] | undefined) => {
       if (value === undefined) return electronThemeStore.delete(key);
       return electronThemeStore.set(key, value);
     }
@@ -461,15 +461,7 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
     session
       .fromPartition(partitionId)
       .setPermissionRequestHandler((_, permission, callback) => {
-        if (!HandledPermissions.includes(permission)) {
-          callback(false);
-          return;
-        }
-        const isEnabled =
-          sessionPermissions[permission as SessionPermissionKey].has(
-            partitionId
-          );
-        callback(isEnabled);
+        callback(isPartitionPermissionGranted(sessionPermissions, partitionId, permission));
       });
   });
 
@@ -875,13 +867,11 @@ function getLocalizedMainMenu() {
                 icon: mainIcon,
                 buttons: ["Copy Version Info", "OK"],
               })
-              .then((res) => {
+              .then(async (res) => {
                 const buttonClicked = res.response;
                 switch (buttonClicked) {
                   case 0:
-                    clipboard.write({
-                      text: versionInfo,
-                    });
+                    await clipboard.writeText(versionInfo);
                     break;
                 }
               })

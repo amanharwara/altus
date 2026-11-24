@@ -1,6 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../index.html";
+
+@custom-variant ui-checked (&[data-checked]);
+@custom-variant ui-selected (&[data-selected]);
+@custom-variant ui-expanded (&[data-expanded]);
+
+/* Preserve the app's existing dark palette through the v4 color-space change. */
+@theme {
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-neutral-900: #171717;
+  --color-blue-500: #3b82f6;
+  --color-red-600: #dc2626;
+}
 
 html,
 body,
