@@ -6,9 +6,11 @@ const load = () => import("../src/stores/tabs/solid");
 
 describe("tab store", () => {
   it("creates and persists an active tab on first launch", async () => {
-    const { tabStore } = await load();
+    const { tabStore, flushTabStoreToElectron } = await load();
     expect(tabStore.tabs).toHaveLength(1);
     expect(tabStore.selectedTabId).toBe(tabStore.tabs[0].id);
+    // Persistence is deferred (idle callback); flush explicitly.
+    flushTabStoreToElectron();
     expect(window.electronTabStore.set).toHaveBeenCalledWith("tabs", expect.arrayContaining([expect.objectContaining({ id: tabStore.selectedTabId })]));
   });
 
@@ -17,9 +19,10 @@ describe("tab store", () => {
     // Old persisted tabs did not have this permission.
     Reflect.deleteProperty(tab.config, "media");
     vi.mocked(window.electronTabStore.getStore).mockResolvedValue({ tabs: [tab], previouslyClosedTab: null, selectedTabId: undefined });
-    const { tabStore } = await load();
+    const { tabStore, flushTabStoreToElectron } = await load();
     expect(tabStore.selectedTabId).toBe(tab.id);
     expect(tabStore.tabs[0].config.media).toBe(true);
+    flushTabStoreToElectron();
     expect(window.electronTabStore.set).toHaveBeenCalledWith("selectedTabId", tab.id);
   });
 
@@ -41,7 +44,26 @@ describe("tab store", () => {
     expect(store.tabStore.tabs.map(t => t.id)).toEqual([original.id, second.id]);
     expect(store.tabStore.selectedTabId).toBe(second.id);
     expect(store.tabStore.previouslyClosedTab).toBeNull();
-    expect(window.electronTabStore.set).toHaveBeenLastCalledWith("previouslyClosedTab", null);
+    store.flushTabStoreToElectron();
+    // Final value (null) equals the persisted one: no redundant write, and no stale closed tab leaked.
+    const closedWrites = vi.mocked(window.electronTabStore.set).mock.calls.filter(([k]) => k === "previouslyClosedTab");
+    expect(closedWrites.every(([, v]) => v === null)).toBe(true);
+  });
+
+  it("retries a key whose IPC write failed", async () => {
+    const store = await load();
+    store.flushTabStoreToElectron();
+    const set = vi.mocked(window.electronTabStore.set);
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    set.mockClear();
+    set.mockRejectedValueOnce(new Error("ipc down"));
+    store.setTabActive("other");
+    store.flushTabStoreToElectron();
+    await Promise.resolve();
+    await Promise.resolve();
+    store.flushTabStoreToElectron();
+    expect(set).toHaveBeenCalledTimes(2);
+    expect(set).toHaveBeenLastCalledWith("selectedTabId", "other");
   });
 
   it("keeps an active replacement when the last tab closes", async () => {

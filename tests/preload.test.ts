@@ -53,6 +53,7 @@ it.each([
 it.each([
   ["onOpenWhatsappLink", "open-whatsapp-link", "https://example.test"],
   ["onMessageCount", "message-count", { tabId: "first", messageCount: 3 }],
+  ["onNotificationClick", "notification-click", "tab-1"],
 ] as const)("%s strips the Electron event and cleans up its wrapper", (name, channel, payload) => {
   const handlers = exposed("electronIPCHandlers") as Window["electronIPCHandlers"];
   const callback = vi.fn();

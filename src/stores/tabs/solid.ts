@@ -109,7 +109,8 @@ function scheduleTabStoreFlush() {
   }, 0);
 }
 
-function flushTabStoreToElectron() {
+export function flushTabStoreToElectron() {
+  clearScheduledFlush();
   if (dirtyKeys.size === 0) {
     return;
   }
@@ -123,8 +124,16 @@ function flushTabStoreToElectron() {
     const previousValue = lastPersisted.get(key);
 
     if (!equal(currentValue, previousValue)) {
-      void window.electronTabStore.set(key, currentValue);
       lastPersisted.set(key, clonePersistedValue(currentValue));
+      // On IPC failure, forget the persisted value and re-mark dirty so the
+      // next flush (any later change or beforeunload) retries instead of losing it.
+      Promise.resolve(window.electronTabStore.set(key, currentValue)).catch(
+        (error) => {
+          console.error(`Failed to persist tab store key "${key}"`, error);
+          lastPersisted.delete(key);
+          dirtyKeys.add(key);
+        }
+      );
     }
   }
 }

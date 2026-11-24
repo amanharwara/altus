@@ -7,6 +7,18 @@ import { installBridge } from "./setup";
 let bridge: ReturnType<typeof installBridge>;
 beforeEach(() => { vi.resetModules(); bridge = installBridge(); });
 
+it("selects the tab whose notification was clicked and ignores unknown ids", async () => {
+  const { default: TabsList } = await import("../src/components/TabsList");
+  const { tabStore } = await import("../src/stores/tabs/solid");
+  render(() => <TabsList />);
+  const original = tabStore.selectedTabId;
+  await userEvent.click(screen.getByRole("button", { name: "Add new tab" }));
+  bridge.emit("onNotificationClick", original);
+  expect(tabStore.selectedTabId).toBe(original);
+  bridge.emit("onNotificationClick", "missing");
+  expect(tabStore.selectedTabId).toBe(original);
+});
+
 it("adds and selects tabs, wraps keyboard navigation, honors close cancellation and cleans listeners", async () => {
   const { default: TabsList } = await import("../src/components/TabsList");
   const { tabStore } = await import("../src/stores/tabs/solid");

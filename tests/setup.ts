@@ -13,7 +13,7 @@ export function installBridge() {
     "onOpenSettings", "onEditActiveTab", "onCloseActiveTab", "onOpenTabDevTools",
     "onAddNewTab", "onRestoreTab", "onNextTab", "onPreviousTab", "onFirstTab",
     "onLastTab", "onOpenWhatsappLink", "onReloadCustomTitleBar",
-    "onReloadTranslations", "onNewChat", "onOpenThemeManager", "onMessageCount",
+    "onReloadTranslations", "onNewChat", "onOpenThemeManager", "onMessageCount", "onNotificationClick",
   ];
   const handlers = Object.fromEntries(names.map((name) => [name, vi.fn((callback) => {
     const callbacks = listeners.get(name) ?? new Set();
