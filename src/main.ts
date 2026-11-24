@@ -178,6 +178,9 @@ function createWindow() {
   return mainWindow;
 }
 
+// Windows toasts show the AUMID as the sender; without it they read "electron.app.Altus".
+if (process.platform === "win32") app.setAppUserModelId("harwara.aman.altus");
+
 const singleInstanceLock = app.requestSingleInstanceLock();
 
 if (!singleInstanceLock) {
@@ -553,6 +556,14 @@ function addIPCHandlers(mainWindow: BrowserWindow) {
         sender.setZoomFactor(1);
         break;
     }
+  });
+
+  ipcMain.on("notification-click", (_, tabId) => {
+    if (typeof tabId !== "string") return;
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.show();
+    mainWindow.focus();
+    mainWindow.webContents.send("notification-click", tabId);
   });
 
   ipcMain.on("message-count", (_, detail) => {

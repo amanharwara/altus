@@ -1,4 +1,4 @@
-import { ipcRenderer } from "electron";
+import { ipcRenderer, webFrame } from "electron";
 import { Theme } from "./stores/themes/common";
 import { formatSelectedText } from "./utils/webview/formatSelectedText";
 import { getLuminance } from "color2k";
@@ -259,6 +259,24 @@ ipcRenderer.on("set-theme", (event, theme: Theme) => {
   if (theme.colors) {
     setThemeColors(theme.colors);
   }
+});
+
+// Page world is isolated from this preload: wrap Notification there and relay clicks via a DOM event.
+void webFrame.executeJavaScript(`
+  (() => {
+    const Native = window.Notification;
+    window.Notification = class extends Native {
+      constructor(title, options) {
+        super(title, options);
+        this.addEventListener("click", () =>
+          window.dispatchEvent(new CustomEvent("altus-notification-click")));
+      }
+    };
+  })();
+`);
+
+window.addEventListener("altus-notification-click", () => {
+  ipcRenderer.send("notification-click", document.body.dataset.tabId);
 });
 
 ipcRenderer.on("format-text", (e, wrapper) => {

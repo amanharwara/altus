@@ -14,6 +14,7 @@ export type ElectronIPCHandlers = {
   onReloadTranslations: (callback: () => void) => () => void;
   onNewChat: (callback: () => void) => () => void;
   onOpenThemeManager: (callback: () => void) => () => void;
+  onNotificationClick: (callback: (tabId: string) => void) => () => void;
   onMessageCount: (
     callback: (detail: { messageCount: number; tabId: string }) => void
   ) => () => void;
