@@ -179,6 +179,12 @@ const TabsList: Component = () => {
   });
 
   handlers.add(
+    window.electronIPCHandlers.onNotificationClick((tabId) => {
+      if (tabStore.tabs.some((tab) => tab.id === tabId)) setTabActive(tabId);
+    })
+  );
+
+  handlers.add(
     window.electronIPCHandlers.onNextTab(() => {
       const activeTabIndex = tabStore.tabs.findIndex(
         (tab) => tab.id === tabStore.selectedTabId

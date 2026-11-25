@@ -115,6 +115,11 @@ const ipcHandlers: ElectronIPCHandlers = {
     ipcRenderer.on("open-theme-manager", callback);
     return () => ipcRenderer.off("open-theme-manager", callback);
   },
+  onNotificationClick: (callback) => {
+    const handler = (_: IpcRendererEvent, tabId: string) => callback(tabId);
+    ipcRenderer.on("notification-click", handler);
+    return () => ipcRenderer.off("notification-click", handler);
+  },
   onMessageCount: (callback) => {
     const handler = (
       _: IpcRendererEvent,
