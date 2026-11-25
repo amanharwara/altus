@@ -80,5 +80,5 @@ export type ElectronSettingsStoreIpcApi = {
   setSetting: (
     _key: SettingKey,
     _value: SettingValue[SettingKey],
-  ) => Promise<void>;
+  ) => Promise<Settings>;
 };
