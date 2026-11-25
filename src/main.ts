@@ -138,10 +138,12 @@ function createWindow() {
     );
   }
 
-  if (getSettingWithDefault("launchMinimized")) {
-    mainWindow.minimize();
-    mainWindow.blur();
-  } else {
+  // When "Start Minimized" is enabled, keep the window hidden and start in the
+  // tray: programmatic minimize is unreliable on Wayland compositors and a
+  // no-op on tiling window managers (issue #394), while staying hidden works
+  // everywhere. The tray icon, the tray menu or launching the app again shows
+  // the window.
+  if (!getSettingWithDefault("launchMinimized")) {
     mainWindow.once("ready-to-show", () => {
       mainWindow.show();
       mainWindow.focus();
@@ -240,9 +242,12 @@ if (!singleInstanceLock) {
 
     // Register session listeners before the first window creates its session.
     const mainWindow = createWindow();
+    const startHidden = getSettingWithDefault("launchMinimized");
 
     initializeI18N(mainWindow).then(() => {
-      toggleTray(mainWindow, getSettingWithDefault("trayIcon"));
+      // Keep a tray available when the window starts hidden so the app stays
+      // reachable even with the tray icon setting turned off.
+      toggleTray(mainWindow, getSettingWithDefault("trayIcon") || startHidden);
     });
 
     addIPCHandlers(mainWindow);
@@ -255,7 +260,11 @@ if (!singleInstanceLock) {
   });
 
   app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
+    const mainWindow = BrowserWindow.getAllWindows()[0];
+    if (mainWindow) {
+      // Reveal a window that is hidden because the app started in the tray.
+      mainWindow.show();
+    } else {
       createWindow();
     }
   });
