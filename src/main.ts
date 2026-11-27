@@ -707,7 +707,12 @@ function getLocalizedMainMenu() {
         },
         {
           label: electronI18N.t("Force &Reload"),
-          role: "forceReload",
+          // Not role "forceReload": it reloads only the focused webContents, which may be a single tab's webview.
+          accelerator: "CmdOrCtrl+Shift+R",
+          click() {
+            const window = BrowserWindow.getFocusedWindow();
+            if (window) window.webContents.reloadIgnoringCache();
+          },
           id: "force-reload",
         },
         {
